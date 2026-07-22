@@ -1,0 +1,22 @@
+# Core
+numpy
+pandas
+pyyaml
+
+# RL
+gymnasium
+torch
+
+# Logging / monitoring
+tensorboard
+
+# Data processing (STEP 01)
+requests
+
+# Visualization (STEP 04, planned)
+matplotlib
+plotly
+streamlit
+
+# Testing
+pytest

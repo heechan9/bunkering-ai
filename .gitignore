@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+results/
+runs/
+.pytest_cache/
+*.pt
+*.pth
+handoff_notes/
