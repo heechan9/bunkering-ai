@@ -93,11 +93,27 @@ class BunkeringEnv(gym.Env):
         reward, reward_breakdown = self._compute_reward(previous_state, action, next_state)
         self._state = next_state
 
-        terminated = bool(self._fuel_remaining <= 0.0)
-        truncated = bool(
-            self._route_remaining <= 0.0 or self._step_count >= self.max_steps
-        )
-        return self._state, reward, terminated, truncated, {"reward_breakdown": reward_breakdown}
+        terminated = False
+        truncated = False
+        end_reason = ""
+
+        # Failure takes precedence if fuel depletion and arrival occur together.
+        if self._fuel_remaining <= 0.0:
+            terminated = True
+            end_reason = "fuel_depleted"
+        elif self._route_remaining <= 1e-6:
+            terminated = True
+            end_reason = "arrived"
+        elif self._step_count >= self.max_steps:
+            truncated = True
+            end_reason = "timeout"
+
+        info = {
+            "reward_breakdown": reward_breakdown,
+            "end_reason": end_reason,
+            "voyage_success": end_reason == "arrived",
+        }
+        return self._state, reward, terminated, truncated, info
 
     def _init_state(self) -> np.ndarray:
         """Start one synthetic voyage and return its normalized observation."""

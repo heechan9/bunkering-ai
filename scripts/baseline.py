@@ -62,27 +62,22 @@ class PriceReactiveStrategy:
 
 def run_episode(
     strategy: Strategy, seed: int, episode: int
-) -> dict[str, str | int | float]:
+) -> dict[str, str | int | float | bool]:
     """Run one deterministic-seed episode and return a DQN-comparable record."""
     env = BunkeringEnv()
     observation, _ = env.reset(seed=seed)
     total_reward = 0.0
     n_bunkering = 0
-    end_reason = ""
     step_index = 0
 
     while True:
         action = strategy.select_action(env, observation, step_index)
-        observation, reward, terminated, truncated, _ = env.step(action)
+        observation, reward, terminated, truncated, info = env.step(action)
         total_reward += reward
         n_bunkering += int(action != 0)
         step_index += 1
 
-        if terminated:
-            end_reason = "terminated"
-            break
-        if truncated:
-            end_reason = "truncated"
+        if terminated or truncated:
             break
 
     # NOTE: reward 비교 시 fuel_cost_saving의 타이밍 버그(STEP03 TODO) 고려 필요
@@ -91,21 +86,31 @@ def run_episode(
         "episode": episode,
         "total_reward": total_reward,
         "n_bunkering": n_bunkering,
-        "end_reason": end_reason,
+        "end_reason": info["end_reason"],
+        "voyage_success": info["voyage_success"],
     }
 
 
-def write_results(records: list[dict[str, str | int | float]], output_path: Path) -> None:
+def write_results(
+    records: list[dict[str, str | int | float | bool]], output_path: Path
+) -> None:
     """Persist per-episode records in a stable CSV schema for DQN comparison."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    fieldnames = ["strategy", "episode", "total_reward", "n_bunkering", "end_reason"]
+    fieldnames = [
+        "strategy",
+        "episode",
+        "total_reward",
+        "n_bunkering",
+        "end_reason",
+        "voyage_success",
+    ]
     with output_path.open("w", newline="", encoding="utf-8") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(records)
 
 
-def print_summary(records: list[dict[str, str | int | float]]) -> None:
+def print_summary(records: list[dict[str, str | int | float | bool]]) -> None:
     """Print aggregate return statistics for each strategy."""
     print(f"{'strategy':<18} {'episodes':>8} {'mean_reward':>14} {'std_reward':>14}")
     for strategy_name in sorted({str(record["strategy"]) for record in records}):
@@ -118,12 +123,14 @@ def print_summary(records: list[dict[str, str | int | float]]) -> None:
         )
 
 
-def run_baselines(n_episodes: int = 20, base_seed: int = 42) -> list[dict[str, str | int | float]]:
+def run_baselines(
+    n_episodes: int = 20, base_seed: int = 42
+) -> list[dict[str, str | int | float | bool]]:
     """Run both strategies on identical sequential seed sets."""
     if n_episodes < 1:
         raise ValueError("n_episodes must be at least 1")
 
-    records: list[dict[str, str | int | float]] = []
+    records: list[dict[str, str | int | float | bool]] = []
     strategies: tuple[Strategy, ...] = (FixedFuelingStrategy(), PriceReactiveStrategy())
     for strategy in strategies:
         for episode_offset in range(n_episodes):
