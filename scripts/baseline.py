@@ -74,18 +74,21 @@ def run_episode(
         action = strategy.select_action(env, observation, step_index)
         observation, reward, terminated, truncated, info = env.step(action)
         total_reward += reward
-        n_bunkering += int(action != 0)
+        n_bunkering += int(
+            info["actual_bunker_amount"] > env._BUNKER_AMOUNT_EPSILON
+        )
         step_index += 1
 
         if terminated or truncated:
             break
 
-    # NOTE: reward 비교 시 fuel_cost_saving의 타이밍 버그(STEP03 TODO) 고려 필요
     return {
         "strategy": strategy.name,
         "episode": episode,
+        "seed": seed,
         "total_reward": total_reward,
         "n_bunkering": n_bunkering,
+        "cumulative_cost_index": info["cumulative_cost_index"],
         "end_reason": info["end_reason"],
         "voyage_success": info["voyage_success"],
     }
@@ -99,8 +102,10 @@ def write_results(
     fieldnames = [
         "strategy",
         "episode",
+        "seed",
         "total_reward",
         "n_bunkering",
+        "cumulative_cost_index",
         "end_reason",
         "voyage_success",
     ]
