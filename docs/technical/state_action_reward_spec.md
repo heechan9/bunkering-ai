@@ -95,8 +95,45 @@ cumulative_cost_index =
 - 이 지수는 현재 Reward에 직접 더하지 않는다.
 
 ## 4. Rule-based 베이스라인 (백테스트 비교 기준, 운영가이드 확정본)
+
 1. **고정 급유 전략**: 출항 전 항상 최대 연료 탑재
 2. **가격 반응 전략**: 유가 5% 이상 하락 시 급유, 상승 시 대기
+3. **Safe Stock 전략 (PR #5A)**: 아래 4.1 참고
+
+### 4.1 Safe Stock Baseline (PR #5A, provisional)
+
+> **provisional**: 이 절은 샌드박스(numpy 재구현) 상의 사전 시뮬레이션 결과를 근거로
+> 작성되었으며, 실제 Gymnasium 환경에서의 로컬 재현 전까지는 provisional 상태다.
+> 아래 수치는 일반화된 성능 주장이 아니라 seed 42~61, 현재 Synthetic Environment
+> 설정 한정 결과로만 해석한다.
+
+- 관측 가능한 현재 `fuel_remaining`만 사용하고, 미래 가격이나 향후 상태는 보지 않는다.
+- 임계값은 새로 정의하지 않고 기존 `env.min_safe_fuel`(기본값 0.15)을 그대로 재사용한다.
+- 결정 규칙: `fuel_remaining <= env.min_safe_fuel`이면 급유, 아니면 급유하지 않는다.
+- observation dtype(float32)에 맞춰 임계값을 비교해 float32 경계 오판을 방지한다 —
+  `env.min_safe_fuel`(float64)을 observation과 같은 dtype으로 변환한 뒤 비교하며,
+  새로운 epsilon 상수는 추가하지 않는다.
+- 현재 환경은 `action=1..n_ports`를 정의하지만 항만별 가격·비용·전이 차이가 아직
+  구현되지 않았으므로, Safe Stock은 대표 급유 `action=1`을 사용한다 —
+  급유량이나 항만을 선택하는 전략이 아니다.
+- 항만 선택 성능을 검증하는 baseline이 아니다. Action encoding에는 항만 번호가
+  존재하지만, 현재 Transition에서는 항만별 동작 차이가 구현되지 않았다(2절 참고).
+  이 전략은 "언제 급유할지"만 다룬다.
+- **Safe Stock은 현재 "Reference Baseline 후보"일 뿐 확정 Reference가 아니다.**
+  실제 Gymnasium 환경 로컬 재현으로 20/20 도착이 확인되어야 후보에서 확정으로
+  올라간다. 확정 전까지 `absolute_cost_saving_index`·`cost_saving_rate` 계산과
+  절감액·절감률 표현은 계속 보류한다(PR #3B 합의와 동일한 원칙 적용).
+
+**Preliminary sandbox simulation 결과** (seed 42~61, 20 episodes, numpy 재구현 기준 —
+**실제 gymnasium 패키지로는 아직 재현되지 않았고, 공식 프로젝트 결과로 확정된 것이
+아니다.** 아래 표는 참고용이며, 실제 로컬 재현 결과가 다르게 나오면 이 표가 아니라
+로컬 재현 결과가 우선한다):
+
+| strategy | mean_reward | std_reward | arrived | fuel_depleted | timeout | voyage_success_rate | mean n_bunkering | mean cumulative_cost_index |
+|---|---|---|---|---|---|---|---|---|
+| fixed_fueling | -2.0300 | 0.0000 | 0 | 20 | 0 | 0.00 | 0 | 0.00 |
+| price_reactive | -1.8395 | 0.5125 | 2 | 18 | 0 | 0.10 | 0.25 (0~4회) | 67932.19 |
+| safe_stock | -0.4921 | 0.0134 | 20 | 0 | 0 | 1.00 | 1 (전 episode 동일) | 546626.71 |
 
 평가 단계에서는 같은 seed·운항 조건에서 다음 episode-level KPI를 계산한다.
 
