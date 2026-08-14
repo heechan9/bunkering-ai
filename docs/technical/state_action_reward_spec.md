@@ -100,12 +100,15 @@ cumulative_cost_index =
 2. **가격 반응 전략**: 유가 5% 이상 하락 시 급유, 상승 시 대기
 3. **Safe Stock 전략 (PR #5A)**: 아래 4.1 참고
 
-### 4.1 Safe Stock Baseline (PR #5A, provisional)
+### 4.1 Safe Stock Baseline (PR #5A)
 
-> **provisional**: 이 절은 샌드박스(numpy 재구현) 상의 사전 시뮬레이션 결과를 근거로
-> 작성되었으며, 실제 Gymnasium 환경에서의 로컬 재현 전까지는 provisional 상태다.
-> 아래 수치는 일반화된 성능 주장이 아니라 seed 42~61, 현재 Synthetic Environment
-> 설정 한정 결과로만 해석한다.
+> **로컬 재현 검증을 통과한 M1 Reference 후보**: Windows/Anaconda 로컬 환경에서
+> 실제 Gymnasium `BunkeringEnv`로 재현 완료(seed 42~61, 20 episodes, safe_stock
+> 20/20 arrived). `absolute_cost_saving_index`·`cost_saving_rate` 계산에
+> 필요한 최종 Reference 확정은 아직이며, 그 이유로 **provisional** 상태를
+> 유지한다 — 공통 evaluation seed set 40~50개 확대 평가와 팀·멘토 승인이
+> 아직 완료되지 않았기 때문이다. 아래 수치는 일반화된 성능 주장이 아니라
+> seed 42~61, 현재 Synthetic Environment 설정 한정 결과로만 해석한다.
 
 - 관측 가능한 현재 `fuel_remaining`만 사용하고, 미래 가격이나 향후 상태는 보지 않는다.
 - 임계값은 새로 정의하지 않고 기존 `env.min_safe_fuel`(기본값 0.15)을 그대로 재사용한다.
@@ -119,15 +122,15 @@ cumulative_cost_index =
 - 항만 선택 성능을 검증하는 baseline이 아니다. Action encoding에는 항만 번호가
   존재하지만, 현재 Transition에서는 항만별 동작 차이가 구현되지 않았다(2절 참고).
   이 전략은 "언제 급유할지"만 다룬다.
-- **Safe Stock은 현재 "Reference Baseline 후보"일 뿐 확정 Reference가 아니다.**
-  실제 Gymnasium 환경 로컬 재현으로 20/20 도착이 확인되어야 후보에서 확정으로
-  올라간다. 확정 전까지 `absolute_cost_saving_index`·`cost_saving_rate` 계산과
-  절감액·절감률 표현은 계속 보류한다(PR #3B 합의와 동일한 원칙 적용).
+- **Safe Stock은 로컬 재현 검증을 통과한 M1 Reference 후보일 뿐 확정 Reference가
+  아니다.** 최종 Reference 확정과 절감률 계산은 공통 evaluation seed set
+  40~50개 평가 및 팀·멘토 승인 후 진행한다. 확정 전까지
+  `absolute_cost_saving_index`·`cost_saving_rate` 계산과 절감액·절감률
+  표현은 계속 보류한다(PR #3B 합의와 동일한 원칙 적용).
 
-**Preliminary sandbox simulation 결과** (seed 42~61, 20 episodes, numpy 재구현 기준 —
-**실제 gymnasium 패키지로는 아직 재현되지 않았고, 공식 프로젝트 결과로 확정된 것이
-아니다.** 아래 표는 참고용이며, 실제 로컬 재현 결과가 다르게 나오면 이 표가 아니라
-로컬 재현 결과가 우선한다):
+**Local reproduction result** (seed 42~61, 20 episodes, Windows/Anaconda
+`bunkering_ai` 환경, 실제 Gymnasium `BunkeringEnv`로 재현 완료. 일반화된 성능
+주장이 아니라 이 seed·설정 한정 결과다):
 
 | strategy | mean_reward | std_reward | arrived | fuel_depleted | timeout | voyage_success_rate | mean n_bunkering | mean cumulative_cost_index |
 |---|---|---|---|---|---|---|---|---|
@@ -135,14 +138,21 @@ cumulative_cost_index =
 | price_reactive | -1.8395 | 0.5125 | 2 | 18 | 0 | 0.10 | 0.25 (0~4회) | 67932.19 |
 | safe_stock | -0.4921 | 0.0134 | 20 | 0 | 0 | 1.00 | 1 (전 episode 동일) | 546626.71 |
 
-평가 단계에서는 같은 seed·운항 조건에서 다음 episode-level KPI를 계산한다.
+공식 회귀검증 범위는 `tests/`이며 41 passed를 확인했다. `handoff_notes`의
+보관용 테스트 사본은 공식 테스트 범위에서 제외한다.
+
+유효한 Reference 확정 이후 평가 단계에서는 같은 evaluation seed·운항 조건에서
+다음 episode-level KPI 계산을 검토한다.
+
+아래 산식은 **설계 후보(proposed)**이며 아직 구현하지 않는다. 유효한 Reference
+Baseline과 비교 분모가 팀·멘토 승인을 받은 뒤 최종 확정한다.
 
 ```
-absolute_cost_saving =
-    baseline cumulative cost - policy cumulative cost
+absolute_cost_saving_index =
+    reference cumulative_cost_index - policy cumulative_cost_index
 
 cost_saving_rate =
-    absolute_cost_saving / baseline cumulative cost
+    absolute_cost_saving_index / reference cumulative_cost_index
 ```
 
 ## 5. 미확정 사항 (데이터 조사 완료 후 확정 필요)

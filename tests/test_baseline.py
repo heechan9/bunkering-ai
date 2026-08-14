@@ -253,7 +253,14 @@ def test_fixed_fueling_and_price_reactive_regression_unchanged():
 
 
 def test_safe_stock_20_episode_batch_all_arrive_with_zero_failures():
-    """Locks in the headline preliminary result: 20/20 arrived, 0 failures."""
+    """Locks in the headline result: 20/20 arrived, 0 failures.
+
+    Reproduced on Windows/Anaconda with the real gymnasium-based
+    BunkeringEnv (seed 42~61, 20 episodes) -- see
+    docs/technical/state_action_reward_spec.md 4.1. This is a local
+    reproduction result for this seed set and Synthetic Environment
+    configuration, not a claim of generalized performance.
+    """
     records = baseline.run_baselines(n_episodes=20, base_seed=42)
     safe_stock = [r for r in records if r["strategy"] == "safe_stock"]
 
@@ -288,7 +295,7 @@ def test_safe_stock_bunkers_exactly_once_per_episode():
 
 
 def test_safe_stock_mean_reward_regression_preliminary():
-    """Regression-locks the preliminary sandbox mean reward.
+    """Regression-locks the observed safe_stock mean reward.
 
     Tolerance (abs=0.01) is intentionally loose, not a strict equality: this
     value depends on BunkeringEnv's Synthetic random-walk parameters
@@ -296,16 +303,21 @@ def test_safe_stock_mean_reward_regression_preliminary():
     something this PR should pin exactly. The purpose of this test is to
     catch an accidental large behavioural change (e.g. a future edit that
     breaks the dtype-matched threshold fix), not to assert this exact float
-    forever. This number has NOT been confirmed against the real gymnasium
-    package -- see docs/technical/state_action_reward_spec.md 4.1 for the
-    provisional-status note.
+    forever.
 
-    IMPORTANT for whoever runs this in the real repo: if this assertion
-    fails there, do NOT edit -0.4921 to match whatever the real run
-    produces. Report the actual value and investigate why it differs
-    (e.g. a different numpy/PCG64 seeding path than assumed here) before
-    touching this number -- the sandbox value is a preliminary reference
-    point, not a value to make the test pass around.
+    This value (-0.4921) was reproduced on Windows/Anaconda with the real
+    gymnasium-based BunkeringEnv (seed 42~61, 20 episodes), matching the
+    pre-check sandbox reimplementation to 4 decimal places -- see
+    docs/technical/state_action_reward_spec.md 4.1. It is a local
+    reproduction result for this seed set and Synthetic Environment
+    configuration, not a claim of generalized performance, and it does not
+    make safe_stock a confirmed Reference Baseline on its own (see 4.1 for
+    the M1 Reference-candidate status and what final confirmation requires).
+
+    IMPORTANT for whoever re-runs this: if this assertion fails, do NOT
+    edit -0.4921 to match whatever the new run produces. Report the actual
+    value and investigate why it differs (e.g. an environment/config change)
+    before touching this number.
     """
     records = baseline.run_baselines(n_episodes=20, base_seed=42)
     safe_stock_rewards = np.array(
