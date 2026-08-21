@@ -44,18 +44,25 @@ Input (state_dim = 6, MVP 기준 state_action_reward_spec.md 참고)
 ```
 for episode in range(N_EPISODES):
     state, _ = env.reset()
-    done = False
-    while not done:
+    episode_ended = False
+    while not episode_ended:
         action = agent.select_action(state, epsilon)
         next_state, reward, terminated, truncated, info = env.step(action)
-        done = terminated or truncated
-        replay_buffer.push(state, action, reward, next_state, done)
+        episode_ended = terminated or truncated
+        replay_buffer.push(
+            state, action, reward, next_state, terminated=terminated
+        )
         agent.update(replay_buffer.sample(batch_size))
         state = next_state
     if episode % target_update_freq_episodes == 0:
         agent.sync_target_network()
     logger.log_scalar("episode_reward", ...)   # TensorBoard (김승현 파이프라인 연동)
 ```
+
+- `episode_ended`는 환경 상호작용 종료에만 사용한다.
+- TD target의 부트스트랩 마스크에는 `terminated`만 저장한다. 따라서
+  `fuel_depleted`·`arrived` 같은 termination에서는 부트스트랩을 차단하고,
+  시간 제한에 따른 `timeout` truncation에서는 다음 상태 가치의 부트스트랩을 유지한다.
 
 ## 5. 구현 우선순위 (7~8월)
 1. `agents/dqn.py` — Q-Network, Replay Buffer, Double DQN 업데이트 로직 (7월 말)
