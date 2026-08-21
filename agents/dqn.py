@@ -32,7 +32,7 @@ class QNetwork(nn.Module):
 
 
 class ReplayBuffer:
-    """Fixed-size experience replay buffer backed by a deque."""
+    """Fixed-size replay buffer with an explicit termination bootstrap mask."""
 
     def __init__(self, capacity: int) -> None:
         if capacity < 1:
@@ -47,15 +47,21 @@ class ReplayBuffer:
         action: int,
         reward: float,
         next_state: np.ndarray,
-        done: bool,
+        *,
+        terminated: bool,
     ) -> None:
+        """Store whether the transition truly terminated the MDP.
+
+        Time-limit truncations must be stored with ``terminated=False`` so the
+        DQN target continues to bootstrap from ``next_state``.
+        """
         self._buffer.append(
             (
                 np.asarray(state, dtype=np.float32).copy(),
                 int(action),
                 float(reward),
                 np.asarray(next_state, dtype=np.float32).copy(),
-                bool(done),
+                bool(terminated),
             )
         )
 
@@ -65,13 +71,13 @@ class ReplayBuffer:
         if batch_size > len(self):
             raise ValueError("batch_size cannot exceed the number of stored transitions")
         batch = random.sample(self._buffer, batch_size)
-        states, actions, rewards, next_states, dones = zip(*batch)
+        states, actions, rewards, next_states, terminations = zip(*batch)
         return (
             np.asarray(states, dtype=np.float32),
             np.asarray(actions, dtype=np.int64),
             np.asarray(rewards, dtype=np.float32),
             np.asarray(next_states, dtype=np.float32),
-            np.asarray(dones, dtype=np.float32),
+            np.asarray(terminations, dtype=np.float32),
         )
 
     def __len__(self) -> int:
@@ -114,12 +120,14 @@ class DQNAgent:
         batch: tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray],
     ) -> float:
         """Run one Double DQN update and return its scalar Huber loss."""
-        states, actions, rewards, next_states, dones = batch
+        states, actions, rewards, next_states, terminations = batch
         states_tensor = torch.as_tensor(states, dtype=torch.float32, device=self.device)
         actions_tensor = torch.as_tensor(actions, dtype=torch.int64, device=self.device)
         rewards_tensor = torch.as_tensor(rewards, dtype=torch.float32, device=self.device)
         next_states_tensor = torch.as_tensor(next_states, dtype=torch.float32, device=self.device)
-        dones_tensor = torch.as_tensor(dones, dtype=torch.float32, device=self.device)
+        terminations_tensor = torch.as_tensor(
+            terminations, dtype=torch.float32, device=self.device
+        )
 
         current_q_values = self.policy_net(states_tensor).gather(
             1, actions_tensor.unsqueeze(1)
@@ -127,7 +135,9 @@ class DQNAgent:
         with torch.no_grad():
             next_actions = self.policy_net(next_states_tensor).argmax(dim=1, keepdim=True)
             next_q_values = self.target_net(next_states_tensor).gather(1, next_actions).squeeze(1)
-            td_target = rewards_tensor + self.gamma * next_q_values * (1.0 - dones_tensor)
+            td_target = rewards_tensor + self.gamma * next_q_values * (
+                1.0 - terminations_tensor
+            )
 
         loss = self.loss_function(current_q_values, td_target)
         self.optimizer.zero_grad()

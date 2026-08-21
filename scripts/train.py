@@ -62,13 +62,19 @@ def train(config: dict, n_episodes: int, seed: int) -> list[float]:
         for episode in range(n_episodes):
             state, _ = env.reset(seed=seed + episode)
             episode_reward = 0.0
-            done = False
+            episode_ended = False
 
-            while not done:
+            while not episode_ended:
                 action = agent.select_action(state, epsilon)
                 next_state, reward, terminated, truncated, _ = env.step(action)
-                done = terminated or truncated
-                buffer.push(state, action, reward, next_state, done)
+                episode_ended = terminated or truncated
+                buffer.push(
+                    state,
+                    action,
+                    reward,
+                    next_state,
+                    terminated=terminated,
+                )
                 if len(buffer) >= batch_size:
                     loss = agent.update(buffer.sample(batch_size))
                     if not np.isfinite(loss):
