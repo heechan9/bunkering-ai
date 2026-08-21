@@ -95,17 +95,64 @@ cumulative_cost_index =
 - 이 지수는 현재 Reward에 직접 더하지 않는다.
 
 ## 4. Rule-based 베이스라인 (백테스트 비교 기준, 운영가이드 확정본)
+
 1. **고정 급유 전략**: 출항 전 항상 최대 연료 탑재
 2. **가격 반응 전략**: 유가 5% 이상 하락 시 급유, 상승 시 대기
+3. **Safe Stock 전략 (PR #5A)**: 아래 4.1 참고
 
-평가 단계에서는 같은 seed·운항 조건에서 다음 episode-level KPI를 계산한다.
+### 4.1 Safe Stock Baseline (PR #5A)
+
+> **로컬 재현 검증을 통과한 M1 Reference 후보**: Windows/Anaconda 로컬 환경에서
+> 실제 Gymnasium `BunkeringEnv`로 재현 완료(seed 42~61, 20 episodes, safe_stock
+> 20/20 arrived). `absolute_cost_saving_index`·`cost_saving_rate` 계산에
+> 필요한 최종 Reference 확정은 아직이며, 그 이유로 **provisional** 상태를
+> 유지한다 — 공통 evaluation seed set 40~50개 확대 평가와 팀·멘토 승인이
+> 아직 완료되지 않았기 때문이다. 아래 수치는 일반화된 성능 주장이 아니라
+> seed 42~61, 현재 Synthetic Environment 설정 한정 결과로만 해석한다.
+
+- 관측 가능한 현재 `fuel_remaining`만 사용하고, 미래 가격이나 향후 상태는 보지 않는다.
+- 임계값은 새로 정의하지 않고 기존 `env.min_safe_fuel`(기본값 0.15)을 그대로 재사용한다.
+- 결정 규칙: `fuel_remaining <= env.min_safe_fuel`이면 급유, 아니면 급유하지 않는다.
+- observation dtype(float32)에 맞춰 임계값을 비교해 float32 경계 오판을 방지한다 —
+  `env.min_safe_fuel`(float64)을 observation과 같은 dtype으로 변환한 뒤 비교하며,
+  새로운 epsilon 상수는 추가하지 않는다.
+- 현재 환경은 `action=1..n_ports`를 정의하지만 항만별 가격·비용·전이 차이가 아직
+  구현되지 않았으므로, Safe Stock은 대표 급유 `action=1`을 사용한다 —
+  급유량이나 항만을 선택하는 전략이 아니다.
+- 항만 선택 성능을 검증하는 baseline이 아니다. Action encoding에는 항만 번호가
+  존재하지만, 현재 Transition에서는 항만별 동작 차이가 구현되지 않았다(2절 참고).
+  이 전략은 "언제 급유할지"만 다룬다.
+- **Safe Stock은 로컬 재현 검증을 통과한 M1 Reference 후보일 뿐 확정 Reference가
+  아니다.** 최종 Reference 확정과 절감률 계산은 공통 evaluation seed set
+  40~50개 평가 및 팀·멘토 승인 후 진행한다. 확정 전까지
+  `absolute_cost_saving_index`·`cost_saving_rate` 계산과 절감액·절감률
+  표현은 계속 보류한다(PR #3B 합의와 동일한 원칙 적용).
+
+**Local reproduction result** (seed 42~61, 20 episodes, Windows/Anaconda
+`bunkering_ai` 환경, 실제 Gymnasium `BunkeringEnv`로 재현 완료. 일반화된 성능
+주장이 아니라 이 seed·설정 한정 결과다):
+
+| strategy | mean_reward | std_reward | arrived | fuel_depleted | timeout | voyage_success_rate | mean n_bunkering | mean cumulative_cost_index |
+|---|---|---|---|---|---|---|---|---|
+| fixed_fueling | -2.0300 | 0.0000 | 0 | 20 | 0 | 0.00 | 0 | 0.00 |
+| price_reactive | -1.8395 | 0.5125 | 2 | 18 | 0 | 0.10 | 0.25 (0~4회) | 67932.19 |
+| safe_stock | -0.4921 | 0.0134 | 20 | 0 | 0 | 1.00 | 1 (전 episode 동일) | 546626.71 |
+
+공식 회귀검증 범위는 `tests/`이며 41 passed를 확인했다. `handoff_notes`의
+보관용 테스트 사본은 공식 테스트 범위에서 제외한다.
+
+유효한 Reference 확정 이후 평가 단계에서는 같은 evaluation seed·운항 조건에서
+다음 episode-level KPI 계산을 검토한다.
+
+아래 산식은 **설계 후보(proposed)**이며 아직 구현하지 않는다. 유효한 Reference
+Baseline과 비교 분모가 팀·멘토 승인을 받은 뒤 최종 확정한다.
 
 ```
-absolute_cost_saving =
-    baseline cumulative cost - policy cumulative cost
+absolute_cost_saving_index =
+    reference cumulative_cost_index - policy cumulative_cost_index
 
 cost_saving_rate =
-    absolute_cost_saving / baseline cumulative cost
+    absolute_cost_saving_index / reference cumulative_cost_index
 ```
 
 ## 5. 미확정 사항 (데이터 조사 완료 후 확정 필요)
