@@ -13,6 +13,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_DATA_PATH = (
+    PROJECT_ROOT / "data" / "public" / "upa_bunkering_anchorage_20240819.csv"
+)
+DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "results" / "public_data"
+
 EXPECTED_COLUMNS = [
     "입항구분명",
     "입항년도",
@@ -44,27 +50,74 @@ def load_data(path: Path) -> pd.DataFrame:
     return frame
 
 
+def _display_number(value: int | float, digits: int | None = None) -> str:
+    """Format metric values without turning integer counts into 8.0-style text."""
+    if digits is None:
+        return str(int(value))
+    rendered = f"{float(value):.{digits}f}"
+    return rendered.rstrip("0").rstrip(".")
+
+
 def build_metrics(frame: pd.DataFrame) -> pd.DataFrame:
-    """Return auditable, single-value summary metrics."""
+    """Return auditable, single-value summary metrics as display-safe strings."""
     duration_days = (frame["예정종료일"] - frame["예정시작일"]).dt.days
+    lead_days = (frame["예정시작일"] - frame["등록일"]).dt.days
     corr = frame[["총톤수", "벙커량"]].corr().iloc[0, 1]
     values = [
-        ("records", len(frame)),
-        ("columns", len(frame.columns)),
-        ("missing_cells", int(frame.isna().sum().sum())),
-        ("exact_duplicate_rows", int(frame.duplicated().sum())),
-        ("year_min", int(frame["입항년도"].min())),
-        ("year_max", int(frame["입항년도"].max())),
-        ("bunker_quantity_zero_rows", int((frame["벙커량"] == 0).sum())),
-        ("bunker_quantity_mean", round(float(frame["벙커량"].mean()), 2)),
-        ("bunker_quantity_median", round(float(frame["벙커량"].median()), 2)),
-        ("bunker_quantity_q1", round(float(frame["벙커량"].quantile(0.25)), 2)),
-        ("bunker_quantity_q3", round(float(frame["벙커량"].quantile(0.75)), 2)),
-        ("bunker_quantity_p95", round(float(frame["벙커량"].quantile(0.95)), 2)),
-        ("bunker_quantity_max", round(float(frame["벙커량"].max()), 2)),
-        ("gross_tonnage_median", round(float(frame["총톤수"].median()), 2)),
-        ("negative_schedule_duration_rows", int((duration_days < 0).sum())),
-        ("gross_tonnage_bunker_quantity_correlation", round(float(corr), 4)),
+        ("records", _display_number(len(frame))),
+        ("columns", _display_number(len(frame.columns))),
+        ("missing_cells", _display_number(frame.isna().sum().sum())),
+        ("exact_duplicate_rows", _display_number(frame.duplicated().sum())),
+        ("year_min", _display_number(frame["입항년도"].min())),
+        ("year_max", _display_number(frame["입항년도"].max())),
+        (
+            "bunker_quantity_zero_rows",
+            _display_number((frame["벙커량"] == 0).sum()),
+        ),
+        ("bunker_quantity_mean", _display_number(frame["벙커량"].mean(), 2)),
+        ("bunker_quantity_median", _display_number(frame["벙커량"].median(), 2)),
+        ("bunker_quantity_q1", _display_number(frame["벙커량"].quantile(0.25), 2)),
+        ("bunker_quantity_q3", _display_number(frame["벙커량"].quantile(0.75), 2)),
+        ("bunker_quantity_p95", _display_number(frame["벙커량"].quantile(0.95), 2)),
+        ("bunker_quantity_max", _display_number(frame["벙커량"].max(), 2)),
+        ("gross_tonnage_median", _display_number(frame["총톤수"].median(), 2)),
+        ("gross_tonnage_max", _display_number(frame["총톤수"].max(), 2)),
+        (
+            "gross_tonnage_over_400000_rows",
+            _display_number((frame["총톤수"] > 400000).sum()),
+        ),
+        (
+            "negative_schedule_duration_rows",
+            _display_number((duration_days < 0).sum()),
+        ),
+        (
+            "application_lead_time_median_days",
+            _display_number(lead_days.median(), 2),
+        ),
+        (
+            "application_lead_time_q1_days",
+            _display_number(lead_days.quantile(0.25), 2),
+        ),
+        (
+            "application_lead_time_q3_days",
+            _display_number(lead_days.quantile(0.75), 2),
+        ),
+        (
+            "application_lead_time_min_days",
+            _display_number(lead_days.min()),
+        ),
+        (
+            "application_lead_time_max_days",
+            _display_number(lead_days.max()),
+        ),
+        (
+            "negative_application_lead_time_rows",
+            _display_number((lead_days < 0).sum()),
+        ),
+        (
+            "gross_tonnage_bunker_quantity_correlation",
+            _display_number(corr, 4),
+        ),
     ]
     return pd.DataFrame(values, columns=["metric", "value"])
 
@@ -85,6 +138,13 @@ def build_group_summaries(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFra
     ]
     by_year[numeric] = by_year[numeric].round(2)
     by_entry_type[numeric] = by_entry_type[numeric].round(2)
+
+    final_calendar_year = int(frame["예정시작일"].dt.year.max())
+    final_date = frame["예정시작일"].max()
+    by_year["partial_year"] = (
+        (by_year["입항년도"] == final_calendar_year)
+        & ((final_date.month, final_date.day) != (12, 31))
+    )
     return by_year, by_entry_type
 
 
@@ -96,7 +156,7 @@ def save_chart(frame: pd.DataFrame, output_path: Path) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(10, 4.2))
     by_year.plot.bar(ax=axes[0], color="#57A7B3", edgecolor="#2F6570")
     axes[0].set_title("Median bunker quantity by year")
-    axes[0].set_xlabel("Year")
+    axes[0].set_xlabel("Year (2024 is partial)")
     axes[0].set_ylabel("Recorded bunker quantity")
     axes[0].tick_params(axis="x", rotation=0)
 
@@ -125,14 +185,8 @@ def save_chart(frame: pd.DataFrame, output_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--input",
-        type=Path,
-        default=Path("data/public/upa_bunkering_anchorage_20240819.csv"),
-    )
-    parser.add_argument(
-        "--output-dir", type=Path, default=Path("results/public_data")
-    )
+    parser.add_argument("--input", type=Path, default=DEFAULT_DATA_PATH)
+    parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     args = parser.parse_args()
 
     frame = load_data(args.input)

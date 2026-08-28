@@ -3,6 +3,8 @@ __pycache__/
 .venv/
 venv/
 results/
+!results/public_data/
+!results/public_data/**
 runs/
 .pytest_cache/
 *.pt
