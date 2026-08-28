@@ -1,4 +1,4 @@
-입항년도,records,bunker_quantity_mean,bunker_quantity_median,gross_tonnage_median,partial_year
-2022,2505,334.7,185.0,7544.0,False
-2023,2258,387.69,200.0,7561.0,False
-2024,1265,355.05,200.0,8060.0,True
+입항년도,records,bunker_quantity_mean,bunker_quantity_median,gross_tonnage_median
+2022,2505,334.7,185.0,7544.0
+2023,2258,387.69,200.0,7561.0
+2024,1265,355.05,200.0,8060.0

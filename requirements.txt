@@ -13,7 +13,7 @@ tensorboard
 # Data processing (STEP 01)
 requests
 
-# Visualization / public-data evidence
+# Visualization (STEP 04, planned)
 matplotlib
 plotly
 streamlit
