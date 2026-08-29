@@ -1,0 +1,17 @@
+metric,value
+records,6028.0
+columns,8.0
+missing_cells,0.0
+exact_duplicate_rows,38.0
+year_min,2022.0
+year_max,2024.0
+bunker_quantity_zero_rows,250.0
+bunker_quantity_mean,358.82
+bunker_quantity_median,200.0
+bunker_quantity_q1,100.0
+bunker_quantity_q3,500.0
+bunker_quantity_p95,1000.0
+bunker_quantity_max,30000.0
+gross_tonnage_median,7675.0
+negative_schedule_duration_rows,55.0
+gross_tonnage_bunker_quantity_correlation,0.2383
