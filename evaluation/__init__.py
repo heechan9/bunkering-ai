@@ -17,6 +17,7 @@ from evaluation.paper_audit import (
     audit_paper_claims,
     export_audit_csv,
     export_audit_json,
+    read_upa_metrics,
     verify_canonical_evidence,
 )
 
@@ -39,5 +40,6 @@ __all__ = [
     "audit_paper_claims",
     "export_audit_csv",
     "export_audit_json",
+    "read_upa_metrics",
     "verify_canonical_evidence",
 ]

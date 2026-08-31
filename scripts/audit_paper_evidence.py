@@ -8,7 +8,6 @@ from pathlib import Path
 import sys
 
 from evaluation.paper_audit import (
-    PaperClaim,
     audit_paper_claims,
     export_audit_csv,
     export_audit_json,
@@ -26,6 +25,12 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("results/paper_audit"),
         help="Directory where audit CSV and JSON reports will be saved.",
     )
+    parser.add_argument(
+        "--repo-root",
+        type=Path,
+        default=Path("."),
+        help="Repository root directory.",
+    )
     return parser
 
 
@@ -36,7 +41,7 @@ def main(args: list[str] | None = None) -> int:
     output_dir: Path = options.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    claims = verify_canonical_evidence()
+    claims = verify_canonical_evidence(repo_root=options.repo_root)
     report = audit_paper_claims(claims)
 
     csv_path = output_dir / "paper_evidence_summary.csv"
@@ -49,6 +54,7 @@ def main(args: list[str] | None = None) -> int:
     print(f"  Total claims: {report.total_claims}")
     print(f"  Passed: {report.passed_claims}")
     print(f"  Provisional: {report.provisional_claims}")
+    print(f"  Missing evidence: {report.missing_evidence_claims}")
     print(f"  Failed: {report.failed_claims}")
     print(f"  CSV summary saved to: {csv_path}")
     print(f"  JSON report saved to: {json_path}")
