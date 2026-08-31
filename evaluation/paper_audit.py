@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 import csv
 import json
+import math
 from pathlib import Path
 import re
 from typing import Sequence
@@ -19,6 +20,9 @@ from envs.bunkering_env import BunkeringEnv
 from evaluation.contract import (
     CSV_FIELDS as EVALUATION_CSV_FIELDS,
     TERMINATION_REASONS,
+    EpisodeResult,
+    EvaluationCase,
+    validate_fair_evaluation_plan,
 )
 
 
@@ -122,24 +126,35 @@ def verify_canonical_evidence(
     spec_path = root / "docs/technical/state_action_reward_spec.md"
     try:
         spec_text = spec_path.read_text(encoding="utf-8")
-        # Extract MVP state count claim from spec doc
         m_spec = re.search(r"초기 MVP 범위.*?(\d+)개 변수", spec_text, re.DOTALL)
-        expected_state_dim = m_spec.group(1) if m_spec else "6"
-
-        env = BunkeringEnv()
-        actual_state_dim = str(env.observation_space.shape[0])
-        status = "passed" if actual_state_dim == expected_state_dim else "failed"
-        claims.append(
-            PaperClaim(
-                claim_id="CLAIM-001",
-                paper_reference="docs/technical/state_action_reward_spec.md §1",
-                metric_name="state_dim_mvp",
-                expected_spec_value=expected_state_dim,
-                actual_system_value=actual_state_dim,
-                status=status,
-                notes=f"Dynamically read BunkeringEnv.observation_space.shape[0] ({actual_state_dim}) vs spec ({expected_state_dim}).",
+        if not m_spec:
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-001",
+                    paper_reference="docs/technical/state_action_reward_spec.md §1",
+                    metric_name="state_dim_mvp",
+                    expected_spec_value="parsed from spec file",
+                    actual_system_value="parse_failure",
+                    status="failed",
+                    notes="Failed to parse MVP state variable count from state_action_reward_spec.md.",
+                )
             )
-        )
+        else:
+            expected_state_dim = m_spec.group(1)
+            env = BunkeringEnv()
+            actual_state_dim = str(env.observation_space.shape[0])
+            status = "passed" if actual_state_dim == expected_state_dim else "failed"
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-001",
+                    paper_reference="docs/technical/state_action_reward_spec.md §1",
+                    metric_name="state_dim_mvp",
+                    expected_spec_value=expected_state_dim,
+                    actual_system_value=actual_state_dim,
+                    status=status,
+                    notes=f"Dynamically read BunkeringEnv.observation_space.shape[0] ({actual_state_dim}) vs spec ({expected_state_dim}).",
+                )
+            )
     except Exception as exc:
         claims.append(
             PaperClaim(
@@ -156,22 +171,34 @@ def verify_canonical_evidence(
     # 2. Action Space Contract: Compare BunkeringEnv action space size against spec file
     try:
         m_action = re.search(r"`action=1\.\.n_ports`", spec_text)
-        expected_action_formula = "1 + n_ports" if m_action else "1 + n_ports"
-        env = BunkeringEnv(n_ports=3)
-        actual_action_dim = str(env.action_space.n)
-        expected_action_dim = "4"  # 1 + 3
-        status = "passed" if actual_action_dim == expected_action_dim else "failed"
-        claims.append(
-            PaperClaim(
-                claim_id="CLAIM-002",
-                paper_reference="docs/technical/state_action_reward_spec.md §2",
-                metric_name="action_space_contract",
-                expected_spec_value=f"{expected_action_formula} (4 for n_ports=3)",
-                actual_system_value=actual_action_dim,
-                status=status,
-                notes=f"Dynamically read BunkeringEnv(n_ports=3).action_space.n ({actual_action_dim}).",
+        if not m_action:
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-002",
+                    paper_reference="docs/technical/state_action_reward_spec.md §2",
+                    metric_name="action_space_contract",
+                    expected_spec_value="parsed from spec file",
+                    actual_system_value="parse_failure",
+                    status="failed",
+                    notes="Failed to parse action space contract from state_action_reward_spec.md.",
+                )
             )
-        )
+        else:
+            env = BunkeringEnv(n_ports=3)
+            actual_action_dim = str(env.action_space.n)
+            expected_action_dim = "4"  # 1 + 3
+            status = "passed" if actual_action_dim == expected_action_dim else "failed"
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-002",
+                    paper_reference="docs/technical/state_action_reward_spec.md §2",
+                    metric_name="action_space_contract",
+                    expected_spec_value="1 + n_ports (4 for n_ports=3)",
+                    actual_system_value=actual_action_dim,
+                    status=status,
+                    notes=f"Dynamically read BunkeringEnv(n_ports=3).action_space.n ({actual_action_dim}).",
+                )
+            )
     except Exception as exc:
         claims.append(
             PaperClaim(
@@ -191,31 +218,43 @@ def verify_canonical_evidence(
     try:
         report_text = report_path.read_text(encoding="utf-8")
         m_records = re.search(r"신청현황」\s*([\d,]+)건", report_text)
-        expected_records = m_records.group(1).replace(",", "") if m_records else "6028"
-
-        metrics_dict = read_upa_metrics(upa_csv_path)
-        actual_records_float = float(metrics_dict.get("records", "0"))
-        actual_records = str(int(actual_records_float))
-
-        status = "passed" if actual_records == expected_records else "failed"
-        claims.append(
-            PaperClaim(
-                claim_id="CLAIM-003",
-                paper_reference="docs/submission/public_data_report_updates.md",
-                metric_name="public_data_records_count",
-                expected_spec_value=expected_records,
-                actual_system_value=actual_records,
-                status=status,
-                notes=f"Read canonical UPA summary metrics CSV ({actual_records}) vs submission doc ({expected_records}).",
+        if not m_records:
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-003",
+                    paper_reference="docs/submission/public_data_report_updates.md",
+                    metric_name="public_data_records_count",
+                    expected_spec_value="parsed from submission report",
+                    actual_system_value="parse_failure",
+                    status="failed",
+                    notes="Failed to parse UPA public data record count from public_data_report_updates.md.",
+                )
             )
-        )
+        else:
+            expected_records = m_records.group(1).replace(",", "")
+            metrics_dict = read_upa_metrics(upa_csv_path)
+            actual_records_float = float(metrics_dict.get("records", "0"))
+            actual_records = str(int(actual_records_float))
+
+            status = "passed" if actual_records == expected_records else "failed"
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-003",
+                    paper_reference="docs/submission/public_data_report_updates.md",
+                    metric_name="public_data_records_count",
+                    expected_spec_value=expected_records,
+                    actual_system_value=actual_records,
+                    status=status,
+                    notes=f"Read canonical UPA summary metrics CSV ({actual_records}) vs submission doc ({expected_records}).",
+                )
+            )
     except Exception as exc:
         claims.append(
             PaperClaim(
                 claim_id="CLAIM-003",
                 paper_reference="docs/submission/public_data_report_updates.md",
                 metric_name="public_data_records_count",
-                expected_spec_value="6028",
+                expected_spec_value="parsed from submission report",
                 actual_system_value=f"Error: {exc}",
                 status="failed",
                 notes=f"Failed UPA public data metrics check: {exc}",
@@ -227,21 +266,33 @@ def verify_canonical_evidence(
     try:
         eval_doc_text = eval_doc_path.read_text(encoding="utf-8")
         m_term = re.search(r"종료 원인은 `(.*?)`만 허용한다", eval_doc_text)
-        expected_terms = [t.strip("` ") for t in m_term.group(1).split("`, `")] if m_term else ["arrived", "fuel_depleted", "timeout"]
-
-        actual_terms = list(TERMINATION_REASONS)
-        status = "passed" if sorted(actual_terms) == sorted(expected_terms) else "failed"
-        claims.append(
-            PaperClaim(
-                claim_id="CLAIM-004",
-                paper_reference="docs/technical/evaluation_contract.md",
-                metric_name="terminal_reasons",
-                expected_spec_value=", ".join(expected_terms),
-                actual_system_value=", ".join(actual_terms),
-                status=status,
-                notes="Verified evaluation contract TERMINATION_REASONS against evaluation_contract.md.",
+        if not m_term:
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-004",
+                    paper_reference="docs/technical/evaluation_contract.md",
+                    metric_name="terminal_reasons",
+                    expected_spec_value="parsed from evaluation_contract.md",
+                    actual_system_value="parse_failure",
+                    status="failed",
+                    notes="Failed to parse allowed termination reasons from evaluation_contract.md.",
+                )
             )
-        )
+        else:
+            expected_terms = [t.strip("` ") for t in m_term.group(1).split("`, `")]
+            actual_terms = list(TERMINATION_REASONS)
+            status = "passed" if sorted(actual_terms) == sorted(expected_terms) else "failed"
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-004",
+                    paper_reference="docs/technical/evaluation_contract.md",
+                    metric_name="terminal_reasons",
+                    expected_spec_value=", ".join(expected_terms),
+                    actual_system_value=", ".join(actual_terms),
+                    status=status,
+                    notes="Verified evaluation contract TERMINATION_REASONS against evaluation_contract.md.",
+                )
+            )
     except Exception as exc:
         claims.append(
             PaperClaim(
@@ -259,21 +310,33 @@ def verify_canonical_evidence(
     try:
         spec_text = spec_path.read_text(encoding="utf-8")
         m_provisional = re.search(r"Safe Stock.*?(\bprovisional\b|\bfinal\b)", spec_text, re.DOTALL | re.IGNORECASE)
-        actual_kpi_status = m_provisional.group(1).lower() if m_provisional else "unknown"
-        expected_kpi_status = "provisional"
-
-        status = "passed" if actual_kpi_status == expected_kpi_status else "failed"
-        claims.append(
-            PaperClaim(
-                claim_id="CLAIM-005",
-                paper_reference="docs/technical/state_action_reward_spec.md §4.1",
-                metric_name="safe_stock_kpi_status",
-                expected_spec_value=expected_kpi_status,
-                actual_system_value=actual_kpi_status,
-                status=status,
-                notes=f"Read state_action_reward_spec.md §4.1 for Safe Stock KPI status ({actual_kpi_status}). Mismatches trigger audit failure.",
+        if not m_provisional:
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-005",
+                    paper_reference="docs/technical/state_action_reward_spec.md §4.1",
+                    metric_name="safe_stock_kpi_status",
+                    expected_spec_value="provisional",
+                    actual_system_value="parse_failure",
+                    status="failed",
+                    notes="Failed to parse Safe Stock KPI status from state_action_reward_spec.md.",
+                )
             )
-        )
+        else:
+            actual_kpi_status = m_provisional.group(1).lower()
+            expected_kpi_status = "provisional"
+            status = "passed" if actual_kpi_status == expected_kpi_status else "failed"
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-005",
+                    paper_reference="docs/technical/state_action_reward_spec.md §4.1",
+                    metric_name="safe_stock_kpi_status",
+                    expected_spec_value=expected_kpi_status,
+                    actual_system_value=actual_kpi_status,
+                    status=status,
+                    notes=f"Read state_action_reward_spec.md §4.1 for Safe Stock KPI status ({actual_kpi_status}). Mismatches trigger audit failure.",
+                )
+            )
     except Exception as exc:
         claims.append(
             PaperClaim(
@@ -288,13 +351,10 @@ def verify_canonical_evidence(
         )
 
     # 6. DQN Superiority Claim & Evaluation Results Audit
-    # Search for ungrounded claims of DQN outperforming baseline or official comparison results
     try:
         readme_text = (root / "README.md").read_text(encoding="utf-8")
-        # Readme explicitly states official evaluation has not been performed
         no_official_comp = "공식 동일조건 성능비교는 아직 수행하지 않았습니다" in readme_text
 
-        # Look for any improper claims of DQN superiority in docs/ or README
         ungrounded_claim_found = False
         for p in root.glob("docs/**/*.md"):
             txt = p.read_text(encoding="utf-8")
@@ -351,42 +411,61 @@ def verify_canonical_evidence(
             )
         )
 
-    # 7. Official Rule-based Evaluation Results Audit
-    # Check if official evaluation results CSV exists under results/
+    # 7. Official Rule-based Evaluation Results Audit (CSV and canonical JSON manifest)
     eval_csv_path = root / "results/evaluation_results.csv"
+    eval_json_path = root / "results/evaluation_manifest.json"
+
     if eval_csv_path.exists():
         try:
             with eval_csv_path.open("r", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
                 rows = list(reader)
-            required_fields = {
-                "seed", "episode", "policy", "reward", "Synthetic Cost Index",
-                "success", "fuel_depletion", "bunkering_count", "termination_reason"
-            }
-            if rows and required_fields.issubset(set(rows[0].keys())):
-                claims.append(
-                    PaperClaim(
-                        claim_id="CLAIM-007",
-                        paper_reference="docs/technical/evaluation_contract.md",
-                        metric_name="official_evaluation_results",
-                        expected_spec_value="valid official evaluation CSV present",
-                        actual_system_value=f"present ({len(rows)} records)",
-                        status="passed",
-                        notes=f"Found canonical evaluation results CSV with required fields: {eval_csv_path}.",
-                    )
+
+            # Validate each row with EpisodeResult
+            valid_results: list[EpisodeResult] = []
+            for idx, r in enumerate(rows):
+                # Construct EpisodeResult to validate types, ranges, non-negative, termination reasons
+                res = EpisodeResult(
+                    seed=int(r["seed"]),
+                    episode=int(r["episode"]),
+                    policy=r["policy"],
+                    reward=float(r["reward"]),
+                    synthetic_cost_index=float(r["Synthetic Cost Index"]),
+                    success=r["success"].strip().lower() == "true",
+                    fuel_depletion=r["fuel_depletion"].strip().lower() == "true",
+                    bunkering_count=int(r["bunkering_count"]),
+                    termination_reason=r["termination_reason"],
                 )
-            else:
-                claims.append(
-                    PaperClaim(
-                        claim_id="CLAIM-007",
-                        paper_reference="docs/technical/evaluation_contract.md",
-                        metric_name="official_evaluation_results",
-                        expected_spec_value="valid official evaluation CSV present",
-                        actual_system_value="invalid schema or empty CSV",
-                        status="failed",
-                        notes=f"Evaluation CSV at {eval_csv_path} does not match required evaluation contract schema.",
+                valid_results.append(res)
+
+            # Validate canonical JSON manifest if present
+            if eval_json_path.exists():
+                with eval_json_path.open("r", encoding="utf-8") as f:
+                    manifest_data = json.load(f)
+                # Manifest must define policies and fair evaluation cases
+                cases = [
+                    EvaluationCase(
+                        seed=c["seed"],
+                        episode=c["episode"],
+                        policy=c["policy"],
+                        env_config=c["env_config"],
                     )
+                    for c in manifest_data.get("cases", [])
+                ]
+                policies = tuple(manifest_data.get("policies", []))
+                validate_fair_evaluation_plan(cases, policies)
+
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-007",
+                    paper_reference="docs/technical/evaluation_contract.md",
+                    metric_name="official_evaluation_results",
+                    expected_spec_value="valid official evaluation CSV and contract compliance",
+                    actual_system_value=f"present ({len(valid_results)} validated records)",
+                    status="passed",
+                    notes=f"Validated row schema, data types, finite bounds, and fair evaluation manifest at {eval_csv_path}.",
                 )
+            )
         except Exception as exc:
             claims.append(
                 PaperClaim(
@@ -394,9 +473,9 @@ def verify_canonical_evidence(
                     paper_reference="docs/technical/evaluation_contract.md",
                     metric_name="official_evaluation_results",
                     expected_spec_value="valid official evaluation CSV present",
-                    actual_system_value=f"Error: {exc}",
+                    actual_system_value=f"Contract validation failure: {exc}",
                     status="failed",
-                    notes=f"Failed to read evaluation CSV: {exc}",
+                    notes=f"Evaluation CSV at {eval_csv_path} failed EpisodeResult/EvaluationCase contract validation: {exc}",
                 )
             )
     else:

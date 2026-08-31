@@ -59,8 +59,13 @@ def main(args: list[str] | None = None) -> int:
     print(f"  CSV summary saved to: {csv_path}")
     print(f"  JSON report saved to: {json_path}")
 
-    if report.failed_claims > 0:
-        print(f"AUDIT FAILURE: {report.failed_claims} claim(s) failed verification.", file=sys.stderr)
+    if report.failed_claims > 0 or report.missing_evidence_claims > 0:
+        reasons = []
+        if report.failed_claims > 0:
+            reasons.append(f"{report.failed_claims} claim(s) failed verification")
+        if report.missing_evidence_claims > 0:
+            reasons.append(f"{report.missing_evidence_claims} required claim(s) missing evidence")
+        print(f"AUDIT FAILURE: {', '.join(reasons)}.", file=sys.stderr)
         return 1
 
     return 0

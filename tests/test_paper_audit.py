@@ -73,17 +73,18 @@ def test_audit_paper_claims_rejects_empty_sequence():
         audit_paper_claims([])
 
 
-def test_verify_canonical_evidence_returns_passed_claims_on_clean_repo():
+def test_verify_canonical_evidence_returns_passed_and_missing_claims_on_clean_repo():
     claims = verify_canonical_evidence()
     assert len(claims) >= 8
-    passed_ids = [c.claim_id for c in claims if c.status == "passed"]
-    assert "CLAIM-001" in passed_ids  # State dim
-    assert "CLAIM-002" in passed_ids  # Action space
-    assert "CLAIM-003" in passed_ids  # UPA public data count
-    assert "CLAIM-004" in passed_ids  # Termination reasons
-    assert "CLAIM-005" in passed_ids  # Safe stock status
-    assert "CLAIM-006" in passed_ids  # DQN boundary
-    assert "CLAIM-008" in passed_ids  # Public data isolation
+    claims_by_id = {c.claim_id: c for c in claims}
+    assert claims_by_id["CLAIM-001"].status == "passed"
+    assert claims_by_id["CLAIM-002"].status == "passed"
+    assert claims_by_id["CLAIM-003"].status == "passed"
+    assert claims_by_id["CLAIM-004"].status == "passed"
+    assert claims_by_id["CLAIM-005"].status == "passed"
+    assert claims_by_id["CLAIM-006"].status == "passed"
+    assert claims_by_id["CLAIM-007"].status == "missing_evidence"  # Official evaluation results not present
+    assert claims_by_id["CLAIM-008"].status == "passed"
 
 
 def test_export_audit_artifacts(tmp_path):
@@ -105,17 +106,50 @@ def test_export_audit_artifacts(tmp_path):
     assert len(data["claims"]) == len(claims)
 
 
-def test_audit_cli_main_clean_checkout(tmp_path):
+def test_audit_cli_main_missing_evidence_returns_exit_code_1(tmp_path):
+    # On clean repo, CLAIM-007 (official evaluation results CSV) is missing_evidence -> exit code 1
     out_dir = tmp_path / "audit_output"
     exit_code = audit_main(["--output-dir", str(out_dir)])
 
-    assert exit_code == 0
+    assert exit_code == 1
     assert (out_dir / "paper_evidence_summary.csv").exists()
     assert (out_dir / "paper_evidence_report.json").exists()
 
 
+def test_audit_cli_main_clean_checkout_with_eval_csv_returns_exit_code_0(tmp_path):
+    import shutil
+    repo_copy = tmp_path / "repo"
+    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+
+    # Create valid evaluation results CSV and manifest
+    eval_csv = repo_copy / "results/evaluation_results.csv"
+    eval_json = repo_copy / "results/evaluation_manifest.json"
+    eval_csv.parent.mkdir(parents=True, exist_ok=True)
+
+    header = "seed,episode,policy,reward,Synthetic Cost Index,success,fuel_depletion,bunkering_count,termination_reason\n"
+    row = "42,0,fixed_fueling,-2.03,0.0,False,True,0,fuel_depleted\n"
+    eval_csv.write_text(header + row, encoding="utf-8")
+
+    manifest = {
+        "policies": ["fixed_fueling"],
+        "cases": [
+            {
+                "seed": 42,
+                "episode": 0,
+                "policy": "fixed_fueling",
+                "env_config": {"n_ports": 3},
+            }
+        ],
+    }
+    eval_json.write_text(json.dumps(manifest), encoding="utf-8")
+
+    out_dir = tmp_path / "audit_output"
+    exit_code = audit_main(["--output-dir", str(out_dir), "--repo-root", str(repo_copy)])
+
+    assert exit_code == 0
+
+
 def test_audit_cli_tamper_upa_metrics_csv_fails(tmp_path):
-    # Copy repo files into temp repo directory to tamper with UPA metrics CSV
     import shutil
     repo_copy = tmp_path / "repo"
     shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
@@ -130,7 +164,6 @@ def test_audit_cli_tamper_upa_metrics_csv_fails(tmp_path):
 
     assert exit_code == 1
 
-    # Verify claim 3 status is failed
     claims = verify_canonical_evidence(repo_root=repo_copy)
     c3 = next(c for c in claims if c.claim_id == "CLAIM-003")
     assert c3.status == "failed"
@@ -177,19 +210,20 @@ def test_audit_cli_ungrounded_dqn_superiority_claim_fails(tmp_path):
     assert c6.status == "failed"
 
 
-def test_audit_cli_with_valid_official_evaluation_results(tmp_path):
+def test_audit_cli_invalid_evaluation_csv_row_schema_fails(tmp_path):
     import shutil
     repo_copy = tmp_path / "repo"
     shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
 
-    # Add valid official evaluation results CSV
     eval_csv = repo_copy / "results/evaluation_results.csv"
     eval_csv.parent.mkdir(parents=True, exist_ok=True)
+
     header = "seed,episode,policy,reward,Synthetic Cost Index,success,fuel_depletion,bunkering_count,termination_reason\n"
-    row = "42,0,fixed_fueling,-2.03,0.0,False,True,0,fuel_depleted\n"
-    eval_csv.write_text(header + row, encoding="utf-8")
+    # Negative bunkering_count breaks EpisodeResult contract
+    invalid_row = "42,0,fixed_fueling,-2.03,100.0,False,True,-5,fuel_depleted\n"
+    eval_csv.write_text(header + invalid_row, encoding="utf-8")
 
     claims = verify_canonical_evidence(repo_root=repo_copy)
     c7 = next(c for c in claims if c.claim_id == "CLAIM-007")
-    assert c7.status == "passed"
-    assert "present" in c7.actual_system_value
+    assert c7.status == "failed"
+    assert "Contract validation failure" in c7.actual_system_value
