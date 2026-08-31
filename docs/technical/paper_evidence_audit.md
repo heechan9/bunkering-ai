@@ -27,7 +27,7 @@ PYTHONPATH=. python scripts/audit_paper_evidence.py --output-dir results/paper_a
 ```
 
 감사 보고서 JSON (`results/paper_audit/paper_evidence_report.json`)의 `summary`에는 감사 시점의 provenance 추적을 위해 아래 필드가 포함된다:
-- `source_commit_sha`: 감사 수행 시점의 git commit SHA (확인 불가 시 `"unavailable"`)
+- `source_commit_sha`: 감사 수행 시점의 git commit SHA (`git rev-parse HEAD` 동적 추출, uncommitted 상태에서는 베이스 HEAD SHA, 커밋 후 실행 시 feature branch HEAD SHA 기록; 확인 불가 시 `"unavailable"`)
 - `generated_at_utc`: ISO-8601 형식의 UTC 생성 타임스탬프
 
 ## 3. 감사 산출물 (출력 전용)
