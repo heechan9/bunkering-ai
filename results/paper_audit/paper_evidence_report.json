@@ -5,8 +5,8 @@
     "failed_claims": 0,
     "provisional_claims": 0,
     "missing_evidence_claims": 1,
-    "source_commit_sha": "57ce77641e747ace26b9c9ed1d7a63d50ae8f5c1",
-    "generated_at_utc": "2026-08-31T06:05:26.456042+00:00"
+    "source_commit_sha": "e331f7027f1d1219e7c7f688037cfcd7c7f56d87",
+    "generated_at_utc": "2026-08-31T06:15:58.002498+00:00"
   },
   "claims": [
     {
@@ -41,7 +41,7 @@
       "paper_reference": "docs/technical/evaluation_contract.md",
       "metric_name": "terminal_reasons",
       "expected_spec_value": "arrived, fuel_depleted, timeout",
-      "actual_system_value": "arrived, timeout, fuel_depleted",
+      "actual_system_value": "timeout, arrived, fuel_depleted",
       "status": "passed",
       "notes": "Verified evaluation contract TERMINATION_REASONS against evaluation_contract.md."
     },

@@ -10,6 +10,7 @@ from evaluation.paper_audit import (
     audit_paper_claims,
     export_audit_csv,
     export_audit_json,
+    get_git_commit_sha,
     read_upa_metrics,
     verify_canonical_evidence,
 )
@@ -68,6 +69,11 @@ def test_audit_paper_claims_aggregation():
     assert report.missing_evidence_claims == 1
     assert "source_commit_sha" in report.to_dict()["summary"]
     assert "generated_at_utc" in report.to_dict()["summary"]
+
+
+def test_get_git_commit_sha_fallback(tmp_path):
+    # Non-git directory returns "unavailable"
+    assert get_git_commit_sha(tmp_path) == "unavailable"
 
 
 def test_audit_paper_claims_rejects_empty_sequence():

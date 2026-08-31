@@ -42,7 +42,7 @@ def main(args: list[str] | None = None) -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     claims = verify_canonical_evidence(repo_root=options.repo_root)
-    report = audit_paper_claims(claims, repo_root=options.repo_root)
+    report = audit_paper_claims(claims)
 
     csv_path = output_dir / "paper_evidence_summary.csv"
     json_path = output_dir / "paper_evidence_report.json"
@@ -56,8 +56,6 @@ def main(args: list[str] | None = None) -> int:
     print(f"  Provisional: {report.provisional_claims}")
     print(f"  Missing evidence: {report.missing_evidence_claims}")
     print(f"  Failed: {report.failed_claims}")
-    print(f"  Commit SHA: {report.source_commit_sha}")
-    print(f"  Generated at (UTC): {report.generated_at_utc}")
     print(f"  CSV summary saved to: {csv_path}")
     print(f"  JSON report saved to: {json_path}")
 
