@@ -10,10 +10,12 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import csv
+from datetime import datetime, timezone
 import json
 import math
 from pathlib import Path
 import re
+import subprocess
 from typing import Sequence
 
 from envs.bunkering_env import BunkeringEnv
@@ -46,6 +48,22 @@ def parse_strict_bool(val: str, field_name: str) -> bool:
     if clean_val == "false":
         return False
     raise ValueError(f"Field '{field_name}' must be 'true' or 'false', got '{val}'")
+
+
+def get_git_commit_sha(repo_root: Path) -> str:
+    """Retrieve source git commit SHA if available, else return 'unavailable'."""
+    try:
+        res = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        sha = res.stdout.strip()
+        return sha if sha else "unavailable"
+    except Exception:
+        return "unavailable"
 
 
 @dataclass(frozen=True)
@@ -97,6 +115,8 @@ class PaperAuditReport:
     provisional_claims: int
     missing_evidence_claims: int
     claims: tuple[PaperClaim, ...]
+    source_commit_sha: str = "unavailable"
+    generated_at_utc: str = ""
 
     def to_dict(self) -> dict:
         return {
@@ -106,6 +126,8 @@ class PaperAuditReport:
                 "failed_claims": self.failed_claims,
                 "provisional_claims": self.provisional_claims,
                 "missing_evidence_claims": self.missing_evidence_claims,
+                "source_commit_sha": self.source_commit_sha,
+                "generated_at_utc": self.generated_at_utc,
             },
             "claims": [c.to_dict() for c in self.claims],
         }
@@ -601,15 +623,22 @@ def verify_canonical_evidence(
     return claims
 
 
-def audit_paper_claims(claims: Sequence[PaperClaim]) -> PaperAuditReport:
-    """Audit a collection of paper claims and produce an aggregate report."""
+def audit_paper_claims(
+    claims: Sequence[PaperClaim],
+    repo_root: Path | str = Path("."),
+) -> PaperAuditReport:
+    """Audit a collection of paper claims and produce an aggregate report with provenance metadata."""
     if not claims:
         raise ValueError("claims list must not be empty")
 
+    root = Path(repo_root)
     passed = sum(1 for c in claims if c.status == "passed")
     failed = sum(1 for c in claims if c.status == "failed")
     provisional = sum(1 for c in claims if c.status == "provisional")
     missing_evidence = sum(1 for c in claims if c.status == "missing_evidence")
+
+    commit_sha = get_git_commit_sha(root)
+    now_utc = datetime.now(timezone.utc).isoformat()
 
     return PaperAuditReport(
         total_claims=len(claims),
@@ -618,6 +647,8 @@ def audit_paper_claims(claims: Sequence[PaperClaim]) -> PaperAuditReport:
         provisional_claims=provisional,
         missing_evidence_claims=missing_evidence,
         claims=tuple(claims),
+        source_commit_sha=commit_sha,
+        generated_at_utc=now_utc,
     )
 
 

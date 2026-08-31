@@ -66,6 +66,8 @@ def test_audit_paper_claims_aggregation():
     assert report.failed_claims == 1
     assert report.provisional_claims == 1
     assert report.missing_evidence_claims == 1
+    assert "source_commit_sha" in report.to_dict()["summary"]
+    assert "generated_at_utc" in report.to_dict()["summary"]
 
 
 def test_audit_paper_claims_rejects_empty_sequence():
@@ -104,6 +106,8 @@ def test_export_audit_artifacts(tmp_path):
 
     assert data["summary"]["total_claims"] == len(claims)
     assert len(data["claims"]) == len(claims)
+    assert "source_commit_sha" in data["summary"]
+    assert "generated_at_utc" in data["summary"]
 
 
 def test_audit_cli_main_missing_evidence_returns_exit_code_1(tmp_path):
