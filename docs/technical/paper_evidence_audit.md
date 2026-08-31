@@ -14,7 +14,7 @@
   4. **Strict Termination (`CLAIM-004`)**: `arrived`, `fuel_depleted`, `timeout` 3가지 종료 원인을 `evaluation/contract.py`와 비교.
   5. **Safe Stock baseline KPI 상태 (`CLAIM-005`)**: `docs/technical/state_action_reward_spec.md §4.1`의 `provisional` 상태 검증 (불일치 시 실패).
   6. **DQN 비교 경계 검증 (`CLAIM-006`)**: 공식 동일조건 비교 전 근거 없는 비교 우위 선언 금지 및 경계 준수 검증.
-  7. **공식 Rule-based 평가 결과 (`CLAIM-007`)**: `results/evaluation_results.csv`와 canonical `results/evaluation_manifest.json`을 동시 검증한다. manifest 누락 시 `missing_evidence`로 처리되며, `EpisodeResult` 및 `EvaluationCase` 계약에 맞춰 각 행의 자료형, 유한값, 비음수, 종료원인, exact set equality (누락·추가·중복 케이스 검증)를 엄격 검사한다.
+  7. **공식 Rule-based 평가 결과 (`CLAIM-007`)**: `results/evaluation_results.csv`와 canonical `results/evaluation_manifest.json`을 동시 검증한다. manifest 누락 시 `missing_evidence`로 처리된다. CSV 내 `success` 및 `fuel_depletion` 필드는 엄격히 대소문자 구분 없이 `"true"` 또는 `"false"`만 허용하며 (`"invalid"`, `"0"`, `"1"`, `"yes"` 등은 실패 처리), `EpisodeResult` 및 `EvaluationCase` 계약에 맞춰 각 행의 자료형, 유한값, 비음수, 종료원인, exact set equality (누락·추가·중복 케이스 검증)를 엄격 검사한다.
   8. **공공데이터 분리 원칙 (`CLAIM-008`)**: 공공데이터가 학습 입력이 아닌 도메인 참고용으로만 격리되어 있음을 검증.
 
 ## 2. CLI 실행 방법

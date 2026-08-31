@@ -233,6 +233,29 @@ def test_audit_cli_invalid_evaluation_csv_row_schema_fails(tmp_path):
     assert "Contract validation failure" in c7.actual_system_value
 
 
+@pytest.mark.parametrize("invalid_bool", ["invalid", "0", "1", "yes", "no"])
+def test_audit_cli_invalid_boolean_string_fails(tmp_path, invalid_bool):
+    import shutil
+    repo_copy = tmp_path / "repo"
+    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+
+    eval_csv = repo_copy / "results/evaluation_results.csv"
+    eval_json = repo_copy / "results/evaluation_manifest.json"
+    eval_csv.parent.mkdir(parents=True, exist_ok=True)
+
+    header = "seed,episode,policy,reward,Synthetic Cost Index,success,fuel_depletion,bunkering_count,termination_reason\n"
+    invalid_row = f"42,0,fixed_fueling,-2.03,100.0,{invalid_bool},True,0,fuel_depleted\n"
+    eval_csv.write_text(header + invalid_row, encoding="utf-8")
+
+    manifest = {"policies": ["fixed_fueling"], "cases": [{"seed": 42, "episode": 0, "policy": "fixed_fueling", "env_config": {}}]}
+    eval_json.write_text(json.dumps(manifest), encoding="utf-8")
+
+    claims = verify_canonical_evidence(repo_root=repo_copy)
+    c7 = next(c for c in claims if c.claim_id == "CLAIM-007")
+    assert c7.status == "failed"
+    assert "must be 'true' or 'false'" in c7.actual_system_value
+
+
 def test_audit_cli_empty_evaluation_csv_fails(tmp_path):
     import shutil
     repo_copy = tmp_path / "repo"

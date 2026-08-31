@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 import csv
 import json
+import math
 from pathlib import Path
 import re
 from typing import Sequence
@@ -35,6 +36,16 @@ CSV_FIELDS = (
     "status",
     "notes",
 )
+
+
+def parse_strict_bool(val: str, field_name: str) -> bool:
+    """Parse boolean field requiring exact 'true' or 'false' (case-insensitive after strip)."""
+    clean_val = val.strip().lower()
+    if clean_val == "true":
+        return True
+    if clean_val == "false":
+        return False
+    raise ValueError(f"Field '{field_name}' must be 'true' or 'false', got '{val}'")
 
 
 @dataclass(frozen=True)
@@ -446,18 +457,21 @@ def verify_canonical_evidence(
                         )
                     )
                 else:
-                    # Validate each row with EpisodeResult
+                    # Validate each row with EpisodeResult and strict bool parsing
                     valid_results: list[EpisodeResult] = []
                     csv_tuples: list[tuple[int, int, str]] = []
                     for idx, r in enumerate(rows):
+                        success_bool = parse_strict_bool(r["success"], "success")
+                        fuel_dep_bool = parse_strict_bool(r["fuel_depletion"], "fuel_depletion")
+
                         res = EpisodeResult(
                             seed=int(r["seed"]),
                             episode=int(r["episode"]),
                             policy=r["policy"],
                             reward=float(r["reward"]),
                             synthetic_cost_index=float(r["Synthetic Cost Index"]),
-                            success=r["success"].strip().lower() == "true",
-                            fuel_depletion=r["fuel_depletion"].strip().lower() == "true",
+                            success=success_bool,
+                            fuel_depletion=fuel_dep_bool,
                             bunkering_count=int(r["bunkering_count"]),
                             termination_reason=r["termination_reason"],
                         )
