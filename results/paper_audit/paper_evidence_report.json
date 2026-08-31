@@ -1,0 +1,83 @@
+{
+  "summary": {
+    "total_claims": 8,
+    "passed_claims": 7,
+    "failed_claims": 0,
+    "provisional_claims": 0,
+    "missing_evidence_claims": 1
+  },
+  "claims": [
+    {
+      "claim_id": "CLAIM-001",
+      "paper_reference": "docs/technical/state_action_reward_spec.md §1",
+      "metric_name": "state_dim_mvp",
+      "expected_spec_value": "6",
+      "actual_system_value": "6",
+      "status": "passed",
+      "notes": "Dynamically read BunkeringEnv.observation_space.shape[0] (6) vs spec (6)."
+    },
+    {
+      "claim_id": "CLAIM-002",
+      "paper_reference": "docs/technical/state_action_reward_spec.md §2",
+      "metric_name": "action_space_contract",
+      "expected_spec_value": "1 + n_ports (4 for n_ports=3)",
+      "actual_system_value": "4",
+      "status": "passed",
+      "notes": "Dynamically read BunkeringEnv(n_ports=3).action_space.n (4)."
+    },
+    {
+      "claim_id": "CLAIM-003",
+      "paper_reference": "docs/submission/public_data_report_updates.md",
+      "metric_name": "public_data_records_count",
+      "expected_spec_value": "6028",
+      "actual_system_value": "6028",
+      "status": "passed",
+      "notes": "Read canonical UPA summary metrics CSV (6028) vs submission doc (6028)."
+    },
+    {
+      "claim_id": "CLAIM-004",
+      "paper_reference": "docs/technical/evaluation_contract.md",
+      "metric_name": "terminal_reasons",
+      "expected_spec_value": "arrived, fuel_depleted, timeout",
+      "actual_system_value": "arrived, timeout, fuel_depleted",
+      "status": "passed",
+      "notes": "Verified evaluation contract TERMINATION_REASONS against evaluation_contract.md."
+    },
+    {
+      "claim_id": "CLAIM-005",
+      "paper_reference": "docs/technical/state_action_reward_spec.md §4.1",
+      "metric_name": "safe_stock_kpi_status",
+      "expected_spec_value": "provisional",
+      "actual_system_value": "provisional",
+      "status": "passed",
+      "notes": "Read state_action_reward_spec.md §4.1 for Safe Stock KPI status (provisional). Mismatches trigger audit failure."
+    },
+    {
+      "claim_id": "CLAIM-006",
+      "paper_reference": "README.md & docs/technical/evaluation_contract.md",
+      "metric_name": "dqn_comparison_boundary",
+      "expected_spec_value": "no official comparison performed yet",
+      "actual_system_value": "no official comparison performed yet",
+      "status": "passed",
+      "notes": "README explicitly confirms official fair comparison between DQN and baselines is not yet conducted."
+    },
+    {
+      "claim_id": "CLAIM-007",
+      "paper_reference": "docs/technical/evaluation_contract.md",
+      "metric_name": "official_evaluation_results",
+      "expected_spec_value": "canonical official evaluation results CSV",
+      "actual_system_value": "missing_evidence",
+      "status": "missing_evidence",
+      "notes": "Official evaluation results CSV (results/evaluation_results.csv) is not yet version-controlled."
+    },
+    {
+      "claim_id": "CLAIM-008",
+      "paper_reference": "docs/submission/public_data_report_updates.md",
+      "metric_name": "public_data_isolation",
+      "expected_spec_value": "domain reference only / not DQN training input",
+      "actual_system_value": "domain reference only",
+      "status": "passed",
+      "notes": "Verified public data is isolated as domain reference and not present in DQN training pipeline."
+    }
+  ]
+}

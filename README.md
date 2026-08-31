@@ -21,7 +21,8 @@
 
 ```bash
 python scripts/analyze_upa_public_data.py
-pytest tests/test_upa_public_data.py -q
+python scripts/audit_paper_evidence.py
+pytest tests -q
 ```
 
 ## 폴더 구조
