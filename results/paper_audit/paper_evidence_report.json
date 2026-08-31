@@ -1,0 +1,64 @@
+{
+  "summary": {
+    "total_claims": 6,
+    "passed_claims": 5,
+    "failed_claims": 0,
+    "provisional_claims": 1
+  },
+  "claims": [
+    {
+      "claim_id": "CLAIM-001",
+      "paper_reference": "docs/technical/state_action_reward_spec.md §1",
+      "metric_name": "state_dim_mvp",
+      "expected_spec_value": "6",
+      "actual_system_value": "6",
+      "status": "passed",
+      "notes": "Verified against BunkeringEnv observation_space shape."
+    },
+    {
+      "claim_id": "CLAIM-002",
+      "paper_reference": "docs/technical/state_action_reward_spec.md §2",
+      "metric_name": "action_space_contract",
+      "expected_spec_value": "1 + n_ports (4 for n_ports=3)",
+      "actual_system_value": "4",
+      "status": "passed",
+      "notes": "action=0: wait, action=1..n_ports: request fixed fueling (0.9)."
+    },
+    {
+      "claim_id": "CLAIM-003",
+      "paper_reference": "docs/technical/state_action_reward_spec.md §3.2",
+      "metric_name": "cost_index_unit",
+      "expected_spec_value": "Synthetic Cost Index (unitless)",
+      "actual_system_value": "Synthetic Cost Index (unitless)",
+      "status": "passed",
+      "notes": "Synthetic Cost Index is not converted to currency prior to tank capacity finalization."
+    },
+    {
+      "claim_id": "CLAIM-004",
+      "paper_reference": "docs/technical/evaluation_contract.md",
+      "metric_name": "terminal_reasons",
+      "expected_spec_value": "arrived, fuel_depleted, timeout",
+      "actual_system_value": "arrived, fuel_depleted, timeout",
+      "status": "passed",
+      "notes": "Verified against evaluation.contract.TERMINATION_REASONS."
+    },
+    {
+      "claim_id": "CLAIM-005",
+      "paper_reference": "docs/technical/state_action_reward_spec.md §4.1",
+      "metric_name": "safe_stock_kpi_status",
+      "expected_spec_value": "provisional",
+      "actual_system_value": "provisional",
+      "status": "provisional",
+      "notes": "Safe Stock baseline is M1 reference candidate; cost saving KPI requires multi-seed mentor approval."
+    },
+    {
+      "claim_id": "CLAIM-006",
+      "paper_reference": "docs/submission/public_data_report_updates.md",
+      "metric_name": "public_data_separation",
+      "expected_spec_value": "domain reference only",
+      "actual_system_value": "domain reference only",
+      "status": "passed",
+      "notes": "Public data is used as domain reference and not as DQN training input."
+    }
+  ]
+}

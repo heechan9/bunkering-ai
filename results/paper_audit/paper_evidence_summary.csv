@@ -1,0 +1,7 @@
+claim_id,paper_reference,metric_name,expected_spec_value,actual_system_value,status,notes
+CLAIM-001,docs/technical/state_action_reward_spec.md §1,state_dim_mvp,6,6,passed,Verified against BunkeringEnv observation_space shape.
+CLAIM-002,docs/technical/state_action_reward_spec.md §2,action_space_contract,1 + n_ports (4 for n_ports=3),4,passed,"action=0: wait, action=1..n_ports: request fixed fueling (0.9)."
+CLAIM-003,docs/technical/state_action_reward_spec.md §3.2,cost_index_unit,Synthetic Cost Index (unitless),Synthetic Cost Index (unitless),passed,Synthetic Cost Index is not converted to currency prior to tank capacity finalization.
+CLAIM-004,docs/technical/evaluation_contract.md,terminal_reasons,"arrived, fuel_depleted, timeout","arrived, fuel_depleted, timeout",passed,Verified against evaluation.contract.TERMINATION_REASONS.
+CLAIM-005,docs/technical/state_action_reward_spec.md §4.1,safe_stock_kpi_status,provisional,provisional,provisional,Safe Stock baseline is M1 reference candidate; cost saving KPI requires multi-seed mentor approval.
+CLAIM-006,docs/submission/public_data_report_updates.md,public_data_separation,domain reference only,domain reference only,passed,Public data is used as domain reference and not as DQN training input.

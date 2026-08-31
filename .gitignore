@@ -2,7 +2,9 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
-results/
+results/*
+!results/public_data/
+!results/paper_audit/
 runs/
 .pytest_cache/
 *.pt
