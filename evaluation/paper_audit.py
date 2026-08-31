@@ -11,7 +11,6 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 import csv
 import json
-import math
 from pathlib import Path
 import re
 from typing import Sequence
@@ -416,68 +415,134 @@ def verify_canonical_evidence(
     eval_json_path = root / "results/evaluation_manifest.json"
 
     if eval_csv_path.exists():
-        try:
-            with eval_csv_path.open("r", encoding="utf-8") as f:
-                reader = csv.DictReader(f)
-                rows = list(reader)
-
-            # Validate each row with EpisodeResult
-            valid_results: list[EpisodeResult] = []
-            for idx, r in enumerate(rows):
-                # Construct EpisodeResult to validate types, ranges, non-negative, termination reasons
-                res = EpisodeResult(
-                    seed=int(r["seed"]),
-                    episode=int(r["episode"]),
-                    policy=r["policy"],
-                    reward=float(r["reward"]),
-                    synthetic_cost_index=float(r["Synthetic Cost Index"]),
-                    success=r["success"].strip().lower() == "true",
-                    fuel_depletion=r["fuel_depletion"].strip().lower() == "true",
-                    bunkering_count=int(r["bunkering_count"]),
-                    termination_reason=r["termination_reason"],
+        if not eval_json_path.exists():
+            claims.append(
+                PaperClaim(
+                    claim_id="CLAIM-007",
+                    paper_reference="docs/technical/evaluation_contract.md",
+                    metric_name="official_evaluation_results",
+                    expected_spec_value="valid official evaluation CSV and manifest JSON",
+                    actual_system_value="missing_manifest",
+                    status="missing_evidence",
+                    notes="results/evaluation_results.csv exists but results/evaluation_manifest.json is missing.",
                 )
-                valid_results.append(res)
+            )
+        else:
+            try:
+                with eval_csv_path.open("r", encoding="utf-8") as f:
+                    reader = csv.DictReader(f)
+                    rows = list(reader)
 
-            # Validate canonical JSON manifest if present
-            if eval_json_path.exists():
-                with eval_json_path.open("r", encoding="utf-8") as f:
-                    manifest_data = json.load(f)
-                # Manifest must define policies and fair evaluation cases
-                cases = [
-                    EvaluationCase(
-                        seed=c["seed"],
-                        episode=c["episode"],
-                        policy=c["policy"],
-                        env_config=c["env_config"],
+                if not rows:
+                    claims.append(
+                        PaperClaim(
+                            claim_id="CLAIM-007",
+                            paper_reference="docs/technical/evaluation_contract.md",
+                            metric_name="official_evaluation_results",
+                            expected_spec_value="non-empty evaluation CSV",
+                            actual_system_value="empty_csv",
+                            status="failed",
+                            notes="results/evaluation_results.csv contains no rows.",
+                        )
                     )
-                    for c in manifest_data.get("cases", [])
-                ]
-                policies = tuple(manifest_data.get("policies", []))
-                validate_fair_evaluation_plan(cases, policies)
+                else:
+                    # Validate each row with EpisodeResult
+                    valid_results: list[EpisodeResult] = []
+                    csv_tuples: list[tuple[int, int, str]] = []
+                    for idx, r in enumerate(rows):
+                        res = EpisodeResult(
+                            seed=int(r["seed"]),
+                            episode=int(r["episode"]),
+                            policy=r["policy"],
+                            reward=float(r["reward"]),
+                            synthetic_cost_index=float(r["Synthetic Cost Index"]),
+                            success=r["success"].strip().lower() == "true",
+                            fuel_depletion=r["fuel_depletion"].strip().lower() == "true",
+                            bunkering_count=int(r["bunkering_count"]),
+                            termination_reason=r["termination_reason"],
+                        )
+                        valid_results.append(res)
+                        csv_tuples.append((res.seed, res.episode, res.policy))
 
-            claims.append(
-                PaperClaim(
-                    claim_id="CLAIM-007",
-                    paper_reference="docs/technical/evaluation_contract.md",
-                    metric_name="official_evaluation_results",
-                    expected_spec_value="valid official evaluation CSV and contract compliance",
-                    actual_system_value=f"present ({len(valid_results)} validated records)",
-                    status="passed",
-                    notes=f"Validated row schema, data types, finite bounds, and fair evaluation manifest at {eval_csv_path}.",
+                    # Duplicate check in CSV
+                    if len(csv_tuples) != len(set(csv_tuples)):
+                        claims.append(
+                            PaperClaim(
+                                claim_id="CLAIM-007",
+                                paper_reference="docs/technical/evaluation_contract.md",
+                                metric_name="official_evaluation_results",
+                                expected_spec_value="unique (seed, episode, policy) cases",
+                                actual_system_value="duplicate_cases_in_csv",
+                                status="failed",
+                                notes="Duplicate (seed, episode, policy) tuples found in evaluation CSV.",
+                            )
+                        )
+                    else:
+                        # Load and validate canonical manifest
+                        with eval_json_path.open("r", encoding="utf-8") as f:
+                            manifest_data = json.load(f)
+
+                        cases = [
+                            EvaluationCase(
+                                seed=c["seed"],
+                                episode=c["episode"],
+                                policy=c["policy"],
+                                env_config=c["env_config"],
+                            )
+                            for c in manifest_data.get("cases", [])
+                        ]
+                        policies = tuple(manifest_data.get("policies", []))
+                        validate_fair_evaluation_plan(cases, policies)
+
+                        manifest_tuples = [(c.seed, c.episode, c.policy) for c in cases]
+                        if len(manifest_tuples) != len(set(manifest_tuples)):
+                            claims.append(
+                                PaperClaim(
+                                    claim_id="CLAIM-007",
+                                    paper_reference="docs/technical/evaluation_contract.md",
+                                    metric_name="official_evaluation_results",
+                                    expected_spec_value="unique manifest cases",
+                                    actual_system_value="duplicate_cases_in_manifest",
+                                    status="failed",
+                                    notes="Duplicate cases found in evaluation manifest JSON.",
+                                )
+                            )
+                        elif set(csv_tuples) != set(manifest_tuples):
+                            claims.append(
+                                PaperClaim(
+                                    claim_id="CLAIM-007",
+                                    paper_reference="docs/technical/evaluation_contract.md",
+                                    metric_name="official_evaluation_results",
+                                    expected_spec_value="exact match between CSV rows and manifest cases",
+                                    actual_system_value="csv_manifest_case_mismatch",
+                                    status="failed",
+                                    notes="CSV (seed, episode, policy) cases do not exactly match manifest JSON cases.",
+                                )
+                            )
+                        else:
+                            claims.append(
+                                PaperClaim(
+                                    claim_id="CLAIM-007",
+                                    paper_reference="docs/technical/evaluation_contract.md",
+                                    metric_name="official_evaluation_results",
+                                    expected_spec_value="valid official evaluation CSV and manifest JSON",
+                                    actual_system_value=f"present ({len(valid_results)} validated records)",
+                                    status="passed",
+                                    notes=f"Validated row schema, data types, finite bounds, manifest cases, and exact case set equality.",
+                                )
+                            )
+            except Exception as exc:
+                claims.append(
+                    PaperClaim(
+                        claim_id="CLAIM-007",
+                        paper_reference="docs/technical/evaluation_contract.md",
+                        metric_name="official_evaluation_results",
+                        expected_spec_value="valid official evaluation CSV present",
+                        actual_system_value=f"Contract validation failure: {exc}",
+                        status="failed",
+                        notes=f"Evaluation CSV/manifest failed EpisodeResult/EvaluationCase contract validation: {exc}",
+                    )
                 )
-            )
-        except Exception as exc:
-            claims.append(
-                PaperClaim(
-                    claim_id="CLAIM-007",
-                    paper_reference="docs/technical/evaluation_contract.md",
-                    metric_name="official_evaluation_results",
-                    expected_spec_value="valid official evaluation CSV present",
-                    actual_system_value=f"Contract validation failure: {exc}",
-                    status="failed",
-                    notes=f"Evaluation CSV at {eval_csv_path} failed EpisodeResult/EvaluationCase contract validation: {exc}",
-                )
-            )
     else:
         claims.append(
             PaperClaim(

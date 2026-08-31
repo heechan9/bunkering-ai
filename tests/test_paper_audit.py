@@ -216,6 +216,7 @@ def test_audit_cli_invalid_evaluation_csv_row_schema_fails(tmp_path):
     shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
 
     eval_csv = repo_copy / "results/evaluation_results.csv"
+    eval_json = repo_copy / "results/evaluation_manifest.json"
     eval_csv.parent.mkdir(parents=True, exist_ok=True)
 
     header = "seed,episode,policy,reward,Synthetic Cost Index,success,fuel_depletion,bunkering_count,termination_reason\n"
@@ -223,7 +224,79 @@ def test_audit_cli_invalid_evaluation_csv_row_schema_fails(tmp_path):
     invalid_row = "42,0,fixed_fueling,-2.03,100.0,False,True,-5,fuel_depleted\n"
     eval_csv.write_text(header + invalid_row, encoding="utf-8")
 
+    manifest = {"policies": ["fixed_fueling"], "cases": [{"seed": 42, "episode": 0, "policy": "fixed_fueling", "env_config": {}}]}
+    eval_json.write_text(json.dumps(manifest), encoding="utf-8")
+
     claims = verify_canonical_evidence(repo_root=repo_copy)
     c7 = next(c for c in claims if c.claim_id == "CLAIM-007")
     assert c7.status == "failed"
     assert "Contract validation failure" in c7.actual_system_value
+
+
+def test_audit_cli_empty_evaluation_csv_fails(tmp_path):
+    import shutil
+    repo_copy = tmp_path / "repo"
+    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+
+    eval_csv = repo_copy / "results/evaluation_results.csv"
+    eval_json = repo_copy / "results/evaluation_manifest.json"
+    eval_csv.parent.mkdir(parents=True, exist_ok=True)
+    eval_csv.write_text("seed,episode,policy,reward,Synthetic Cost Index,success,fuel_depletion,bunkering_count,termination_reason\n", encoding="utf-8")
+
+    manifest = {"policies": [], "cases": []}
+    eval_json.write_text(json.dumps(manifest), encoding="utf-8")
+
+    claims = verify_canonical_evidence(repo_root=repo_copy)
+    c7 = next(c for c in claims if c.claim_id == "CLAIM-007")
+    assert c7.status == "failed"
+    assert c7.actual_system_value == "empty_csv"
+
+
+def test_audit_cli_evaluation_csv_present_but_manifest_missing_is_missing_evidence(tmp_path):
+    import shutil
+    repo_copy = tmp_path / "repo"
+    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+
+    eval_csv = repo_copy / "results/evaluation_results.csv"
+    eval_csv.parent.mkdir(parents=True, exist_ok=True)
+    header = "seed,episode,policy,reward,Synthetic Cost Index,success,fuel_depletion,bunkering_count,termination_reason\n"
+    row = "42,0,fixed_fueling,-2.03,0.0,False,True,0,fuel_depleted\n"
+    eval_csv.write_text(header + row, encoding="utf-8")
+
+    claims = verify_canonical_evidence(repo_root=repo_copy)
+    c7 = next(c for c in claims if c.claim_id == "CLAIM-007")
+    assert c7.status == "missing_evidence"
+    assert c7.actual_system_value == "missing_manifest"
+
+
+def test_audit_cli_evaluation_csv_and_manifest_case_mismatch_fails(tmp_path):
+    import shutil
+    repo_copy = tmp_path / "repo"
+    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+
+    eval_csv = repo_copy / "results/evaluation_results.csv"
+    eval_json = repo_copy / "results/evaluation_manifest.json"
+    eval_csv.parent.mkdir(parents=True, exist_ok=True)
+
+    header = "seed,episode,policy,reward,Synthetic Cost Index,success,fuel_depletion,bunkering_count,termination_reason\n"
+    row = "42,0,fixed_fueling,-2.03,0.0,False,True,0,fuel_depleted\n"
+    eval_csv.write_text(header + row, encoding="utf-8")
+
+    # Manifest defines seed 999 instead of 42
+    manifest = {
+        "policies": ["fixed_fueling"],
+        "cases": [
+            {
+                "seed": 999,
+                "episode": 0,
+                "policy": "fixed_fueling",
+                "env_config": {"n_ports": 3},
+            }
+        ],
+    }
+    eval_json.write_text(json.dumps(manifest), encoding="utf-8")
+
+    claims = verify_canonical_evidence(repo_root=repo_copy)
+    c7 = next(c for c in claims if c.claim_id == "CLAIM-007")
+    assert c7.status == "failed"
+    assert c7.actual_system_value == "csv_manifest_case_mismatch"

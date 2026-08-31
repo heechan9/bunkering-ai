@@ -14,7 +14,7 @@
   4. **Strict Termination (`CLAIM-004`)**: `arrived`, `fuel_depleted`, `timeout` 3가지 종료 원인을 `evaluation/contract.py`와 비교.
   5. **Safe Stock baseline KPI 상태 (`CLAIM-005`)**: `docs/technical/state_action_reward_spec.md §4.1`의 `provisional` 상태 검증 (불일치 시 실패).
   6. **DQN 비교 경계 검증 (`CLAIM-006`)**: 공식 동일조건 비교 전 근거 없는 비교 우위 선언 금지 및 경계 준수 검증.
-  7. **공식 Rule-based 평가 결과 (`CLAIM-007`)**: `results/evaluation_results.csv` 미존재 시 `missing_evidence`로 기록하며 Exit Code 1을 반환한다. 존재 시 `EpisodeResult` 및 `EvaluationCase` 계약에 맞춰 각 행의 자료형, 유한값, 비음수, 종료원인, 동일 조건 manifest (`results/evaluation_manifest.json`)를 엄격 검증한다.
+  7. **공식 Rule-based 평가 결과 (`CLAIM-007`)**: `results/evaluation_results.csv`와 canonical `results/evaluation_manifest.json`을 동시 검증한다. manifest 누락 시 `missing_evidence`로 처리되며, `EpisodeResult` 및 `EvaluationCase` 계약에 맞춰 각 행의 자료형, 유한값, 비음수, 종료원인, exact set equality (누락·추가·중복 케이스 검증)를 엄격 검사한다.
   8. **공공데이터 분리 원칙 (`CLAIM-008`)**: 공공데이터가 학습 입력이 아닌 도메인 참고용으로만 격리되어 있음을 검증.
 
 ## 2. CLI 실행 방법
@@ -30,7 +30,9 @@ PYTHONPATH=. python scripts/audit_paper_evidence.py --output-dir results/paper_a
 
 ## 4. 변조 검증 및 테스트 명령어
 
+`pytest` 실행 명령어 자체의 exit code는 테스트 성공 시 0이며, 테스트 어서션 내부에서 호출된 감사 CLI (`scripts/audit_paper_evidence.py`)의 반환값(1)을 검증한다.
+
 ```bash
-# 전체 단위 및 변조 통합 테스트 실행
+# 전체 단위 및 변조 통합 테스트 실행 (pytest Exit Code: 0)
 python3 -m pytest tests/test_paper_audit.py -v
 ```
