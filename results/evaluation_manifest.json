@@ -4017,6 +4017,14 @@
   "checkpoint": {
     "path": "dqn_final.pt",
     "sha256": "970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392",
+    "archive": {
+      "kind": "github_release_asset",
+      "repository": "heechan9/bunkering-ai",
+      "release_tag": "official-eval-2026-09-01",
+      "asset_name": "dqn_final.pt",
+      "download_url": "https://github.com/heechan9/bunkering-ai/releases/download/official-eval-2026-09-01/dqn_final.pt",
+      "status": "pending_upload"
+    },
     "metadata": {
       "train_seed": 42,
       "n_episodes": 5000,

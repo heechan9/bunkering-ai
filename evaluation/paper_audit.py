@@ -27,6 +27,46 @@ from evaluation.contract import (
 
 
 AUDIT_STATUSES = ("passed", "failed", "provisional", "missing_evidence")
+
+# CLAIM-006 grounds the comparison boundary on these artifacts, so their paths are
+# named once here rather than repeated at every use site.
+OFFICIAL_EVALUATION_CSV = "results/evaluation_results.csv"
+OFFICIAL_EVALUATION_MANIFEST = "results/evaluation_manifest.json"
+DQN_POLICY_NAME = "double_dqn"
+
+# README must declare the comparison status one way or the other, and the audit
+# fails whichever declaration contradicts the artifacts on disk.
+COMPARISON_PENDING_PATTERN = re.compile(
+    r"공식\s*동일조건\s*성능비교[^\n]{0,20}(?:아직|수행하지\s*않았)"
+)
+COMPARISON_PERFORMED_PATTERN = re.compile(
+    r"공식\s*동일조건\s*성능비교[^\n]{0,20}(?:수행했|완료했|기록했)"
+)
+
+# A blanket "DQN beats the baselines" statement stays unsupported even after the
+# official comparison: DQN earns the higher reward but also the higher cost index
+# and bunkering count, so no single ranking follows from the artifacts.
+# ``\b`` is useless next to Hangul, which carries no ASCII word boundary, so the
+# left edge is guarded explicitly and the right edge is left to the mention check.
+SUPERIORITY_PATTERN = re.compile(
+    r"(?<![A-Za-z])DQN이\s*(?:Rule-based|베이스라인)보다\s*우수"
+    r"|(?<![A-Za-z])DQN\s*우수성"
+)
+# Documents legitimately *name* that claim in order to rule it out ("...보다
+# 우수하다는 주장"은 하지 않는다). A nominalized mention is not an assertion.
+SUPERIORITY_MENTION_PATTERN = re.compile(
+    r"(?:하다|하며|함)?[는은을이가]?\s*(?:주장|서술|결론|표현|해석|평가|오해)"
+)
+
+
+def asserts_dqn_superiority(text: str) -> bool:
+    """Report whether ``text`` asserts DQN superiority rather than disclaiming it."""
+    for match in SUPERIORITY_PATTERN.finditer(text):
+        tail = text[match.end() : match.end() + 20]
+        if not SUPERIORITY_MENTION_PATTERN.match(tail):
+            return True
+    return False
+
 CSV_FIELDS = (
     "claim_id",
     "paper_reference",
@@ -123,6 +163,78 @@ def read_upa_metrics(csv_path: Path | str = Path("results/public_data/upa_summar
             if "metric" in row and "value" in row:
                 metrics[row["metric"].strip()] = row["value"].strip()
     return metrics
+
+
+def official_evaluation_state(repo_root: Path | str = Path(".")) -> tuple[str, str]:
+    """Classify the official same-condition evaluation evidence in a repository.
+
+    ``CLAIM-006`` must decide whether the DQN-vs-rule-based comparison actually
+    happened from the artifacts themselves, not from a sentence in README, so the
+    state is derived from whether the canonical CSV and manifest both exist, carry
+    records, agree on the same ``(seed, episode, policy)`` cases, and include the
+    learned policy that the comparison is about.
+
+    Returns one of ``"present"``, ``"absent"``, or ``"inconsistent"`` together with
+    a human-readable detail string naming the evidence that produced the verdict.
+    """
+    root = Path(repo_root)
+    csv_path = root / OFFICIAL_EVALUATION_CSV
+    manifest_path = root / OFFICIAL_EVALUATION_MANIFEST
+
+    if not csv_path.exists() and not manifest_path.exists():
+        return (
+            "absent",
+            f"neither {OFFICIAL_EVALUATION_CSV} nor {OFFICIAL_EVALUATION_MANIFEST} exists",
+        )
+    if not csv_path.exists():
+        return (
+            "inconsistent",
+            f"{OFFICIAL_EVALUATION_MANIFEST} exists without {OFFICIAL_EVALUATION_CSV}",
+        )
+    if not manifest_path.exists():
+        return (
+            "inconsistent",
+            f"{OFFICIAL_EVALUATION_CSV} exists without {OFFICIAL_EVALUATION_MANIFEST}",
+        )
+
+    try:
+        with csv_path.open("r", encoding="utf-8") as csv_file:
+            csv_cases = {
+                (str(row["seed"]), str(row["episode"]), str(row["policy"]))
+                for row in csv.DictReader(csv_file)
+            }
+        with manifest_path.open("r", encoding="utf-8") as json_file:
+            manifest = json.load(json_file)
+        manifest_cases = {
+            (str(case["seed"]), str(case["episode"]), str(case["policy"]))
+            for case in manifest.get("cases", [])
+        }
+    except Exception as exc:  # unreadable evidence is not absent evidence
+        return "inconsistent", f"failed to read official evaluation artifacts: {exc}"
+
+    if not csv_cases:
+        return "inconsistent", f"{OFFICIAL_EVALUATION_CSV} has no records"
+    if not manifest_cases:
+        return "inconsistent", f"{OFFICIAL_EVALUATION_MANIFEST} declares no cases"
+    if csv_cases != manifest_cases:
+        return (
+            "inconsistent",
+            "CSV and manifest disagree on the (seed, episode, policy) case set "
+            f"({len(csv_cases)} CSV vs {len(manifest_cases)} manifest cases)",
+        )
+
+    policies = sorted({policy for _, _, policy in csv_cases})
+    if DQN_POLICY_NAME not in policies:
+        return (
+            "absent",
+            f"official evaluation artifacts hold no '{DQN_POLICY_NAME}' records "
+            f"(policies present: {', '.join(policies)})",
+        )
+
+    return (
+        "present",
+        f"{len(csv_cases)} matching cases across policies {', '.join(policies)}",
+    )
 
 
 def verify_canonical_evidence(
@@ -290,7 +402,10 @@ def verify_canonical_evidence(
             )
         else:
             expected_terms = [t.strip("` ") for t in m_term.group(1).split("`, `")]
-            actual_terms = list(TERMINATION_REASONS)
+            # TERMINATION_REASONS is a frozenset, whose iteration order changes with
+            # PYTHONHASHSEED. Sorting keeps the committed audit artifact byte-stable
+            # across runs instead of churning on every regeneration.
+            actual_terms = sorted(TERMINATION_REASONS)
             status = "passed" if sorted(actual_terms) == sorted(expected_terms) else "failed"
             claims.append(
                 PaperClaim(
@@ -360,61 +475,100 @@ def verify_canonical_evidence(
             )
         )
 
-    # 6. DQN Superiority Claim & Evaluation Results Audit
+    # 6. DQN Comparison Boundary: judged from the official evaluation artifacts
+    #    themselves, then checked against what README declares about them.
     try:
         readme_text = (root / "README.md").read_text(encoding="utf-8")
-        no_official_comp = "공식 동일조건 성능비교는 아직 수행하지 않았습니다" in readme_text
+        evidence_state, evidence_detail = official_evaluation_state(root)
+        pending_statement = bool(COMPARISON_PENDING_PATTERN.search(readme_text))
+        performed_statement = bool(COMPARISON_PERFORMED_PATTERN.search(readme_text))
 
-        ungrounded_claim_found = False
-        for p in root.glob("docs/**/*.md"):
-            txt = p.read_text(encoding="utf-8")
-            if re.search(r"DQN이\s+(Rule-based|베이스라인)보다\s+우수|\bDQN\s+우수성\b", txt):
-                ungrounded_claim_found = True
+        ungrounded_claim_source = ""
+        for doc_path in sorted(root.glob("docs/**/*.md")):
+            if asserts_dqn_superiority(doc_path.read_text(encoding="utf-8")):
+                ungrounded_claim_source = doc_path.relative_to(root).as_posix()
                 break
+        if not ungrounded_claim_source and asserts_dqn_superiority(readme_text):
+            ungrounded_claim_source = "README.md"
 
-        if ungrounded_claim_found:
-            claims.append(
-                PaperClaim(
-                    claim_id="CLAIM-006",
-                    paper_reference="docs/technical/evaluation_contract.md",
-                    metric_name="dqn_comparison_boundary",
-                    expected_spec_value="no ungrounded DQN superiority claims",
-                    actual_system_value="ungrounded DQN superiority claim detected in docs",
-                    status="failed",
-                    notes="Found ungrounded claim of DQN outperforming rule-based baseline without evaluation results.",
-                )
+        if ungrounded_claim_source:
+            status, actual, notes = (
+                "failed",
+                "ungrounded_superiority_claim",
+                f"{ungrounded_claim_source} asserts that DQN outperforms the "
+                "rule-based baselines. The official comparison shows a higher reward "
+                "but also a higher cost index and bunkering count, so no blanket "
+                "ranking follows from the artifacts.",
             )
-        elif no_official_comp:
-            claims.append(
-                PaperClaim(
-                    claim_id="CLAIM-006",
-                    paper_reference="README.md & docs/technical/evaluation_contract.md",
-                    metric_name="dqn_comparison_boundary",
-                    expected_spec_value="no official comparison performed yet",
-                    actual_system_value="no official comparison performed yet",
-                    status="passed",
-                    notes="README explicitly confirms official fair comparison between DQN and baselines is not yet conducted.",
-                )
+        elif evidence_state == "inconsistent":
+            status, actual, notes = (
+                "missing_evidence",
+                "inconsistent_evaluation_artifacts",
+                f"Cannot judge the comparison boundary: {evidence_detail}.",
             )
-        else:
-            claims.append(
-                PaperClaim(
-                    claim_id="CLAIM-006",
-                    paper_reference="README.md",
-                    metric_name="dqn_comparison_boundary",
-                    expected_spec_value="explicit statement of pending comparison",
-                    actual_system_value="missing statement",
-                    status="failed",
-                    notes="README missing explicit statement that official comparison has not been performed.",
+        elif evidence_state == "present":
+            if pending_statement:
+                status, actual, notes = (
+                    "failed",
+                    "stale_pending_statement",
+                    "Official evaluation artifacts exist "
+                    f"({evidence_detail}), but README still states the comparison "
+                    "has not been performed.",
                 )
+            elif not performed_statement:
+                status, actual, notes = (
+                    "failed",
+                    "comparison_performed_but_undeclared",
+                    "Official evaluation artifacts exist "
+                    f"({evidence_detail}), but README does not declare that the "
+                    "official same-condition comparison was performed.",
+                )
+            else:
+                status, actual, notes = (
+                    "passed",
+                    "comparison_performed_and_declared",
+                    f"README's comparison status matches the artifacts: {evidence_detail}.",
+                )
+        else:  # evidence_state == "absent"
+            if performed_statement:
+                status, actual, notes = (
+                    "failed",
+                    "comparison_claimed_without_artifacts",
+                    "README declares the official same-condition comparison was "
+                    f"performed, but {evidence_detail}.",
+                )
+            elif not pending_statement:
+                status, actual, notes = (
+                    "failed",
+                    "missing_status_statement",
+                    "No official evaluation artifacts and no README statement about "
+                    f"the comparison status: {evidence_detail}.",
+                )
+            else:
+                status, actual, notes = (
+                    "passed",
+                    "comparison_pending_and_declared",
+                    f"README's pending statement matches the artifacts: {evidence_detail}.",
+                )
+
+        claims.append(
+            PaperClaim(
+                claim_id="CLAIM-006",
+                paper_reference="README.md & results/evaluation_results.csv & results/evaluation_manifest.json",
+                metric_name="dqn_comparison_boundary",
+                expected_spec_value="README comparison status consistent with official evaluation artifacts",
+                actual_system_value=actual,
+                status=status,
+                notes=notes,
             )
+        )
     except Exception as exc:
         claims.append(
             PaperClaim(
                 claim_id="CLAIM-006",
-                paper_reference="README.md",
+                paper_reference="README.md & results/evaluation_results.csv & results/evaluation_manifest.json",
                 metric_name="dqn_comparison_boundary",
-                expected_spec_value="no official comparison performed yet",
+                expected_spec_value="README comparison status consistent with official evaluation artifacts",
                 actual_system_value=f"Error: {exc}",
                 status="failed",
                 notes=f"Failed DQN comparison boundary check: {exc}",

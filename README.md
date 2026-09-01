@@ -1,6 +1,12 @@
 # bunkering-ai
 
-선박 벙커시유 의사결정을 위한 강화학습 프로젝트입니다. 합성 항해 환경에서 rule-based baseline을 평가하고 Double DQN 학습 파이프라인을 검증합니다. Rule-based와 DQN의 공식 동일조건 성능비교는 아직 수행하지 않았습니다.
+선박 벙커시유 의사결정을 위한 강화학습 프로젝트입니다. 합성 항해 환경에서 rule-based
+baseline 3종과 Double DQN을 평가합니다. 두 진영의 공식 동일조건 성능비교를 수행했으며,
+정본 결과는 `results/evaluation_results.csv`와 `results/evaluation_manifest.json`입니다.
+
+이 비교는 **학습 seed 42로 한 번 학습한 단일 모델**을 평가 seed 42~141의 100 에피소드에서
+검증한 결과입니다. 여러 학습 seed로 반복 학습해 학습 분산을 확인한 것이 아니므로, 다중 학습
+seed 검증 결과로 인용하면 안 됩니다.
 
 ## 팀 구성
 
@@ -14,7 +20,7 @@
 총톤수·벙커량·예정 시작일·종료일 등 실제 업무변수의 구조와 분포를 확인했습니다.
 이 분석은 향후 시나리오 설계와 실증 범위 검토를 위한 도메인 참고자료입니다.
 
-현재 Rule-based 공식 평가와 Double DQN smoke test는 합성 데이터 기반입니다.
+공식 동일조건 성능비교는 rule-based 3종과 Double DQN 모두 합성 데이터 기반입니다.
 공공데이터를 DQN 학습 입력이나 공식 성능평가 데이터로 사용하지 않았으며, 실시간 API
 연동도 아직 구현하지 않았습니다. 출처·기초통계·한계는
 [`docs/data/upa_bunkering_anchorage.md`](docs/data/upa_bunkering_anchorage.md)에 기록했습니다.
@@ -58,6 +64,10 @@ pytest tests -q
 (`results/public_data/`), 감사 리포트(`results/paper_audit/`), 공식 평가 결과
 (`results/evaluation_results.csv`, `results/evaluation_manifest.json`,
 `results/evaluation/`)로 한정합니다.
+
+공식 평가에 사용한 체크포인트는 Git에서 제외되므로 GitHub Release 자산으로 영구
+보존합니다. 보존 위치·다운로드 절차·sha256 대조 방법은
+[`docs/technical/official_evaluation.md`](docs/technical/official_evaluation.md) 3절에 있습니다.
 
 ## 직무 연계·인터뷰 가이드
 

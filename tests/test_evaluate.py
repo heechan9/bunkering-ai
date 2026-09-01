@@ -1,5 +1,6 @@
 import csv
 import json
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -348,6 +349,7 @@ def test_main_writes_every_official_artifact(tmp_path, checkpoint_path):
         (c["seed"], c["episode"], c["policy"]) for c in manifest["cases"]
     }
     assert manifest["checkpoint"]["sha256"]
+    assert manifest["checkpoint"]["archive"] == evaluate.CHECKPOINT_ARCHIVE
     assert manifest["env_config"] == manifest["cases"][0]["env_config"]
 
 
@@ -368,3 +370,40 @@ def test_main_reruns_reproduce_identical_records(tmp_path, checkpoint_path):
         return (output_dir / "evaluation_results.csv").read_text(encoding="utf-8")
 
     assert run(tmp_path / "first") == run(tmp_path / "second")
+
+
+def test_checkpoint_archive_names_a_retrievable_location():
+    # Checkpoints are .gitignore'd, so the archive block is the only thing that
+    # keeps an official result set traceable to a file anyone else can fetch.
+    archive = evaluate.CHECKPOINT_ARCHIVE
+
+    assert archive["kind"] == "github_release_asset"
+    assert archive["download_url"].startswith("https://")
+    assert archive["release_tag"] in archive["download_url"]
+    assert archive["asset_name"] in archive["download_url"]
+    assert archive["status"] in {"pending_upload", "published"}
+
+
+def test_committed_manifest_records_the_same_archive_location():
+    manifest = json.loads(
+        Path("results/evaluation_manifest.json").read_text(encoding="utf-8")
+    )
+    checkpoint = manifest["checkpoint"]
+
+    assert checkpoint["archive"] == evaluate.CHECKPOINT_ARCHIVE
+    assert checkpoint["archive"]["asset_name"] == checkpoint["path"]
+    # A 64-hex digest is what makes a downloaded asset checkable against this run.
+    assert len(checkpoint["sha256"]) == 64
+    assert checkpoint["metadata"]["train_seed"] == manifest["base_seed"]
+
+
+def test_committed_manifest_evaluates_one_training_seed_over_many_eval_seeds():
+    # The published numbers come from a single trained model, so the manifest must
+    # not be read as a multi-training-seed study.
+    manifest = json.loads(
+        Path("results/evaluation_manifest.json").read_text(encoding="utf-8")
+    )
+
+    assert manifest["checkpoint"]["metadata"]["train_seed"] == 42
+    evaluation_seeds = {case["seed"] for case in manifest["cases"]}
+    assert evaluation_seeds == set(range(42, 42 + manifest["n_episodes"]))

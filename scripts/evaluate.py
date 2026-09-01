@@ -60,6 +60,23 @@ from scripts.baseline import (
 )
 
 DQN_POLICY_NAME = "double_dqn"
+
+# ``checkpoints/*.pt`` is .gitignore'd, so a result set would otherwise point at
+# weights that only exist on one machine. The official weights are preserved as a
+# GitHub Release asset and named here so every manifest records where to get them;
+# the sha256 written beside this block is what proves a download is the right file.
+# Flip ``status`` to "published" once the release asset is actually uploaded.
+CHECKPOINT_ARCHIVE: dict[str, str] = {
+    "kind": "github_release_asset",
+    "repository": "heechan9/bunkering-ai",
+    "release_tag": "official-eval-2026-09-01",
+    "asset_name": "dqn_final.pt",
+    "download_url": (
+        "https://github.com/heechan9/bunkering-ai/releases/download/"
+        "official-eval-2026-09-01/dqn_final.pt"
+    ),
+    "status": "pending_upload",
+}
 # Stable reporting order: the three rule-based baselines, then the learned policy.
 RULE_BASED_POLICY_NAMES = ("fixed_fueling", "price_reactive", "safe_stock")
 # Termination reasons are reported in a fixed order so CSV columns stay stable
@@ -508,6 +525,7 @@ def main(argv: list[str] | None = None) -> int:
             "checkpoint": {
                 "path": args.checkpoint.name,
                 "sha256": file_sha256(args.checkpoint),
+                "archive": dict(CHECKPOINT_ARCHIVE),
                 "metadata": dqn_policy.agent.checkpoint_metadata,
             },
             "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
