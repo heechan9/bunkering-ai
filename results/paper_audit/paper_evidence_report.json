@@ -1,10 +1,10 @@
 {
   "summary": {
     "total_claims": 8,
-    "passed_claims": 7,
+    "passed_claims": 8,
     "failed_claims": 0,
     "provisional_claims": 0,
-    "missing_evidence_claims": 1
+    "missing_evidence_claims": 0
   },
   "claims": [
     {
@@ -39,7 +39,7 @@
       "paper_reference": "docs/technical/evaluation_contract.md",
       "metric_name": "terminal_reasons",
       "expected_spec_value": "arrived, fuel_depleted, timeout",
-      "actual_system_value": "arrived, timeout, fuel_depleted",
+      "actual_system_value": "arrived, fuel_depleted, timeout",
       "status": "passed",
       "notes": "Verified evaluation contract TERMINATION_REASONS against evaluation_contract.md."
     },
@@ -54,21 +54,21 @@
     },
     {
       "claim_id": "CLAIM-006",
-      "paper_reference": "README.md & docs/technical/evaluation_contract.md",
+      "paper_reference": "README.md & results/evaluation_results.csv & results/evaluation_manifest.json",
       "metric_name": "dqn_comparison_boundary",
-      "expected_spec_value": "no official comparison performed yet",
-      "actual_system_value": "no official comparison performed yet",
+      "expected_spec_value": "README comparison status consistent with official evaluation artifacts",
+      "actual_system_value": "comparison_performed_and_declared",
       "status": "passed",
-      "notes": "README explicitly confirms official fair comparison between DQN and baselines is not yet conducted."
+      "notes": "README's comparison status matches the artifacts: 400 matching cases across policies double_dqn, fixed_fueling, price_reactive, safe_stock."
     },
     {
       "claim_id": "CLAIM-007",
       "paper_reference": "docs/technical/evaluation_contract.md",
       "metric_name": "official_evaluation_results",
-      "expected_spec_value": "canonical official evaluation results CSV",
-      "actual_system_value": "missing_evidence",
-      "status": "missing_evidence",
-      "notes": "Official evaluation results CSV (results/evaluation_results.csv) is not yet version-controlled."
+      "expected_spec_value": "valid official evaluation CSV and manifest JSON",
+      "actual_system_value": "present (400 validated records)",
+      "status": "passed",
+      "notes": "Validated row schema, data types, finite bounds, manifest cases, and exact case set equality."
     },
     {
       "claim_id": "CLAIM-008",

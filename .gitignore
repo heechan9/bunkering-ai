@@ -5,6 +5,9 @@ venv/
 results/*
 !results/public_data/
 !results/paper_audit/
+!results/evaluation/
+!results/evaluation_results.csv
+!results/evaluation_manifest.json
 runs/
 .pytest_cache/
 *.pt

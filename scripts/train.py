@@ -36,8 +36,18 @@ def set_seed(seed: int) -> None:
     torch.manual_seed(seed)
 
 
-def train(config: dict, n_episodes: int, seed: int) -> list[float]:
-    """Run the configured training loop and return episode rewards."""
+def train(
+    config: dict,
+    n_episodes: int,
+    seed: int,
+    checkpoint_path: Path | None = None,
+) -> list[float]:
+    """Run the configured training loop and return episode rewards.
+
+    When ``checkpoint_path`` is given, the trained policy is persisted there so
+    a later independent evaluation can reload exactly these weights instead of
+    re-training.
+    """
     set_seed(seed)
     env_config = config["env"]
     train_config = config["train"]
@@ -98,6 +108,20 @@ def train(config: dict, n_episodes: int, seed: int) -> list[float]:
             )
 
     print(f"TensorBoard logs saved to: {log_dir}")
+
+    if checkpoint_path is not None:
+        saved_path = agent.save_checkpoint(
+            checkpoint_path,
+            metadata={
+                "train_seed": int(seed),
+                "n_episodes": int(n_episodes),
+                "global_steps": int(global_step),
+                "final_epsilon": float(epsilon),
+                "env_config": dict(env_config),
+            },
+        )
+        print(f"Checkpoint saved to: {saved_path}")
+
     return episode_rewards
 
 
@@ -111,13 +135,29 @@ def main() -> None:
         help="Path to DQN YAML configuration",
     )
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
+    parser.add_argument(
+        "--checkpoint",
+        type=Path,
+        default=PROJECT_ROOT / "checkpoints" / "dqn_final.pt",
+        help="Where to save the trained policy checkpoint",
+    )
+    parser.add_argument(
+        "--no-checkpoint",
+        action="store_true",
+        help="Train without writing a checkpoint file",
+    )
     args = parser.parse_args()
 
     config = load_config(args.config)
     episodes = args.episodes if args.episodes is not None else int(config["train"]["n_episodes"])
     if episodes < 1:
         raise ValueError("episodes must be at least 1")
-    train(config, episodes, args.seed)
+    train(
+        config,
+        episodes,
+        args.seed,
+        checkpoint_path=None if args.no_checkpoint else args.checkpoint,
+    )
 
 
 if __name__ == "__main__":
