@@ -65,7 +65,8 @@ DQN_POLICY_NAME = "double_dqn"
 # weights that only exist on one machine. The official weights are preserved as a
 # GitHub Release asset and named here so every manifest records where to get them;
 # the sha256 written beside this block is what proves a download is the right file.
-# Flip ``status`` to "published" once the release asset is actually uploaded.
+# ``status`` tracks whether the asset is actually up: a new tag starts as
+# "pending_upload" and becomes "published" once the release carries the file.
 CHECKPOINT_ARCHIVE: dict[str, str] = {
     "kind": "github_release_asset",
     "repository": "heechan9/bunkering-ai",
@@ -75,7 +76,7 @@ CHECKPOINT_ARCHIVE: dict[str, str] = {
         "https://github.com/heechan9/bunkering-ai/releases/download/"
         "official-eval-2026-09-01/dqn_final.pt"
     ),
-    "status": "pending_upload",
+    "status": "published",
 }
 # Stable reporting order: the three rule-based baselines, then the learned policy.
 RULE_BASED_POLICY_NAMES = ("fixed_fueling", "price_reactive", "safe_stock")

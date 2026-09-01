@@ -4023,7 +4023,7 @@
       "release_tag": "official-eval-2026-09-01",
       "asset_name": "dqn_final.pt",
       "download_url": "https://github.com/heechan9/bunkering-ai/releases/download/official-eval-2026-09-01/dqn_final.pt",
-      "status": "pending_upload"
+      "status": "published"
     },
     "metadata": {
       "train_seed": 42,

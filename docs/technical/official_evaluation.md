@@ -63,25 +63,44 @@ Release 자산으로 보존**한다. 보존 위치는 `scripts/evaluate.py`의 `
 | 자산 이름 | `dqn_final.pt` |
 | 다운로드 URL | `https://github.com/heechan9/bunkering-ai/releases/download/official-eval-2026-09-01/dqn_final.pt` |
 | sha256 | `970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392` |
-| 현재 상태 | `pending_upload` — 아래 업로드 절차가 아직 실행되지 않았다 |
+| 현재 상태 | `published` — 2026-09-01 업로드 완료, 아래 절차로 검증됨 |
 
-`status`가 `pending_upload`인 동안에는 위 URL이 아직 존재하지 않는다. 저장소 권한이
-있는 담당자가 다음을 실행한 뒤 `CHECKPOINT_ARCHIVE["status"]`와
+업로드 직후 자산을 내려받아 sha256을 대조한 결과 manifest의 `checkpoint.sha256`과
+일치했다(296,977 bytes). 따라서 4절 수치는 재학습 없이 이 자산만으로 재현할 수 있다.
+
+`status`가 `pending_upload`인 동안에는 URL이 존재하지 않는다는 뜻이다. 새 태그로 다시
+보존할 때는 저장소 권한이 있는 담당자가 다음을 실행한 뒤 `CHECKPOINT_ARCHIVE["status"]`와
 `results/evaluation_manifest.json`의 같은 필드를 `published`로 바꾼다.
 
+먼저 `gh auth status`로 로그인을 확인하고, 안 돼 있으면 `gh auth login`을 실행한다.
+
 ```bash
+# bash / Git Bash
 gh release create official-eval-2026-09-01 checkpoints/dqn_final.pt \
   --repo heechan9/bunkering-ai \
   --title "Official same-condition evaluation checkpoint (2026-09-01)" \
   --notes "train_seed=42, n_episodes=5000, sha256=970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392"
 ```
 
+```powershell
+# PowerShell — 줄바꿈 연속 문자가 bash의 `\`가 아니라 백틱이므로 한 줄로 실행한다
+gh release create official-eval-2026-09-01 checkpoints/dqn_final.pt --repo heechan9/bunkering-ai --title "Official same-condition evaluation checkpoint (2026-09-01)" --notes "train_seed=42, n_episodes=5000, sha256=970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392"
+```
+
 내려받은 파일이 이 결과를 만든 가중치가 맞는지는 sha256으로 대조한다.
 
 ```bash
+# bash / Git Bash
 curl -L -o checkpoints/dqn_final.pt \
   https://github.com/heechan9/bunkering-ai/releases/download/official-eval-2026-09-01/dqn_final.pt
 python -c "import hashlib,pathlib;print(hashlib.sha256(pathlib.Path('checkpoints/dqn_final.pt').read_bytes()).hexdigest())"
+# results/evaluation_manifest.json 의 checkpoint.sha256 과 같아야 한다
+```
+
+```powershell
+# PowerShell — curl은 Invoke-WebRequest의 별칭이라 -L -o 를 받지 못하므로 gh로 내려받는다
+gh release download official-eval-2026-09-01 --repo heechan9/bunkering-ai --pattern dqn_final.pt --dir checkpoints
+(Get-FileHash checkpoints\dqn_final.pt -Algorithm SHA256).Hash.ToLower()
 # results/evaluation_manifest.json 의 checkpoint.sha256 과 같아야 한다
 ```
 
@@ -164,10 +183,10 @@ BLAS 스레딩·라이브러리 버전·하드웨어에 따라 달라질 수 있
 
 - **탐색 스케줄 정합성**: 5절 첫 항목의 `epsilon_decay_steps` 대 `n_episodes` 불일치는
   하이퍼파라미터 변경에 해당하므로 별도 합의 후 조정한다.
-- **Release 자산 업로드**: 3.1절의 `gh release create` 실행과 `status`를 `published`로
-  바꾸는 작업은 저장소 권한이 있는 담당자가 수행한다.
-
 ### 해결된 항목
+
+- ~~**Release 자산 업로드**~~ — 해결됨. `official-eval-2026-09-01` 태그로 업로드했고
+  다운로드 sha256이 manifest와 일치함을 확인해 `status`를 `published`로 바꿨다.
 
 - ~~**README 문구와 감사 규칙의 결합**~~ — 해결됨. `CLAIM-006`은 더 이상 README의 특정
   문장 존재 여부를 보지 않고, `results/evaluation_results.csv`와
