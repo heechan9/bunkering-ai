@@ -44,7 +44,7 @@ tests/        환경·에이전트·평가·공공데이터 단위 테스트
 ```bash
 pip install -r requirements.txt
 python scripts/baseline.py
-python scripts/train.py --episodes 1000 --seed 42 --checkpoint checkpoints/dqn_final.pt
+python scripts/train.py --seed 42 --checkpoint checkpoints/dqn_final.pt
 python scripts/evaluate.py --episodes 100 --seed 42 --checkpoint checkpoints/dqn_final.pt
 pytest tests -q
 ```

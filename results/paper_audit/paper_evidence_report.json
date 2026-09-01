@@ -39,7 +39,7 @@
       "paper_reference": "docs/technical/evaluation_contract.md",
       "metric_name": "terminal_reasons",
       "expected_spec_value": "arrived, fuel_depleted, timeout",
-      "actual_system_value": "timeout, fuel_depleted, arrived",
+      "actual_system_value": "fuel_depleted, arrived, timeout",
       "status": "passed",
       "notes": "Verified evaluation contract TERMINATION_REASONS against evaluation_contract.md."
     },

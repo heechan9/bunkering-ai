@@ -2,4 +2,4 @@ policy,arrived,fuel_depleted,timeout,episodes
 fixed_fueling,0,100,0,100
 price_reactive,3,97,0,100
 safe_stock,100,0,0,100
-double_dqn,52,48,0,100
+double_dqn,100,0,0,100

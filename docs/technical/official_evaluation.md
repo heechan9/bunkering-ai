@@ -8,8 +8,8 @@ Rule-based 3종과 Double DQN을 **같은 seed·episode·환경설정**에서 �
 ## 1. 실행 절차
 
 ```bash
-# 1) 정책 학습 후 체크포인트 저장
-python scripts/train.py --episodes 1000 --seed 42 --checkpoint checkpoints/dqn_final.pt
+# 1) 정책 학습 후 체크포인트 저장 (에피소드 수는 configs/dqn.yaml의 n_episodes)
+python scripts/train.py --seed 42 --checkpoint checkpoints/dqn_final.pt
 
 # 2) 저장된 체크포인트를 불러와 rule-based 3종과 동일조건 비교
 python scripts/evaluate.py --episodes 100 --seed 42 --checkpoint checkpoints/dqn_final.pt
@@ -49,15 +49,16 @@ seed·episode 수를 남기므로, 같은 명령으로 재학습하면 동일 �
 
 ## 4. 관측 결과 (2026-09-01, episodes=100, base_seed=42)
 
-`train.py --episodes 1000 --seed 42`로 학습한 체크포인트를 seed 42~141의 100개
-에피소드에서 평가한 값이다. 표준편차는 모집단 기준(ddof=0)이다.
+`configs/dqn.yaml`(`n_episodes: 5000`)로 seed 42에서 학습한 체크포인트를 seed
+42~141의 100개 에피소드에서 평가한 값이다. 표준편차는 모집단 기준(ddof=0)이다.
+학습은 149,990 step을 진행해 epsilon이 설정 하한 0.05까지 완전히 감쇠했다.
 
 | policy | reward (mean ± std) | Synthetic Cost Index (mean ± std) | 성공률 | 연료고갈률 | 급유횟수 (mean ± std) |
 | --- | --- | --- | --- | --- | --- |
 | fixed_fueling | -2.0300 ± 0.0000 | 0.0 ± 0.0 | 0.00 | 1.00 | 0.00 ± 0.00 |
 | price_reactive | -1.9519 ± 0.2848 | 17,369.5 ± 103,346.1 | 0.03 | 0.97 | 0.08 ± 0.50 |
 | safe_stock | -0.4928 ± 0.0108 | 545,392.7 ± 63,453.9 | 1.00 | 0.00 | 1.00 ± 0.00 |
-| double_dqn | -1.2857 ± 0.8423 | 354,186.1 ± 366,072.3 | 0.52 | 0.48 | 1.83 ± 3.30 |
+| double_dqn | 0.0443 ± 0.0579 | 847,117.9 ± 102,320.3 | 1.00 | 0.00 | 5.31 ± 3.48 |
 
 종료원인 (100 에피소드 기준):
 
@@ -66,28 +67,32 @@ seed·episode 수를 남기므로, 같은 명령으로 재학습하면 동일 �
 | fixed_fueling | 0 | 100 | 0 |
 | price_reactive | 3 | 97 | 0 |
 | safe_stock | 100 | 0 | 0 |
-| double_dqn | 52 | 48 | 0 |
+| double_dqn | 100 | 0 | 0 |
 
 관측 사실만 기록하면 다음과 같다.
 
-- `safe_stock`이 평균 reward와 성공률에서 가장 높은 값을, 연료고갈률에서 가장 낮은
-  값을 기록했다. 이번 실행에서 `double_dqn`은 그보다 낮은 평균 reward(-1.2857)와
-  성공률(0.52)을 보였다.
-- `double_dqn`의 Synthetic Cost Index 평균은 `safe_stock`보다 낮지만, 이는 비용
-  효율이 아니라 48%의 에피소드가 연료고갈로 조기 종료되어 급유 자체가 적게
-  집계된 결과로 해석해야 한다. 성공한 에피소드만 놓고 비교한 값이 아니다.
+- `safe_stock`과 `double_dqn` 두 정책만 100 에피소드 전부 도착했다.
+  `fixed_fueling`은 100건, `price_reactive`는 97건이 연료고갈로 종료됐다.
+- 평균 reward는 `double_dqn`이 0.0443으로 가장 높으며, 네 정책 중 유일한 양수다.
+- Synthetic Cost Index는 `double_dqn`이 847,117.9로 가장 높다. `safe_stock`
+  (545,392.7)의 약 1.55배이며, 급유 횟수 차이(5.31회 대 1.00회)에서 비롯된다.
+- `double_dqn`의 급유 횟수는 에피소드별 3~26회로 흩어져 있고 4회가 47건으로 최빈이다.
+  `safe_stock`은 전 에피소드에서 정확히 1회다.
+- 이번 실행은 조기 종료가 0건이므로 두 정책의 Cost Index는 모두 30 step을 완주한
+  동일 조건에서 비교된 값이다. 조기 종료로 급유량이 적게 집계되는 왜곡이 없다.
+- 도착 신뢰성은 두 정책이 같고 비용 지표는 `safe_stock`이 더 낮다. 어느 쪽을 우선할지는
+  reward와 비용 중 무엇을 기준으로 삼느냐에 달려 있으며, 이 문서는 그 기준을 정하지 않는다.
 - `fixed_fueling`의 Cost Index 0은 출항 시 탱크가 이미 가득 차 실제 주유량이
   0이기 때문이며, 100 에피소드 전부 연료고갈로 종료됐다.
-- `double_dqn`의 표준편차가 모든 지표에서 가장 크다. 정책이 seed에 따라 크게
-  다르게 행동한다는 뜻이다.
 
 ## 5. 해석 경계와 한계
 
-- **탐색 스케줄 미소진**: `configs/dqn.yaml`의 `epsilon_decay_steps`는 100,000인데
-  `n_episodes: 1000`은 약 24,000 step만 생성한다. 이번 학습은 epsilon 1.0에서
-  0.7150까지만 감쇠한 상태로 종료됐다. 즉 학습 전 구간이 사실상 무작위 탐색이었고,
-  위 수치는 **수렴한 정책이 아니라 이 설정으로 학습한 정책의 상태**를 나타낸다.
-  하이퍼파라미터 조정은 별도 합의 후 진행한다.
+- **학습량이 결과를 좌우한다**: 이전 설정(`n_episodes: 1000`)은 약 30,000 step만
+  생성해 `epsilon_decay_steps: 100000`을 소진하지 못했고, epsilon 0.7150에서 학습이
+  끝나 `double_dqn`의 성공률이 0.52에 머물렀다. 실패한 48 에피소드는 전부 급유
+  0회였다. `n_episodes`를 5000으로 올려 149,990 step을 학습하자 epsilon이 0.05까지
+  감쇠하고 성공률이 1.00으로 바뀌었다. 이 결과를 인용할 때는 학습 설정을 반드시
+  함께 밝힌다. 수렴 여부 자체는 별도로 검증하지 않았다.
 - **합성 환경**: 가격·환율은 합성 random walk이며 실제 유가·환율 연동은 미구현이다.
 - **항만 미차등**: 현재 `action=1..n_ports`는 가격·대기시간·수수료가 동일하다.
   따라서 이번 비교는 항만 선택 능력을 측정하지 않는다.
