@@ -58,3 +58,7 @@ pytest tests -q
 (`results/public_data/`), 감사 리포트(`results/paper_audit/`), 공식 평가 결과
 (`results/evaluation_results.csv`, `results/evaluation_manifest.json`,
 `results/evaluation/`)로 한정합니다.
+
+## 직무 연계·인터뷰 가이드
+
+프로젝트의 구현 증거, 직무 연결, 자소서 구성과 주장 한계는 [`docs/ROLE_ALIGNMENT.md`](docs/ROLE_ALIGNMENT.md)에서 확인할 수 있습니다.
