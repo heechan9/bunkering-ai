@@ -49,3 +49,7 @@ pytest tests -q
 `runs/`, 일반 `results/`, `handoff_notes/`는 생성 산출물 또는 검토 자료이므로 Git에서
 제외됩니다. 제출 근거로 버전 관리하는 공공데이터 요약 산출물은
 `results/public_data/`에 한정합니다.
+
+## 직무 연계·인터뷰 가이드
+
+프로젝트의 구현 증거, 직무 연결, 자소서 구성과 주장 한계는 [`docs/ROLE_ALIGNMENT.md`](docs/ROLE_ALIGNMENT.md)에서 확인할 수 있습니다.
