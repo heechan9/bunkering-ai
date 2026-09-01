@@ -73,18 +73,52 @@ def test_audit_paper_claims_rejects_empty_sequence():
         audit_paper_claims([])
 
 
-def test_verify_canonical_evidence_returns_passed_and_missing_claims_on_clean_repo():
+def test_verify_canonical_evidence_passes_on_repo_with_official_results():
     claims = verify_canonical_evidence()
     assert len(claims) >= 8
     claims_by_id = {c.claim_id: c for c in claims}
-    assert claims_by_id["CLAIM-001"].status == "passed"
-    assert claims_by_id["CLAIM-002"].status == "passed"
-    assert claims_by_id["CLAIM-003"].status == "passed"
-    assert claims_by_id["CLAIM-004"].status == "passed"
-    assert claims_by_id["CLAIM-005"].status == "passed"
-    assert claims_by_id["CLAIM-006"].status == "passed"
-    assert claims_by_id["CLAIM-007"].status == "missing_evidence"  # Official evaluation results not present
-    assert claims_by_id["CLAIM-008"].status == "passed"
+    for claim_id in (
+        "CLAIM-001",
+        "CLAIM-002",
+        "CLAIM-003",
+        "CLAIM-004",
+        "CLAIM-005",
+        "CLAIM-006",
+        "CLAIM-008",
+    ):
+        assert claims_by_id[claim_id].status == "passed"
+    # CLAIM-007 flipped from missing_evidence once results/evaluation_results.csv
+    # and results/evaluation_manifest.json were produced by scripts/evaluate.py.
+    assert claims_by_id["CLAIM-007"].status == "passed"
+
+
+def _repo_copy_without_official_results(tmp_path: Path) -> Path:
+    """Copy the repository and strip the official evaluation artifacts.
+
+    Tests of the missing-evidence boundary must build that state themselves
+    rather than relying on the working tree not having run an evaluation yet.
+    """
+    import shutil
+
+    repo_copy = tmp_path / "repo_without_results"
+    shutil.copytree(
+        ".",
+        repo_copy,
+        ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"),
+    )
+    (repo_copy / "results/evaluation_results.csv").unlink(missing_ok=True)
+    (repo_copy / "results/evaluation_manifest.json").unlink(missing_ok=True)
+    return repo_copy
+
+
+def test_audit_cli_main_returns_exit_code_0_with_official_results(tmp_path):
+    # The committed evaluation CSV and manifest satisfy CLAIM-007 -> exit code 0.
+    out_dir = tmp_path / "audit_output"
+    exit_code = audit_main(["--output-dir", str(out_dir)])
+
+    assert exit_code == 0
+    assert (out_dir / "paper_evidence_summary.csv").exists()
+    assert (out_dir / "paper_evidence_report.json").exists()
 
 
 def test_export_audit_artifacts(tmp_path):
@@ -107,9 +141,16 @@ def test_export_audit_artifacts(tmp_path):
 
 
 def test_audit_cli_main_missing_evidence_returns_exit_code_1(tmp_path):
-    # On clean repo, CLAIM-007 (official evaluation results CSV) is missing_evidence -> exit code 1
+    # Without the official evaluation artifacts, CLAIM-007 is missing_evidence -> exit code 1.
     out_dir = tmp_path / "audit_output"
-    exit_code = audit_main(["--output-dir", str(out_dir)])
+    exit_code = audit_main(
+        [
+            "--output-dir",
+            str(out_dir),
+            "--repo-root",
+            str(_repo_copy_without_official_results(tmp_path)),
+        ]
+    )
 
     assert exit_code == 1
     assert (out_dir / "paper_evidence_summary.csv").exists()
@@ -282,6 +323,8 @@ def test_audit_cli_evaluation_csv_present_but_manifest_missing_is_missing_eviden
 
     eval_csv = repo_copy / "results/evaluation_results.csv"
     eval_csv.parent.mkdir(parents=True, exist_ok=True)
+    # Drop the committed manifest so only the CSV side of the pair is present.
+    (repo_copy / "results/evaluation_manifest.json").unlink(missing_ok=True)
     header = "seed,episode,policy,reward,Synthetic Cost Index,success,fuel_depletion,bunkering_count,termination_reason\n"
     row = "42,0,fixed_fueling,-2.03,0.0,False,True,0,fuel_depleted\n"
     eval_csv.write_text(header + row, encoding="utf-8")

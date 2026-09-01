@@ -1,0 +1,4033 @@
+{
+  "policies": [
+    "fixed_fueling",
+    "price_reactive",
+    "safe_stock",
+    "double_dqn"
+  ],
+  "cases": [
+    {
+      "seed": 42,
+      "episode": 0,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 43,
+      "episode": 1,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 44,
+      "episode": 2,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 45,
+      "episode": 3,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 46,
+      "episode": 4,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 47,
+      "episode": 5,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 48,
+      "episode": 6,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 49,
+      "episode": 7,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 50,
+      "episode": 8,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 51,
+      "episode": 9,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 52,
+      "episode": 10,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 53,
+      "episode": 11,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 54,
+      "episode": 12,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 55,
+      "episode": 13,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 56,
+      "episode": 14,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 57,
+      "episode": 15,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 58,
+      "episode": 16,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 59,
+      "episode": 17,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 60,
+      "episode": 18,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 61,
+      "episode": 19,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 62,
+      "episode": 20,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 63,
+      "episode": 21,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 64,
+      "episode": 22,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 65,
+      "episode": 23,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 66,
+      "episode": 24,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 67,
+      "episode": 25,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 68,
+      "episode": 26,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 69,
+      "episode": 27,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 70,
+      "episode": 28,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 71,
+      "episode": 29,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 72,
+      "episode": 30,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 73,
+      "episode": 31,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 74,
+      "episode": 32,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 75,
+      "episode": 33,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 76,
+      "episode": 34,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 77,
+      "episode": 35,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 78,
+      "episode": 36,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 79,
+      "episode": 37,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 80,
+      "episode": 38,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 81,
+      "episode": 39,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 82,
+      "episode": 40,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 83,
+      "episode": 41,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 84,
+      "episode": 42,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 85,
+      "episode": 43,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 86,
+      "episode": 44,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 87,
+      "episode": 45,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 88,
+      "episode": 46,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 89,
+      "episode": 47,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 90,
+      "episode": 48,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 91,
+      "episode": 49,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 92,
+      "episode": 50,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 93,
+      "episode": 51,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 94,
+      "episode": 52,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 95,
+      "episode": 53,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 96,
+      "episode": 54,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 97,
+      "episode": 55,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 98,
+      "episode": 56,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 99,
+      "episode": 57,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 100,
+      "episode": 58,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 101,
+      "episode": 59,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 102,
+      "episode": 60,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 103,
+      "episode": 61,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 104,
+      "episode": 62,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 105,
+      "episode": 63,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 106,
+      "episode": 64,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 107,
+      "episode": 65,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 108,
+      "episode": 66,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 109,
+      "episode": 67,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 110,
+      "episode": 68,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 111,
+      "episode": 69,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 112,
+      "episode": 70,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 113,
+      "episode": 71,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 114,
+      "episode": 72,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 115,
+      "episode": 73,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 116,
+      "episode": 74,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 117,
+      "episode": 75,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 118,
+      "episode": 76,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 119,
+      "episode": 77,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 120,
+      "episode": 78,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 121,
+      "episode": 79,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 122,
+      "episode": 80,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 123,
+      "episode": 81,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 124,
+      "episode": 82,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 125,
+      "episode": 83,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 126,
+      "episode": 84,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 127,
+      "episode": 85,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 128,
+      "episode": 86,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 129,
+      "episode": 87,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 130,
+      "episode": 88,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 131,
+      "episode": 89,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 132,
+      "episode": 90,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 133,
+      "episode": 91,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 134,
+      "episode": 92,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 135,
+      "episode": 93,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 136,
+      "episode": 94,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 137,
+      "episode": 95,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 138,
+      "episode": 96,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 139,
+      "episode": 97,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 140,
+      "episode": 98,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 141,
+      "episode": 99,
+      "policy": "fixed_fueling",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 42,
+      "episode": 0,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 43,
+      "episode": 1,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 44,
+      "episode": 2,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 45,
+      "episode": 3,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 46,
+      "episode": 4,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 47,
+      "episode": 5,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 48,
+      "episode": 6,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 49,
+      "episode": 7,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 50,
+      "episode": 8,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 51,
+      "episode": 9,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 52,
+      "episode": 10,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 53,
+      "episode": 11,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 54,
+      "episode": 12,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 55,
+      "episode": 13,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 56,
+      "episode": 14,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 57,
+      "episode": 15,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 58,
+      "episode": 16,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 59,
+      "episode": 17,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 60,
+      "episode": 18,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 61,
+      "episode": 19,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 62,
+      "episode": 20,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 63,
+      "episode": 21,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 64,
+      "episode": 22,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 65,
+      "episode": 23,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 66,
+      "episode": 24,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 67,
+      "episode": 25,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 68,
+      "episode": 26,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 69,
+      "episode": 27,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 70,
+      "episode": 28,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 71,
+      "episode": 29,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 72,
+      "episode": 30,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 73,
+      "episode": 31,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 74,
+      "episode": 32,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 75,
+      "episode": 33,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 76,
+      "episode": 34,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 77,
+      "episode": 35,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 78,
+      "episode": 36,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 79,
+      "episode": 37,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 80,
+      "episode": 38,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 81,
+      "episode": 39,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 82,
+      "episode": 40,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 83,
+      "episode": 41,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 84,
+      "episode": 42,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 85,
+      "episode": 43,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 86,
+      "episode": 44,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 87,
+      "episode": 45,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 88,
+      "episode": 46,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 89,
+      "episode": 47,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 90,
+      "episode": 48,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 91,
+      "episode": 49,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 92,
+      "episode": 50,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 93,
+      "episode": 51,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 94,
+      "episode": 52,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 95,
+      "episode": 53,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 96,
+      "episode": 54,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 97,
+      "episode": 55,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 98,
+      "episode": 56,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 99,
+      "episode": 57,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 100,
+      "episode": 58,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 101,
+      "episode": 59,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 102,
+      "episode": 60,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 103,
+      "episode": 61,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 104,
+      "episode": 62,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 105,
+      "episode": 63,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 106,
+      "episode": 64,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 107,
+      "episode": 65,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 108,
+      "episode": 66,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 109,
+      "episode": 67,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 110,
+      "episode": 68,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 111,
+      "episode": 69,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 112,
+      "episode": 70,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 113,
+      "episode": 71,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 114,
+      "episode": 72,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 115,
+      "episode": 73,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 116,
+      "episode": 74,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 117,
+      "episode": 75,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 118,
+      "episode": 76,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 119,
+      "episode": 77,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 120,
+      "episode": 78,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 121,
+      "episode": 79,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 122,
+      "episode": 80,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 123,
+      "episode": 81,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 124,
+      "episode": 82,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 125,
+      "episode": 83,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 126,
+      "episode": 84,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 127,
+      "episode": 85,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 128,
+      "episode": 86,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 129,
+      "episode": 87,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 130,
+      "episode": 88,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 131,
+      "episode": 89,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 132,
+      "episode": 90,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 133,
+      "episode": 91,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 134,
+      "episode": 92,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 135,
+      "episode": 93,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 136,
+      "episode": 94,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 137,
+      "episode": 95,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 138,
+      "episode": 96,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 139,
+      "episode": 97,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 140,
+      "episode": 98,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 141,
+      "episode": 99,
+      "policy": "price_reactive",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 42,
+      "episode": 0,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 43,
+      "episode": 1,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 44,
+      "episode": 2,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 45,
+      "episode": 3,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 46,
+      "episode": 4,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 47,
+      "episode": 5,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 48,
+      "episode": 6,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 49,
+      "episode": 7,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 50,
+      "episode": 8,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 51,
+      "episode": 9,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 52,
+      "episode": 10,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 53,
+      "episode": 11,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 54,
+      "episode": 12,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 55,
+      "episode": 13,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 56,
+      "episode": 14,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 57,
+      "episode": 15,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 58,
+      "episode": 16,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 59,
+      "episode": 17,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 60,
+      "episode": 18,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 61,
+      "episode": 19,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 62,
+      "episode": 20,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 63,
+      "episode": 21,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 64,
+      "episode": 22,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 65,
+      "episode": 23,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 66,
+      "episode": 24,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 67,
+      "episode": 25,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 68,
+      "episode": 26,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 69,
+      "episode": 27,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 70,
+      "episode": 28,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 71,
+      "episode": 29,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 72,
+      "episode": 30,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 73,
+      "episode": 31,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 74,
+      "episode": 32,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 75,
+      "episode": 33,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 76,
+      "episode": 34,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 77,
+      "episode": 35,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 78,
+      "episode": 36,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 79,
+      "episode": 37,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 80,
+      "episode": 38,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 81,
+      "episode": 39,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 82,
+      "episode": 40,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 83,
+      "episode": 41,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 84,
+      "episode": 42,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 85,
+      "episode": 43,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 86,
+      "episode": 44,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 87,
+      "episode": 45,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 88,
+      "episode": 46,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 89,
+      "episode": 47,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 90,
+      "episode": 48,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 91,
+      "episode": 49,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 92,
+      "episode": 50,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 93,
+      "episode": 51,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 94,
+      "episode": 52,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 95,
+      "episode": 53,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 96,
+      "episode": 54,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 97,
+      "episode": 55,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 98,
+      "episode": 56,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 99,
+      "episode": 57,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 100,
+      "episode": 58,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 101,
+      "episode": 59,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 102,
+      "episode": 60,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 103,
+      "episode": 61,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 104,
+      "episode": 62,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 105,
+      "episode": 63,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 106,
+      "episode": 64,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 107,
+      "episode": 65,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 108,
+      "episode": 66,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 109,
+      "episode": 67,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 110,
+      "episode": 68,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 111,
+      "episode": 69,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 112,
+      "episode": 70,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 113,
+      "episode": 71,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 114,
+      "episode": 72,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 115,
+      "episode": 73,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 116,
+      "episode": 74,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 117,
+      "episode": 75,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 118,
+      "episode": 76,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 119,
+      "episode": 77,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 120,
+      "episode": 78,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 121,
+      "episode": 79,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 122,
+      "episode": 80,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 123,
+      "episode": 81,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 124,
+      "episode": 82,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 125,
+      "episode": 83,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 126,
+      "episode": 84,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 127,
+      "episode": 85,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 128,
+      "episode": 86,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 129,
+      "episode": 87,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 130,
+      "episode": 88,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 131,
+      "episode": 89,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 132,
+      "episode": 90,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 133,
+      "episode": 91,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 134,
+      "episode": 92,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 135,
+      "episode": 93,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 136,
+      "episode": 94,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 137,
+      "episode": 95,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 138,
+      "episode": 96,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 139,
+      "episode": 97,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 140,
+      "episode": 98,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 141,
+      "episode": 99,
+      "policy": "safe_stock",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 42,
+      "episode": 0,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 43,
+      "episode": 1,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 44,
+      "episode": 2,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 45,
+      "episode": 3,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 46,
+      "episode": 4,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 47,
+      "episode": 5,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 48,
+      "episode": 6,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 49,
+      "episode": 7,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 50,
+      "episode": 8,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 51,
+      "episode": 9,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 52,
+      "episode": 10,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 53,
+      "episode": 11,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 54,
+      "episode": 12,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 55,
+      "episode": 13,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 56,
+      "episode": 14,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 57,
+      "episode": 15,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 58,
+      "episode": 16,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 59,
+      "episode": 17,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 60,
+      "episode": 18,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 61,
+      "episode": 19,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 62,
+      "episode": 20,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 63,
+      "episode": 21,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 64,
+      "episode": 22,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 65,
+      "episode": 23,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 66,
+      "episode": 24,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 67,
+      "episode": 25,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 68,
+      "episode": 26,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 69,
+      "episode": 27,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 70,
+      "episode": 28,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 71,
+      "episode": 29,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 72,
+      "episode": 30,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 73,
+      "episode": 31,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 74,
+      "episode": 32,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 75,
+      "episode": 33,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 76,
+      "episode": 34,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 77,
+      "episode": 35,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 78,
+      "episode": 36,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 79,
+      "episode": 37,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 80,
+      "episode": 38,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 81,
+      "episode": 39,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 82,
+      "episode": 40,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 83,
+      "episode": 41,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 84,
+      "episode": 42,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 85,
+      "episode": 43,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 86,
+      "episode": 44,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 87,
+      "episode": 45,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 88,
+      "episode": 46,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 89,
+      "episode": 47,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 90,
+      "episode": 48,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 91,
+      "episode": 49,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 92,
+      "episode": 50,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 93,
+      "episode": 51,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 94,
+      "episode": 52,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 95,
+      "episode": 53,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 96,
+      "episode": 54,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 97,
+      "episode": 55,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 98,
+      "episode": 56,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 99,
+      "episode": 57,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 100,
+      "episode": 58,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 101,
+      "episode": 59,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 102,
+      "episode": 60,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 103,
+      "episode": 61,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 104,
+      "episode": 62,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 105,
+      "episode": 63,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 106,
+      "episode": 64,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 107,
+      "episode": 65,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 108,
+      "episode": 66,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 109,
+      "episode": 67,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 110,
+      "episode": 68,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 111,
+      "episode": 69,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 112,
+      "episode": 70,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 113,
+      "episode": 71,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 114,
+      "episode": 72,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 115,
+      "episode": 73,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 116,
+      "episode": 74,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 117,
+      "episode": 75,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 118,
+      "episode": 76,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 119,
+      "episode": 77,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 120,
+      "episode": 78,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 121,
+      "episode": 79,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 122,
+      "episode": 80,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 123,
+      "episode": 81,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 124,
+      "episode": 82,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 125,
+      "episode": 83,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 126,
+      "episode": 84,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 127,
+      "episode": 85,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 128,
+      "episode": 86,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 129,
+      "episode": 87,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 130,
+      "episode": 88,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 131,
+      "episode": 89,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 132,
+      "episode": 90,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 133,
+      "episode": 91,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 134,
+      "episode": 92,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 135,
+      "episode": 93,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 136,
+      "episode": 94,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 137,
+      "episode": 95,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 138,
+      "episode": 96,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 139,
+      "episode": 97,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 140,
+      "episode": 98,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    {
+      "seed": 141,
+      "episode": 99,
+      "policy": "double_dqn",
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    }
+  ],
+  "n_episodes": 100,
+  "base_seed": 42,
+  "env_config": {
+    "n_ports": 3,
+    "max_steps": 30,
+    "min_safe_fuel": 0.15
+  },
+  "checkpoint": {
+    "path": "dqn_final.pt",
+    "sha256": "bbbdf1f46045e060258132450ce03334c3f7b6346ab8213193dda3c15de0c288",
+    "metadata": {
+      "train_seed": 42,
+      "n_episodes": 1000,
+      "global_steps": 30000,
+      "final_epsilon": 0.7150000000001313,
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    }
+  },
+  "created_at": "2026-09-01T04:25:44+00:00"
+}

@@ -29,12 +29,14 @@ pytest tests -q
 
 ```text
 agents/       DQN 에이전트와 신경망 구현
+checkpoints/  학습된 정책 체크포인트 (Git 제외)
 configs/      학습 하이퍼파라미터 YAML
 data/public/  출처와 해시를 기록한 공공데이터 사본
 docs/         기술 설계·데이터 출처·제출 문서
 envs/         Gymnasium 기반 BunkeringEnv
-scripts/      baseline·DQN·공공데이터 분석 스크립트
-tests/        환경·에이전트·공공데이터 단위 테스트
+evaluation/   평가 계약과 논문 근거 감사 모듈
+scripts/      baseline·DQN·평가·공공데이터 분석 스크립트
+tests/        환경·에이전트·평가·공공데이터 단위 테스트
 ```
 
 ## 빠른 시작
@@ -42,10 +44,17 @@ tests/        환경·에이전트·공공데이터 단위 테스트
 ```bash
 pip install -r requirements.txt
 python scripts/baseline.py
-python scripts/train.py --episodes 20
+python scripts/train.py --episodes 1000 --seed 42 --checkpoint checkpoints/dqn_final.pt
+python scripts/evaluate.py --episodes 100 --seed 42 --checkpoint checkpoints/dqn_final.pt
 pytest tests -q
 ```
 
-`runs/`, 일반 `results/`, `handoff_notes/`는 생성 산출물 또는 검토 자료이므로 Git에서
-제외됩니다. 제출 근거로 버전 관리하는 공공데이터 요약 산출물은
-`results/public_data/`에 한정합니다.
+`scripts/evaluate.py`는 학습하지 않고 저장된 체크포인트를 불러와 rule-based 3종과
+동일한 seed·episode·환경설정에서 greedy 평가만 수행합니다. 실행 절차·산출물·관측 수치는
+[`docs/technical/official_evaluation.md`](docs/technical/official_evaluation.md)에 있습니다.
+
+`runs/`, `checkpoints/`, 일반 `results/`, `handoff_notes/`는 생성 산출물 또는 검토
+자료이므로 Git에서 제외됩니다. 제출 근거로 버전 관리하는 산출물은 공공데이터 요약
+(`results/public_data/`), 감사 리포트(`results/paper_audit/`), 공식 평가 결과
+(`results/evaluation_results.csv`, `results/evaluation_manifest.json`,
+`results/evaluation/`)로 한정합니다.
