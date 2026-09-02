@@ -24,15 +24,26 @@ Rule-based 3종과 Double DQN을 동일한 평가계약으로 비교합니다.
 
 ---
 
-## 프로젝트 개요
+## 30초 요약
+
+선박은 항해 중 연료가 떨어지면 안 되지만, 필요 이상으로 자주 급유하면 비용이 커질 수 있습니다. 병커시유는 **현재 가격·환율·남은 연료·남은 항로를 보고 지금 급유할지 기다릴지를 실험하는 시스템**입니다.
+
+- 단순한 의사결정 규칙 3개와 강화학습 AI를 같은 가상 항해 조건에서 비교했습니다.
+- 네 개 정책 모두 같은 난수 조건과 평가 횟수를 적용해 공정하게 검증했습니다.
+- 울산항만공사 공공데이터 6,028건은 현장 변수와 분포를 이해하는 참고자료로만 사용했습니다.
+- 이번 실험에서는 AI의 보상이 가장 높았지만, 안전재고 정책보다 급유 횟수와 합성비용도 높아 **AI가 무조건 우수하다고 결론 내리지 않았습니다.**
+
+> **한 문장으로:** 선박 급유 시점을 결정하는 여러 전략을 동일한 가상 항해 환경에서 비교하고, 결과 근거까지 다시 확인할 수 있게 만든 프로젝트입니다.
+
+## 프로젝트 구성
 
 병커시유는 선박의 순차 급유 의사결정을 실험하기 위한 강화학습 프로젝트입니다. 합성 항해 환경에서 가격·환율과 운항 상태를 함께 관측하고, 규칙 기반 정책과 학습 정책을 재현 가능한 조건으로 평가합니다.
 
-- **환경**: Gymnasium 기반 `BunkeringEnv`
-- **비교 정책**: Fixed Fueling, Price Reactive, Safe Stock, Double DQN
-- **평가 계약**: 동일한 seed·episode·환경설정과 공통 결과 스키마
-- **근거 관리**: canonical CSV·JSON, 체크포인트 해시, 논문 근거감사
-- **도메인 참고**: 울산항만공사 벙커링정박지 신청현황 6,028건
+- **실험 환경**: 선박 상태와 시장 조건을 재현한 Gymnasium 기반 `BunkeringEnv`
+- **비교 정책**: 고정 급유, 가격 반응형, 안전재고, Double DQN 학습 정책
+- **공정한 비교**: 동일한 난수 조건(seed)·평가 횟수(episode)·환경설정과 공통 결과 형식
+- **근거 관리**: 공식 CSV·JSON, 체크포인트 해시, 논문 근거감사
+- **현장 참고자료**: 울산항만공사 벙커링정박지 신청현황 6,028건
 
 ```mermaid
 flowchart LR
@@ -46,21 +57,28 @@ flowchart LR
 
 ## 공식 동일조건 평가
 
+### 결과를 쉽게 읽으면
+
+- **Safe Stock(안전재고)**: 항해 성공률 100%, 평균 급유 1회로 안정적인 결과를 보였습니다.
+- **Double DQN(학습 정책)**: 항해 성공률 100%와 가장 높은 평균 보상을 기록했지만, 평균 급유횟수와 Synthetic Cost Index도 가장 높았습니다.
+- **Fixed Fueling·Price Reactive**: 현재 설정에서는 연료고갈률이 높아 안정적인 항해 전략으로 보기 어려웠습니다.
+- **결론**: 정책마다 안전성·보상·비용의 장단점이 달랐으며, 이번 결과만으로 학습 정책의 전반적인 우위를 주장하지 않습니다.
+
 Rule-based 3종과 Double DQN의 **공식 동일조건 성능비교를 수행했으며**, 정본은
 [`results/evaluation_results.csv`](results/evaluation_results.csv)와
 [`results/evaluation_manifest.json`](results/evaluation_manifest.json)입니다.
 
 | 정책 | 평균 Reward | Synthetic Cost Index | 성공률 | 연료고갈률 | 평균 급유횟수 |
 |---|---:|---:|---:|---:|---:|
-| Fixed Fueling | -2.030 | 0 | 0% | 100% | 0.00 |
-| Price Reactive | -1.952 | 17,370 | 3% | 97% | 0.08 |
-| Safe Stock | -0.493 | 545,393 | 100% | 0% | 1.00 |
-| Double DQN | 0.044 | 847,118 | 100% | 0% | 5.31 |
+| Fixed Fueling (고정 급유) | -2.030 | 0 | 0% | 100% | 0.00 |
+| Price Reactive (가격 반응형) | -1.952 | 17,370 | 3% | 97% | 0.08 |
+| Safe Stock (안전재고) | -0.493 | 545,393 | 100% | 0% | 1.00 |
+| Double DQN (학습 정책) | 0.044 | 847,118 | 100% | 0% | 5.31 |
 
 ![공식 동일조건 평가 비교 그래프](results/evaluation/comparison.png)
 
-> **해석 범위**  
-> 위 결과는 학습 seed 42로 한 번 학습한 단일 모델을 평가 seed 42~141의 100개 에피소드에서 검증한 값입니다. 표준편차는 학습 반복 간 분산이 아니라 평가 에피소드 간 분산입니다. Double DQN은 평균 reward가 높지만 Safe Stock보다 Synthetic Cost Index와 급유횟수도 높으므로, 전체적인 우수성을 주장하지 않습니다.
+> **정확한 해석 범위**  
+> 위 결과는 난수 조건(seed) 42로 한 번 학습한 단일 모델을, 평가 난수 조건 42~141의 가상 항해 100회(episode)에서 검증한 값입니다. 표준편차는 여러 번 다시 학습했을 때의 차이가 아니라 평가 항해별 차이를 나타냅니다. Double DQN은 평균 reward가 높지만 Safe Stock보다 Synthetic Cost Index와 급유횟수도 높으므로, 전체적인 우수성을 주장하지 않습니다.
 
 공식 체크포인트 `dqn_final.pt`는 [GitHub Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)에 보존되어 있습니다.
 
@@ -99,7 +117,7 @@ pytest tests -q
 python -m scripts.audit_paper_evidence
 ```
 
-`scripts/evaluate.py`는 학습 없이 체크포인트를 불러와 네 정책을 동일한 seed·episode·환경설정에서 greedy 평가합니다.
+`scripts/evaluate.py`는 학습 없이 저장된 AI 모델(checkpoint)을 불러와 네 개 정책을 동일한 난수 조건(seed)·평가 횟수(episode)·환경설정에서 평가합니다.
 
 ## 저장소 구성
 
