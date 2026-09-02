@@ -63,6 +63,9 @@ pytest tests -q
 동일한 seed·episode·환경설정에서 greedy 평가만 수행합니다. 실행 절차·산출물·관측 수치는
 [`docs/technical/official_evaluation.md`](docs/technical/official_evaluation.md)에 있습니다.
 
+합성환경 성능과 실제 운항에서의 인과효과를 구분하고, 그림자 평가·제한적 전향 평가·단계적
+도입으로 검증하는 기준은 [`docs/technical/causal_operational_validation.md`](docs/technical/causal_operational_validation.md)에 있습니다.
+
 `runs/`, `checkpoints/`, 일반 `results/`, `handoff_notes/`는 생성 산출물 또는 검토
 자료이므로 Git에서 제외됩니다. 제출 근거로 버전 관리하는 산출물은 공공데이터 요약
 (`results/public_data/`), 감사 리포트(`results/paper_audit/`), 공식 평가 결과
