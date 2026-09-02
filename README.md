@@ -1,5 +1,9 @@
 # bunkering-ai
 
+![병커시유 프로젝트 대표 이미지](docs/assets/bunkering-project-hero.png)
+
+> 가격·환율·연료잔량·운항조건을 함께 고려하는 선박 벙커시유 의사결정 프로젝트
+
 선박 벙커시유 의사결정을 위한 강화학습 프로젝트입니다. 합성 항해 환경에서 rule-based
 baseline 3종과 Double DQN을 평가합니다. 두 진영의 공식 동일조건 성능비교를 수행했으며,
 정본 결과는 `results/evaluation_results.csv`와 `results/evaluation_manifest.json`입니다.
