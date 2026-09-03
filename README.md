@@ -39,7 +39,7 @@ Rule-based 3종과 Double DQN을 동일한 평가계약으로 비교합니다.
 
 <div align="center">
 
-<img src="docs/assets/bunkering-ai-decision-system-hero-v2.png" alt="가격·환율·연료·항로 상태를 입력받아 항만과 급유 행동을 선택하는 병커시유 의사결정 흐름" width="1000">
+<img src="docs/assets/bunkering-ai-decision-system-hero-v2.jpg" alt="가격·환율·연료·항로 상태를 입력받아 항만과 급유 행동을 선택하는 병커시유 의사결정 흐름" width="1000">
 
 </div>
 
