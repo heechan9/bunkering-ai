@@ -5,6 +5,10 @@ Rule-based 3종과 Double DQN을 **같은 seed·episode·환경설정**에서 �
 평가 규격은 [`evaluation_contract.md`](evaluation_contract.md)를 따르고,
 산출물 검증은 [`paper_evidence_audit.md`](paper_evidence_audit.md)의 `CLAIM-007`이 담당한다.
 
+이 문서의 100-seed 4정책 결과가 **정본**이다. Rule-based 3종만 seed 200개로 확장한
+독립 강건성 검증은 [`rulebased_robustness.md`](rulebased_robustness.md)에 분리해 두었고,
+여기의 수치를 대체하지 않는다.
+
 ## 1. 실행 절차
 
 ```bash

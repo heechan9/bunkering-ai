@@ -1,0 +1,4 @@
+policy,episodes,reward_mean,reward_std_ddof0,sci_mean,sci_std_ddof0,success_mean,success_std_ddof0,fuel_depletion_mean,fuel_depletion_std_ddof0,bunkering_count_mean,bunkering_count_std_ddof0,term_arrived,term_fuel_depleted,term_timeout
+fixed_fueling,200,-2.0300000000000007,4.440892098500626e-16,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0,200,0
+price_reactive,200,-1.9538866049338532,0.27763830878765383,18276.20921215849,107958.96860127074,0.03,0.1705872210923198,0.97,0.1705872210923198,0.095,0.732103134810936,6,194,0
+safe_stock,200,-0.49188732624168957,0.012178397881650663,556271.3391248357,62414.99314055228,1.0,0.0,0.0,0.0,1.0,0.0,200,0,0
