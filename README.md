@@ -18,7 +18,7 @@
 가격·환율·연료잔량·잔여항로를 함께 고려하고,  
 Rule-based 3종과 Double DQN을 동일한 평가계약으로 비교합니다.
 
-[공식 평가](#공식-동일조건-평가) · [공공데이터](#공공데이터-활용) · [재현 방법](#빠른-시작) · [기술문서](#문서-안내) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
+[공식 평가](docs/technical/official_evaluation.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [기술문서](docs/technical/state_action_reward_spec.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
 
 </div>
 
