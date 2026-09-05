@@ -6,6 +6,7 @@ results/*
 !results/public_data/
 !results/paper_audit/
 !results/evaluation/
+!results/robustness/
 !results/evaluation_results.csv
 !results/evaluation_manifest.json
 runs/
