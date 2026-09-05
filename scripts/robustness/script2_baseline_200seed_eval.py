@@ -26,10 +26,13 @@ Exact commands used:
     cd bunkering-ai
     git checkout f915df9922b63bade92c2efba0f7c74f66c21316   # main HEAD at run time
     pip install -r requirements.txt
-    python script2_baseline_200seed_eval.py
+    python scripts/robustness/script2_baseline_200seed_eval.py
 
 The script must be run from the repository root (it imports envs.bunkering_env
 and scripts.baseline directly, matching what scripts/evaluate.py itself does).
+It writes its four output files straight into results/robustness/ (creating that
+directory if needed), so a re-run reproduces the committed artifacts in place
+with no manual file moving.
 `envs/bunkering_env.py` imports `gymnasium`, so gymnasium must be installed —
 plain `pip install numpy pandas` is NOT sufficient and will fail at the
 `from envs.bunkering_env import BunkeringEnv` import.
@@ -99,6 +102,10 @@ STRATEGIES = {
 }
 STABILITY_WINDOWS = [20, 50, 100, 150, 200]
 
+# Outputs are written here directly (relative to the repository root, which is
+# also the required CWD) so a re-run overwrites the committed artifacts in place.
+OUTPUT_DIR = Path("results/robustness")
+
 
 def run_episode(strategy, seed: int) -> dict:
     env = BunkeringEnv(**ENV_CONFIG)
@@ -128,6 +135,8 @@ def run_episode(strategy, seed: int) -> dict:
 
 
 def main() -> None:
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
     all_rows = []
     for name, strat in STRATEGIES.items():
         for i in range(N_EPISODES):
@@ -136,7 +145,7 @@ def main() -> None:
             row["policy"] = name
             all_rows.append(row)
 
-    raw_path = Path("independent_eval_raw_with_episode.csv")
+    raw_path = OUTPUT_DIR / "independent_eval_raw_with_episode.csv"
     fieldnames = [
         "policy", "seed", "episode", "reward", "synthetic_cost_index",
         "success", "fuel_depletion", "bunkering_count", "termination_reason",
@@ -208,11 +217,12 @@ def main() -> None:
             for i in range(N_EPISODES)
         ],
     }
-    with open("independent_eval_manifest.json", "w", encoding="utf-8") as f:
+    manifest_path = OUTPUT_DIR / "independent_eval_manifest.json"
+    with manifest_path.open("w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
 
-    pd.DataFrame(summary_rows).to_csv("independent_eval_summary_final.csv", index=False)
-    pd.DataFrame(stability_rows).to_csv("independent_eval_stability_final.csv", index=False)
+    pd.DataFrame(summary_rows).to_csv(OUTPUT_DIR / "independent_eval_summary_final.csv", index=False)
+    pd.DataFrame(stability_rows).to_csv(OUTPUT_DIR / "independent_eval_stability_final.csv", index=False)
 
     print(pd.DataFrame(summary_rows).to_string(index=False))
     print()

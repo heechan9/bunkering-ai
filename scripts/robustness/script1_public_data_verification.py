@@ -13,7 +13,7 @@ Reproduction
     cd bunkering-ai
     git checkout f915df9922b63bade92c2efba0f7c74f66c21316   # main HEAD at run time
     pip install pandas numpy
-    python script1_public_data_verification.py
+    python scripts/robustness/script1_public_data_verification.py
 
     (This script only needs pandas/numpy — it reads the CSV directly and does
      not import envs/ or scripts/, so gymnasium is not required here. See

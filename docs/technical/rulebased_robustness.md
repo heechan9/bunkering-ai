@@ -55,8 +55,9 @@ numpy pandas`만으로는 임포트 단계에서 실패한다. 최소 구성으�
 필요). `requirements.txt`가 나열하는 torch·tensorboard·matplotlib·plotly·streamlit은
 두 스크립트 모두 임포트하지 않는다.
 
-`script2`는 산출물을 **CWD에 쓴다.** 위 명령을 루트에서 실행하면 루트에 생성되므로,
-저장소에 반영할 때는 `results/robustness/`로 옮긴다. 커밋된 4개 파일이 그 결과다.
+`script2`는 산출물을 **`results/robustness/`에 직접 쓴다**(디렉터리가 없으면 생성).
+루트에서 위 명령을 실행하면 커밋된 4개 파일이 제자리에서 그대로 덮어써지므로, 파일을
+옮기는 수동 단계는 없다.
 
 ### 공공데이터 무결성 실패 처리
 
