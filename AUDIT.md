@@ -1,6 +1,6 @@
 # Final Independent Audit Report: heechan9/bunkering-ai
 
-**Audit Date:** September 5, 2026
+**Audit Date:** September 6, 2026
 **Auditor:** Jules (Independent Senior Software Engineer)
 **Target Repository:** `heechan9/bunkering-ai`
 **Overall Status:** **PASS**
@@ -13,6 +13,9 @@
 - **Python Version:** Python 3.12.13
 - **Operating System:** Linux devbox `6.8.0-2026-x86_64` (#1 SMP PREEMPT_DYNAMIC)
 - **Key Dependencies:** `gymnasium` 1.3.0, `pandas` 3.0.5, `numpy` 2.5.2, `torch` 2.14.0, `pytest` 9.1.1
+- **Script Dependencies:**
+  - `scripts/robustness/script1_public_data_verification.py` requires `pandas` and `numpy` (it does not import or require `gymnasium`).
+  - `scripts/robustness/script2_baseline_200seed_eval.py` imports `envs.bunkering_env` and requires `numpy`, `pandas`, and `gymnasium`.
 
 ---
 
@@ -44,10 +47,10 @@ The independent 200-seed evaluation was executed via `python3 scripts/robustness
 
 For the 100 seeds (seeds 42–141, 300 policy×seed episodes) shared between the official 100-seed evaluation and the 200-seed robustness run:
 
-- **Fixed Fueling:** 100/100 episodes matched official artifacts byte/float-identical (Reward: -2.030, SCI: 0.0, Bunkering Count: 0, Termination: `fuel_depleted`).
-- **Price Reactive:** 100/100 episodes matched official artifacts byte/float-identical across Reward, Synthetic Cost Index, Bunkering Count, and Termination Reason.
-- **Safe Stock:** 100/100 episodes matched official artifacts byte/float-identical (Reward mean ~ -0.493, SCI mean ~ 545,393, Bunkering Count: 1.0, Termination: `arrived`).
-- **Conclusion:** Zero mismatches across all 300 overlapping policy×seed episodes.
+- **Fixed Fueling:** 100/100 episodes matched official artifacts with field-wise exact equality (Reward: -2.030, SCI: 0.0, Bunkering Count: 0, Termination: `fuel_depleted`).
+- **Price Reactive:** 100/100 episodes matched official artifacts with field-wise exact equality across Reward, Synthetic Cost Index, Bunkering Count, and Termination Reason.
+- **Safe Stock:** 100/100 episodes matched official artifacts with field-wise exact equality (Reward mean ~ -0.493, SCI mean ~ 545,393, Bunkering Count: 1.0, Termination: `arrived`).
+- **Conclusion:** Zero mismatches across all 300 overlapping policy×seed episodes when verified field-by-field.
 
 ---
 
@@ -126,12 +129,12 @@ All numbers in `README.md` and documentation were checked against canonical CSV 
 ### Verified Facts
 1. Main branch commit `9a4ac01d4e11b0808204f5b2a6dace02c7ad2911` passes all automated tests (144/144) and paper evidence audits (8/8).
 2. PR #24 introduced 200-seed robustness testing without altering any official 100-seed evaluation artifacts or core system logic.
-3. Overlapping seeds 42-141 produce 100% identical results between official and robustness harnesses.
+3. Overlapping seeds 42-141 produce 100% identical results with field-wise exact equality between official and robustness harnesses.
 4. Public data verifier enforces runtime SHA-256 integrity and fails loudly on data modifications.
 5. All public claims adhere strictly to verified, unexaggerated simulation boundaries.
 
 ### Inferred Risks
-- *Environment Dependency:* Re-running `script1` or `script2` requires `gymnasium` and `pandas`. Standard `pip install -r requirements.txt` fulfills all requirements.
+- *Environment Dependency:* Re-running `script1` requires `pandas` and `numpy`, while `script2` additionally requires `gymnasium`. Standard `pip install -r requirements.txt` fulfills all requirements.
 
 ### Recommendations
 - Maintain the current automated pre-commit and paper evidence audit scripts for future PRs.
