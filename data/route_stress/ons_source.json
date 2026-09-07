@@ -1,0 +1,16 @@
+{
+  "dataset": "Weekly ship crossings by ship type through six global maritime passages",
+  "publisher": "UK Office for National Statistics",
+  "release_date": "2024-04-24",
+  "source_url": "https://www.ons.gov.uk/file?uri=%2Fbusinessindustryandtrade%2Finternationaltrade%2Fdatasets%2Fweeklyshipcrossingsbyshiptypethroughsixglobalmaritimepassages%2Fcurrent%2Fupload-weeklyshipcrossingsbyshiptypethroughsixglobalmaritimepassages.csv",
+  "retrieved_at_utc": "2026-09-07T16:22:27Z",
+  "license": "Open Government Licence v3.0",
+  "sha256": "fc94f713f1dc43f248faab34244bf61f109169de35788e34e717ed87e67def10",
+  "raw_file_committed": false,
+  "reason": "The minimum slice pins provenance and parser contract; raw data ingestion remains an explicit follow-up.",
+  "limitations": [
+    "Official statistics in development and subject to revision.",
+    "AIS noise or missing reception can omit or misidentify crossings.",
+    "Traffic change does not establish route closure or individual-vessel diversion."
+  ]
+}
