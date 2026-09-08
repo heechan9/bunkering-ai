@@ -32,3 +32,22 @@ The baseline at week *t* is an expanding mean of weeks strictly before *t*,
 separately for each passage and vessel type. The first four observations remain
 missing by design. This artifact describes traffic conditions only; it is not a
 policy-performance result and is not joined row-by-row to UPA data.
+
+## Representative Rule-based stress evaluation
+
+Run `python -m scripts.route_stress.evaluate_rulebased`. This is a separate
+100-seed exploratory evaluation and never writes to the official evaluation or
+robustness directories.
+
+For the Suez/Cape scenario, the Suez Canal Authority's Singapore–Rotterdam
+comparison is used: 8,288 nautical miles through Suez and 11,755 nautical miles
+around the Cape. The 1.4183 distance multiplier scales the synthetic 30-step
+route to 43 steps using ceiling rounding. This is a representative route
+assumption, not evidence that any specific vessel diverted.
+
+No speed, elapsed time, fuel tonnes, insurance premium, fuel price, or monetary
+saving is inferred. Hormuz contraction remains observation-only because an
+equivalent sea bypass is not established; with identical seeds its policy rows
+must exactly match the normal synthetic environment. Output under
+`results/route_stress/rulebased_100seed/` is git-ignored and explicitly separate
+from the canonical four-policy comparison.
