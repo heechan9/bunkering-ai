@@ -2,7 +2,13 @@ import pandas as pd
 import pytest
 
 from envs.bunkering_env import BunkeringEnv, STATE_VARS
-from route_stress import RouteStressAdapter, RouteStressScenario, parse_ons_crossings
+from route_stress import (
+    RouteStressAdapter,
+    RouteStressScenario,
+    add_past_only_baseline,
+    parse_ons_crossings,
+)
+from route_stress.source import verify_sha256
 
 
 def _write_ons_csv(tmp_path, rows):
@@ -107,3 +113,34 @@ def test_negative_assumption_is_rejected():
             disruption_level="moderate",
             detour_distance_nm=-1,
         )
+
+
+def test_baseline_uses_only_prior_weeks(tmp_path):
+    rows = [
+        {
+            "Passage": "Suez Canal",
+            "Ship Type": "Cargo",
+            "Number of crossings": count,
+            "Year": 2024,
+            "Week of entry": week,
+        }
+        for week, count in enumerate([10, 20, 30, 40], start=1)
+    ]
+    parsed = parse_ons_crossings(_write_ons_csv(tmp_path, rows))
+
+    result = add_past_only_baseline(parsed, min_history_weeks=2)
+
+    assert pd.isna(result.loc[0, "transit_baseline"])
+    assert pd.isna(result.loc[1, "transit_baseline"])
+    assert result.loc[2, "transit_baseline"] == pytest.approx(15.0)
+    assert result.loc[3, "transit_baseline"] == pytest.approx(20.0)
+
+
+def test_baseline_rejects_zero_history_window():
+    with pytest.raises(ValueError, match="at least 1"):
+        add_past_only_baseline(pd.DataFrame(), min_history_weeks=0)
+
+
+def test_sha_verifier_fails_closed_on_changed_content():
+    with pytest.raises(ValueError, match="SHA-256 mismatch"):
+        verify_sha256(b"changed", "0" * 64)
