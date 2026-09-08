@@ -25,6 +25,8 @@ minimum slice.
 Run `python -m scripts.route_stress.analyze_ons`. The command downloads the ONS
 CSV, refuses to write it when the pinned SHA-256 differs, removes the publisher's
 footer rows, and writes `results/route_stress/ons_past_only_baseline.csv`.
+The generated CSV is reproducible and intentionally git-ignored; canonical
+official evaluation artifacts remain unchanged.
 
 The baseline at week *t* is an expanding mean of weeks strictly before *t*,
 separately for each passage and vessel type. The first four observations remain
