@@ -7,6 +7,7 @@ results/*
 !results/paper_audit/
 !results/evaluation/
 !results/robustness/
+!results/route_stress/
 !results/evaluation_results.csv
 !results/evaluation_manifest.json
 runs/

@@ -61,3 +61,40 @@ def parse_ons_crossings(path: str | Path) -> pd.DataFrame:
     return result.sort_values(
         ["observation_date", "chokepoint_id", "vessel_type"]
     ).reset_index(drop=True)
+
+
+def add_past_only_baseline(
+    frame: pd.DataFrame, *, min_history_weeks: int = 4
+) -> pd.DataFrame:
+    """Add an expanding baseline using observations strictly before each week.
+
+    Ratios remain missing until the requested amount of history exists. This
+    prevents future observations from leaking into a historical decision point.
+    """
+    if min_history_weeks < 1:
+        raise ValueError("min_history_weeks must be at least 1")
+    required = {
+        "chokepoint_id",
+        "vessel_type",
+        "transit_count",
+        "observation_date",
+    }
+    missing = required.difference(frame.columns)
+    if missing:
+        raise ValueError(f"missing normalized columns: {sorted(missing)}")
+
+    result = frame.sort_values(
+        ["chokepoint_id", "vessel_type", "observation_date"]
+    ).copy()
+    groups = result.groupby(["chokepoint_id", "vessel_type"], sort=False)[
+        "transit_count"
+    ]
+    result["transit_baseline"] = groups.transform(
+        lambda series: series.shift(1).expanding(min_periods=min_history_weeks).mean()
+    )
+    result["transit_baseline_ratio"] = (
+        result["transit_count"] / result["transit_baseline"]
+    )
+    return result.sort_values(
+        ["observation_date", "chokepoint_id", "vessel_type"]
+    ).reset_index(drop=True)
