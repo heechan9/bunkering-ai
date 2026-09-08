@@ -10,12 +10,16 @@ import argparse
 import json
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 from envs.bunkering_env import BunkeringEnv
 from route_stress import get_route_impact
-from scripts.evaluate import CHECKPOINT_ARCHIVE, DoubleDQNPolicy, file_sha256, load_dqn_policy
+from scripts.evaluate import (
+    CHECKPOINT_ARCHIVE,
+    DoubleDQNPolicy,
+    file_sha256,
+    load_dqn_policy,
+)
 from scripts.route_stress.evaluate_rulebased import SCENARIOS, summarize
 
 
@@ -23,7 +27,9 @@ DEFAULT_CHECKPOINT = Path("checkpoints/dqn_final.pt")
 DEFAULT_OUTPUT_DIR = Path("results/route_stress/frozen_double_dqn_100seed")
 
 
-def run_episode(policy: DoubleDQNPolicy, scenario_id: str, seed: int, episode: int) -> dict:
+def run_episode(
+    policy: DoubleDQNPolicy, scenario_id: str, seed: int, episode: int
+) -> dict:
     """Run greedy inference without training or mutating the checkpoint."""
     impact = get_route_impact(scenario_id)
     env = BunkeringEnv(**impact.env_config())
@@ -105,7 +111,8 @@ def main(argv: list[str] | None = None) -> int:
         "std_convention": "population standard deviation (numpy.std, ddof=0)",
         "claim_boundary": (
             "Single training-seed checkpoint in a representative synthetic scenario; "
-            "not retraining, actual-voyage, fuel, cost, deployment, or realized-diversion validation."
+            "not retraining, actual-voyage, fuel, cost, deployment, or "
+            "realized-diversion validation."
         ),
     }
     with (args.output_dir / "manifest.json").open("w", encoding="utf-8") as handle:

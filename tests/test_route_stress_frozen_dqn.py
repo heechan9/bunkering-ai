@@ -44,7 +44,9 @@ def test_frozen_dqn_normal_and_observation_only_rows_match():
         "termination_reason",
     ]
     normal = raw[raw["scenario_id"] == "normal"][columns].reset_index(drop=True)
-    hormuz = raw[raw["scenario_id"] == "hormuz_observation_only"][columns].reset_index(drop=True)
+    hormuz = raw[raw["scenario_id"] == "hormuz_observation_only"][
+        columns
+    ].reset_index(drop=True)
 
     assert normal.equals(hormuz)
 
