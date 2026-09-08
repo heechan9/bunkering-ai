@@ -119,6 +119,11 @@ Double DQN은 이 보상설계에서 가장 높은 평균 reward를 보였지만
 
 Rule-based 3종은 별도 하네스로 seed 200개까지 확장한 독립 강건성 검증을 따로 두었습니다([문서](docs/technical/rulebased_robustness.md)). 위 공식 100-seed 결과를 대체하지 않는 부록이며, 겹치는 100개 seed에서 두 결과는 에피소드 단위로 완전히 일치합니다.
 
+Suez/Cape 대표 우회 가정과 Hormuz 관찰 전용 조건에 대한 별도 route-stress
+민감도 평가도 제공합니다. 공개 Release의 frozen Double DQN 체크포인트를 재학습
+없이 평가하며, 43-step 조건은 실제 운항 검증이나 일반화 성능 주장이 아닌 합성
+환경의 탐색적 시나리오입니다([문서](docs/technical/route_stress_minimum_slice.md)).
+
 ## 공공데이터 활용
 
 공공데이터포털의 울산항만공사 `벙커링정박지 신청현황` 6,028건을 분석하여 총톤수·벙커량·예정 시작일·종료일 등 실제 업무변수의 구조와 분포를 확인했습니다.
@@ -146,6 +151,10 @@ python scripts/train.py --seed 42 --checkpoint checkpoints/dqn_final.pt
 # 저장 체크포인트 독립 평가
 python scripts/evaluate.py --episodes 100 --seed 42 --checkpoint checkpoints/dqn_final.pt
 
+# Route-stress 탐색 평가(공식 평가와 별도)
+python -m scripts.route_stress.evaluate_rulebased
+python -m scripts.route_stress.evaluate_frozen_dqn --checkpoint checkpoints/dqn_final.pt
+
 # 전체 검증
 pytest tests -q
 python -m scripts.audit_paper_evidence
@@ -161,6 +170,7 @@ python -m scripts.audit_paper_evidence
 | `envs/` | Gymnasium 기반 `BunkeringEnv` |
 | `configs/` | 학습 하이퍼파라미터 |
 | `evaluation/` | 공통 평가계약과 논문 근거감사 |
+| `route_stress/` | 출처·가정이 분리된 항로 스트레스 시나리오 |
 | `scripts/` | 기준선·학습·평가·데이터 분석 CLI |
 | `data/public/` | 출처와 해시를 기록한 공공데이터 |
 | `results/evaluation/` | 공식 동일조건 평가 요약과 시각화 |
@@ -175,6 +185,7 @@ python -m scripts.audit_paper_evidence
 | [공식 평가](docs/technical/official_evaluation.md) | 실행 조건·산출물·체크포인트 검증 |
 | [논문 근거감사](docs/technical/paper_evidence_audit.md) | 문서·코드·정본 근거 일관성 검사 |
 | [Rule-based 강건성 검증](docs/technical/rulebased_robustness.md) | 공식 결과와 분리된 200-seed 독립 재현 |
+| [Route-stress 최소 슬라이스](docs/technical/route_stress_minimum_slice.md) | 해외 항로 근거·대표 가정·frozen DQN 민감도 평가 |
 | [운항 검증 로드맵](docs/technical/causal_operational_validation.md) | 합성환경과 실제 운항 효과의 구분 |
 | [직무 연계 가이드](docs/ROLE_ALIGNMENT.md) | 구현 증거·직무 연결·주장 한계 |
 | [기여 정책](CONTRIBUTIONS.md) | 사람·AI 협업 역할과 검증 원칙 |
