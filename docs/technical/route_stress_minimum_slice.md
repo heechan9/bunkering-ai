@@ -51,3 +51,37 @@ equivalent sea bypass is not established; with identical seeds its policy rows
 must exactly match the normal synthetic environment. Output under
 `results/route_stress/rulebased_100seed/` is git-ignored and explicitly separate
 from the canonical four-policy comparison.
+
+## Frozen Double DQN stress evaluation
+
+Run `python -m scripts.route_stress.evaluate_frozen_dqn` after downloading the
+published `dqn_final.pt` checkpoint described in `official_evaluation.md`. The
+script loads that exact checkpoint once, switches its policy network to eval
+mode, and performs greedy inference only; it never trains or updates weights.
+
+The same evaluation seeds and the same three route-impact assumptions used by
+the Rule-based stress run are applied. The 43-step Suez/Cape environment is an
+out-of-distribution synthetic sensitivity test for a model trained in the
+30-step environment, not evidence of policy generalization or operational
+performance. Results are written below
+`results/route_stress/frozen_double_dqn_100seed/`, remain git-ignored, and do
+not replace or modify the canonical four-policy comparison.
+
+### Observed 100-seed sensitivity result
+
+The published checkpoint (`sha256: 970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392`)
+was evaluated over seeds 42–141. Population standard deviation (`ddof=0`) is
+reported for reward.
+
+| Scenario | Steps | Reward mean ± std | Synthetic Cost Index mean | Success | Fuel depletion | Bunkering mean |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Normal | 30 | 0.0443 ± 0.0579 | 847,117.9 | 100% | 0% | 5.31 |
+| Hormuz observation only | 30 | 0.0443 ± 0.0579 | 847,117.9 | 100% | 0% | 5.31 |
+| Suez/Cape representative | 43 | 0.0748 ± 0.0843 | 1,269,622.0 | 100% | 0% | 8.70 |
+
+Normal and Hormuz rows match exactly by design because the Hormuz fixture does
+not invent a bypass effect. In the longer Suez/Cape scenario, the frozen model
+still completed every synthetic episode, while both the mean Synthetic Cost
+Index and mean bunkering count increased. The higher reward therefore must not
+be presented as lower cost or overall superiority. This is a one-checkpoint
+sensitivity result; it does not establish robustness across training seeds.
