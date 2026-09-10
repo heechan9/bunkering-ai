@@ -1,7 +1,7 @@
 import pytest
 
 from route_stress import RouteImpactAssumption, get_route_impact
-from scripts.route_stress.evaluate_rulebased import run_evaluation
+from scripts.route_stress.evaluate_rulebased import run_evaluation, summarize
 
 
 def test_sca_representative_route_scales_30_steps_to_43():
@@ -48,3 +48,18 @@ def test_normal_and_hormuz_rows_match_for_same_seed_and_policy():
     hormuz = raw[raw["scenario_id"] == "hormuz_observation_only"][columns].reset_index(drop=True)
 
     assert normal.equals(hormuz)
+
+
+def test_summary_normalizes_cumulative_metrics_by_realized_steps():
+    raw = run_evaluation(n_seeds=1, base_seed=42)
+    summary = summarize(raw)
+    safe_stock = summary[
+        (summary["scenario_id"] == "suez_cape_representative")
+        & (summary["policy"] == "safe_stock")
+    ].iloc[0]
+
+    assert safe_stock["steps_mean"] == 43
+    assert safe_stock["sci_per_30_steps_mean"] == pytest.approx(
+        safe_stock["sci_mean"] / 43 * 30
+    )
+    assert safe_stock["bunkering_per_30_steps_mean"] == pytest.approx(2 / 43 * 30)

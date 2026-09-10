@@ -55,6 +55,7 @@ def run_episode(
         "episode": episode,
         "max_steps": impact.scenario_max_steps,
         "distance_multiplier": impact.distance_multiplier,
+        "steps": step_index,
         "reward": total_reward,
         "synthetic_cost_index": info["cumulative_cost_index"],
         "success": info["end_reason"] == "arrived",
@@ -101,6 +102,11 @@ def main(argv: list[str] | None = None) -> int:
         "base_seed": args.base_seed,
         "n_seeds": args.seeds,
         "scenarios": [get_route_impact(value).to_manifest() for value in SCENARIOS],
+        "scenario_roles": {
+            "normal": "quantitative reference",
+            "suez_cape_representative": "quantitative synthetic sensitivity",
+            "hormuz_observation_only": "contextual negative control; no quantitative shock applied",
+        },
         "policies": [policy.name],
         "checkpoint": {
             "path": args.checkpoint.name,
@@ -109,6 +115,10 @@ def main(argv: list[str] | None = None) -> int:
             "metadata": policy.agent.checkpoint_metadata,
         },
         "std_convention": "population standard deviation (numpy.std, ddof=0)",
+        "normalization": (
+            "Per-step metrics divide each episode total by its realized step count; "
+            "per-30-step metrics rescale that episode rate by 30 before averaging."
+        ),
         "claim_boundary": (
             "Single training-seed checkpoint in a representative synthetic scenario; "
             "not retraining, actual-voyage, fuel, cost, deployment, or "

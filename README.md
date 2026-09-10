@@ -119,10 +119,12 @@ Double DQN은 이 보상설계에서 가장 높은 평균 reward를 보였지만
 
 Rule-based 3종은 별도 하네스로 seed 200개까지 확장한 독립 강건성 검증을 따로 두었습니다([문서](docs/technical/rulebased_robustness.md)). 위 공식 100-seed 결과를 대체하지 않는 부록이며, 겹치는 100개 seed에서 두 결과는 에피소드 단위로 완전히 일치합니다.
 
-Suez/Cape 대표 우회 가정과 Hormuz 관찰 전용 조건에 대한 별도 route-stress
-민감도 평가도 제공합니다. 공개 Release의 frozen Double DQN 체크포인트를 재학습
-없이 평가하며, 43-step 조건은 실제 운항 검증이나 일반화 성능 주장이 아닌 합성
-환경의 탐색적 시나리오입니다([문서](docs/technical/route_stress_minimum_slice.md)).
+Suez/Cape 대표 우회 가정에 대한 별도 route-stress 민감도 평가도 제공합니다.
+Hormuz 자료는 정량 충격을 적용하지 않는 맥락적 대조군이며 독립 성능 시나리오로
+세지 않습니다. 공개 Release의 frozen Double DQN 체크포인트를 재학습 없이 평가하고,
+누적값과 함께 step 정규화 지표를 제시합니다. 43-step 조건은 실제 운항 검증이나
+일반화 성능 주장이 아닌 합성환경의 탐색적 시나리오입니다
+([문서](docs/technical/route_stress_minimum_slice.md)).
 
 ## 공공데이터 활용
 

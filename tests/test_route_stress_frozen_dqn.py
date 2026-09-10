@@ -31,6 +31,7 @@ def test_frozen_dqn_evaluates_one_policy_across_all_scenarios():
         "suez_cape_representative",
         "hormuz_observation_only",
     }
+    assert (raw["steps"] > 0).all()
 
 
 def test_frozen_dqn_normal_and_observation_only_rows_match():
