@@ -11,7 +11,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Double_DQN-EE4C2C?logo=pytorch&logoColor=white)
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-BunkeringEnv-2D3748)
-![Tests](https://img.shields.io/badge/tests-165_passed-2EA44F)
+![Tests](https://img.shields.io/badge/tests-167_passed-2EA44F)
 ![Evidence Audit](https://img.shields.io/badge/evidence_audit-8%2F8_passed-2EA44F)
 ![Data](https://img.shields.io/badge/UPA_public_data-6%2C028_rows-0054A6)
 
