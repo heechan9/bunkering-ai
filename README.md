@@ -126,6 +126,14 @@ Hormuz 자료는 정량 충격을 적용하지 않는 맥락적 대조군이며 
 일반화 성능 주장이 아닌 합성환경의 탐색적 시나리오입니다
 ([문서](docs/technical/route_stress_minimum_slice.md)).
 
+<div align="center">
+
+<img src="docs/assets/international-evidence-pipeline.jpg" alt="해외 근거를 시험 시나리오 설계에만 사용하고, 동일한 frozen Double DQN을 재학습 없이 평가해 정규화 지표로 비교하는 과정" width="1000">
+
+</div>
+
+> 해외자료는 시험상황을 설계하는 근거이며, AI 학습이나 실제 운항 입력으로 사용하지 않습니다.
+
 ## 공공데이터 활용
 
 공공데이터포털의 울산항만공사 `벙커링정박지 신청현황` 6,028건을 분석하여 총톤수·벙커량·예정 시작일·종료일 등 실제 업무변수의 구조와 분포를 확인했습니다.
