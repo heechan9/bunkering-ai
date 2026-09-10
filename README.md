@@ -130,6 +130,10 @@ Hormuz 자료는 정량 충격을 적용하지 않는 맥락적 대조군이며 
 
 <img src="docs/assets/international-evidence-pipeline.jpg" alt="해외 근거를 시험 시나리오 설계에만 사용하고, 동일한 frozen Double DQN을 재학습 없이 평가해 정규화 지표로 비교하는 과정" width="1000">
 
+<br>
+
+<img src="docs/assets/international-evidence-flow-ko.png" alt="해외 공공자료에서 Suez/Cape 항로 근거와 Hormuz 통항 맥락을 구분하고 frozen Double DQN 평가와 정규화 지표로 연결하는 한글 흐름도" width="720">
+
 </div>
 
 > 해외자료는 시험상황을 설계하는 근거이며, AI 학습이나 실제 운항 입력으로 사용하지 않습니다.
