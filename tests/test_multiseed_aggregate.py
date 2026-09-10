@@ -4,7 +4,13 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from scripts.multiseed.aggregate import aggregate, collect
+from scripts.multiseed.aggregate import (
+    aggregate,
+    aggregate_effects,
+    collect,
+    route_effects,
+    write_markdown_report,
+)
 
 
 def _write_run(root: Path, route_root: Path, seed: int, sha: str, value: float) -> None:
@@ -68,3 +74,45 @@ def test_collect_rejects_checkpoint_mismatch(tmp_path):
 
     with pytest.raises(ValueError, match="checkpoint hash mismatch"):
         collect(official, route)
+
+
+def test_route_effects_are_paired_by_training_seed(tmp_path):
+    per_seed = pd.DataFrame(
+        [
+            {"train_seed": seed, "evaluation": "route_stress", "scenario": scenario,
+             "metric": metric, "value": value, "checkpoint_sha256": str(seed)}
+            for seed, normal, stress in [(42, 100.0, 110.0), (1042, 200.0, 220.0)]
+            for metric in ("sci_per_step_mean", "bunkering_per_30_steps_mean")
+            for scenario, value in (("normal", normal), ("suez_cape_representative", stress))
+        ]
+    )
+
+    effects = route_effects(per_seed)
+    summary = aggregate_effects(effects)
+
+    assert set(effects["percent_change"]) == {10.0}
+    assert set(summary["training_seeds"]) == {2}
+    assert set(summary["percent_change_mean"]) == {10.0}
+
+    report = tmp_path / "summary.md"
+    write_markdown_report(summary, report)
+    text = report.read_text(encoding="utf-8")
+    assert "Independent training seeds: **2**" in text
+    assert "+10.00%" in text
+    assert "not actual-voyage" in text
+
+
+def test_route_effects_require_normal_stress_pair():
+    per_seed = pd.DataFrame(
+        [{
+            "train_seed": 42,
+            "evaluation": "route_stress",
+            "scenario": "normal",
+            "metric": "sci_per_step_mean",
+            "value": 1.0,
+            "checkpoint_sha256": "a" * 64,
+        }]
+    )
+
+    with pytest.raises(ValueError, match="expected paired"):
+        route_effects(per_seed)

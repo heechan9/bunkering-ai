@@ -26,6 +26,17 @@ After every run completes:
 python -m scripts.multiseed.aggregate
 ```
 
+The command writes both audit-oriented tables and publication-oriented outputs:
+
+- `per_training_seed.csv` and `aggregate.csv`: raw long-form and overall summaries
+- `route_stress_effects.csv`: paired Normal-to-Suez/Cape changes per checkpoint
+- `route_stress_effect_summary.csv`: mean and population standard deviation across training seeds
+- `summary.md`: ready-to-review Markdown table with the claim boundary
+- `route_stress_comparison.png`: general-audience Normal vs Suez/Cape figure
+
+The seed count is discovered from completed, paired result directories; rerunning the
+same command safely regenerates the report after another seed finishes.
+
 The aggregator fails closed when the evaluation contracts, training-seed
 metadata, or checkpoint SHA-256 values disagree. It reports population standard
 deviation across independently trained checkpoints separately from within-run

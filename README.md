@@ -11,7 +11,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Double_DQN-EE4C2C?logo=pytorch&logoColor=white)
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-BunkeringEnv-2D3748)
-![Tests](https://img.shields.io/badge/tests-139_passed-2EA44F)
+![Tests](https://img.shields.io/badge/tests-167_passed-2EA44F)
 ![Evidence Audit](https://img.shields.io/badge/evidence_audit-8%2F8_passed-2EA44F)
 ![Data](https://img.shields.io/badge/UPA_public_data-6%2C028_rows-0054A6)
 
@@ -171,8 +171,11 @@ python scripts/evaluate.py --episodes 100 --seed 42 --checkpoint checkpoints/dqn
 python -m scripts.route_stress.evaluate_rulebased
 python -m scripts.route_stress.evaluate_frozen_dqn --checkpoint checkpoints/dqn_final.pt
 
+# 선택: 독립 학습 seed 결과의 페어드 route-stress 집계
+python -m scripts.multiseed.aggregate
+
 # 전체 검증
-pytest tests -q
+python -m pytest -q
 python -m scripts.audit_paper_evidence
 ```
 
@@ -202,6 +205,7 @@ python -m scripts.audit_paper_evidence
 | [논문 근거감사](docs/technical/paper_evidence_audit.md) | 문서·코드·정본 근거 일관성 검사 |
 | [Rule-based 강건성 검증](docs/technical/rulebased_robustness.md) | 공식 결과와 분리된 200-seed 독립 재현 |
 | [Route-stress 최소 슬라이스](docs/technical/route_stress_minimum_slice.md) | 해외 항로 근거·대표 가정·frozen DQN 민감도 평가 |
+| [다중 학습 seed 평가](docs/technical/multiseed_evaluation.md) | 독립 체크포인트 검증·페어드 효과·자동 보고서 생성 |
 | [운항 검증 로드맵](docs/technical/causal_operational_validation.md) | 합성환경과 실제 운항 효과의 구분 |
 | [직무 연계 가이드](docs/ROLE_ALIGNMENT.md) | 구현 증거·직무 연결·주장 한계 |
 | [기여 정책](CONTRIBUTIONS.md) | 사람·AI 협업 역할과 검증 원칙 |
