@@ -45,11 +45,18 @@ around the Cape. The 1.4183 distance multiplier scales the synthetic 30-step
 route to 43 steps using ceiling rounding. This is a representative route
 assumption, not evidence that any specific vessel diverted.
 
+Only the episode horizon changes. All other environment dynamics and
+distributions remain those of Normal; no route-specific speed, weather,
+current, or fuel-consumption adjustment is applied. The scenario therefore
+does not represent the additional meteorological or ocean-current exposure of
+an actual Cape voyage and may understate real operational stress.
+
 No speed, elapsed time, fuel tonnes, insurance premium, fuel price, or monetary
-saving is inferred. Hormuz contraction is a **contextual negative control**, not
-a third independent quantitative shock: an equivalent sea bypass is not
-established, so no operational effect is applied and, with identical seeds, its
-policy rows must exactly match the normal synthetic environment. Output under
+saving is inferred. For Hormuz, the design choice is to leave the environment
+unchanged because an equivalent sea bypass is not established. It is therefore
+reported as a **contextual negative control**, not a third independent
+quantitative shock; with identical seeds, its policy rows must exactly match the
+normal synthetic environment. Output under
 `results/route_stress/rulebased_100seed/` is git-ignored and explicitly separate
 from the canonical four-policy comparison.
 
@@ -90,6 +97,13 @@ descriptive differences do not isolate a causal route-stress effect. The higher
 reward therefore must not be presented as lower cost or overall superiority.
 This is a one-checkpoint sensitivity result; it does not establish robustness
 across training seeds.
+
+SCI/step and bunkering per 30 steps are preliminary exposure normalizations.
+Because one synthetic step is not defined as a measured nautical-mile or voyage-
+day interval, these values must not be relabeled as SCI/nm or operational rates.
+Distance- or time-normalized evaluation requires separately validated voyage
+geometry, duration, weather, current, and fuel-consumption inputs and remains
+future work.
 
 For Price Reactive, the observed success count changes from 3/100 under Normal
 to 1/100 under the representative Suez/Cape condition. These are sparse events;
