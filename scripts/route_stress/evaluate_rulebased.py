@@ -52,6 +52,7 @@ def run_episode(strategy, scenario_id: str, seed: int, episode: int) -> dict:
         "episode": episode,
         "max_steps": impact.scenario_max_steps,
         "distance_multiplier": impact.distance_multiplier,
+        "steps": step_index,
         "reward": total_reward,
         "synthetic_cost_index": info["cumulative_cost_index"],
         "success": info["end_reason"] == "arrived",
@@ -79,6 +80,8 @@ def summarize(raw: pd.DataFrame) -> pd.DataFrame:
     for (scenario_id, policy), group in raw.groupby(
         ["scenario_id", "policy"], sort=True
     ):
+        sci_per_step = group["synthetic_cost_index"] / group["steps"]
+        bunkering_per_step = group["bunkering_count"] / group["steps"]
         rows.append(
             {
                 "scenario_id": scenario_id,
@@ -86,12 +89,19 @@ def summarize(raw: pd.DataFrame) -> pd.DataFrame:
                 "episodes": len(group),
                 "max_steps": int(group["max_steps"].iloc[0]),
                 "distance_multiplier": float(group["distance_multiplier"].iloc[0]),
+                "steps_mean": float(group["steps"].mean()),
                 "reward_mean": float(group["reward"].mean()),
                 "reward_std_ddof0": float(np.std(group["reward"], ddof=0)),
                 "sci_mean": float(group["synthetic_cost_index"].mean()),
+                "sci_per_step_mean": float(sci_per_step.mean()),
+                "sci_per_30_steps_mean": float((sci_per_step * 30).mean()),
                 "success_rate": float(group["success"].mean()),
                 "fuel_depletion_rate": float(group["fuel_depletion"].mean()),
                 "bunkering_count_mean": float(group["bunkering_count"].mean()),
+                "bunkering_per_step_mean": float(bunkering_per_step.mean()),
+                "bunkering_per_30_steps_mean": float(
+                    (bunkering_per_step * 30).mean()
+                ),
             }
         )
     return pd.DataFrame(rows)
@@ -115,8 +125,17 @@ def main() -> None:
         "base_seed": args.base_seed,
         "n_seeds": args.seeds,
         "scenarios": [get_route_impact(value).to_manifest() for value in SCENARIOS],
+        "scenario_roles": {
+            "normal": "quantitative reference",
+            "suez_cape_representative": "quantitative synthetic sensitivity",
+            "hormuz_observation_only": "contextual negative control; no quantitative shock applied",
+        },
         "policies": [strategy.name for strategy in STRATEGIES],
         "std_convention": "population standard deviation (numpy.std, ddof=0)",
+        "normalization": (
+            "Per-step metrics divide each episode total by its realized step count; "
+            "per-30-step metrics rescale that episode rate by 30 before averaging."
+        ),
         "claim_boundary": (
             "Representative synthetic scenario; not actual-voyage, fuel, cost, "
             "deployment, or realized-diversion validation."

@@ -46,9 +46,10 @@ route to 43 steps using ceiling rounding. This is a representative route
 assumption, not evidence that any specific vessel diverted.
 
 No speed, elapsed time, fuel tonnes, insurance premium, fuel price, or monetary
-saving is inferred. Hormuz contraction remains observation-only because an
-equivalent sea bypass is not established; with identical seeds its policy rows
-must exactly match the normal synthetic environment. Output under
+saving is inferred. Hormuz contraction is a **contextual negative control**, not
+a third independent quantitative shock: an equivalent sea bypass is not
+established, so no operational effect is applied and, with identical seeds, its
+policy rows must exactly match the normal synthetic environment. Output under
 `results/route_stress/rulebased_100seed/` is git-ignored and explicitly separate
 from the canonical four-policy comparison.
 
@@ -73,15 +74,29 @@ The published checkpoint (`sha256: 970aafbf2d32e9bef558a5611a300cd0885f826af2c87
 was evaluated over seeds 42–141. Population standard deviation (`ddof=0`) is
 reported for reward.
 
-| Scenario | Steps | Reward mean ± std | Synthetic Cost Index mean | Success | Fuel depletion | Bunkering mean |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Normal | 30 | 0.0443 ± 0.0579 | 847,117.9 | 100% | 0% | 5.31 |
-| Hormuz observation only | 30 | 0.0443 ± 0.0579 | 847,117.9 | 100% | 0% | 5.31 |
-| Suez/Cape representative | 43 | 0.0748 ± 0.0843 | 1,269,622.0 | 100% | 0% | 8.70 |
+| Scenario | Mean steps | Reward mean ± std | SCI mean | SCI/step | Success | Bunkers mean | Bunkers/30 steps |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Normal | 30 | 0.0443 ± 0.0579 | 847,117.9 | 28,237.3 | 100% | 5.31 | 5.31 |
+| Hormuz contextual control | 30 | 0.0443 ± 0.0579 | 847,117.9 | 28,237.3 | 100% | 5.31 | 5.31 |
+| Suez/Cape representative | 43 | 0.0748 ± 0.0843 | 1,269,622.0 | 29,526.1 | 100% | 8.70 | 6.07 |
 
 Normal and Hormuz rows match exactly by design because the Hormuz fixture does
 not invent a bypass effect. In the longer Suez/Cape scenario, the frozen model
 still completed every synthetic episode, while both the mean Synthetic Cost
-Index and mean bunkering count increased. The higher reward therefore must not
-be presented as lower cost or overall superiority. This is a one-checkpoint
-sensitivity result; it does not establish robustness across training seeds.
+Index and mean bunkering count increased. Much of the cumulative increase is
+exposure to 43 rather than 30 steps: SCI per step rises about 4.6%, while
+bunkering normalized to 30 steps rises from 5.31 to 6.07 (about 14.3%). These
+descriptive differences do not isolate a causal route-stress effect. The higher
+reward therefore must not be presented as lower cost or overall superiority.
+This is a one-checkpoint sensitivity result; it does not establish robustness
+across training seeds.
+
+For Price Reactive, the observed success count changes from 3/100 under Normal
+to 1/100 under the representative Suez/Cape condition. These are sparse events;
+the document reports counts only and does not claim a statistically established
+decline.
+
+ONS traffic observations provide external context and are not joined into the
+environment or used as model inputs. Any paper or presentation citing an ONS
+value must label it beside the citation as contextual evidence, not a simulation
+input.
