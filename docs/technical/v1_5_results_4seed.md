@@ -53,6 +53,24 @@ low-success (1% to 4%, depending on condition). These results describe the
 current policy definitions and reward/environment contract; they are not a
 general ranking of maritime bunkering methods.
 
+## Official-normal Double DQN tail risk
+
+These statistics are derived from the existing 100-episode official-normal log
+for each checkpoint; no policy was retrained or reevaluated.
+
+| Tail metric | Mean across 4 training seeds | Across-seed std (ddof=0) | Min | Max |
+|---|---:|---:|---:|---:|
+| Minimum episode reward | -0.01714 | 0.01703 | -0.03639 | 0.00000 |
+| Bottom-5% mean reward | -0.00378 | 0.00382 | -0.00862 | 0.00000 |
+| Maximum episode SCI | 1,129,718 | 63,282 | 1,081,776 | 1,237,345 |
+| Top-5% mean SCI | 1,072,647 | 21,682 | 1,049,879 | 1,108,264 |
+| Maximum bunkering count | 16.75 | 1.09 | 15 | 18 |
+
+The upper SCI tail and maximum bunkering count show that mean-only reporting
+would hide materially heavier individual synthetic episodes. These are empirical
+tails from 100 cases per checkpoint, not fitted extreme-value estimates,
+confidence intervals, or evidence of real monetary exposure.
+
 ## Claim boundary
 
 The consumption multiplier changes a normalized, unobserved inventory
