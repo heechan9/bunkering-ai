@@ -18,7 +18,7 @@
 가격·환율·연료잔량·잔여항로를 함께 고려하고,  
 Rule-based 3종과 Double DQN을 동일한 평가계약으로 비교합니다.
 
-[공식 평가](docs/technical/official_evaluation.md) · [4-seed 결과](docs/technical/multiseed_results_4seed.md) · [V1.5 결과](docs/technical/v1_5_results_4seed.md) · [V1.5 강건성](docs/technical/v1_5_robustness.md) · [모델 경계](docs/technical/model_boundary_and_research_roadmap.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
+[공식 평가](docs/technical/official_evaluation.md) · [4-seed 결과](docs/technical/multiseed_results_4seed.md) · [V1.5 결과](docs/technical/v1_5_results_4seed.md) · [V1.5 강건성](docs/technical/v1_5_robustness.md) · [모델 경계](docs/technical/model_boundary_and_research_roadmap.md) · [보안 검토](docs/technical/security_review.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
 
 </div>
 
@@ -179,6 +179,18 @@ V1.5에서는 같은 네 frozen 체크포인트에 정규화 소비량 충격과
 | 기초통계·품질검사 | [공공데이터 결과](results/public_data/) |
 | 보고서 반영 범위 | [보고서 업데이트 가이드](docs/submission/public_data_report_updates.md) |
 
+## 보안 검토 현황
+
+2026-09-11 Codex Security 정적 검토에서 Python 23개, Notebook 2개,
+설정과 인수인계용 압축파일 내부 코드를 확인했으며 **검토 범위에서 확정된
+보안 취약점은 0건**이었다. 이는 로컬 강화학습 실험 도구에 대한 정적 검토
+결과이며, 동적 실행·침투 테스트·의존성 CVE 검사를 완료했다는 뜻은 아니다.
+
+외부 CSV/Excel 공유 기능에는 입력 스키마·크기 검증과 수식 주입 방어가
+필요하다. 웹/API로 확장할 때는 인증·권한·업로드·자원 제한을 포함한 별도
+위협 모델과 보안시험을 수행한다
+([검토 범위와 후속 체크리스트](docs/technical/security_review.md)).
+
 ## 빠른 시작
 
 ```bash
@@ -240,6 +252,7 @@ python -m scripts.audit_paper_evidence
 | [모델 경계와 연구 로드맵](docs/technical/model_boundary_and_research_roadmap.md) | V1 포함·제외 범위, 공정성 감사, V1.5~V5 연구계획 |
 | [V1.5 강건성 평가](docs/technical/v1_5_robustness.md) | 연료소비 충격·42/43/44-step 민감도·tail-risk 계약 |
 | [V1.5 4-seed 결과](docs/technical/v1_5_results_4seed.md) | 네 frozen 체크포인트의 소비량·horizon 민감도 결과와 주장 경계 |
+| [정적 보안 검토](docs/technical/security_review.md) | 검토 범위·비검증 항목·CSV 및 웹/API 확장 체크리스트 |
 | [운항 검증 로드맵](docs/technical/causal_operational_validation.md) | 합성환경과 실제 운항 효과의 구분 |
 | [직무 연계 가이드](docs/ROLE_ALIGNMENT.md) | 구현 증거·직무 연결·주장 한계 |
 | [기여 정책](CONTRIBUTIONS.md) | 사람·AI 협업 역할과 검증 원칙 |
