@@ -97,9 +97,15 @@ canonical `evaluation_results.csv` and writes:
 This derives new statistics from existing episodes; it does not rerun or change
 the four-seed official-normal evaluation.
 
+## Reviewed four-checkpoint result
+
+The four frozen checkpoints have now been evaluated and reviewed. The empirical
+values and claim boundary are frozen in
+[the V1.5 four-training-seed result snapshot](v1_5_results_4seed.md).
+
 ## Allowed paper claim
 
-After the real checkpoints are evaluated and their artifacts reviewed, the
-result may support a statement about synthetic policy sensitivity to a hidden
-fuel-use disturbance and local horizon choice. Until then, this document proves
-the implementation and evaluation contract only, not an empirical outcome.
+The reviewed result supports a limited statement about synthetic policy
+sensitivity to a hidden normalized fuel-use disturbance and local horizon
+choice. It does not support claims about physical fuel consumption, actual
+voyage performance, cost savings, or digital-twin validation.
