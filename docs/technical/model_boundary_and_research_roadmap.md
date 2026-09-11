@@ -177,7 +177,7 @@ decision-support experiment.
 | Coupling SFC to transition or changing observations | High | New environment/checkpoint version and retraining |
 | Carbon, alternative fuel or physical voyage model | High | Defer to V2+ with independent validation |
 
-The current 183-test baseline is the regression gate. A future feature is not
+The current 185-test baseline is the regression gate. A future feature is not
 acceptable if default behaviour changes, old checkpoints become ambiguous, or
 official results are overwritten.
 

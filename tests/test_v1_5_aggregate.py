@@ -87,3 +87,46 @@ def test_collect_rejects_contract_drift(tmp_path):
 
     with pytest.raises(ValueError, match="contract differs"):
         collect(tmp_path)
+
+
+def test_rule_based_repetitions_are_not_counted_as_training_seeds():
+    rows = pd.DataFrame(
+        [
+            {
+                "scenario_id": "consumption_baseline",
+                "scenario_family": "fuel_consumption",
+                "policy": "safe_stock",
+                "max_steps": 30,
+                "consumption_multiplier": 1.0,
+                "metric": "success_rate",
+                "value": 1.0,
+            }
+            for _ in range(2)
+        ]
+    )
+
+    result = aggregate(rows).iloc[0]
+
+    assert result["independent_training_seeds"] == 0
+    assert result["evaluation_replicates"] == 2
+    assert result["std_across_training_seeds_ddof0"] == 0.0
+
+
+def test_rule_based_repetition_drift_is_rejected():
+    rows = pd.DataFrame(
+        [
+            {
+                "scenario_id": "consumption_baseline",
+                "scenario_family": "fuel_consumption",
+                "policy": "safe_stock",
+                "max_steps": 30,
+                "consumption_multiplier": 1.0,
+                "metric": "success_rate",
+                "value": value,
+            }
+            for value in (1.0, 0.5)
+        ]
+    )
+
+    with pytest.raises(ValueError, match="Rule-based result drift"):
+        aggregate(rows)
