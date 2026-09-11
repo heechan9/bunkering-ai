@@ -54,4 +54,6 @@ actual-voyage performance, operational savings, or a causal route effect.
 The reviewed four-checkpoint values and their interpretation boundary are frozen
 in [Four-training-seed Double DQN result snapshot](multiseed_results_4seed.md).
 Tail outputs are derived from each run's existing `evaluation_results.csv`; they
-do not modify or rerun the canonical evaluation.
+do not modify or rerun the canonical evaluation. The reader accepts the canonical
+`Synthetic Cost Index` header and the legacy internal
+`synthetic_cost_index` spelling so previously completed runs remain usable.

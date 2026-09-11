@@ -35,7 +35,7 @@ def _write_run(root: Path, route_root: Path, seed: int, sha: str, value: float) 
             {
                 "policy": "double_dqn",
                 "reward": float(episode),
-                "synthetic_cost_index": float(episode * 10),
+                "Synthetic Cost Index": float(episode * 10),
                 "bunkering_count": episode % 7,
             }
             for episode in range(100)
@@ -152,3 +152,20 @@ def test_route_effects_require_normal_stress_pair():
 
     with pytest.raises(ValueError, match="expected paired"):
         route_effects(per_seed)
+
+
+def test_collect_tail_risk_accepts_legacy_snake_case_cost_column(tmp_path):
+    official = tmp_path / "official"
+    route = tmp_path / "route"
+    _write_run(official, route, 42, "a" * 64, 1.0)
+    raw_path = official / "seed_42" / "evaluation_results.csv"
+    raw = pd.read_csv(raw_path).rename(
+        columns={"Synthetic Cost Index": "synthetic_cost_index"}
+    )
+    raw.to_csv(raw_path, index=False)
+
+    summary = aggregate_tail_risk(collect_tail_risk(official)).set_index("metric")
+
+    assert summary.loc[
+        "synthetic_cost_index_top_5pct_mean", "mean_across_training_seeds"
+    ] == 970.0

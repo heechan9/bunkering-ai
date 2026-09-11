@@ -18,7 +18,7 @@
 가격·환율·연료잔량·잔여항로를 함께 고려하고,  
 Rule-based 3종과 Double DQN을 동일한 평가계약으로 비교합니다.
 
-[공식 평가](docs/technical/official_evaluation.md) · [4-seed 결과](docs/technical/multiseed_results_4seed.md) · [V1.5 강건성](docs/technical/v1_5_robustness.md) · [모델 경계](docs/technical/model_boundary_and_research_roadmap.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
+[공식 평가](docs/technical/official_evaluation.md) · [4-seed 결과](docs/technical/multiseed_results_4seed.md) · [V1.5 결과](docs/technical/v1_5_results_4seed.md) · [V1.5 강건성](docs/technical/v1_5_robustness.md) · [모델 경계](docs/technical/model_boundary_and_research_roadmap.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
 
 </div>
 
@@ -158,6 +158,14 @@ Hormuz 자료는 정량 충격을 적용하지 않는 맥락적 대조군이며 
 Double DQN의 보편적 우월성을 뜻하지 않습니다
 ([4-seed 결과 스냅샷](docs/technical/multiseed_results_4seed.md)).
 
+V1.5에서는 같은 네 frozen 체크포인트에 정규화 소비량 충격과
+42/43/44-step 민감도를 적용했습니다. 소비량 +10%와 +20%에서 DQN은 모두
+성공률 100%·연료고갈률 0%를 유지했지만 SCI/step은 각각 평균 +11.68%,
++22.59% 증가했습니다. 43-step 대비 42/44-step의 SCI/step 변화는
+-0.48%와 +0.30%로 작았습니다. 이는 합성환경 강건성 결과이며 실제 연료량,
+항해거리 또는 비용절감의 증거가 아닙니다
+([V1.5 4-seed 결과](docs/technical/v1_5_results_4seed.md)).
+
 ## 공공데이터 활용
 
 공공데이터포털의 울산항만공사 `벙커링정박지 신청현황` 6,028건을 분석하여 총톤수·벙커량·예정 시작일·종료일 등 실제 업무변수의 구조와 분포를 확인했습니다.
@@ -231,6 +239,7 @@ python -m scripts.audit_paper_evidence
 | [4-seed 결과 스냅샷](docs/technical/multiseed_results_4seed.md) | 네 체크포인트의 안정성·페어드 route-stress 효과·주장 경계 |
 | [모델 경계와 연구 로드맵](docs/technical/model_boundary_and_research_roadmap.md) | V1 포함·제외 범위, 공정성 감사, V1.5~V5 연구계획 |
 | [V1.5 강건성 평가](docs/technical/v1_5_robustness.md) | 연료소비 충격·42/43/44-step 민감도·tail-risk 계약 |
+| [V1.5 4-seed 결과](docs/technical/v1_5_results_4seed.md) | 네 frozen 체크포인트의 소비량·horizon 민감도 결과와 주장 경계 |
 | [운항 검증 로드맵](docs/technical/causal_operational_validation.md) | 합성환경과 실제 운항 효과의 구분 |
 | [직무 연계 가이드](docs/ROLE_ALIGNMENT.md) | 구현 증거·직무 연결·주장 한계 |
 | [기여 정책](CONTRIBUTIONS.md) | 사람·AI 협업 역할과 검증 원칙 |
