@@ -68,3 +68,44 @@ python -m scripts.diagnose_reward --episodes 100 --base-seed 42 --checkpoint che
 각 답변에 파일·함수 근거와 Critical/High/Medium/Low 우선순위를 제시한다.
 불리한 결과도 유지하며, 공식 결과 변경이나 보상 재설계는 이 진단 범위 밖이다.
 진단 도구 병합 전 전체 회귀 테스트와 독립 검토를 권장한다.
+
+
+## Claude 검토 대응: 2026-09-11
+
+보충 진단 테스트는 보강 후 **23 passed**. 전체 저장소 회귀 테스트를 뜻하지 않는다.
+4개 정책(규칙 3종 + 임의 초기화 frozen DQN) × 소비량 4조건 × seeds 42~141의
+1,600개 조건에서 진단 runner와 공식 `scripts.evaluate.run_episode`를 각각
+실행해 reward·SCI·종료사유·실급유횟수를 대조했다. 학습된 4개 DQN의 행동
+검증이 아니며 경제적 우위를 주장하지 않는다.
+
+- C-1: 실패 정책의 SCI가 낮다는 것은 효율성 증거가 아니다. 기존 주의 문구를
+  유지한다. 이 문서는 코드 실행 장애가 아니라 해석 위험으로 분류한다.
+- C-2: 기본 소비량 0.05, +10%, +20%의 clipping 손실은 1e-12 허용오차에서
+  0이었다. -10%에서만 초기 손실 0.005가 발생했다. 첫 전이에서
+  `max(0, 1-consumption-0.95)`이며 이후 잔량은 이미 상한 이하다.
+  공식 SCI는 환경에서 실제 구매량으로 누적하므로 진단 누락을 근거로 기존
+  공식 SCI 전체가 무효라는 결론은 성립하지 않는다. -10% 조건은 초기 상한
+  처리 효과가 섞인다는 해석상 한계를 명시한다.
+- C-3: 소량 다회 구매 유인은 설계상 가설이다. 실제 학습 체크포인트 4개의
+  행동 진단은 미완료로 유지한다. 이 가설은 확정 결함이나 관찰 결과가 아니다.
+- H-1: 모든 정책·소비조건에서 step별 보상 4성분 합과 SCI를 재구성했다.
+- H-2: Safe Stock 도착 성공과 안전선 미달 1 step을 구분한다.
+  논문 수정 시 “안전위반 없음”으로 표현하지 않는다.
+- M-1: 환경은 양수 `risk_penalty`에 음의 가중치를 적용한다.
+  진단의 `safety_reward` 부호가 일치함을 재구성 검사로 확인했다.
+- M-2: 자기 일관성 검사 외에 기존 공식 runner 반환값과의 직접 대조를 추가했다.
+- 신규-1: 기존 출력 디렉터리에 sentinel CSV를 두고 CLI가 거부한 뒤
+  파일 바이트가 그대로인지 확인했다. 모든 존재 디렉터리 재사용을 거부하는
+  일반 보호이며, 모든 공식 경로를 판별하는 전용 sandbox는 아니다.
+
+### 미확인 파일의 고정 버전 링크
+
+아래는 진단 기준 커밋의 파일이다. diff에 없더라도 원문을 읽고 검토해야 한다.
+
+- [환경](https://github.com/heechan9/bunkering-ai/blob/97233c1c442a687aaed4a34e2cadca0d98aa2fb9/envs/bunkering_env.py)
+- [규칙 정책](https://github.com/heechan9/bunkering-ai/blob/97233c1c442a687aaed4a34e2cadca0d98aa2fb9/scripts/baseline.py)
+- [공식 runner](https://github.com/heechan9/bunkering-ai/blob/97233c1c442a687aaed4a34e2cadca0d98aa2fb9/scripts/evaluate.py)
+- [평가계약](https://github.com/heechan9/bunkering-ai/blob/97233c1c442a687aaed4a34e2cadca0d98aa2fb9/evaluation/contract.py)
+
+기존 7-test 기록은 최초 실행 시점의 기록이다. 최신 보충 테스트는 23개이며,
+전체 회귀·학습 체크포인트 4개 진단은 계속 별도로 남아 있다.
