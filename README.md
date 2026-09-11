@@ -18,7 +18,7 @@
 가격·환율·연료잔량·잔여항로를 함께 고려하고,  
 Rule-based 3종과 Double DQN을 동일한 평가계약으로 비교합니다.
 
-[공식 평가](docs/technical/official_evaluation.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [기술문서](docs/technical/state_action_reward_spec.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
+[공식 평가](docs/technical/official_evaluation.md) · [4-seed 결과](docs/technical/multiseed_results_4seed.md) · [모델 경계](docs/technical/model_boundary_and_research_roadmap.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [기술문서](docs/technical/state_action_reward_spec.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
 
 </div>
 
@@ -140,6 +140,24 @@ Hormuz 자료는 정량 충격을 적용하지 않는 맥락적 대조군이며 
 
 > 해외자료는 시험상황을 설계하는 근거이며, AI 학습이나 실제 운항 입력으로 사용하지 않습니다.
 
+### 네 개 독립 학습 seed에서 확인한 안정성
+
+공식 단일 체크포인트 결과는 그대로 유지하면서, 학습 seed
+`42·1042·2042·3042`에서 각각 5,000 episode를 학습한 네 개 Double DQN을
+동일한 100-case 평가계약으로 추가 검증했습니다.
+
+| 항목 | Normal | Suez/Cape 대표 조건 | 페어드 변화 |
+|---|---:|---:|---:|
+| 성공률 | 100% | 100% | 0%p |
+| 연료고갈률 | 0% | 0% | 0%p |
+| SCI/step | 27,992.11 | 29,418.37 | +5.10% |
+| 급유횟수/30-step | 4.900 | 5.587 | +13.97% |
+
+네 체크포인트 모두 같은 변화 방향을 보였습니다. 이는 현재 합성환경과
+공유 평가 seed 안에서의 학습 안정성 근거이며 실제 항차 성능·비용절감이나
+Double DQN의 보편적 우월성을 뜻하지 않습니다
+([4-seed 결과 스냅샷](docs/technical/multiseed_results_4seed.md)).
+
 ## 공공데이터 활용
 
 공공데이터포털의 울산항만공사 `벙커링정박지 신청현황` 6,028건을 분석하여 총톤수·벙커량·예정 시작일·종료일 등 실제 업무변수의 구조와 분포를 확인했습니다.
@@ -206,6 +224,8 @@ python -m scripts.audit_paper_evidence
 | [Rule-based 강건성 검증](docs/technical/rulebased_robustness.md) | 공식 결과와 분리된 200-seed 독립 재현 |
 | [Route-stress 최소 슬라이스](docs/technical/route_stress_minimum_slice.md) | 해외 항로 근거·대표 가정·frozen DQN 민감도 평가 |
 | [다중 학습 seed 평가](docs/technical/multiseed_evaluation.md) | 독립 체크포인트 검증·페어드 효과·자동 보고서 생성 |
+| [4-seed 결과 스냅샷](docs/technical/multiseed_results_4seed.md) | 네 체크포인트의 안정성·페어드 route-stress 효과·주장 경계 |
+| [모델 경계와 연구 로드맵](docs/technical/model_boundary_and_research_roadmap.md) | V1 포함·제외 범위, 공정성 감사, V1.5~V5 연구계획 |
 | [운항 검증 로드맵](docs/technical/causal_operational_validation.md) | 합성환경과 실제 운항 효과의 구분 |
 | [직무 연계 가이드](docs/ROLE_ALIGNMENT.md) | 구현 증거·직무 연결·주장 한계 |
 | [기여 정책](CONTRIBUTIONS.md) | 사람·AI 협업 역할과 검증 원칙 |
@@ -215,7 +235,7 @@ python -m scripts.audit_paper_evidence
 - 공식 결과는 합성환경 평가이며 실제 운항 성능을 의미하지 않습니다.
 - 실제 유가·환율의 실시간 연동은 구현 범위 밖입니다.
 - 항만 1·2·3의 가격·대기시간·수수료는 아직 차등화하지 않았습니다.
-- 공식 비교는 단일 학습 seed 모델 기준이며 다중 학습 seed 검증이 필요합니다.
+- 공식 비교 정본은 단일 학습 seed 모델 기준입니다. 별도 4-seed 확장평가는 합성환경 내 안정성을 보강하지만 정본을 대체하거나 실제 운항 일반화를 입증하지 않습니다.
 - Synthetic Cost Index는 실제 통화 비용이 아닌 합성환경 내부 지표입니다.
 
 ---
