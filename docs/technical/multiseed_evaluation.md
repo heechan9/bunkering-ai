@@ -4,9 +4,12 @@ This optional paper-extension experiment trains independent Double DQN
 checkpoints while preserving the existing official result and frozen checkpoint.
 It is not required for the completed competition artifact.
 
-Use training seeds `42`, `1042`, `2042`, `3042`, and `4042`. Each checkpoint is
-trained for 5,000 episodes. Evaluate every checkpoint on the identical 100-case
-evaluation contract (base seed 42) and the identical route-stress contract.
+The reusable protocol can evaluate any number of independent checkpoints. The
+competition snapshot completed training seeds `42`, `1042`, `2042`, and `3042`,
+each trained for 5,000 episodes. A fifth proposed seed (`4042`) remains optional
+future paper work and is not included in the frozen four-seed claim. Evaluate
+every completed checkpoint on the identical 100-case evaluation contract (base
+seed 42) and the identical route-stress contract.
 
 On Windows, run one training seed at a time:
 
@@ -45,3 +48,6 @@ review explicitly approves selected artifacts.
 
 These results measure synthetic training-seed stability. They do not establish
 actual-voyage performance, operational savings, or a causal route effect.
+
+The reviewed four-checkpoint values and their interpretation boundary are frozen
+in [Four-training-seed Double DQN result snapshot](multiseed_results_4seed.md).
