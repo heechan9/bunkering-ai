@@ -175,15 +175,24 @@ def collect_tail_risk(official_root: Path) -> pd.DataFrame:
         if not raw_path.is_file():
             raise FileNotFoundError(raw_path)
         raw = pd.read_csv(raw_path)
-        required = {
-            "policy",
-            "reward",
-            "synthetic_cost_index",
-            "bunkering_count",
-        }
+        required = {"policy", "reward", "bunkering_count"}
         missing = required - set(raw.columns)
         if missing:
             raise ValueError(f"missing tail-risk columns {sorted(missing)}: {raw_path}")
+        cost_columns = [
+            column
+            for column in ("Synthetic Cost Index", "synthetic_cost_index")
+            if column in raw.columns
+        ]
+        if not cost_columns:
+            raise ValueError(
+                "missing tail-risk cost column "
+                "['Synthetic Cost Index' or 'synthetic_cost_index']: "
+                f"{raw_path}"
+            )
+        if len(cost_columns) > 1:
+            raise ValueError(f"ambiguous tail-risk cost columns: {raw_path}")
+        cost_column = cost_columns[0]
         dqn = raw.loc[raw["policy"] == "double_dqn"]
         expected_episodes = int(manifest["n_episodes"])
         if len(dqn) != expected_episodes:
@@ -196,10 +205,10 @@ def collect_tail_risk(official_root: Path) -> pd.DataFrame:
                 dqn["reward"], largest=False
             ),
             "synthetic_cost_index_max": float(
-                dqn["synthetic_cost_index"].max()
+                dqn[cost_column].max()
             ),
             "synthetic_cost_index_top_5pct_mean": _tail_mean(
-                dqn["synthetic_cost_index"], largest=True
+                dqn[cost_column], largest=True
             ),
             "bunkering_count_max": float(dqn["bunkering_count"].max()),
         }
