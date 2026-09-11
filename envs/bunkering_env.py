@@ -49,7 +49,11 @@ class BunkeringEnv(gym.Env):
     _FX_RANGE = (1000.0, 1600.0)
 
     def __init__(
-        self, n_ports: int = 3, max_steps: int = 30, min_safe_fuel: float = 0.15
+        self,
+        n_ports: int = 3,
+        max_steps: int = 30,
+        min_safe_fuel: float = 0.15,
+        fuel_consumption_per_step: float = _FUEL_CONSUMPTION_PER_STEP,
     ):
         super().__init__()
         if n_ports < 1:
@@ -58,10 +62,17 @@ class BunkeringEnv(gym.Env):
             raise ValueError("max_steps must be at least 1")
         if not 0.0 <= min_safe_fuel <= 1.0:
             raise ValueError("min_safe_fuel must be between 0 and 1")
+        if not np.isfinite(fuel_consumption_per_step) or not (
+            0.0 < fuel_consumption_per_step <= 1.0
+        ):
+            raise ValueError(
+                "fuel_consumption_per_step must be finite and in the interval (0, 1]"
+            )
 
         self.n_ports = n_ports
         self.max_steps = max_steps
         self.min_safe_fuel = min_safe_fuel
+        self.fuel_consumption_per_step = float(fuel_consumption_per_step)
 
         # Do not change either declared space: downstream agents depend on them.
         self.observation_space = spaces.Box(
@@ -146,6 +157,7 @@ class BunkeringEnv(gym.Env):
             "decision_price_ma30": self._decision_price_ma30,
             "decision_fx_rate": self._decision_fx_rate,
             "actual_bunker_amount": actual_bunker_amount,
+            "fuel_consumption_per_step": self.fuel_consumption_per_step,
             "step_cost_index": step_cost_index,
             "cumulative_cost_index": self._cumulative_cost_index,
         }
@@ -184,7 +196,7 @@ class BunkeringEnv(gym.Env):
         )
 
         fuel_before_refill = max(
-            0.0, self._fuel_remaining - self._FUEL_CONSUMPTION_PER_STEP
+            0.0, self._fuel_remaining - self.fuel_consumption_per_step
         )
         requested_bunker_amount = self._BUNKER_REFILL_AMOUNT if action != 0 else 0.0
         available_capacity = max(

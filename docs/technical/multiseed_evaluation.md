@@ -32,6 +32,8 @@ python -m scripts.multiseed.aggregate
 The command writes both audit-oriented tables and publication-oriented outputs:
 
 - `per_training_seed.csv` and `aggregate.csv`: raw long-form and overall summaries
+- `tail_risk_per_training_seed.csv` and `tail_risk_summary.csv`: reward lower-tail,
+  SCI upper-tail, and maximum bunkering statistics derived from existing episodes
 - `route_stress_effects.csv`: paired Normal-to-Suez/Cape changes per checkpoint
 - `route_stress_effect_summary.csv`: mean and population standard deviation across training seeds
 - `summary.md`: ready-to-review Markdown table with the claim boundary
@@ -51,3 +53,5 @@ actual-voyage performance, operational savings, or a causal route effect.
 
 The reviewed four-checkpoint values and their interpretation boundary are frozen
 in [Four-training-seed Double DQN result snapshot](multiseed_results_4seed.md).
+Tail outputs are derived from each run's existing `evaluation_results.csv`; they
+do not modify or rerun the canonical evaluation.

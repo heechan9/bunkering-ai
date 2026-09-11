@@ -7,7 +7,9 @@ import pytest
 from scripts.multiseed.aggregate import (
     aggregate,
     aggregate_effects,
+    aggregate_tail_risk,
     collect,
+    collect_tail_risk,
     route_effects,
     write_markdown_report,
 )
@@ -28,6 +30,17 @@ def _write_run(root: Path, route_root: Path, seed: int, sha: str, value: float) 
             "fuel_depletion_mean", "bunkering_count_mean"
         )}}]
     ).to_csv(directory / "evaluation" / "summary.csv", index=False)
+    pd.DataFrame(
+        [
+            {
+                "policy": "double_dqn",
+                "reward": float(episode),
+                "synthetic_cost_index": float(episode * 10),
+                "bunkering_count": episode % 7,
+            }
+            for episode in range(100)
+        ]
+    ).to_csv(directory / "evaluation_results.csv", index=False)
 
     route_directory = route_root / f"seed_{seed}"
     route_directory.mkdir(parents=True)
@@ -74,6 +87,29 @@ def test_collect_rejects_checkpoint_mismatch(tmp_path):
 
     with pytest.raises(ValueError, match="checkpoint hash mismatch"):
         collect(official, route)
+
+
+def test_collect_and_aggregate_tail_risk(tmp_path):
+    official = tmp_path / "official"
+    route = tmp_path / "route"
+    _write_run(official, route, 42, "a" * 64, 1.0)
+    _write_run(official, route, 1042, "b" * 64, 3.0)
+
+    per_seed = collect_tail_risk(official)
+    summary = aggregate_tail_risk(per_seed)
+    by_metric = summary.set_index("metric")
+
+    assert set(per_seed["train_seed"]) == {42, 1042}
+    assert by_metric.loc["reward_min", "mean_across_training_seeds"] == 0.0
+    assert by_metric.loc[
+        "reward_bottom_5pct_mean", "mean_across_training_seeds"
+    ] == 2.0
+    assert by_metric.loc[
+        "synthetic_cost_index_top_5pct_mean", "mean_across_training_seeds"
+    ] == 970.0
+    assert by_metric.loc[
+        "bunkering_count_max", "mean_across_training_seeds"
+    ] == 6.0
 
 
 def test_route_effects_are_paired_by_training_seed(tmp_path):

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -31,6 +32,13 @@ EFFECT_METRICS = (
 )
 NORMAL_SCENARIO = "normal"
 STRESS_SCENARIO = "suez_cape_representative"
+TAIL_METRICS = (
+    "reward_min",
+    "reward_bottom_5pct_mean",
+    "synthetic_cost_index_max",
+    "synthetic_cost_index_top_5pct_mean",
+    "bunkering_count_max",
+)
 
 
 def _read_json(path: Path) -> dict:
@@ -135,6 +143,90 @@ def aggregate(per_seed: pd.DataFrame) -> pd.DataFrame:
                 "training_seeds": len(values),
                 "mean_across_training_seeds": float(values.mean()),
                 "std_across_training_seeds_ddof0": float(np.std(values, ddof=0)),
+                "min_across_training_seeds": float(values.min()),
+                "max_across_training_seeds": float(values.max()),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def _tail_mean(values: pd.Series, *, largest: bool) -> float:
+    count = max(1, math.ceil(len(values) * 0.05))
+    selected = values.nlargest(count) if largest else values.nsmallest(count)
+    return float(selected.mean())
+
+
+def collect_tail_risk(official_root: Path) -> pd.DataFrame:
+    """Collect Double DQN tail metrics from canonical per-episode run outputs."""
+    rows: list[dict] = []
+    directories = sorted(path for path in official_root.glob("seed_*") if path.is_dir())
+    if not directories:
+        raise ValueError(f"no seed_* directories found under {official_root}")
+    seen_seeds: set[int] = set()
+    for directory in directories:
+        manifest_path = directory / "evaluation_manifest.json"
+        manifest = _read_json(manifest_path)
+        train_seed = _training_seed(manifest, manifest_path)
+        if train_seed in seen_seeds:
+            raise ValueError(f"duplicate training seed: {train_seed}")
+        seen_seeds.add(train_seed)
+        checkpoint_sha = str(manifest["checkpoint"]["sha256"])
+        raw_path = directory / "evaluation_results.csv"
+        if not raw_path.is_file():
+            raise FileNotFoundError(raw_path)
+        raw = pd.read_csv(raw_path)
+        required = {
+            "policy",
+            "reward",
+            "synthetic_cost_index",
+            "bunkering_count",
+        }
+        missing = required - set(raw.columns)
+        if missing:
+            raise ValueError(f"missing tail-risk columns {sorted(missing)}: {raw_path}")
+        dqn = raw.loc[raw["policy"] == "double_dqn"]
+        expected_episodes = int(manifest["n_episodes"])
+        if len(dqn) != expected_episodes:
+            raise ValueError(
+                f"expected {expected_episodes} Double DQN episodes: {raw_path}"
+            )
+        metrics = {
+            "reward_min": float(dqn["reward"].min()),
+            "reward_bottom_5pct_mean": _tail_mean(
+                dqn["reward"], largest=False
+            ),
+            "synthetic_cost_index_max": float(
+                dqn["synthetic_cost_index"].max()
+            ),
+            "synthetic_cost_index_top_5pct_mean": _tail_mean(
+                dqn["synthetic_cost_index"], largest=True
+            ),
+            "bunkering_count_max": float(dqn["bunkering_count"].max()),
+        }
+        for metric in TAIL_METRICS:
+            rows.append(
+                {
+                    "train_seed": train_seed,
+                    "metric": metric,
+                    "value": metrics[metric],
+                    "checkpoint_sha256": checkpoint_sha,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def aggregate_tail_risk(per_seed: pd.DataFrame) -> pd.DataFrame:
+    rows: list[dict] = []
+    for metric, group in per_seed.groupby("metric", sort=True):
+        values = group["value"].to_numpy(dtype=float)
+        rows.append(
+            {
+                "metric": metric,
+                "training_seeds": len(values),
+                "mean_across_training_seeds": float(values.mean()),
+                "std_across_training_seeds_ddof0": float(
+                    np.std(values, ddof=0)
+                ),
                 "min_across_training_seeds": float(values.min()),
                 "max_across_training_seeds": float(values.max()),
             }
@@ -294,11 +386,17 @@ def main(argv: list[str] | None = None) -> int:
 
     per_seed = collect(args.official_root, args.route_root)
     summary = aggregate(per_seed)
+    tail_per_seed = collect_tail_risk(args.official_root)
+    tail_summary = aggregate_tail_risk(tail_per_seed)
     effects = route_effects(per_seed)
     effect_summary = aggregate_effects(effects)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     per_seed.to_csv(args.output_dir / "per_training_seed.csv", index=False)
     summary.to_csv(args.output_dir / "aggregate.csv", index=False)
+    tail_per_seed.to_csv(
+        args.output_dir / "tail_risk_per_training_seed.csv", index=False
+    )
+    tail_summary.to_csv(args.output_dir / "tail_risk_summary.csv", index=False)
     effects.to_csv(args.output_dir / "route_stress_effects.csv", index=False)
     effect_summary.to_csv(
         args.output_dir / "route_stress_effect_summary.csv", index=False
@@ -315,6 +413,8 @@ def main(argv: list[str] | None = None) -> int:
         "generated_artifacts": [
             "per_training_seed.csv",
             "aggregate.csv",
+            "tail_risk_per_training_seed.csv",
+            "tail_risk_summary.csv",
             "route_stress_effects.csv",
             "route_stress_effect_summary.csv",
             "summary.md",
@@ -324,6 +424,9 @@ def main(argv: list[str] | None = None) -> int:
             "Synthetic multi-training-seed stability result; not actual-voyage, "
             "operational, or causal validation."
         ),
+        "tail_definition": (
+            "Empirical 5% tail with ceil(0.05 * episodes), minimum one case."
+        ),
     }
     with (args.output_dir / "manifest.json").open("w", encoding="utf-8") as handle:
         json.dump(manifest, handle, ensure_ascii=False, indent=2)
@@ -331,6 +434,8 @@ def main(argv: list[str] | None = None) -> int:
     print(summary.to_string(index=False))
     print("\nPaired route-stress effects")
     print(effect_summary.to_string(index=False))
+    print("\nOfficial-normal Double DQN tail risk")
+    print(tail_summary.to_string(index=False))
     print(f"\nwrote {args.output_dir}")
     return 0
 

@@ -16,6 +16,62 @@ def test_reset_returns_expected_shape_and_dtype():
     assert info["state_vars"] == STATE_VARS
 
 
+def test_default_fuel_consumption_preserves_legacy_transition():
+    env = BunkeringEnv()
+    env.reset(seed=7)
+
+    env.step(0)
+
+    assert env.fuel_consumption_per_step == env._FUEL_CONSUMPTION_PER_STEP
+    assert env._fuel_remaining == pytest.approx(
+        1.0 - env._FUEL_CONSUMPTION_PER_STEP
+    )
+
+
+@pytest.mark.parametrize("value", [0.0, -0.01, 1.01, np.nan, np.inf])
+def test_invalid_fuel_consumption_is_rejected(value):
+    with pytest.raises(ValueError, match="fuel_consumption_per_step"):
+        BunkeringEnv(fuel_consumption_per_step=value)
+
+
+def test_custom_fuel_consumption_changes_transition_without_observation_shape_change():
+    env = BunkeringEnv(fuel_consumption_per_step=0.06)
+    observation, _ = env.reset(seed=7)
+
+    next_observation, _, _, _, info = env.step(0)
+
+    assert observation.shape == next_observation.shape == (len(STATE_VARS),)
+    assert env._fuel_remaining == pytest.approx(0.94)
+    assert info["fuel_consumption_per_step"] == pytest.approx(0.06)
+
+
+def test_explicit_legacy_consumption_matches_default_trajectory():
+    default_env = BunkeringEnv(max_steps=6)
+    explicit_env = BunkeringEnv(
+        max_steps=6,
+        fuel_consumption_per_step=BunkeringEnv._FUEL_CONSUMPTION_PER_STEP,
+    )
+    default_observation, _ = default_env.reset(seed=41)
+    explicit_observation, _ = explicit_env.reset(seed=41)
+    assert default_observation == pytest.approx(explicit_observation)
+
+    for action in (0, 1, 0, 2, 0, 3):
+        default_result = default_env.step(action)
+        explicit_result = explicit_env.step(action)
+        assert default_result[0] == pytest.approx(explicit_result[0])
+        assert default_result[1] == pytest.approx(explicit_result[1])
+        assert default_result[2:4] == explicit_result[2:4]
+        assert default_result[4]["end_reason"] == explicit_result[4]["end_reason"]
+        for key in (
+            "actual_bunker_amount",
+            "step_cost_index",
+            "cumulative_cost_index",
+        ):
+            assert default_result[4][key] == pytest.approx(explicit_result[4][key])
+        if default_result[2] or default_result[3]:
+            break
+
+
 def test_invalid_action_raises_assertion_error():
     env = BunkeringEnv()
     env.reset()
