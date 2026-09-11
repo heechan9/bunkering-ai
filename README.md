@@ -11,14 +11,14 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Double_DQN-EE4C2C?logo=pytorch&logoColor=white)
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-BunkeringEnv-2D3748)
-![Tests](https://img.shields.io/badge/tests-167_passed-2EA44F)
+![Tests](https://img.shields.io/badge/tests-185_passed-2EA44F)
 ![Evidence Audit](https://img.shields.io/badge/evidence_audit-8%2F8_passed-2EA44F)
 ![Data](https://img.shields.io/badge/UPA_public_data-6%2C028_rows-0054A6)
 
 가격·환율·연료잔량·잔여항로를 함께 고려하고,  
 Rule-based 3종과 Double DQN을 동일한 평가계약으로 비교합니다.
 
-[공식 평가](docs/technical/official_evaluation.md) · [4-seed 결과](docs/technical/multiseed_results_4seed.md) · [모델 경계](docs/technical/model_boundary_and_research_roadmap.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [기술문서](docs/technical/state_action_reward_spec.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
+[공식 평가](docs/technical/official_evaluation.md) · [4-seed 결과](docs/technical/multiseed_results_4seed.md) · [V1.5 강건성](docs/technical/v1_5_robustness.md) · [모델 경계](docs/technical/model_boundary_and_research_roadmap.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
 
 </div>
 
@@ -192,6 +192,9 @@ python -m scripts.route_stress.evaluate_frozen_dqn --checkpoint checkpoints/dqn_
 # 선택: 독립 학습 seed 결과의 페어드 route-stress 집계
 python -m scripts.multiseed.aggregate
 
+# 선택: frozen 정책의 연료소비·42/43/44-step V1.5 강건성 평가
+python -m scripts.robustness.evaluate_v1_5 --checkpoint checkpoints/dqn_final.pt
+
 # 전체 검증
 python -m pytest -q
 python -m scripts.audit_paper_evidence
@@ -208,6 +211,7 @@ python -m scripts.audit_paper_evidence
 | `configs/` | 학습 하이퍼파라미터 |
 | `evaluation/` | 공통 평가계약과 논문 근거감사 |
 | `route_stress/` | 출처·가정이 분리된 항로 스트레스 시나리오 |
+| `scripts/robustness/` | 공식 결과와 분리된 V1.5 소비량·horizon 민감도 및 집계 |
 | `scripts/` | 기준선·학습·평가·데이터 분석 CLI |
 | `data/public/` | 출처와 해시를 기록한 공공데이터 |
 | `results/evaluation/` | 공식 동일조건 평가 요약과 시각화 |
@@ -226,6 +230,7 @@ python -m scripts.audit_paper_evidence
 | [다중 학습 seed 평가](docs/technical/multiseed_evaluation.md) | 독립 체크포인트 검증·페어드 효과·자동 보고서 생성 |
 | [4-seed 결과 스냅샷](docs/technical/multiseed_results_4seed.md) | 네 체크포인트의 안정성·페어드 route-stress 효과·주장 경계 |
 | [모델 경계와 연구 로드맵](docs/technical/model_boundary_and_research_roadmap.md) | V1 포함·제외 범위, 공정성 감사, V1.5~V5 연구계획 |
+| [V1.5 강건성 평가](docs/technical/v1_5_robustness.md) | 연료소비 충격·42/43/44-step 민감도·tail-risk 계약 |
 | [운항 검증 로드맵](docs/technical/causal_operational_validation.md) | 합성환경과 실제 운항 효과의 구분 |
 | [직무 연계 가이드](docs/ROLE_ALIGNMENT.md) | 구현 증거·직무 연결·주장 한계 |
 | [기여 정책](CONTRIBUTIONS.md) | 사람·AI 협업 역할과 검증 원칙 |
@@ -237,6 +242,7 @@ python -m scripts.audit_paper_evidence
 - 항만 1·2·3의 가격·대기시간·수수료는 아직 차등화하지 않았습니다.
 - 공식 비교 정본은 단일 학습 seed 모델 기준입니다. 별도 4-seed 확장평가는 합성환경 내 안정성을 보강하지만 정본을 대체하거나 실제 운항 일반화를 입증하지 않습니다.
 - Synthetic Cost Index는 실제 통화 비용이 아닌 합성환경 내부 지표입니다.
+- V1.5 연료소비 충격은 정규화된 미관측 전이 변화이며 실제 SFC·엔진·추진 모델이 아닙니다.
 
 ---
 

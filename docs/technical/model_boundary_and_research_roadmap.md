@@ -24,16 +24,17 @@ The defensible V1 description is:
 | Market observation | Synthetic fuel price, price moving average, FX rate | Bounded simulated market signals |
 | Operational observation | Fuel remaining, route remaining, constant SFC feature | Normalized decision state, not telemetry |
 | Decision | Wait or select one of three nominal port actions | Port actions are not yet operationally differentiated |
-| Transition | Fixed fuel use per step and fixed refill rule | Inventory abstraction |
+| Transition | Canonical `0.05/step` fuel use and fixed refill rule | Inventory abstraction; V1.5 may vary consumption as a hidden synthetic shock |
 | Policies | Three Rule-based strategies and Double DQN | Shared action and environment interface |
 | Accounting | Reward, Synthetic Cost Index, success, fuel depletion, bunkering count | SCI is not actual currency cost |
 | Evaluation | Common cases, seeds, environment config and accounting | Same-condition computational comparison |
 | Robustness | Rule-based repeated seeds, frozen-DQN route stress, multi-training-seed aggregation | Synthetic sensitivity evidence |
 
 The current six observations are `fuel_price`, `fuel_price_ma30`, `fx_rate`,
-`fuel_remaining`, `route_remaining`, and `sfc`. The environment transition
-uses a fixed `0.05` fuel-consumption amount per step. The `sfc` observation is
-constant and is not a calibrated engine fuel-consumption curve.
+`fuel_remaining`, `route_remaining`, and `sfc`. The canonical environment
+transition defaults to `0.05` fuel consumption per step; V1.5 can change that
+normalized transition parameter without changing the observation. The `sfc`
+observation is constant and is not a calibrated engine fuel-consumption curve.
 
 ### Explicitly outside V1
 
@@ -71,24 +72,25 @@ suited to the fixed-consumption/minimum-stock structure. Therefore reward alone
 cannot rank operational quality; success, depletion, SCI and bunkering frequency
 must be reported together.
 
-## 2. Worth applying now
+## 2. V1.5 implementation status
 
-The competition-stage priority is analysis and documentation, not environment
-expansion.
+After the four-seed result freeze, the low-risk V1.5 robustness extension was
+approved. It remains isolated from the canonical evaluation.
 
 1. Freeze the four-training-seed snapshot and report mean, population standard
    deviation, range and paired Normal-to-Suez/Cape degradation.
 2. Keep the canonical Rule-based table unchanged and label the four-seed study
    as an optional Double DQN stability extension.
-3. Add distribution-oriented reporting from existing per-episode logs:
+3. **Implemented:** distribution-oriented reporting from existing per-episode logs:
    reward standard deviation/minimum/bottom-5% mean; SCI standard
    deviation/maximum/top-5% mean; bunkering mean/maximum; success, depletion and
    termination reason.
 4. Preserve the claim boundary that the 43-step route case changes episode
    horizon only. It does not include route physics.
-5. Specify a versioned fuel-consumption sensitivity design before changing code.
+5. **Implemented:** a versioned fuel-consumption sensitivity harness and a local
+   42/43/44-step horizon sensitivity check.
 
-### Proposed low-cost fuel-consumption sensitivity design
+### Implemented low-cost fuel-consumption sensitivity design
 
 The smallest defensible experiment is a **hidden transition shock** at
 multipliers `0.9`, `1.0`, `1.1`, and `1.2` relative to the current fixed
@@ -106,19 +108,18 @@ multipliers `0.9`, `1.0`, `1.1`, and `1.2` relative to the current fixed
 - Required metrics are success, fuel-depletion, SCI, bunkering count, reward and
   degradation from the `1.0` condition.
 
-Implementation should proceed only after a separate result-freeze decision.
-Changing the existing class constant directly would create checkpoint and
-contract ambiguity; a default-compatible, validated environment parameter is
-safer.
+The implementation uses a default-compatible, validated environment parameter,
+separate outputs, frozen inference and a cross-checkpoint aggregator. Empirical
+claims remain pending until the real checkpoint runs are reviewed.
 
 ### Other low-cost scenario priorities
 
 | Candidate | Recommendation | Reason |
 |---|---|---|
-| Local horizon 42/43/44 | Design now | Measures sensitivity to the ceiling choice without claiming route realism |
+| Local horizon 42/43/44 | Implemented | Measures sensitivity to the ceiling choice without claiming route realism |
 | Fuel-price shock | Later, with pinned evidence | Decision-relevant and implementable, but magnitude and time profile need provenance |
 | FX shock | Later, with pinned evidence | Decision-relevant; needs an explicit shock process and provenance |
-| Unexpected consumption increase | Highest-priority next stress | Direct safety and inventory relevance |
+| Unexpected consumption increase | Implemented | Direct safety and inventory relevance |
 | Route delay | Do not add separately in V1 | Currently collapses to horizon extension |
 | Port availability constraint | Defer | Nominal port actions currently lack differentiated economics and operations |
 
@@ -154,14 +155,14 @@ and voyage models supply physically grounded demand and uncertainty. Until that
 coupling exists, the project must remain described as a simulation-based
 decision-support experiment.
 
-## 5. Required files if approved later
+## 5. Implementation map
 
 | Change | Code | Tests | Documentation |
 |---|---|---|---|
 | Model boundary and roadmap | None | Existing suite | This document and README |
-| Existing-log tail analysis | `scripts/multiseed/aggregate.py` | `tests/test_multiseed_aggregate.py` | Multi-seed protocol/results |
-| Consumption parameter | `envs/bunkering_env.py`, config | Environment default/validation/determinism tests | State/action/reward specification |
-| Consumption stress harness | New isolated script/module | Same-case fairness, frozen-weight, output-contract tests | Dedicated protocol and limitations |
+| Existing-log tail analysis | `scripts/multiseed/aggregate.py` | `tests/test_multiseed_aggregate.py` | Multi-seed protocol/results; implemented |
+| Consumption parameter | `envs/bunkering_env.py` | Environment default/validation/determinism tests | State/action/reward specification; implemented |
+| Consumption/horizon stress harness | `scripts/robustness/` | Same-case fairness, frozen-weight, output-contract tests | Dedicated protocol and limitations; implemented |
 | Price/FX shocks | Environment/scenario adapter | Default regression and provenance tests | Versioned evidence note |
 | V2 energy coupling | New versioned environment and training config | New contract suite | Model card and calibration report |
 
@@ -176,7 +177,7 @@ decision-support experiment.
 | Coupling SFC to transition or changing observations | High | New environment/checkpoint version and retraining |
 | Carbon, alternative fuel or physical voyage model | High | Defer to V2+ with independent validation |
 
-The current 167-test baseline is the regression gate. A future feature is not
+The current 185-test baseline is the regression gate. A future feature is not
 acceptable if default behaviour changes, old checkpoints become ambiguous, or
 official results are overwritten.
 
@@ -195,9 +196,9 @@ official results are overwritten.
 
 ## Decision
 
-For the competition, freeze functionality after the four-seed documentation.
-For a paper extension, implement existing-log tail analysis first and the hidden
-fuel-consumption shock second. Treat physically coupled fuel consumption,
+The isolated V1.5 tail analysis, hidden fuel-consumption shock, and local horizon
+sensitivity are implemented without changing canonical defaults. Freeze further
+V1 functionality after the real-checkpoint V1.5 result review. Treat physically coupled fuel consumption,
 weather/voyage uncertainty, decarbonisation and digital-twin validation as
 versioned V2+ research rather than V1 claims.
 
