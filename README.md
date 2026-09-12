@@ -11,14 +11,14 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Double_DQN-EE4C2C?logo=pytorch&logoColor=white)
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-BunkeringEnv-2D3748)
-![Tests](https://img.shields.io/badge/tests-186_passed-2EA44F)
+![Tests](https://img.shields.io/badge/tests-215_passed-2EA44F)
 ![Evidence Audit](https://img.shields.io/badge/evidence_audit-8%2F8_passed-2EA44F)
 ![Data](https://img.shields.io/badge/UPA_public_data-6%2C028_rows-0054A6)
 
 가격·환율·연료잔량·잔여항로를 함께 고려하고,  
 Rule-based 3종과 Double DQN을 동일한 평가계약으로 비교합니다.
 
-[공식 평가](docs/technical/official_evaluation.md) · [4-seed 결과](docs/technical/multiseed_results_4seed.md) · [V1.5 결과](docs/technical/v1_5_results_4seed.md) · [V1.5 강건성](docs/technical/v1_5_robustness.md) · [모델 경계](docs/technical/model_boundary_and_research_roadmap.md) · [보안 검토](docs/technical/security_review.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
+[공식 평가](docs/technical/official_evaluation.md) · [4-seed 결과](docs/technical/multiseed_results_4seed.md) · [V1.5 결과](docs/technical/v1_5_results_4seed.md) · [연료수지·안전선 진단](docs/technical/reward_diagnostics_results_4seed.md) · [V1.5 강건성](docs/technical/v1_5_robustness.md) · [모델 경계](docs/technical/model_boundary_and_research_roadmap.md) · [보안 검토](docs/technical/security_review.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
 
 </div>
 
@@ -103,6 +103,11 @@ Rule-based 3종과 Double DQN의 **공식 동일조건 성능비교를 수행했
 | Safe Stock (안전재고) | -0.493 | 545,393 | 100% | 0% | 1.00 |
 | Double DQN (학습 정책) | 0.044 | 847,118 | 100% | 0% | 5.31 |
 
+> **보충 진단에 따른 해석 정정:** 원래 환경은 안전선 0.15를 허용오차 없이 비교한다.
+> 기본조건 Safe Stock의 기록값 0.1499999999999997이 항차당 안전 벌점 -0.5를 유발했다.
+> 기존 reward와 공식 수치는 보존하지만, 이 경계 판정을 실질적인 안전성 열세로 해석하지 않는다.
+> [독립 원본 대조 및 경계 민감도](docs/technical/reward_diagnostics_results_4seed.md)를 함께 읽어야 한다.
+
 ![공식 동일조건 평가 비교 그래프](results/evaluation/comparison.png)
 
 ### 결과 해석: 무엇을 의미하나
@@ -165,6 +170,33 @@ V1.5에서는 같은 네 frozen 체크포인트에 정규화 소비량 충격과
 -0.48%와 +0.30%로 작았습니다. 이는 합성환경 강건성 결과이며 실제 연료량,
 항해거리 또는 비용절감의 증거가 아닙니다
 ([V1.5 4-seed 결과](docs/technical/v1_5_results_4seed.md)).
+
+## 구매 소비 잔량 보충 진단 완료
+
+사용자 Windows/Conda에서 PR #44 진단 버전의 전체 테스트 **215 passed in 37.78s**를
+확인했고, 네 학습 체크포인트의 기본조건 진단 CSV를 독립 대조했다.
+1,600개 항차 기록·40,120개 step의 수지·SCI·보상·집계는 허용오차 내 일치했다.
+반복 규칙을 제거하면 규칙 300개와 DQN 400개 정책/체크포인트/case 조합이다.
+서로 독립적인 시장 경로 700개를 뜻하지 않는다.
+
+| 항차 평균 | Safe Stock | DQN 4개 체크포인트 평균 |
+|---|---:|---:|
+| 도착률 | 100% | 100% |
+| 총급유량 | 0.85000 | 1.31325 |
+| 소비량 | 1.50000 | 1.50000 |
+| 최종잔량 | 0.35000 | 0.81325 |
+| SCI | 545,392.72 | 839,763.41 |
+| 급유횟수 | 1.00 | 4.90 |
+
+연료량은 정규화 단위다. DQN의 추가 구매량은 추가 최종잔량과 일치하며,
+SCI는 53.97% 높다. Safe Stock의 기존 안전선 위반 100%는 경계 오차에서 발생했고,
+기존 기록을 1e-12 허용오차로 재분류하면 0%가 된다. 이는 수정 환경 재평가가 아니다.
+DQN의 더 큰 잔량 여유와 비용·재고 차이를 함께 설명하며 안전성·경제성 우위를 단정하지 않는다.
+소량 급유의 반복은 관측됐으나 보상 설계의 인과효과는 미검증이다.
+
+이번 반영은 자료·문서 보완이다. 환경과 보상, 기존 체크포인트·공식 결과는 변경하지 않았다.
+FuelCast는 V2 소비량 모델 후보이며 이번 실험에 사용하지 않았다.
+자세한 네 가지 보완 자료는 [진단 결과](docs/technical/reward_diagnostics_results_4seed.md)를 참조한다.
 
 ## 공공데이터 활용
 
