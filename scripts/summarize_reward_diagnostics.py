@@ -71,6 +71,11 @@ def load_run(path):
 
 
 def summarize(ep, checkpoint):
+    """Means of episode totals; step_sci_mean is not SCI divided by step count.
+
+    violation_episode_rate preserves strict official flags (no numerical tolerance).
+    See the separate snapshot audit before interpreting these as safety differences.
+    """
     rows = []
     for policy, group in ep.groupby("policy", sort=True):
         row = dict(checkpoint=checkpoint if policy == "double_dqn" else "not_applicable",

@@ -11,7 +11,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Double_DQN-EE4C2C?logo=pytorch&logoColor=white)
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-BunkeringEnv-2D3748)
-![Tests](https://img.shields.io/badge/tests-215_passed-2EA44F)
+![Tests](https://img.shields.io/badge/tests-225_passed-2EA44F)
 ![Evidence Audit](https://img.shields.io/badge/evidence_audit-8%2F8_passed-2EA44F)
 ![Data](https://img.shields.io/badge/UPA_public_data-6%2C028_rows-0054A6)
 
@@ -196,6 +196,10 @@ DQN의 더 큰 잔량 여유와 비용·재고 차이를 함께 설명하며 안
 
 이번 반영은 자료·문서 보완이다. 환경과 보상, 기존 체크포인트·공식 결과는 변경하지 않았다.
 FuelCast는 V2 소비량 모델 후보이며 이번 실험에 사용하지 않았다.
+기본조건의 네 체크포인트 Linux 재실행에서는 Windows 전이 CSV 4개와 바이트 단위로 일치했고, 가중치·타깃·optimizer 불변을 확인했다.
+2026-09-12 제출 정리 작업의 전체 회귀는 **225 passed**(기존 215개 + 기록 감사 10개)다.
+[논문 v3.0](docs/submission/ack_paper_v3_0.md) · [검증 및 병합 준비](docs/technical/submission_alignment_v3_0.md).
+
 자세한 네 가지 보완 자료는 [진단 결과](docs/technical/reward_diagnostics_results_4seed.md)를 참조한다.
 
 ## 공공데이터 활용

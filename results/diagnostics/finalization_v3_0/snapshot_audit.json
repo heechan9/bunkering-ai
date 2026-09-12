@@ -1,0 +1,85 @@
+{
+  "schema": "diagnostic-snapshot-audit/v1",
+  "checked_bundle_files": 24,
+  "checkpoint_hashes": {
+    "seed_1042": "e4b77a26c1cf5e5c1156c88c561842692a6b33e47d9852deb49f1817c4b4d689",
+    "seed_2042": "ffc86e08253e1d36f37aacd845d16777c432aaff786e52318267ccc932b9a104",
+    "seed_3042": "8ea393a778cf335b1c985e35d8bbab870891ffac85bcd47769ce8bd8b47e5763",
+    "seed_42": "be543c8cab041de802a03de7752e376cfe2037d7700ceef9742af218ad9bc6f8"
+  },
+  "raw_episodes": 1600,
+  "raw_steps": 40120,
+  "unique_combinations": 700,
+  "shared_market_cases": 100,
+  "max_step_balance_residual": 1.1102230246251565e-16,
+  "policy_summary": {
+    "double_dqn": {
+      "cases": 400,
+      "raw_violation": 0.0,
+      "tolerance_violation": 0.0,
+      "step_sci": 839763.4098484981,
+      "bunker_amount": 1.313250000000001,
+      "realized_consumption": 1.5,
+      "final_fuel": 0.8132499999999999,
+      "reward": 0.043920665464386624,
+      "price_advantage_reward": 0.09327066546438662,
+      "safety_reward": 0.0,
+      "operational_reward": -0.04935,
+      "imo_reward": 0.0
+    },
+    "fixed_fueling": {
+      "cases": 100,
+      "raw_violation": 1.0,
+      "tolerance_violation": 1.0,
+      "step_sci": 0.0,
+      "bunker_amount": 0.0,
+      "realized_consumption": 0.9999999999999997,
+      "final_fuel": 0.0,
+      "reward": -2.03,
+      "price_advantage_reward": 0.0,
+      "safety_reward": -2.0,
+      "operational_reward": -0.03,
+      "imo_reward": 0.0
+    },
+    "price_reactive": {
+      "cases": 100,
+      "raw_violation": 0.99,
+      "tolerance_violation": 0.98,
+      "step_sci": 17369.51761907307,
+      "bunker_amount": 0.02850000000000001,
+      "realized_consumption": 1.0149999999999997,
+      "final_fuel": 0.01349999999999999,
+      "reward": -1.9518558857746597,
+      "price_advantage_reward": 0.004344114225340157,
+      "safety_reward": -1.955,
+      "operational_reward": -0.0012,
+      "imo_reward": 0.0
+    },
+    "safe_stock": {
+      "cases": 100,
+      "raw_violation": 1.0,
+      "tolerance_violation": 0.0,
+      "step_sci": 545392.7239052434,
+      "bunker_amount": 0.8500000000000003,
+      "realized_consumption": 1.5,
+      "final_fuel": 0.34999999999999964,
+      "reward": -0.49279775536089976,
+      "price_advantage_reward": 0.007202244639100247,
+      "safety_reward": -0.5,
+      "operational_reward": 0.0,
+      "imo_reward": 0.0
+    }
+  },
+  "dqn_vs_safe": {
+    "sci_percent_change": 53.97407648481916,
+    "additional_purchase": 0.4632500000000006,
+    "additional_final_fuel": 0.4632500000000003
+  },
+  "limitations": [
+    "Recorded transitions only; not a new model replay.",
+    "Tolerance reclassification does not replace the original reward or safety flags.",
+    "Baseline only; no stress safety or real-voyage claim.",
+    "step_sci in this report is the mean episode total, not SCI per step.",
+    "Hashes check bundle integrity, not third-party authenticity."
+  ]
+}

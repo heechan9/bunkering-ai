@@ -1,4 +1,4 @@
-# 원본 진단 결과와 논문 v2.5 교차검토 요청
+# 원본 진단 결과와 논문 v3.0 교차검토 요청
 
 ## 검토 대상과 결론 후보
 
@@ -10,11 +10,14 @@
 검토자가 바이너리 체크포인트를 갖지 않았다면 기록된 체크포인트 해시를 직접 검증한 것으로
 표현하지 않는다. 상호 합의나 이전 AI의 판정은 증거로 사용하지 않는다.
 
+후속 체크포인트 재실행 증거와 이번 소스 대조는 [제출 정리](submission_alignment_v3_0.md)를 참조한다.
+Safe Stock의 `price_advantage_reward_mean≈0.007202`와 `safety_reward_mean=-0.5`는 다른 필드다.
+
 ## 함께 읽을 자료
 
 - `reward_diagnostics_results_4seed.md`: 네 보완 자료, 수치 경계 발견, 주장 제한.
 - `../../results/diagnostics/review_4seed/`: 연료수지·안전선·정책비교·급유행동 CSV와 provenance.
-- `../submission/ack_paper_v2_5.md` 및 별도 DOCX: 실제 논문 반영 내용.
+- `../submission/ack_paper_v3_0.md` 및 별도 DOCX: 실제 논문 반영 내용.
 - 별도 전달 묶음의 `independent_reward_audit.py`, `reward_audit_verified.json`과 원본 `upload/` 16개 파일.
 - 기존 환경 코드 `envs/bunkering_env.py`와 `scripts/baseline.py`, 기준 커밋 `97233c1c442a687aaed4a34e2cadca0d98aa2fb9`.
 
@@ -41,7 +44,7 @@
 ## 요청하는 답변 형식
 
 확인한 파일과 못 읽은 파일을 먼저 구분한다. 확정 결함, 해석 위험, 미검증 가설을
-나누고 각 항목에 원본 행 또는 코드·문서 위치를 제시한다. 마지막으로 논문 v2.5에
+나누고 각 항목에 원본 행 또는 코드·문서 위치를 제시한다. 마지막으로 논문 v3.0에
 필요한 최소 수정과 후속 코드 변경을 분리해 제안한다. 실제 파일 미확인을 결함 존재나
 통과의 근거로 사용하지 않는다.
 
