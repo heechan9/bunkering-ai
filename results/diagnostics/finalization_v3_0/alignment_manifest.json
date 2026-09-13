@@ -1,0 +1,87 @@
+{
+  "schema": "submission-alignment/v1",
+  "working_deadline": "2026-09-30 (user-confirmed)",
+  "base_commit": "8467fd106d33b4afa7abca6a632b0062e7ca4b58",
+  "baseline_main": "97233c1c442a687aaed4a34e2cadca0d98aa2fb9",
+  "source_replay_bundle": {
+    "filename": "bunkering_checkpoint_replay_verification_20260912.zip",
+    "sha256": "b7c431fda56fbae4e8056793de4fe5457b0abc7275b1e686d205a68667204b6b",
+    "member_hashes_verified": 24,
+    "archived_regression": "215 passed in 10.47s",
+    "replay_is_archived_evidence_not_rerun_this_finalization": true
+  },
+  "this_validation": {
+    "regression": "225 passed in 10.04s",
+    "independent_steps": 40120,
+    "unique_combinations": 700,
+    "summary_scalar_comparisons": 24,
+    "summary_comparison_atol": 1e-10,
+    "summary_comparison_rtol": 1e-12,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "packages": {
+      "pytest": "9.1.1",
+      "torch": "2.14.0",
+      "numpy": "2.3.5",
+      "pandas": "2.2.3",
+      "gymnasium": "1.3.0"
+    },
+    "existing_paper_audit": "8/8 existing contract claims only"
+  },
+  "preservation": {
+    "no_tracked_environment_policy_contract_or_result_modifications": true,
+    "existing_module_logic_ast_equal_excluding_docstrings": {
+      "scripts/diagnose_reward.py": true,
+      "scripts/summarize_reward_diagnostics.py": true
+    },
+    "no_retraining": true
+  },
+  "manuscript": {
+    "filename": "ACK2026_Bunkering_Paper_v3_0.docx",
+    "sha256": "92b2a86ccf31d9312017dcfdbc41e4955b214df0870db62c5719c053c501020b",
+    "source_version": "ACK2026_Bunkering_Paper_v2_5.docx",
+    "markdown_sha256": "cfe86916dadfe6bd601990231776856bd9956c8ee4b53d506fdcdf21a37d995b",
+    "rendered_pages": 3,
+    "all_pages_visually_inspected": true,
+    "citation_first_appearance": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "acknowledgment_exact_match_to_supplied_track_guide": true,
+    "remaining": [
+      "Author order, affiliations and contact placeholders",
+      "Final Word font/page check on submission PC"
+    ],
+    "render_font_note": "Original font requests retained; Linux rendering used Korean Nanum fallback."
+  },
+  "limitations": [
+    "Baseline record audit; no fresh stress replay or safety reclassification under stress.",
+    "Four checkpoints share 100 market cases.",
+    "Raw safety flags and rewards retained; tolerance results are postprocessing only.",
+    "No actual ship fuel, monetary cost savings, or digital twin validation."
+  ],
+  "git_workflow": {
+    "status": "working-tree changes prepared; not committed, pushed, merged or submitted",
+    "author": "Codex <codex@openai.com>",
+    "committer": "Codex <codex@openai.com>",
+    "commit_requires_review_per": "CONTRIBUTIONS.md",
+    "remote_pr_snapshot": {
+      "number": 44,
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "mergeable_state": "clean",
+      "head": "8467fd106d33b4afa7abca6a632b0062e7ca4b58",
+      "base": "97233c1c442a687aaed4a34e2cadca0d98aa2fb9"
+    }
+  },
+  "file_hashes": {
+    "results/diagnostics/finalization_v3_0/snapshot_audit.json": "4112b04c0062f01307ad5f3960e2614f3836cca65b197422b67e75a102c9b440",
+    "results/diagnostics/finalization_v3_0/regression.log": "756c7c50464a45605932f46d3d023ef52b20d447aec166ebaf9fab4040779135",
+    "results/diagnostics/finalization_v3_0/paper_evidence_report.json": "36d53d8144179f9a5520e657426b37c4029ac00569fdbe6084c52b5ec8254e54",
+    "scripts/audit_diagnostic_snapshot.py": "28357ac28fd40edf2efbc132e904155825db5584b16d15027772e07baaed7db0",
+    "tests/test_diagnostic_snapshot.py": "e3abf15f931c242d0f9de725d154c7f320f52f55c893895d9cbcd2345188a1db"
+  }
+}

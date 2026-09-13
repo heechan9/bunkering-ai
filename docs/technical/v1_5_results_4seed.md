@@ -87,3 +87,4 @@ efficiency, weather, vessel type, or a digital twin. SCI is not currency or
 verified operating cost. The result therefore supports only an exploratory
 claim about synthetic policy robustness and local horizon sensitivity, not
 actual-voyage savings or real-world deployment performance.
+

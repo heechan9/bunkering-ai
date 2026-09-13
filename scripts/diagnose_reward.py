@@ -39,6 +39,8 @@ def trace_episode(policy, seed=42, env_config=None):
             safety_reward=-REWARD_WEIGHTS["risk_penalty"] * b["risk_penalty"],
             operational_reward=REWARD_WEIGHTS["operational_efficiency"] * b["operational_efficiency"],
             imo_reward=REWARD_WEIGHTS["imo_compliance_bonus"] * b["imo_compliance_bonus"],
+            # Preserve the official strict comparison, including float boundary effects.
+            # Tolerance reclassification is separate postprocessing; see snapshot audit.
             safety_violation=int(fuel_after < env.min_safe_fuel),
         ))
         if terminated or truncated:

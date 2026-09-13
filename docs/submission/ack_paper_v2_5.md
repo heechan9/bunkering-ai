@@ -8,7 +8,7 @@ DOCX 조판본의 내용 전사본이다. 공식 수치·환경은 변경하지 
 
 Robustness and Fuel Accounting Evaluation of Double DQN-Based Bunker Purchasing Decisions in a Synthetic Voyage Environment
 
-Hee-Chan Choi¹, Co-author², Co-author³ / ¹Department of Electronic Engineering, Tech University of Korea / ²Affiliation / ³Affiliation /
+Hee-Chan Choi¹, Co-author², Co-author³ / ¹Department of Electronic Engineering, Tech University of Korea / ²Affiliation / ³Affiliation / 
 
 요       약 / 본 연구는 시장·운항 상태를 고려한 합성환경에서 규칙 기반 정책 3종과 Double DQN을 동일 조건으로 평가하였다. 공식 결과를 보존하면서 네 학습 체크포인트를 각각 100개 사례에 적용해 소비량·항로 길이 민감도와 연료수지를 분석하였다. 소비량 +20%에서 DQN의 도착률은 100%였으나 SCI/step은 22.59% 증가하였다. 기본조건 원본 진단에서 연료수지는 수치 오차 내 일치했으며, DQN은 Safe Stock보다 구매량·최종잔량과 SCI가 높았다. Safe Stock의 기존 안전선 미달 판정은 부동소수점 경계 오차에서 발생해 실질적인 안전성 열세의 근거로 해석하지 않았다. 본 결과는 합성환경의 정책 비교와 평가계약 진단이며 실제 비용절감이나 현장 성능 검증을 의미하지 않는다.
 
