@@ -1,5 +1,13 @@
 # V1.5 four-training-seed robustness result snapshot
 
+> Subsequent baseline diagnostic correction: the original strict safety comparison
+> counts Safe Stock fuel 0.1499999999999997 as below 0.15 and adds a -0.5 penalty.
+> All historical values below remain unchanged. This rounding-boundary effect
+> must not be presented as substantive safety inferiority. The new audit covers
+> baseline 0.05/30-step records, not safety reclassification of every stress condition.
+> See [the four-checkpoint accounting review](reward_diagnostics_results_4seed.md).
+
+
 ## Frozen evaluation contract
 
 This reviewed extension uses four independently trained Double DQN checkpoints
@@ -79,3 +87,4 @@ efficiency, weather, vessel type, or a digital twin. SCI is not currency or
 verified operating cost. The result therefore supports only an exploratory
 claim about synthetic policy robustness and local horizon sensitivity, not
 actual-voyage savings or real-world deployment performance.
+

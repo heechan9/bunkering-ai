@@ -1,0 +1,172 @@
+{
+  "schema": "reward-diagnostics-reviewed-evidence/v1",
+  "code_baseline": "97233c1c442a687aaed4a34e2cadca0d98aa2fb9",
+  "diagnostic_head": "bdf9340bec6d4af7a0c2376b75255ddc4a16c2e2",
+  "source_summary_sha256": "0f01cde52ad2cfdc06977f14fc8d422de1566dc7cd8627c9640ae018b3c5e3d2",
+  "sources": [
+    {
+      "checkpoint": {
+        "name": "dqn_seed_42.pt",
+        "sha256": "be543c8cab041de802a03de7752e376cfe2037d7700ceef9742af218ad9bc6f8"
+      },
+      "files": {
+        "manifest.json": "deb28a35df6bb7d5aae0a8606f7d9e00ff0186fc30ae8f0ff348e4af5895c3d1",
+        "episodes.csv": "7653729b41297d62e4235ada8d0caa3a2ccb4a2be08aa069d83524b82955362e",
+        "steps.csv": "bcdc1562e471a06761809a3569e11aed6dffe856248154b601511cd56eaf83de"
+      }
+    },
+    {
+      "checkpoint": {
+        "name": "dqn_seed_1042.pt",
+        "sha256": "e4b77a26c1cf5e5c1156c88c561842692a6b33e47d9852deb49f1817c4b4d689"
+      },
+      "files": {
+        "manifest.json": "ad734880bbcdbc1bd63733d645347ab29d2e467121f1e2455fa0d6739157079e",
+        "episodes.csv": "4fc69f69545eaffd474a714c207d22d688702d1bce1515495a9f99e2cee40076",
+        "steps.csv": "aa5f776579b8a4d72aada93468742c7c44f171a0da4f25710dfb75463fb955e3"
+      }
+    },
+    {
+      "checkpoint": {
+        "name": "dqn_seed_2042.pt",
+        "sha256": "ffc86e08253e1d36f37aacd845d16777c432aaff786e52318267ccc932b9a104"
+      },
+      "files": {
+        "manifest.json": "ee37bd05fef1702d27d8777adf9d18dca5ae348e14d3dda46a53437149851902",
+        "episodes.csv": "1e3a100392f29ed1f7ab7a27058cd6612381f46d20b254c920687229d0fc67ae",
+        "steps.csv": "332593a5d5c0d522e531f204a34d67333ec0175e9097a2967a9ce1a88de3c877"
+      }
+    },
+    {
+      "checkpoint": {
+        "name": "dqn_seed_3042.pt",
+        "sha256": "8ea393a778cf335b1c985e35d8bbab870891ffac85bcd47769ce8bd8b47e5763"
+      },
+      "files": {
+        "manifest.json": "a9cc2fd9f89c7d7bf19ae69319256db02930f6a9ef590a4d4ef805f394f7df7f",
+        "episodes.csv": "ac9ee9ff9cdef8c80b7269d8888194ba76a9ca831347fa13ff9ed9790fe0f1b1",
+        "steps.csv": "076ee2b420b02df14ec7ea80b61a80e7e4239334342fddb77e4fbb482871555c"
+      }
+    }
+  ],
+  "verification_status": "ACCOUNTING_PASS_WITH_SAFETY_BOUNDARY_FINDING",
+  "maximum_absolute_errors": {
+    "consumption": 0,
+    "purchase": 1.1102230246251565e-16,
+    "clipping": 0,
+    "closing_fuel": 1.1102230246251565e-16,
+    "step_balance": 1.1102230246251565e-16,
+    "events": 0,
+    "safety_flags": 0,
+    "SCI": 2.3283064365386963e-10,
+    "price_reward": 3.191891195797325e-16,
+    "safety_reward": 0,
+    "operational_reward": 0,
+    "imo_reward": 0,
+    "reward": 3.191891195797325e-16,
+    "continuity": 0,
+    "opening": 0,
+    "initial_condition": 0,
+    "terminal": 0,
+    "aggregate_bunker_amount": 8.881784197001252e-16,
+    "aggregate_bunker_event": 0,
+    "aggregate_realized_consumption": 8.881784197001252e-16,
+    "aggregate_clipping_loss": 0,
+    "aggregate_step_sci": 3.4924596548080444e-10,
+    "aggregate_reward": 9.43689570931383e-16,
+    "aggregate_price_advantage_reward": 9.992007221626409e-16,
+    "aggregate_safety_reward": 0,
+    "aggregate_operational_reward": 2.220446049250313e-16,
+    "aggregate_imo_reward": 0,
+    "aggregate_safety_violation": 0,
+    "episode_balance": 1.5543122344752192e-15,
+    "recorded_residual": 7.216449660063518e-16,
+    "paired_market_decision_price": 0,
+    "paired_market_decision_ma": 0,
+    "paired_market_decision_fx": 0,
+    "policy_summary_evaluation_cases": 0,
+    "policy_summary_success_rate": 0,
+    "policy_summary_violation_episode_rate": 0,
+    "policy_summary_violation_steps_mean": 0,
+    "policy_summary_violation_step_fraction": 3.469446951953614e-17,
+    "policy_summary_step_sci_mean": 2.3283064365386963e-10,
+    "policy_summary_bunker_amount_mean": 3.3306690738754696e-16,
+    "policy_summary_bunker_event_mean": 0,
+    "policy_summary_final_fuel_mean": 1.1102230246251565e-16,
+    "policy_summary_reward_mean": 2.220446049250313e-16,
+    "policy_summary_price_advantage_reward_mean": 8.326672684688674e-17,
+    "policy_summary_safety_reward_mean": 0,
+    "policy_summary_operational_reward_mean": 6.938893903907228e-18,
+    "policy_summary_imo_reward_mean": 0,
+    "checkpoint_summary_bunker_amount_mean": 5.898059818321144e-17,
+    "checkpoint_summary_bunker_event_mean": 5.551115123125783e-17,
+    "checkpoint_summary_final_fuel_mean": 1.1102230246251565e-16,
+    "checkpoint_summary_imo_reward_mean": 0,
+    "checkpoint_summary_operational_reward_mean": 9.454242944073599e-17,
+    "checkpoint_summary_price_advantage_reward_mean": 8.326672684688674e-17,
+    "checkpoint_summary_reward_mean": 9.020562075079397e-17,
+    "checkpoint_summary_safety_reward_mean": 0,
+    "checkpoint_summary_step_sci_mean": 0,
+    "checkpoint_summary_success_rate": 0,
+    "checkpoint_summary_violation_episode_rate": 0,
+    "checkpoint_summary_violation_step_fraction": 0,
+    "checkpoint_summary_violation_steps_mean": 0,
+    "case_seed": 0,
+    "case_step": 0,
+    "case_action": 0,
+    "case_fuel_before": 0,
+    "case_fuel_after": 0,
+    "case_realized_consumption": 0,
+    "case_clipping_loss": 0,
+    "case_bunker_amount": 0,
+    "case_bunker_event": 0,
+    "case_decision_price": 0,
+    "case_decision_ma": 0,
+    "case_decision_fx": 0,
+    "case_step_sci": 0,
+    "case_reward": 0,
+    "case_price_advantage_reward": 0,
+    "case_safety_reward": 0,
+    "case_operational_reward": 0,
+    "case_imo_reward": 0,
+    "case_safety_violation": 0
+  },
+  "decimal_fixed_action_replay": [
+    {
+      "policy": "double_dqn",
+      "episodes": 400,
+      "violation_steps": 0,
+      "max_abs_fuel_difference": 4.440892098500626e-16
+    },
+    {
+      "policy": "fixed_fueling",
+      "episodes": 100,
+      "violation_steps": 300,
+      "max_abs_fuel_difference": 4.440892098500626e-16
+    },
+    {
+      "policy": "price_reactive",
+      "episodes": 100,
+      "violation_steps": 292,
+      "max_abs_fuel_difference": 6.661338147750939e-16
+    },
+    {
+      "policy": "safe_stock",
+      "episodes": 100,
+      "violation_steps": 0,
+      "max_abs_fuel_difference": 4.440892098500626e-16
+    }
+  ],
+  "notes": [
+    "Original 16 files and independent verifier are preserved in the separately shared audit package.",
+    "CSV tables are descriptive and postprocess observed records; environment and checkpoints are unchanged.",
+    "Checkpoint binaries were not supplied; their hashes are declared source identifiers.",
+    "Baseline 0.05 and 30-step only; repeated rule records deduplicated."
+  ],
+  "tables": {
+    "dqn_bunkering_behavior.csv": "f756cbd6d4b1d3dbf5e411d9de5395cdd16e0683d4c40c574a6c19e02b33caa5",
+    "fuel_balance_by_policy.csv": "9ee4e8c5dc05f623ed08de7b0a70090b39c4cc100752ed82d322d37979c87270",
+    "policy_accounting_comparison.csv": "eaf1b819c458c00b6a9dee9ff03de5fec48f1ca8a4bfc5079246a1a090264b60",
+    "safety_boundary_sensitivity.csv": "80435c66bae392ca36503223fd139471239572329720c57910b776d79555a9cd"
+  }
+}
