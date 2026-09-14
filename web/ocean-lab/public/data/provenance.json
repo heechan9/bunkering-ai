@@ -1,0 +1,9 @@
+{
+  "schema": "ocean-lab-provenance/v1",
+  "replay_sha256": "2f2ecc2d4987614d8393fc8a542c2744ac928fb133f5975f6f400313518726b7",
+  "unique_cases": 700,
+  "source_review": "https://github.com/heechan9/bunkering-ai/pull/44",
+  "visual_geometry": "illustrative",
+  "baseline_only": true,
+  "physical_units": false
+}
