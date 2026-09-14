@@ -6,9 +6,9 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {GLTFExporter} from 'three/examples/jsm/exporters/GLTFExporter.js';
 import {SVGRenderer} from 'three/examples/jsm/renderers/SVGRenderer.js';
 
-export default function OceanScene({progress,fuel,bunkering,view,onExportReady}){
- const host=useRef(null),state=useRef({progress,fuel,bunkering,view}),[error,setError]=useState('');
- useEffect(()=>{state.current={progress,fuel,bunkering,view}},[progress,fuel,bunkering,view]);
+export default function OceanScene({progress,fuel,bunkering,view,resetCamera,onExportReady}){
+ const host=useRef(null),state=useRef({progress,fuel,bunkering,view,resetCamera}),[error,setError]=useState('');
+ useEffect(()=>{state.current={progress,fuel,bunkering,view,resetCamera}},[progress,fuel,bunkering,view,resetCamera]);
  useEffect(()=>{
   if(!host.current)return;
   let renderer,software=false;
@@ -74,10 +74,10 @@ export default function OceanScene({progress,fuel,bunkering,view,onExportReady})
   const glow=new THREE.Mesh(new THREE.TorusGeometry(5,.035,8,90),new THREE.MeshBasicMaterial({color:'#caf76f',transparent:true,opacity:.85}));glow.rotation.x=Math.PI/2;glow.position.y=.03;scene.add(glow);
   const wake=new THREE.Group();vessel.add(wake);for(let i=0;i<12;i++){const l=line(wake,[[-8-i*.8,-.5,-.9-i*.15],[-9-i*.8,-.5,-1.25-i*.17]],'#b9ebe4');l.material.transparent=true;l.material.opacity=.48-i*.025;const r=l.clone();r.scale.z=-1;wake.add(r)}
   let dirty=true,lastProgress=-1,lastFuel=-1;controls.addEventListener('change',()=>{dirty=true});
-  let lastView='',lastPos=new THREE.Vector3(),first=true,frame=0,raf,lastDraw=0;const targetPos=new THREE.Vector3();const clock=new THREE.Clock();
+  let lastView='',lastReset=-1,lastPos=new THREE.Vector3(),first=true,frame=0,raf,lastDraw=0;const targetPos=new THREE.Vector3();const clock=new THREE.Clock();
   const onResize=()=>{const w=el.clientWidth,h=el.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix()};const ro=new ResizeObserver(onResize);ro.observe(el);onResize();
   function animate(){raf=requestAnimationFrame(animate);if(document.hidden)return;const t=clock.getElapsedTime();const s=state.current;if(software){controls.update();if(t-lastDraw<.18)return;if(!dirty&&lastProgress===s.progress&&lastFuel===s.fuel&&lastView===s.view)return;}lastDraw=t;lastProgress=s.progress;lastFuel=s.fuel;const p=route.getPoint(Math.max(0,Math.min(1,s.progress)));targetPos.copy(p);vessel.position.lerp(targetPos,first||software?1:.08);vessel.position.y=software?0:Math.sin(t*.65)*.045;const tangent=route.getTangent(s.progress);vessel.rotation.y=-Math.atan2(tangent.z,tangent.x);vessel.rotation.z=software?0:Math.sin(t*.5)*.004;
-   if(s.view!==lastView){const pos=vessel.position;controls.target.copy(s.view==='route'?new THREE.Vector3(5,0,-6):pos.clone().add(new THREE.Vector3(0,2,0)));camera.position.copy(s.view==='route'?new THREE.Vector3(55,67,72):pos.clone().add(s.view==='tank'?new THREE.Vector3(19,16,22):new THREE.Vector3(25,20,30)));lastView=s.view;}
+   if(s.view!==lastView||s.resetCamera!==lastReset){const pos=vessel.position;controls.target.copy(s.view==='route'?new THREE.Vector3(5,0,-6):pos.clone().add(new THREE.Vector3(0,2,0)));camera.position.copy(s.view==='route'?new THREE.Vector3(55,67,72):pos.clone().add(s.view==='tank'?new THREE.Vector3(19,16,22):new THREE.Vector3(25,20,30)));lastView=s.view;lastReset=s.resetCamera;dirty=true;}
    if(!first&&s.view!=='route'){const delta=vessel.position.clone().sub(lastPos);camera.position.add(delta);controls.target.add(delta)}lastPos.copy(vessel.position);first=false;
    waterMat.uniforms.time.value=t;cargo.visible=s.view!=='tank';tankGroup.visible=s.view==='tank';fuelMesh.scale.y=Math.max(.005,s.fuel);fuelMesh.position.y=1.6+1.5*Math.max(.005,s.fuel);glow.position.set(vessel.position.x,0,vessel.position.z);glow.visible=s.bunkering;glow.scale.setScalar(1+.035*Math.sin(t*3));controls.update();renderer.render(scene,camera);dirty=false;
   }
