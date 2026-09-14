@@ -1,0 +1,20 @@
+{
+  "schema": "ocean-lab-integration/v1",
+  "date": "2026-09-13",
+  "source_commit": "bc3293f06e4118e5d245a716b2402fe7080905b8",
+  "summary_fields_verified": 70,
+  "replay_sha256": "2f2ecc2d4987614d8393fc8a542c2744ac928fb133f5975f6f400313518726b7",
+  "policy_case_combinations": 700,
+  "shared_market_cases": 100,
+  "transitions_verified": 19030,
+  "max_step_fuel_balance_error": 1.1102230246251565e-16,
+  "checks": [
+    "summary vs repository CSV",
+    "fuel balance",
+    "SCI reconstruction",
+    "signed reward reconstruction",
+    "raw safety flags"
+  ],
+  "model_execution": false,
+  "limits": "Baseline synthetic replay only; no independent Jules audit report verified; existing local regression log: 225 passed, not new remote CI."
+}
