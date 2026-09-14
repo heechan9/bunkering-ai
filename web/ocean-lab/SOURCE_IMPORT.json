@@ -1,8 +1,8 @@
 {
   "schema_version": "ocean-lab-source-import/v1",
   "site_url": "https://bunkering-ocean-lab.hc24734503.chatgpt.site/",
-  "site_version": 7,
-  "source_commit": "9cd5be767d7829ac5779c1db0b341c96a7397741",
+  "site_version": 8,
+  "source_commit": "e9392e5fbad7bf5adf6ce25d2e7c53a7e110b59e",
   "research_commit": "bc3293f06e4118e5d245a716b2402fe7080905b8",
   "import_mode": "byte-identical tracked source snapshot; not an automatic deployment link",
   "files": [
@@ -19,16 +19,12 @@
       "sha256": "25d3219737fee0444848d0321c0b543bae212fb4c8122fe1a50502a8100a69ae"
     },
     {
-      "path": "README.md",
-      "sha256": "4b8744bf2da243b07f2fca15afd496cb3f2a5b7ec4b1618c21d877576fc754b2"
-    },
-    {
       "path": "app/chatgpt-auth.ts",
       "sha256": "4265a2e7c2dcb3a6f4b7026f762bf5b6e4caec76cc13c0a45987ee9a9f2e42cc"
     },
     {
       "path": "app/globals.css",
-      "sha256": "872ea1561cc14622f47cd33d4dce488acf57d2229be45880ffd75ba263064aed"
+      "sha256": "38e3e366432048707ade4abc2402bcd406d347f10ec055f7184cc85fe8ff3378"
     },
     {
       "path": "app/layout.tsx",
@@ -36,7 +32,7 @@
     },
     {
       "path": "app/page.tsx",
-      "sha256": "f8f2f0a0ec6a4eb27820a8c8c7678354d0a7d32f3587fd16e37e913aa52a654a"
+      "sha256": "b6ffa4c7e9e6e6b8b8b17f580fed0f11e99297d5eaaba2a4a2a390514c72e787"
     },
     {
       "path": "build/sites-vite-plugin.LICENSE",
@@ -56,11 +52,15 @@
     },
     {
       "path": "components/ocean/Geography.tsx",
-      "sha256": "ae92185a89278b5beae76bfa38728ac61adec5ec8f67b5fe722dc5473019890c"
+      "sha256": "d7b131b75a64229116bb5b43e06097429880bd440f4782c18cc607c2c5201b94"
     },
     {
       "path": "components/ocean/Globe.tsx",
       "sha256": "4ea980ba2063ffb1c42a5db3ee05572b85cdedbc1e784a9971e13fd0893e3780"
+    },
+    {
+      "path": "components/ocean/PassageTraffic.ts",
+      "sha256": "8a5087b0f1407e7c1deb13609e1455a0dd2c179187b1141b730a90c9dcf1be08"
     },
     {
       "path": "components/ocean/Scene.tsx",
@@ -427,6 +427,10 @@
       "sha256": "98244601f4d54ba7a0f135506b4ae91dc30a23eed19e482aeec24df4ffaa64c7"
     },
     {
+      "path": "README.md",
+      "sha256": "aeeb8182954a106659d3e3fd313288cacc253fb3880b3d49dcbb38c5e7a331e3"
+    },
+    {
       "path": "scripts/build-verified.sh",
       "sha256": "2ae5329ac860076070c9217a43106a15cb5ecf907a0f7baeb9ef903f76b53c68"
     },
@@ -479,12 +483,12 @@
       "sha256": "7199c6e4e400921e8049729840165a39f1476fa97901bed00239e7697bfe8da4"
     },
     {
-      "path": "vendor/shadcn-tailwind-4.13.0.LICENSE.md",
-      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
-    },
-    {
       "path": "vendor/shadcn-tailwind-4.13.0.css",
       "sha256": "bc7d83425702955b4cb67cb14ede9d603f9d912376d57a2d81d661094d2a782a"
+    },
+    {
+      "path": "vendor/shadcn-tailwind-4.13.0.LICENSE.md",
+      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
     },
     {
       "path": "vite.config.ts",
