@@ -98,3 +98,10 @@ The globe remains a locator. DEMs are not fed into BunkeringEnv, policies, route
 Terrain revision validation: Hormuz compatibility rendering and 1×/8× selection were visually checked. A shared preview was replaced by another active Site during later regional checks, so no all-region browser or GPU/mobile-device verification is claimed. Production build and regional geometry/data checks are recorded separately. The retained globe and experiment replay are unchanged in their data and logic.
 
 Data/geometry checks passed for all seven regions: exact coastline/DEM bounds agreement, grid dimensions and finite elevations, binary land masks, north-to-south orientation, nonempty land meshes, finite normals and 1×→8× vertex-height scaling in full and reduced meshes. Verified 285 downloaded source-tile SHA-256 digests. `replay.json`, `provenance.json`, `coastlines.json` and `world-land.json` remain byte-identical to the preceding source revision.
+
+
+## 지역 지형 위 선박 이동
+
+7개 지역 지도에 설명용 통과선과 선박 3척을 표시합니다. 선박 선택·재생·일시정지·위치 탐색·연출 속도 조절을 제공하며, 감속 모션 설정 시 자동 재생하지 않습니다. 통과선은 직접 작성한 개략선으로 AIS 항적이나 항법 데이터가 아닙니다. 선박 수·크기·이동시간 역시 실측치가 아닙니다. 수에즈 수로는 저해상도 해안선에서 생략되므로 확대된 설명용 통과선을 겹쳐 표시합니다.
+
+‘이 지형에서 운항 체험’은 선택한 지역을 그대로 운항 화면에 전달합니다. 이 화면에는 체험 선박 한 척만 표시하고, 기존 30단계 공통 합성 기록의 연료·급유·SCI와 단계 사이 시각적 이동을 연결합니다. 연료·회계 지표는 완료된 정수 단계 값이며 이동만 보간합니다. 조기 고갈 정책은 기록이 끝난 단계/30 위치에서 멈추고 도착점으로 이동시키지 않습니다. 30단계 도착에서는 출발점으로 순환하지 않습니다. 속도·지역 배경 선택은 기록과 계산을 바꾸지 않습니다. 선박 근접·탱크·개략 항로 보기도 유지합니다.
