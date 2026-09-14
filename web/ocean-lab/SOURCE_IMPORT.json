@@ -1,8 +1,8 @@
 {
   "schema_version": "ocean-lab-source-import/v1",
   "site_url": "https://bunkering-ocean-lab.hc24734503.chatgpt.site/",
-  "site_version": 6,
-  "source_commit": "114f9fd4c11cda216ab41260bc84335d99066186",
+  "site_version": 7,
+  "source_commit": "9cd5be767d7829ac5779c1db0b341c96a7397741",
   "research_commit": "bc3293f06e4118e5d245a716b2402fe7080905b8",
   "import_mode": "byte-identical tracked source snapshot; not an automatic deployment link",
   "files": [
@@ -20,7 +20,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "8ac643d279207a64d244a96dd21bea10dab127e63a8806479384ef41103ac158"
+      "sha256": "4b8744bf2da243b07f2fca15afd496cb3f2a5b7ec4b1618c21d877576fc754b2"
     },
     {
       "path": "app/chatgpt-auth.ts",
@@ -28,7 +28,7 @@
     },
     {
       "path": "app/globals.css",
-      "sha256": "edfc215c7b4ffb76f04c33976e127935cd7ec54389e476b7140b2a25de8448f9"
+      "sha256": "872ea1561cc14622f47cd33d4dce488acf57d2229be45880ffd75ba263064aed"
     },
     {
       "path": "app/layout.tsx",
@@ -36,7 +36,7 @@
     },
     {
       "path": "app/page.tsx",
-      "sha256": "f21248d6db9ce79fa6e90e633bd16217fb14dabbcfe4b22943323971ff03e40a"
+      "sha256": "f8f2f0a0ec6a4eb27820a8c8c7678354d0a7d32f3587fd16e37e913aa52a654a"
     },
     {
       "path": "build/sites-vite-plugin.LICENSE",
@@ -64,7 +64,7 @@
     },
     {
       "path": "components/ocean/Scene.tsx",
-      "sha256": "26b6a7e4f0d6fabd5958f7153ad77521fcabfdd36df740559bc4d03238248980"
+      "sha256": "12bea6a4f59ec712a808a26755d4aa55a67aee24f31e7aae17f72a5ea4fb5ce2"
     },
     {
       "path": "components/ocean/Terrain.ts",
