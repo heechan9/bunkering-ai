@@ -35,6 +35,13 @@ export function makePassageTraffic(region:string, project:(p:number[])=>number[]
   const a=points[i],b=points[i+1],ribbon=new THREE.Mesh(new THREE.PlaneGeometry(.9,a.distanceTo(b)),new THREE.MeshBasicMaterial({color:'#246579',side:THREE.DoubleSide,depthTest:false}));
   ribbon.rotation.set(-Math.PI/2,0,Math.atan2(-(b.x-a.x),-(b.z-a.z)));ribbon.position.copy(a.clone().lerp(b,.5));ribbon.position.y=.3;ribbon.renderOrder=190;group.add(ribbon);
  }
+ // Start and destination are schematic route markers, not real port locations.
+ const startMarker=new THREE.Mesh(new THREE.RingGeometry(1.1,1.45,32),new THREE.MeshBasicMaterial({color:'#a9d5d7',side:THREE.DoubleSide,depthTest:false}));startMarker.rotation.x=-Math.PI/2;startMarker.position.copy(points[0]);startMarker.renderOrder=230;group.add(startMarker);
+ const destination=new THREE.Group();destination.name='Illustrative_destination_flag';destination.position.copy(points.at(-1)!);
+ const pole=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,6,6),new THREE.MeshBasicMaterial({color:'#e6eee4',depthTest:false}));pole.position.y=3;destination.add(pole);
+ const flagMaterial=new THREE.MeshBasicMaterial({color:'#dca85f',side:THREE.DoubleSide,depthTest:false});
+ const flagShape=new THREE.Shape();flagShape.moveTo(0,0);flagShape.lineTo(3.1,-.5);flagShape.lineTo(2.5,-1.7);flagShape.lineTo(0,-1.3);flagShape.closePath();
+ const flag=new THREE.Mesh(new THREE.ShapeGeometry(flagShape),flagMaterial);flag.position.y=6;destination.add(flag);destination.traverse(o=>o.renderOrder=235);group.add(destination);
  const ships=Array.from({length:3},(_,index)=>{
   const vessel=new THREE.Group();vessel.name='Illustrative_ship_'+(index+1);
   const hullMat=new THREE.MeshBasicMaterial({color:'#e4ede3',depthTest:false});
@@ -52,7 +59,8 @@ export function makePassageTraffic(region:string, project:(p:number[])=>number[]
   vessel.scale.setScalar(1.2);vessel.traverse(o=>{o.renderOrder=220});group.add(vessel);
   return {vessel,hullMat,halo};
  });
- return {group,update:(progress:number,selected:number,bunkering=false)=>{
+ return {group,start:points[0].clone(),destination:points.at(-1)!.clone(),update:(progress:number,selected:number,bunkering=false)=>{
+  flagMaterial.color.set(singleShip&&progress>=1?'#c6f36c':'#dca85f');
   return ships.map((s,i)=>{s.vessel.visible=!singleShip||i===0;const p=singleShip?THREE.MathUtils.clamp(progress,0,1):(progress+i/3)%1;const sample=passageSample(points,p);s.vessel.position.copy(sample.position);s.vessel.rotation.y=-Math.atan2(sample.tangent.z,sample.tangent.x);s.hullMat.color.set(i===selected?'#c6f36c':'#e4ede3');s.halo.visible=singleShip?bunkering:i===selected;s.halo.scale.setScalar(singleShip&&bunkering?1.25:1);return {position:sample.position,progress:p};});
  }};
 }

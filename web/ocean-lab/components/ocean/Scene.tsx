@@ -1,19 +1,20 @@
 // @ts-nocheck
 'use client';
+import {useLocale,LocaleProvider} from '@/lib/locale';
 import {useEffect,useRef,useState} from 'react';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {GLTFExporter} from 'three/examples/jsm/exporters/GLTFExporter.js';
 import {SVGRenderer} from 'three/examples/jsm/renderers/SVGRenderer.js';
 
-export default function OceanScene({progress,fuel,bunkering,view,resetCamera,onExportReady}){
+export default function OceanScene({progress,fuel,bunkering,view,resetCamera,onExportReady}){ const {t,lang,setLang}=useLocale();
  const host=useRef(null),state=useRef({progress,fuel,bunkering,view,resetCamera}),[error,setError]=useState('');
  useEffect(()=>{state.current={progress,fuel,bunkering,view,resetCamera}},[progress,fuel,bunkering,view,resetCamera]);
  useEffect(()=>{
   if(!host.current)return;
   let renderer,software=false;
   try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});}catch{renderer=new SVGRenderer();renderer.setQuality('low');software=true;}
-  const el=host.current;if(!software){renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.75));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;}el.appendChild(renderer.domElement);renderer.domElement.style.touchAction='none';renderer.domElement.setAttribute('aria-label','드래그와 확대가 가능한 합성 선박 3D 공간');renderer.domElement.setAttribute('role','img');renderer.domElement.dataset.renderer=software?'compatible-3d':'webgl';
+  const el=host.current;if(!software){renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.75));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;}el.appendChild(renderer.domElement);renderer.domElement.style.touchAction='none';renderer.domElement.setAttribute('aria-label',t("드래그와 확대가 가능한 합성 선박 3D 공간"));renderer.domElement.setAttribute('role','img');renderer.domElement.dataset.renderer=software?'compatible-3d':'webgl';
   const scene=new THREE.Scene();scene.background=new THREE.Color('#9cbec0');scene.fog=new THREE.FogExp2('#9cbec0',.0065);
   const camera=new THREE.PerspectiveCamera(40,1,.1,1200);camera.position.set(29,25,35);
   const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.07;controls.minDistance=9;controls.maxDistance=130;controls.maxPolarAngle=Math.PI*.485;controls.target.set(0,2,0);controls.enablePan=true;
@@ -83,8 +84,8 @@ export default function OceanScene({progress,fuel,bunkering,view,resetCamera,onE
   }
   animate();
   onExportReady?.(()=>new Promise((resolve,reject)=>{new GLTFExporter().parse(vessel,(result)=>{const url=URL.createObjectURL(new Blob([result],{type:'model/gltf-binary'}));const a=document.createElement('a');a.href=url;a.download='Bunkering_Concept_Vessel.glb';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);resolve(true)},reject,{binary:true,onlyVisible:true});}));
-  const lost=e=>{e.preventDefault();setError('3D 연결이 중단됐어요. 페이지를 새로고침하면 다시 시도합니다. 데이터 비교는 계속 이용할 수 있습니다.')};renderer.domElement.addEventListener('webglcontextlost',lost);
+  const lost=e=>{e.preventDefault();setError(t("3D 연결이 중단됐어요. 페이지를 새로고침하면 다시 시도합니다. 데이터 비교는 계속 이용할 수 있습니다."))};renderer.domElement.addEventListener('webglcontextlost',lost);
   return()=>{cancelAnimationFrame(raf);ro.disconnect();controls.dispose();onExportReady?.(null);scene.traverse(o=>{o.geometry?.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose())}});renderer.dispose?.();renderer.domElement.remove();};
- },[]);
+ },[lang]);
  return <div className="scene-canvas" ref={host}>{error&&<div role="alert" className="webgl-error">{error}</div>}</div>
 }
