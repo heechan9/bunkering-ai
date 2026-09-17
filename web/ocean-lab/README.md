@@ -105,3 +105,18 @@ Data/geometry checks passed for all seven regions: exact coastline/DEM bounds ag
 7개 지역 지도에 설명용 통과선과 선박 3척을 표시합니다. 선박 선택·재생·일시정지·위치 탐색·연출 속도 조절을 제공하며, 감속 모션 설정 시 자동 재생하지 않습니다. 통과선은 직접 작성한 개략선으로 AIS 항적이나 항법 데이터가 아닙니다. 선박 수·크기·이동시간 역시 실측치가 아닙니다. 수에즈 수로는 저해상도 해안선에서 생략되므로 확대된 설명용 통과선을 겹쳐 표시합니다.
 
 ‘이 지형에서 운항 체험’은 선택한 지역을 그대로 운항 화면에 전달합니다. 이 화면에는 체험 선박 한 척만 표시하고, 기존 30단계 공통 합성 기록의 연료·급유·SCI와 단계 사이 시각적 이동을 연결합니다. 연료·회계 지표는 완료된 정수 단계 값이며 이동만 보간합니다. 조기 고갈 정책은 기록이 끝난 단계/30 위치에서 멈추고 도착점으로 이동시키지 않습니다. 30단계 도착에서는 출발점으로 순환하지 않습니다. 속도·지역 배경 선택은 기록과 계산을 바꾸지 않습니다. 선박 근접·탱크·개략 항로 보기도 유지합니다.
+
+## Bilingual display and destination markers (2026-09-15)
+
+- Korean / English switches interface text, map labels, accounting explanations and research limitations; preference is stored only in this browser. Linked source documents retain their original language. No external translation service is used.
+- Seven regional schematic paths have a start ring and a destination flag. The replay flag turns green only at path progress 1. A 20/30 early stop stays short of that marker. These are illustrative endpoints, not surveyed ports or navigation instructions.
+- Language is display-only. Existing replay, summary, geography and evidence data are unchanged. Policy and case selection, accounting, threshold logic and playback calculations are preserved.
+- `node scripts/check-localization.cjs`: translation coverage/placeholders and seven flag arrival, early-stop and reset cases pass. Production build passes. This update has not been visually verified in a browser or on physical mobile devices.
+
+### Arctic route proposal — not an evaluated case
+
+Arctic routes are a possible future context, not an eighth validated experiment. The current baseline cannot estimate ice resistance, seasonal access, ice-class limitations, icebreaker support, polar fuel availability or costs. Adding an Arctic name to the 30-step replay would not validate Arctic operations or savings.
+
+Before quantitative comparison, define a specific corridor, departure/arrival ports, season and vessel; obtain linked voyage purchases/consumption/remaining fuel, ice conditions and operational constraints; document the scenario separately from the frozen baseline. No Arctic result, arbitrary penalty or fuel-saving claim is added in this release.
+
+Background source: [IMO Polar Code](https://www.imo.org/en/ourwork/safety/pages/polar-code.aspx), consulted 2026-09-15. IMO describes polar-specific ice, weather and operating limitations; the project has not assessed compliance.

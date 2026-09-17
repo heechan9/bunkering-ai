@@ -48,3 +48,17 @@
 @media(max-width:800px){.regional-exhibit .geography-map{height:850px;min-height:850px}.regional-exhibit .terrain-controls{top:165px;left:18px;right:18px;max-width:none;padding:9px}.passage-playback{left:14px;right:14px;bottom:120px;padding:12px}.passage-playback-actions{gap:6px}.passage-playback-actions button{padding:8px}.passage-ship-picks{gap:6px;flex-wrap:wrap}.regional-exhibit .map-legend{bottom:68px;font-size:12px;gap:10px;padding:10px;flex-wrap:wrap}.regional-exhibit .map-source{font-size:12px;bottom:12px;line-height:1.5}.regional-exhibit .map-label.land{font-size:14px}.regional-exhibit .map-label.focus{font-size:13px}}
 .regional-replay .scene-title h2{font-size:28px}.regional-replay .event-explainer{top:105px;left:auto;right:20px;max-width:280px;padding:12px 16px;border-radius:8px;background:#0d2a35dc}.regional-replay .voyage-badge{top:145px}.regional-replay .geography-canvas{min-height:0}.regional-replay .map-label.land{font-size:14px}.regional-replay .map-label.focus{font-size:13px}.regional-replay .scene-title{left:24px}.regional-replay .traffic-ship-label{font-size:14px}.regional-replay .camera-group{flex-wrap:wrap}.regional-replay .scene-bottom{bottom:175px}.regional-replay .map-label{pointer-events:none}
 @media(max-width:800px){.workspace .ocean.regional-replay{height:850px}.regional-replay .scene-title{top:65px}.regional-replay .scene-title h2{font-size:22px;max-width:260px}.regional-replay .voyage-badge{top:172px}.regional-replay .event-explainer{top:215px;left:16px;right:16px;max-width:calc(100% - 32px)}.regional-replay .scene-bottom{bottom:170px}.regional-replay .camera-group{max-width:100%;gap:2px}.regional-replay .camera-group button{font-size:12px;padding:0 7px}.regional-replay .scene-footnote{font-size:12px}}
+
+/* Bilingual controls retain the original marine palette. */
+.language-switch{display:flex;align-items:center;gap:3px;border:1px solid #49616a;border-radius:8px;padding:3px;flex-shrink:0}
+.language-switch button{min-height:36px;padding:5px 9px;font-size:14px;border-radius:5px;color:#dce9e6;cursor:pointer}
+.language-switch button[aria-pressed=true]{background:#c5f378;color:#102b33}
+.endpoint-label{font-size:12px;background:#123640e6;border:1px solid #7aacae;border-radius:5px;padding:4px 7px;color:#e5f2ed;pointer-events:none}
+.destination-label{border-color:#dca85f;color:#ffe0a7}
+html[lang=en] .scene-title h2{font-size:clamp(20px,2.5vw,34px);max-width:350px}
+html[lang=en] .journey-guide small{line-height:1.4}
+html[lang=en] .region-buttons strong{line-height:1.3}
+html[lang=en] .panel .stat-grid strong{font-size:24px}
+html[lang=en] .map-heading h1{font-size:clamp(24px,3vw,40px)}
+html[lang=en] .topbar .status{display:none}
+@media(max-width:800px){.topbar{flex-wrap:wrap;gap:10px}.language-switch{margin-left:auto}.topbar .main-tabs{order:3;width:100%}.topbar .status{display:none}html[lang=en] .journey-guide small{display:none}html[lang=en] .journey-guide strong{font-size:13px}html[lang=en] .scene-title h2{font-size:22px}html[lang=en] .map-heading{max-width:75%}.camera-group{flex-wrap:wrap}.camera-group button{font-size:12px}}
