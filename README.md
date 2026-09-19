@@ -1,5 +1,7 @@
 <div align="center">
 
+최신 진행 상태: [완료·검증·남은 작업](docs/PROJECT_STATUS.md) · [논문 v4.5 검토본](docs/submission/ack_paper_v4_5.md). 과거 결과와 테스트 로그는 각 실행 시점의 증거로 보존합니다.
+
 ## 3D 웹 시연 · Ocean Lab
 
 - **[웹 열기](https://bunkering-ocean-lab.hc24734503.chatgpt.site/)** — Sites 접근 권한이 필요할 수 있습니다.
@@ -206,7 +208,7 @@ DQN의 더 큰 잔량 여유와 비용·재고 차이를 함께 설명하며 안
 FuelCast는 V2 소비량 모델 후보이며 이번 실험에 사용하지 않았다.
 기본조건의 네 체크포인트 Linux 재실행에서는 Windows 전이 CSV 4개와 바이트 단위로 일치했고, 가중치·타깃·optimizer 불변을 확인했다.
 2026-09-12 제출 정리 작업의 전체 회귀는 **225 passed**(기존 215개 + 기록 감사 10개)다.
-[논문 v3.0](docs/submission/ack_paper_v3_0.md) · [검증 및 병합 준비](docs/technical/submission_alignment_v3_0.md).
+[당시 논문 v3.0](docs/submission/ack_paper_v3_0.md) · [검증 및 병합 완료 기록](docs/technical/submission_alignment_v3_0.md).
 
 자세한 네 가지 보완 자료는 [진단 결과](docs/technical/reward_diagnostics_results_4seed.md)를 참조한다.
 
@@ -326,4 +328,4 @@ Ocean Lab 전략 비교에서 구매지출·재고·급유횟수를 함께 확�
 
 ### 울산항 원자료 검토 반영
 
-[승현 검토·정정 기록](docs/data/upa_review_20260919.md)과 [논문 v4.0 검토본](docs/submission/ack_paper_v4_0.md)에 데이터 활용 한계를 반영했습니다. 제공기관 용어 확인과 해기원 실측 항차 자료는 대기 중입니다.
+[승현 검토·정정 기록](docs/data/upa_review_20260919.md)과 [최신 논문 v4.5 검토본](docs/submission/ack_paper_v4_5.md)에 데이터 활용 한계를 반영했습니다. 제공기관 용어 확인과 해기원 실측 항차 자료는 대기 중입니다.

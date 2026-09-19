@@ -1,5 +1,7 @@
 # 병커시유 Ocean Lab 웹 소스
 
+최신 동기화: 배포 12판, 소스 커밋 146451f9e23df15751b3099981a803ddf8a3ff82의 추적 파일 126개가 GitHub 소스와 바이트 일치한다. 현재 해시는 [SOURCE_IMPORT.json](ocean-lab/SOURCE_IMPORT.json), 배포 10판 이력은 [보존 manifest](source_import_v10.json)에 있다. 구매/운항 해석과 울산 원자료 검토도 반영됐다. 아래 10판 설명은 당시 수입 이력이다. 이번 작업은 문서·해시 기록 갱신이며 새 웹 배포나 모델 실행이 아니다.
+
 시연: https://bunkering-ocean-lab.hc24734503.chatgpt.site/
 
 ## 포함 범위
