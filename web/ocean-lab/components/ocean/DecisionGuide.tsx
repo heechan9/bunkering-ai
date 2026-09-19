@@ -18,7 +18,14 @@ export default function DecisionGuide(){
    <a href={root+'/docs/technical/submission_alignment_v3_0.md'} target="_blank" rel="noreferrer">{en?'Read the correction and evidence ↗':'정정 내용과 검증 근거 확인 ↗'}</a>
   </details>
   <details><summary>{en?'What still needs field evidence?':'현장 적용 전에 무엇을 더 확인해야 할까요?'}</summary>
-   <p>{en?'Reserve rules, supply constraints and linked departure–purchase–consumption–arrival records require review. Field reviews and voyage data are pending, not completed validation.':'안전잔량 기준, 공급·작업 제약, 같은 항차의 출발잔량·급유·소비·도착잔량 연결을 확인해야 합니다. 현장 검토와 실측 자료 반영은 대기 중이며 검증 완료로 표시하지 않습니다.'}</p>
+   <p>{en?'Reserve rules, supply constraints and linked departure–purchase–consumption–arrival records require review. The Ulsan source-data review has been received and cross-checked. Provider definitions, the operational review and measured voyage data remain pending.':'안전잔량 기준, 공급·작업 제약, 같은 항차의 출발잔량·급유·소비·도착잔량 연결을 확인해야 합니다. 울산항 원자료 검토는 수령·대조했습니다. 제공기관의 용어 확인, 운항 실무 검토와 해기원 실측 항차 자료는 대기 중입니다.'}</p>
+  </details>
+  <details><summary>{en?'Ulsan data: what the review established':'울산항 자료 검토에서 확인한 것'}</summary>
+   <p>{en?'The archived CSV contains 6,028 rows and 8 fields. Vessel identifiers, voyage consumption, departure/arrival fuel and prices are absent. The bunker quantity unit and whether it means requested or delivered volume remain unconfirmed.':'보관된 CSV는 6,028행·8개 항목입니다. 선박 식별자, 항차 소비량, 출발·도착잔량과 가격이 없으며, 벙커량의 단위와 신청량·실공급량 여부는 미확인입니다.'}</p>
+   <p>{en?'There are 38 duplicate rows beyond the first occurrence, across 37 groups (75 rows in those groups). Year and voyage-number combinations also repeat. These facts do not identify duplicate applications or link records to the same voyage.':'첫 행을 제외한 추가 중복은 38행이며, 37개 그룹의 전체 75행에 해당합니다. 입항년도·입항항차 조합도 반복되므로 중복 신청 여부나 같은 항차를 확정할 수 없습니다.'}</p>
+   <p>{en?'Used to understand operational data, not to validate real fuel balances. Source-data review: Kim Seung-hyeon; official-page cross-check and CSV recalculation: Codex.':'이 자료는 업무 맥락 파악에 활용하며 실측 연료수지 검증에 사용하지 않습니다. 김승현의 원자료 검토를 바탕으로 Codex가 공식 페이지 대조와 CSV 재계산을 수행했습니다.'}</p>
+   <a href="https://www.data.go.kr/data/15132700/fileData.do" target="_blank" rel="noreferrer">{en?'Official data description ↗':'공식 자료 설명 ↗'}</a>
+   {' · '}<a href="https://github.com/heechan9/bunkering-ai/blob/main/docs/data/upa_review_20260919.md" target="_blank" rel="noreferrer">{en?'Review and correction record ↗':'검토·정정 기록 ↗'}</a>
   </details>
   <details><summary>{en?'People, AI and verification':'사람과 AI가 맡은 역할'}</summary>
    <p>{en?'Choi Hee-chan leads problem definition, requirements and team coordination. Codex assists implementation, editing and recorded checks. Contributions and the limits of attribution are documented separately; AI assistance is not domain-expert approval.':'최희찬은 문제 정의·요구사항·팀 조율을 맡고, Codex는 구현·문서 편집·기록 검산을 지원합니다. 기여 내역과 확인 한계는 별도 기록하며, AI의 지원을 현장 전문가의 승인으로 표현하지 않습니다.'}</p>

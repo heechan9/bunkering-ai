@@ -323,3 +323,7 @@ python -m scripts.audit_paper_evidence
 ### 웹 결과 해석과 현장 검토
 
 Ocean Lab 전략 비교에서 구매지출·재고·급유횟수를 함께 확인하고, 안전선 판정 정정과 사람·AI의 기여 기록을 볼 수 있습니다. [AX·영업관리 강의 적용 및 팀 검토 절차](docs/technical/ax_evidence_communication.md)를 참고하세요.
+
+### 울산항 원자료 검토 반영
+
+[승현 검토·정정 기록](docs/data/upa_review_20260919.md)과 [논문 v4.0 검토본](docs/submission/ack_paper_v4_0.md)에 데이터 활용 한계를 반영했습니다. 제공기관 용어 확인과 해기원 실측 항차 자료는 대기 중입니다.

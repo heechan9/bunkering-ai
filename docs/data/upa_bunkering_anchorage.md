@@ -69,3 +69,7 @@ API로 사용했다고 주장하지 않는다. 공공데이터 직접 연동과 
 - `results/public_data/upa_bunkering_reference_summary.png`
 
 위 산출물은 공공데이터의 기술통계이며 Rule-based 또는 DQN 성능 결과가 아니다.
+
+## 2026-09-19 팀원 검토 반영
+
+김승현의 원자료 검토와 공식 페이지·CSV 재대조를 [검토·정정 기록](upa_review_20260919.md)에 통합했다. 원자료 검토와 실측 항차 검증은 구분한다.

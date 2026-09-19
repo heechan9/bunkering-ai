@@ -219,7 +219,6 @@
   "북해": "North Sea",
   "현장 업무 참고": "Operational reference",
   "울산 연안 · 벙커링정박지": "Ulsan coast · Bunkering anchorage",
-  "울산항만공사 신청현황 6,028건으로 선박 규모·급유 신청량·예정 시간 등 실제 업무변수의 구조와 분포를 확인했습니다.": "6,028 Ulsan Port Authority applications were used to examine the structure and distribution of vessel size, requested fuel amount and scheduled time.",
   "대한민국": "Republic of Korea",
   "동해": "East Sea",
   "부산": "Busan",
@@ -308,5 +307,6 @@
   "드래그와 확대가 가능한 합성 선박 3D 공간": "Synthetic 3D vessel view with drag and zoom controls",
   "3D 연결이 중단됐어요. 페이지를 새로고침하면 다시 시도합니다. 데이터 비교는 계속 이용할 수 있습니다.": "The 3D connection was lost. Refresh to retry. Data comparison remains available.",
   "출발 지점": "Start",
-  "깃발: 설명용 목적지": "Flag: illustrative destination"
+  "깃발: 설명용 목적지": "Flag: illustrative destination",
+  "울산항만공사 신청현황 6,028건·8개 항목에서 총톤수·벙커량·예정 시간의 구조를 확인했습니다. 벙커량의 단위와 신청량·실공급량 여부는 미확인입니다.": "The Ulsan Port Authority dataset has 6,028 rows and eight fields, including gross tonnage, bunker quantity and scheduled times. The quantity unit and whether it represents requested or delivered fuel remain unconfirmed."
 }
