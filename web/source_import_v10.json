@@ -1,9 +1,9 @@
 {
   "schema_version": "ocean-lab-source-import/v1",
   "site_url": "https://bunkering-ocean-lab.hc24734503.chatgpt.site/",
-  "site_version": 12,
-  "source_commit": "146451f9e23df15751b3099981a803ddf8a3ff82",
-  "research_commit": "52005d597315113c6ba7fbd1bfa68713a8fa1625",
+  "site_version": 10,
+  "source_commit": "ab23b5893d3f409b7237677d0ba1db8fef3bb255",
+  "research_commit": "bc3293f06e4118e5d245a716b2402fe7080905b8",
   "import_mode": "byte-identical tracked source snapshot; not an automatic deployment link",
   "files": [
     {
@@ -33,7 +33,7 @@
     },
     {
       "path": "app/globals.css",
-      "sha256": "61e1d3985cba0142cc16d58111f4e4abe74f75db1919fcddf1569cf6f7f8fefb",
+      "sha256": "bce5f1ce8e5d533392bca8ec2872e054c03f353d59853ce2ddff9a4f4bb98e03",
       "mode": "100644"
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "path": "app/page.tsx",
-      "sha256": "30683630ed245f2a3981513371ca020362c7a4ab171dad8ef4a5a2631ec16883",
+      "sha256": "4cfdebb910105added113e35033570fb759e27af932f96ed9b312fc87cdb24f2",
       "mode": "100644"
     },
     {
@@ -67,13 +67,8 @@
       "mode": "100644"
     },
     {
-      "path": "components/ocean/DecisionGuide.tsx",
-      "sha256": "e5fde1cc124055ebecd095bbdea7a3615701ecc922667c7995c822934dddb333",
-      "mode": "100644"
-    },
-    {
       "path": "components/ocean/Geography.tsx",
-      "sha256": "0bf398cab85c1a2dc81e0241b0abce72210c99b3839e2cf6865714215be9d41b",
+      "sha256": "57da87ac81c43852cff633163c09791bc3dfc8051894e87573b4801c0e6cbf0c",
       "mode": "100644"
     },
     {
@@ -443,7 +438,7 @@
     },
     {
       "path": "lib/en.json",
-      "sha256": "a40a028468331b3053aee9346e43312b5a65bc1120618173324b17def210c7ee",
+      "sha256": "11161fd0d1fb90ea4b936174146599452f6fc54e1f8db69267beb234c076c1e1",
       "mode": "100644"
     },
     {

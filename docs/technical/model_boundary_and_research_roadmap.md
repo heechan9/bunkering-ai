@@ -109,8 +109,7 @@ multipliers `0.9`, `1.0`, `1.1`, and `1.2` relative to the current fixed
   degradation from the `1.0` condition.
 
 The implementation uses a default-compatible, validated environment parameter,
-separate outputs, frozen inference and a cross-checkpoint aggregator. Empirical
-claims remain pending until the real checkpoint runs are reviewed.
+separate outputs, frozen inference and a cross-checkpoint aggregator. Four trained checkpoints have now been evaluated and reviewed; see [V1.5 results](v1_5_results_4seed.md). This establishes synthetic sensitivity results, not real-voyage validation. Baseline safety-boundary reclassification is documented separately in [the accounting review](reward_diagnostics_results_4seed.md).
 
 ### Other low-cost scenario priorities
 

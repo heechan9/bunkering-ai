@@ -1,6 +1,8 @@
 # DQN 구조 설계 문서
 
-**SDS STEP 2 — RL 환경 설계 · 모델 구현** | 작성: 최희찬 (PM/RL Technical Lead) | 상태: 초안 (구현 착수 전)
+2026-09-19 상태: 아래는 초기 설계 이력이다. 에이전트·학습 루프·설정 외부화·TensorBoard 및 4개 seed 학습/평가는 구현·실행 완료됐다. 현재 설정은 [configs/dqn.yaml](../../configs/dqn.yaml), 구현은 [agents/dqn.py](../../agents/dqn.py)와 [scripts/train.py](../../scripts/train.py), 검증은 [현재 상태](../PROJECT_STATUS.md)를 따른다. 아래 초기 하이퍼파라미터와 일정은 현재 실행 설정이나 남은 일정으로 사용하지 않는다.
+
+**SDS STEP 2 — RL 환경 설계 · 모델 구현** | 작성: 최희찬 (PM/RL Technical Lead) | 상태: 초기 설계 보존본 (후속 구현·평가 완료)
 
 > `BunkeringEnv`(envs/bunkering_env.py)를 대상으로 하는 DQN 에이전트 설계.
 > 사업화 문서 03장 "왜 DQN을 1차로 선택했는가" 근거(이산 Action Space에 적합, Experience Replay·Target
@@ -39,7 +41,7 @@ Input (state_dim = 6, MVP 기준 state_action_reward_spec.md 참고)
 | target_update_freq | 1,000 step | |
 | epsilon_start / end / decay | 1.0 / 0.05 / 선형 감쇠 (10만 step 기준) | |
 
-## 4. 학습 루프 구조 (scripts/train.py 예정 로직)
+## 4. 학습 루프 초기 설계 (구현 완료, 실제 로직은 scripts/train.py 참조)
 
 ```
 for episode in range(N_EPISODES):

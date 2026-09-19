@@ -1,5 +1,7 @@
 # State / Action / Reward 정의 명세서
 
+현재 구현과 초기 기획 구분: 아래 출처(예정) 표와 DQN/PPO·규제 보상 구상은 초기 후보 설계다. 구현 관측은 합성 6변수이며 sfc는 실측 기관 상수가 아니다. AIS·기상·항만 API, 가변 급유량, PPO 및 CII/EEXI 검증은 구현 완료로 간주하지 않는다. 현재 코드·평가 계약은 [evaluation_contract.md](evaluation_contract.md), 후속 완료 상태는 [프로젝트 상태](../PROJECT_STATUS.md)를 따른다. 초기 M1 provisional 승인 표기는 유지한다.
+
 **SDS STEP 2 — RL 환경 설계** | 작성: 최희찬 (PM/RL Technical Lead) | 상태: M1 구현 진행 중
 
 > 본 문서는 사업화 전략 문서 03장(AI 시스템 워크플로우) 및 개발 프로세스 문서 STEP 02에서

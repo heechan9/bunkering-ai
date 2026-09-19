@@ -1,5 +1,7 @@
 # Final Independent Audit Report: heechan9/bunkering-ai
 
+현재 진행 상태는 [프로젝트 상태](docs/PROJECT_STATUS.md)를 참조한다. 아래 감사 수치·판정은 각 고정 커밋 당시의 기록이며 최신 전체 코드·문장에 대한 인증이 아니다.
+
 **Audit Date:** September 6, 2026
 **Auditor:** Jules (Independent Senior Software Engineer)
 **Target Repository:** `heechan9/bunkering-ai`
