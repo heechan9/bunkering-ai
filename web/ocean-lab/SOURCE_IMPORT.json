@@ -1,9 +1,9 @@
 {
   "schema_version": "ocean-lab-source-import/v1",
   "site_url": "https://bunkering-ocean-lab.hc24734503.chatgpt.site/",
-  "site_version": 12,
-  "source_commit": "146451f9e23df15751b3099981a803ddf8a3ff82",
-  "research_commit": "52005d597315113c6ba7fbd1bfa68713a8fa1625",
+  "site_version": 15,
+  "source_commit": "4879a32cb5e24ca12be80df3c622e3e22b1a6272",
+  "research_commit": "31544a067f9c5cbd3a2631a646c0ced83a45e8ff",
   "import_mode": "byte-identical tracked source snapshot; not an automatic deployment link",
   "files": [
     {
@@ -23,7 +23,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "7140af9db392753c6a644e30eb83684c0e98679d541c57cbb34700879eee2e81",
+      "sha256": "0af0fdc878243a099990c58f4808632ca87a6a8288c2544278757841b82c9260",
       "mode": "100644"
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "path": "app/page.tsx",
-      "sha256": "30683630ed245f2a3981513371ca020362c7a4ab171dad8ef4a5a2631ec16883",
+      "sha256": "adc661e5d934d0c0afd2c637100c8e09a2c418d0ba72677222db30bc12fe8b47",
       "mode": "100644"
     },
     {
@@ -68,17 +68,17 @@
     },
     {
       "path": "components/ocean/DecisionGuide.tsx",
-      "sha256": "e5fde1cc124055ebecd095bbdea7a3615701ecc922667c7995c822934dddb333",
+      "sha256": "c1b797fa82ce6fc359031f12eddee8ac50c239943305aee38ffb3a7f34c32642",
       "mode": "100644"
     },
     {
       "path": "components/ocean/Geography.tsx",
-      "sha256": "0bf398cab85c1a2dc81e0241b0abce72210c99b3839e2cf6865714215be9d41b",
+      "sha256": "e1757be0f1ef3bae51d6cd80add5843a2f1209946ad98afcc5d48889126fc9f9",
       "mode": "100644"
     },
     {
       "path": "components/ocean/Globe.tsx",
-      "sha256": "4eead1c63976c3fa044b53fc4d1f3a94f02572ec289e52b5a7d39fb0d7a30197",
+      "sha256": "a0d03408068af8a0869008f7049d6f1f6b8ea1083c6945fbfd71624188d57c5a",
       "mode": "100644"
     },
     {
@@ -88,12 +88,12 @@
     },
     {
       "path": "components/ocean/Scene.tsx",
-      "sha256": "1cac139ff0be63febdad3e6bce6dd3b6c531be4522d2d196b91046b06035ad12",
+      "sha256": "b014175a12ba1c1e64fcdfc94f42c4ddf20972d6467eac9d83a504f82527e83c",
       "mode": "100644"
     },
     {
       "path": "components/ocean/Terrain.ts",
-      "sha256": "87bba68fda3d38efd0b5ca460b8a84c38f9c0aba3a35a269f7a69787108af60b",
+      "sha256": "36b3c3d0ea79a4761aea4b3c80b4f1af74af9f30e9cdb002c3bbb50bfe2c2b34",
       "mode": "100644"
     },
     {
@@ -442,13 +442,23 @@
       "mode": "100644"
     },
     {
+      "path": "lib/dispose-scene.ts",
+      "sha256": "cbd2ddf16d407e8bd23545d95fbe75e000bf81f95b297acf4a96a810d39b4a96",
+      "mode": "100644"
+    },
+    {
       "path": "lib/en.json",
       "sha256": "a40a028468331b3053aee9346e43312b5a65bc1120618173324b17def210c7ee",
       "mode": "100644"
     },
     {
       "path": "lib/locale.tsx",
-      "sha256": "9356351e2749acda7e699a22f2dc5de4d2daaefa17a0e35570eb2273a905ea09",
+      "sha256": "652341f73cf54412200b64764caee8453afe63d01885b2624a9cc02a2d5863d5",
+      "mode": "100644"
+    },
+    {
+      "path": "lib/ocean-types.ts",
+      "sha256": "1f1f5dd70cadd54979ab1ac9eeae0584240b13d7647726f342dc20e11236f143",
       "mode": "100644"
     },
     {
@@ -458,22 +468,22 @@
     },
     {
       "path": "next.config.ts",
-      "sha256": "614bce25b089c3f19b1e17a6346c74b858034040154c6621e7d35303004767cc",
+      "sha256": "65891a05f9f40533cc711142ed2b9824ea948011bbde9a87a6cc2e1848fafd25",
       "mode": "100644"
     },
     {
       "path": "package.json",
-      "sha256": "79c0ccf08cf83cc7fc0ca17a0a2f954f811aad3677b1c8d25464b5b417d9a5f3",
+      "sha256": "e0955c83db0240028c82b30c9961114f910497b545adeb73b21a3ad3ca9312e3",
       "mode": "100644"
     },
     {
       "path": "pnpm-lock.yaml",
-      "sha256": "9d93c348442277375271b8b559792c1e7a39c56822504b791237b619b5c0eb4a",
+      "sha256": "5fe801323bb6e391158051768b3b207e97e825782350e0b9c3c5284deafabac0",
       "mode": "100644"
     },
     {
       "path": "pnpm-workspace.yaml",
-      "sha256": "a7b0651857ab0dfe38d276a14e34c59cfe523d4e919dcbc7d3e257bc202770bb",
+      "sha256": "94de3eecf2f49717f185e1090c49b1c760b7db667003ae488240040fde29e479",
       "mode": "100644"
     },
     {
@@ -557,8 +567,8 @@
       "mode": "100755"
     },
     {
-      "path": "scripts/check-localization.cjs",
-      "sha256": "ab9378beed57eb3124a3be0991d61ed66d3680d26b27299312ed426d04fdf6b2",
+      "path": "scripts/check-localization.mjs",
+      "sha256": "fe9b00aa2375adf08e8d18e3fb3c2aca88d3792aa14248d25d737f299755b01a",
       "mode": "100644"
     },
     {

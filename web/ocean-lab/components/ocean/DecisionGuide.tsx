@@ -18,7 +18,7 @@ export default function DecisionGuide(){
    <a href={root+'/docs/technical/submission_alignment_v3_0.md'} target="_blank" rel="noreferrer">{en?'Read the correction and evidence ↗':'정정 내용과 검증 근거 확인 ↗'}</a>
   </details>
   <details><summary>{en?'What still needs field evidence?':'현장 적용 전에 무엇을 더 확인해야 할까요?'}</summary>
-   <p>{en?'Reserve rules, supply constraints and linked departure–purchase–consumption–arrival records require review. The Ulsan source-data review has been received and cross-checked. Provider definitions, the operational review and measured voyage data remain pending.':'안전잔량 기준, 공급·작업 제약, 같은 항차의 출발잔량·급유·소비·도착잔량 연결을 확인해야 합니다. 울산항 원자료 검토는 수령·대조했습니다. 제공기관의 용어 확인, 운항 실무 검토와 해기원 실측 항차 자료는 대기 중입니다.'}</p>
+   <p>{en?'Reserve rules, supply constraints and linked departure–purchase–consumption–arrival records require review. The Ulsan source-data review has been received and cross-checked. The team maritime review has also been received. Provider definitions and measured voyage data remain pending.':'안전잔량 기준, 공급·작업 제약, 같은 항차의 출발잔량·급유·소비·도착잔량 연결을 확인해야 합니다. 울산항 원자료 검토는 수령·대조했습니다. 민재의 팀 내 해양 분야 검토도 수령했습니다. 제공기관의 용어 확인과 해기원 실측 항차 자료는 대기 중입니다.'}</p>
   </details>
   <details><summary>{en?'Ulsan data: what the review established':'울산항 자료 검토에서 확인한 것'}</summary>
    <p>{en?'The archived CSV contains 6,028 rows and 8 fields. Vessel identifiers, voyage consumption, departure/arrival fuel and prices are absent. The bunker quantity unit and whether it means requested or delivered volume remain unconfirmed.':'보관된 CSV는 6,028행·8개 항목입니다. 선박 식별자, 항차 소비량, 출발·도착잔량과 가격이 없으며, 벙커량의 단위와 신청량·실공급량 여부는 미확인입니다.'}</p>
@@ -26,6 +26,13 @@ export default function DecisionGuide(){
    <p>{en?'Used to understand operational data, not to validate real fuel balances. Source-data review: Kim Seung-hyeon; official-page cross-check and CSV recalculation: Codex.':'이 자료는 업무 맥락 파악에 활용하며 실측 연료수지 검증에 사용하지 않습니다. 김승현의 원자료 검토를 바탕으로 Codex가 공식 페이지 대조와 CSV 재계산을 수행했습니다.'}</p>
    <a href="https://www.data.go.kr/data/15132700/fileData.do" target="_blank" rel="noreferrer">{en?'Official data description ↗':'공식 자료 설명 ↗'}</a>
    {' · '}<a href="https://github.com/heechan9/bunkering-ai/blob/main/docs/data/upa_review_20260919.md" target="_blank" rel="noreferrer">{en?'Review and correction record ↗':'검토·정정 기록 ↗'}</a>
+  </details>
+  <details><summary>{en?'What the maritime review adds':'민재의 해양 분야 검토에서 보완한 점'}</summary>
+   <p>{en?'A fixed tank percentage does not fully represent remaining voyage demand, unusable fuel or separate fuel grades. Arrival and reserve margin should be read separately.':'고정 탱크 비율만으로는 남은 항해의 소비량, 사용할 수 없는 잔량, 연료 종류별 차이를 충분히 표현하기 어렵습니다. 도착 여부와 안전여유를 구분해서 보세요.'}</p>
+   <p>{en?'Priority missing constraints are port supply and fuel specifications, bunkering and waiting time, and minimum orders and fixed fees. These are proposed limitations to address, not constraints implemented in this simulation.':'우선 보완할 제약은 항만별 공급·연료 규격, 급유·대기시간, 최소 주문량·고정비입니다. 현재 시뮬레이션에 구현된 제약이 아니라 후속 보완 항목입니다.'}</p>
+   <p>{en?'Read purchased fuel, SCI and ending inventory together. Bunkering actions are not port calls. Day-based reserves, minimum-fuel reporting and inventory valuation remain future analysis; no new savings or safety result is claimed.':'구매량·SCI·최종잔량을 함께 비교해야 하며 급유 행동 횟수는 실제 기항 횟수가 아닙니다. 일수 기반 안전기준, 최소잔량 추가 집계, 재고가치 평가는 후속 검토 항목으로 새 비용절감·안전성 결과를 뜻하지 않습니다.'}</p>
+   <p>{en?'Review by team member Shin Min-jae. This is qualitative maritime feedback, not an official operating standard or field validation. Unsupported numerical examples were not adopted.':'신민재의 팀 내 해양 분야 검토를 반영했습니다. 공식 운항 기준이나 현장 성능 검증이 아닌 정성적 의견이며, 출처 없는 수치 예시는 적용하지 않았습니다.'}</p>
+   <a href="https://github.com/heechan9/bunkering-ai/blob/main/docs/technical/minjae_domain_review_20260920.md" target="_blank" rel="noreferrer">{en?'Review and adoption scope ↗':'검토 내용과 채택 범위 ↗'}</a>
   </details>
   <details><summary>{en?'People, AI and verification':'사람과 AI가 맡은 역할'}</summary>
    <p>{en?'Choi Hee-chan leads problem definition, requirements and team coordination. Codex assists implementation, editing and recorded checks. Contributions and the limits of attribution are documented separately; AI assistance is not domain-expert approval.':'최희찬은 문제 정의·요구사항·팀 조율을 맡고, Codex는 구현·문서 편집·기록 검산을 지원합니다. 기여 내역과 확인 한계는 별도 기록하며, AI의 지원을 현장 전문가의 승인으로 표현하지 않습니다.'}</p>

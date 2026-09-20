@@ -111,7 +111,7 @@ Data/geometry checks passed for all seven regions: exact coastline/DEM bounds ag
 - Korean / English switches interface text, map labels, accounting explanations and research limitations; preference is stored only in this browser. Linked source documents retain their original language. No external translation service is used.
 - Seven regional schematic paths have a start ring and a destination flag. The replay flag turns green only at path progress 1. A 20/30 early stop stays short of that marker. These are illustrative endpoints, not surveyed ports or navigation instructions.
 - Language is display-only. Existing replay, summary, geography and evidence data are unchanged. Policy and case selection, accounting, threshold logic and playback calculations are preserved.
-- `node scripts/check-localization.cjs`: translation coverage/placeholders and seven flag arrival, early-stop and reset cases pass. Production build passes. This update has not been visually verified in a browser or on physical mobile devices.
+- `node scripts/check-localization.mjs`: translation coverage/placeholders and seven flag arrival, early-stop and reset cases pass. Production build passes. This update has not been visually verified in a browser or on physical mobile devices.
 
 ### Arctic route proposal — not an evaluated case
 
@@ -120,3 +120,11 @@ Arctic routes are a possible future context, not an eighth validated experiment.
 Before quantitative comparison, define a specific corridor, departure/arrival ports, season and vessel; obtain linked voyage purchases/consumption/remaining fuel, ice conditions and operational constraints; document the scenario separately from the frozen baseline. No Arctic result, arbitrary penalty or fuel-saving claim is added in this release.
 
 Background source: [IMO Polar Code](https://www.imo.org/en/ourwork/safety/pages/polar-code.aspx), consulted 2026-09-15. IMO describes polar-specific ice, weather and operating limitations; the project has not assessed compliance.
+
+## Code quality verification (2026-09-20)
+
+- TypeScript checking is enabled for every application component; `pnpm typecheck` passes.
+- `pnpm lint` reports zero errors and zero warnings.
+- `pnpm check:regressions` checks translation coverage, seven destination markers, recorded replay values and replay selection validation.
+- Production build and local browser checks passed for language persistence, globe-to-region navigation, 3D vessel view, replay/pause/reset and strategy comparison. Physical mobile devices were not tested.
+- Dependency additions are development-only type declarations for Three.js and d3-geo. A fresh registry audit was unavailable (HTTP 503 maintenance); the preceding security release had zero reported advisories.
