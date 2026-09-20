@@ -1,7 +1,8 @@
 import * as THREE from 'three';
+import type {TerrainData, Region} from '@/lib/ocean-types';
 
 // DEM is a geographic display layer only; no simulation state enters here.
-export function terrainHeight(data:any, lon:number, lat:number) {
+export function terrainHeight(data:TerrainData, lon:number, lat:number) {
  const [w,s,e,n]=data.bounds;
  const x=Math.max(0,Math.min(data.width-1,Math.round((lon-w)/(e-w)*(data.width-1))));
  const y=Math.max(0,Math.min(data.height-1,Math.round((n-lat)/(n-s)*(data.height-1))));
@@ -9,7 +10,7 @@ export function terrainHeight(data:any, lon:number, lat:number) {
  return data.land[k]?Math.max(0,data.elevations[k]):0;
 }
 
-export function makeTerrain(data:any, cfg:any, scale:number, exaggeration:number, software:boolean) {
+export function makeTerrain(data:TerrainData, cfg:Region, scale:number, exaggeration:number, software:boolean) {
  const stride=software?2:1, positions:number[]=[], colors:number[]=[], indices:number[]=[];
  const [w,s,e,n]=data.bounds, cosine=Math.cos(cfg.center[1]*Math.PI/180);
  const count=(data.width-1)/stride+1, mask:boolean[]=[];
