@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {headers,parseCSV,exportCSV,reviewVoyages,readCSVFile} from '../lib/voyage-csv.ts';
+import {headers,parseCSV,exportCSV,reviewVoyages,readCSVFile,summarizeColumns} from '../lib/voyage-csv.ts';
 const row=['ship1','voyage1','VLSFO','2026-09-01T00:00:00+09:00','2026-09-02T00:00:00+09:00','t','100','20','30','90','actual','log-page-1'];
 const review=r=>reviewVoyages([headers,r],0.01)[0];
 assert.equal(review(row).status,'balanced');
@@ -12,3 +12,14 @@ assert(exportCSV([['=SUM(A1)','@test']]).includes("'=SUM"));
 assert.throws(()=>parseCSV('a,a\n1,2'));assert.throws(()=>parseCSV('a,b\n1'));assert.throws(()=>parseCSV('a\n"unfinished'));
 const cp949=new File([new Uint8Array([0x61,0x0a,0xb0,0xa1])],'k.csv');assert.equal((await readCSVFile(cp949,'euc-kr'))[1][0],'가');
 console.log('PASS: CSV, zero/missing, dates, duplicates, units, supply basis, balances, safe export and CP949');
+
+const missing=[...row];missing[6]='';missing[7]='0';missing[8]='NaN';missing[5]='unknown';
+const summary=summarizeColumns([headers,missing],reviewVoyages([headers,missing],0.01));
+assert.equal(summary.find(c=>c.field==='opening').missing,1);
+assert.equal(summary.find(c=>c.field==='opening').invalid,0);
+assert.equal(summary.find(c=>c.field==='supplied').missing,0);
+assert.equal(summary.find(c=>c.field==='supplied').invalid,0);
+assert.equal(summary.find(c=>c.field==='consumed').invalid,1);
+assert.equal(summary.find(c=>c.field==='unit').invalid,1);
+assert.equal(summarizeColumns([headers],[]).every(c=>c.total===0),true);
+console.log('PASS: column counts distinguish blanks, zero, invalid numbers and unconfirmed units');
