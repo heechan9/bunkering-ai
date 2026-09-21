@@ -1,0 +1,9 @@
+{
+  "schema": "source-baseline/v1",
+  "files": {
+    "upa_bunkering_anchorage_20240819.csv": {
+      "sha256": "b42537ebde057e87ef15f91a8c0fca6ab0ee010ff557b78a531112d4e79da1b7",
+      "bytes": 345524
+    }
+  }
+}
