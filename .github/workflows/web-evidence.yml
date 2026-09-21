@@ -1,10 +1,10 @@
 name: Web evidence consistency
 on:
   pull_request:
-    paths: ['web/**', 'results/diagnostics/review_4seed/**', 'scripts/audit_web_evidence.py', 'tests/test_web_evidence.py', '.github/workflows/web-evidence.yml']
+    paths: ['web/**', 'data/public/**', 'docs/data/source_baseline.json', 'scripts/source_changes.py', 'results/diagnostics/review_4seed/**', 'scripts/audit_web_evidence.py', 'scripts/build_web_summary.py', 'tests/test_web_evidence.py', '.github/workflows/web-evidence.yml']
   push:
     branches: [main]
-    paths: ['web/**', 'results/diagnostics/review_4seed/**', 'scripts/audit_web_evidence.py', 'tests/test_web_evidence.py', '.github/workflows/web-evidence.yml']
+    paths: ['web/**', 'data/public/**', 'docs/data/source_baseline.json', 'scripts/source_changes.py', 'results/diagnostics/review_4seed/**', 'scripts/audit_web_evidence.py', 'scripts/build_web_summary.py', 'tests/test_web_evidence.py', '.github/workflows/web-evidence.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -18,3 +18,5 @@ jobs:
           python-version: '3.11'
       - run: python scripts/audit_web_evidence.py
       - run: python -m unittest discover -s tests -p test_web_evidence.py -v
+      - run: python -m scripts.build_web_summary --check
+      - run: python scripts/source_changes.py data/public docs/data/source_baseline.json
