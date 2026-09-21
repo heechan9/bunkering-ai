@@ -1,9 +1,9 @@
 {
   "schema_version": "ocean-lab-source-import/v1",
   "site_url": "https://bunkering-ocean-lab.hc24734503.chatgpt.site/",
-  "site_version": 17,
-  "source_commit": "2b53cdedfe7a521216bab6a1670cd21aaeb59a9e",
-  "research_commit": "a2c390ff798fd4708dc42483a8ea0e02ed21527e",
+  "site_version": 18,
+  "source_commit": "b88aa16f27381c9b9eea44ea165fafcb3f6b5016",
+  "research_commit": "3b38e8adfb73fa9a31f150e56a3ebbe256bb840d",
   "import_mode": "byte-identical tracked source snapshot; not an automatic deployment link",
   "files": [
     {
@@ -44,7 +44,7 @@
     {
       "path": "app/page.tsx",
       "mode": "100644",
-      "sha256": "a53ec208b2a2e7348c107714c78a889ddee8c940b34c23adadd2561fef3a9ba0"
+      "sha256": "cc9b148ec978d504343d83517cfb97a86f835e9309148b0d071c14a529cbb0d8"
     },
     {
       "path": "build/sites-vite-plugin.LICENSE",
@@ -92,6 +92,11 @@
       "sha256": "b014175a12ba1c1e64fcdfc94f42c4ddf20972d6467eac9d83a504f82527e83c"
     },
     {
+      "path": "components/ocean/SourceInventory.tsx",
+      "mode": "100644",
+      "sha256": "9297172fac92cf7d59a9f1f121ee6b57552592866a02f909d3d0dababee8b5ca"
+    },
+    {
       "path": "components/ocean/Terrain.ts",
       "mode": "100644",
       "sha256": "36b3c3d0ea79a4761aea4b3c80b4f1af74af9f30e9cdb002c3bbb50bfe2c2b34"
@@ -99,7 +104,7 @@
     {
       "path": "components/ocean/VoyageReview.tsx",
       "mode": "100644",
-      "sha256": "65048e38ed149764ff0bb9f7f1a17fbd2fb9a6747a4eaf04bc0003f1c88c0278"
+      "sha256": "cd64eaa1d87a43d69f224c7581f73760a530fbfeff53419d5e5a2693cffe4197"
     },
     {
       "path": "components/ui/accordion.tsx",
@@ -479,7 +484,7 @@
     {
       "path": "lib/voyage-csv.ts",
       "mode": "100644",
-      "sha256": "7ced5c2b200168016e16fea9836cc401fb0eafb1da9e5251de8c702e82937a7e"
+      "sha256": "661d29879f851cb7d2acdaeb302ad2852790a3554f62814f66cc4faaaaf396e6"
     },
     {
       "path": "next.config.ts",
@@ -594,7 +599,7 @@
     {
       "path": "scripts/check-voyage-csv.mjs",
       "mode": "100644",
-      "sha256": "426978b05283e264abd5b5f7ae04c6ea92c48f6244232adb56039c90a2d051ed"
+      "sha256": "702f00889b57eb8f61215629e0a461f520dfe203847b2b72066f4f48d4a6c7a2"
     },
     {
       "path": "scripts/execution-profile.mjs",
