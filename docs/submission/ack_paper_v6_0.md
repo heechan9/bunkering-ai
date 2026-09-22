@@ -6,7 +6,7 @@
 ²한국공학대학교 게임공학과
 ³한국해양대학교 기관시스템공학부
 
-E-mail: [저자 확인 필요]
+E-mail: 4434503@naver.com
 
 Robustness and Fuel Accounting Evaluation of Double DQN-Based Bunker Purchasing Decisions in a Synthetic Voyage Environment
 
