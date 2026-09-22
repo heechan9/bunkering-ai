@@ -1,0 +1,41 @@
+{
+  "schema": "hanbada-ab-log-review/v1",
+  "source_sha256": "eaf7945109e2675ba8dbd6716d357f4babe737c6f36195f3a8f4da8c21af6665",
+  "record_date": "2026. 5.31",
+  "voyage_id": "266-2026-04",
+  "unit": "M/T",
+  "status": "review_pending",
+  "source_kind": "provided_vessel_record",
+  "reported_year": 2025,
+  "file_year": 2026,
+  "year_confirmation": "pending",
+  "opening_rob": "670.3",
+  "closing_rob": "475.1",
+  "consumption": "195.2",
+  "supply": null,
+  "supply_record": "blank",
+  "non_bunkering_basis": "user_relay_of_provider_via_seunghyeon",
+  "conditional_balance_residual": "0.0",
+  "conditional_balance_status": "consistent_if_no_supply",
+  "summary_consumption_sum": "195.2000000000000007",
+  "summary_numeric_cells": 24,
+  "summary_residual": "7E-16",
+  "summary_status": "internally_consistent",
+  "daily_selected_sum": "228.9000000000000008",
+  "daily_numeric_cells": 73,
+  "daily_comparison_status": "held_period_unit_and_aggregation_unconfirmed",
+  "numeric_storage_tolerance": "0.000001",
+  "evidence": {
+    "opening": "AB-LOG!S26",
+    "closing": "AB-LOG!S41",
+    "consumption": "AB-LOG!S42",
+    "summary": "AB-LOG!AA10:AH18; columns AA,AB,AC,AD,AF,AH",
+    "daily": "B FOAM!T8:V68; populated numeric cells only; notes excluded"
+  },
+  "limits": [
+    "No independent measurement validation",
+    "No real policy or savings validation",
+    "ROB timestamps and consumption derivation unconfirmed",
+    "Blank cells are not observed zeros; selected sums do not prove completeness"
+  ]
+}

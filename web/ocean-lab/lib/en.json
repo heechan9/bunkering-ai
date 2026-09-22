@@ -311,5 +311,7 @@
   "울산항만공사 신청현황 6,028건·8개 항목에서 총톤수·벙커량·예정 시간의 구조를 확인했습니다. 벙커량의 단위와 신청량·실공급량 여부는 미확인입니다.": "The Ulsan Port Authority dataset has 6,028 rows and eight fields, including gross tonnage, bunker quantity and scheduled times. The quantity unit and whether it represents requested or delivered fuel remain unconfirmed.",
   "선택 링크 복사": "Copy selection link",
   "링크를 선택해 복사하세요": "Select and copy the link",
-  "현재 선택 링크를 복사했어요. 열면 일시정지 상태로 표시됩니다.": "Selection link copied. It opens with playback paused."
+  "현재 선택 링크를 복사했어요. 열면 일시정지 상태로 표시됩니다.": "Selection link copied. It opens with playback paused.",
+  "이 화면은 기본조건 30단계의 합성 기록을 재생합니다. 한바다호 AB-LOG를 수령해 요약표 내부 수지를 검산했으며 일별표 대조는 보류 중입니다. 실제 구매정책 검증 자료는 확보되지 않았습니다. 공개 소비율 자료와 상용 플랫폼은 후속 검토 후보이며 이 실험에 투입하지 않았습니다.": "This screen replays synthetic baseline records over 30 steps. HANBADA AB-LOG has been received and checked for internal summary arithmetic; daily comparison is on hold. Real purchasing policies remain unvalidated. Public consumption sources and commercial platforms are candidates for future review and were not used in this experiment.",
+  "논문 v5.5 검토본 ↗": "Paper v5.5 review draft ↗"
 }
