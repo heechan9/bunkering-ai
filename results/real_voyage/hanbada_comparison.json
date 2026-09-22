@@ -1,0 +1,206 @@
+{
+  "schema": "hanbada-comparison/v1",
+  "source_sha256": "eaf7945109e2675ba8dbd6716d357f4babe737c6f36195f3a8f4da8c21af6665",
+  "summary_mass_t": "195.2",
+  "summary_engine_masses_t": {
+    "ME": "93.1",
+    "GE": "76.6000000000000007",
+    "Boiler": "25.5"
+  },
+  "summary_engine_sum_residual_t": "7E-16",
+  "rob_identity_residual_t": "0.0",
+  "volume_window_differences_kl": {
+    "days_01_05_selected": "2.7000000000000000",
+    "day_31_selected": "19.7000000000000010"
+  },
+  "windows": [
+    {
+      "id": "days_01_31",
+      "range": "B FOAM!T8:V68",
+      "volume_kl": "228.9000000000000008",
+      "engine_volumes_kl": {
+        "ME": "123.4000000000000006",
+        "GE": "79.4",
+        "Boiler": "26.1000000000000002"
+      },
+      "density_required_to_match_t_per_kl": "0.8527741371778068995971196604",
+      "engine_implied_ratios_t_per_kl": {
+        "ME": "0.7544570502431118277741148286",
+        "GE": "0.9647355163727959785894206549",
+        "Boiler": "0.9770114942528735557317126877"
+      },
+      "aligned_voyage_period": false
+    },
+    {
+      "id": "days_06_31",
+      "range": "B FOAM!T18:V68",
+      "volume_kl": "226.2000000000000008",
+      "engine_volumes_kl": {
+        "ME": "123.4000000000000006",
+        "GE": "79.4",
+        "Boiler": "23.4000000000000002"
+      },
+      "density_required_to_match_t_per_kl": "0.8629531388152077776730216134",
+      "engine_implied_ratios_t_per_kl": {
+        "ME": "0.7544570502431118277741148286",
+        "GE": "0.9647355163727959785894206549",
+        "Boiler": "1.089743589743589734275695814"
+      },
+      "aligned_voyage_period": false
+    },
+    {
+      "id": "days_06_30",
+      "range": "B FOAM!T18:V66",
+      "volume_kl": "206.4999999999999998",
+      "engine_volumes_kl": {
+        "ME": "107.2999999999999996",
+        "GE": "76.3",
+        "Boiler": "22.9000000000000002"
+      },
+      "density_required_to_match_t_per_kl": "0.9452784503631961268235142376",
+      "engine_implied_ratios_t_per_kl": {
+        "ME": "0.8676607642124883536539077883",
+        "GE": "1.003931847968545225425950197",
+        "Boiler": "1.113537117903930121279151809"
+      },
+      "aligned_voyage_period": false
+    }
+  ],
+  "density_scenarios": [
+    {
+      "window": "days_01_31",
+      "assumed_density_t_per_kl": "0.800",
+      "hypothetical_mass_t": "183.1200000000000006400",
+      "residual_t": "-12.0799999999999993600",
+      "residual_percent": "-6.188524590163934098360655738",
+      "assumption_only": true
+    },
+    {
+      "window": "days_01_31",
+      "assumed_density_t_per_kl": "0.825",
+      "hypothetical_mass_t": "188.8425000000000006600",
+      "residual_t": "-6.3574999999999993400",
+      "residual_percent": "-3.256915983606557038934426230",
+      "assumption_only": true
+    },
+    {
+      "window": "days_01_31",
+      "assumed_density_t_per_kl": "0.850",
+      "hypothetical_mass_t": "194.5650000000000006800",
+      "residual_t": "-0.6349999999999993200",
+      "residual_percent": "-0.3253073770491799795081967213",
+      "assumption_only": true
+    },
+    {
+      "window": "days_01_31",
+      "assumed_density_t_per_kl": "0.875",
+      "hypothetical_mass_t": "200.2875000000000007000",
+      "residual_t": "5.0875000000000007000",
+      "residual_percent": "2.606301229508197079918032787",
+      "assumption_only": true
+    },
+    {
+      "window": "days_01_31",
+      "assumed_density_t_per_kl": "0.900",
+      "hypothetical_mass_t": "206.0100000000000007200",
+      "residual_t": "10.8100000000000007200",
+      "residual_percent": "5.537909836065574139344262295",
+      "assumption_only": true
+    },
+    {
+      "window": "days_06_31",
+      "assumed_density_t_per_kl": "0.800",
+      "hypothetical_mass_t": "180.9600000000000006400",
+      "residual_t": "-14.2399999999999993600",
+      "residual_percent": "-7.295081967213114426229508197",
+      "assumption_only": true
+    },
+    {
+      "window": "days_06_31",
+      "assumed_density_t_per_kl": "0.825",
+      "hypothetical_mass_t": "186.6150000000000006600",
+      "residual_t": "-8.5849999999999993400",
+      "residual_percent": "-4.398053278688524252049180328",
+      "assumption_only": true
+    },
+    {
+      "window": "days_06_31",
+      "assumed_density_t_per_kl": "0.850",
+      "hypothetical_mass_t": "192.2700000000000006800",
+      "residual_t": "-2.9299999999999993200",
+      "residual_percent": "-1.501024590163934077868852459",
+      "assumption_only": true
+    },
+    {
+      "window": "days_06_31",
+      "assumed_density_t_per_kl": "0.875",
+      "hypothetical_mass_t": "197.9250000000000007000",
+      "residual_t": "2.7250000000000007000",
+      "residual_percent": "1.396004098360656096311475410",
+      "assumption_only": true
+    },
+    {
+      "window": "days_06_31",
+      "assumed_density_t_per_kl": "0.900",
+      "hypothetical_mass_t": "203.5800000000000007200",
+      "residual_t": "8.3800000000000007200",
+      "residual_percent": "4.293032786885246270491803279",
+      "assumption_only": true
+    },
+    {
+      "window": "days_06_30",
+      "assumed_density_t_per_kl": "0.800",
+      "hypothetical_mass_t": "165.1999999999999998400",
+      "residual_t": "-30.0000000000000001600",
+      "residual_percent": "-15.36885245901639352459016393",
+      "assumption_only": true
+    },
+    {
+      "window": "days_06_30",
+      "assumed_density_t_per_kl": "0.825",
+      "hypothetical_mass_t": "170.3624999999999998350",
+      "residual_t": "-24.8375000000000001650",
+      "residual_percent": "-12.72412909836065582223360656",
+      "assumption_only": true
+    },
+    {
+      "window": "days_06_30",
+      "assumed_density_t_per_kl": "0.850",
+      "hypothetical_mass_t": "175.5249999999999998300",
+      "residual_t": "-19.6750000000000001700",
+      "residual_percent": "-10.07940573770491811987704918",
+      "assumption_only": true
+    },
+    {
+      "window": "days_06_30",
+      "assumed_density_t_per_kl": "0.875",
+      "hypothetical_mass_t": "180.6874999999999998250",
+      "residual_t": "-14.5125000000000001750",
+      "residual_percent": "-7.434682377049180417520491803",
+      "assumption_only": true
+    },
+    {
+      "window": "days_06_30",
+      "assumed_density_t_per_kl": "0.900",
+      "hypothetical_mass_t": "185.8499999999999998200",
+      "residual_t": "-9.3500000000000001800",
+      "residual_percent": "-4.789959016393442715163934426",
+      "assumption_only": true
+    }
+  ],
+  "density_grid_basis": "analyst_selected_arithmetic_scenarios_not_observed_or_physically_validated_range",
+  "common_density_assumption": "one hypothetical density for all selected engines and days; no temperature correction",
+  "measured_density": null,
+  "sheet1_used": false,
+  "model_training": false,
+  "policy_validation": false,
+  "real_savings_validation": false,
+  "status": "aggregate_comparison_and_sensitivity_only",
+  "limits": [
+    "Windows select labeled day rows, not verified voyage timestamps",
+    "Blank cells excluded, never treated as observed zeros",
+    "Density required to match is a fitted ratio, not measured density or validation",
+    "Summary consumption is ROB-derived; matching is not independent validation",
+    "Fuel density, volume reference conditions and exact time alignment remain missing"
+  ]
+}

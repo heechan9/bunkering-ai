@@ -1,4 +1,6 @@
-> **2026-09-22 업데이트:** [해기원 검토용 논문 v5.5](docs/submission/ack_paper_v5_5.md) · [한바다호 AB-LOG 검토 기능·근거](docs/technical/hanbada_ab_log_design_20260922.md). ROB 차감값의 산술 관계 확인이며 실선 급유정책·비용절감 검증은 아닙니다.
+> **집계 비교·민감도 실험:** [3개 날짜 범위·15개 가정 시나리오](docs/technical/hanbada_comparison_experiment.md). 동일 단위 비교 및 가정 계산이며 실선 성능·비용절감 검증은 아닙니다.
+
+> **2026-09-22 업데이트:** [해기원 검토용 논문 v5.6](docs/submission/ack_paper_v5_6.md) · [한바다호 AB-LOG 검토 기능·근거](docs/technical/hanbada_ab_log_design_20260922.md). ROB 차감값의 산술 관계 확인이며 실선 급유정책·비용절감 검증은 아닙니다.
 
 <div align="center">
 
@@ -330,7 +332,7 @@ Ocean Lab 전략 비교에서 구매지출·재고·급유횟수를 함께 확�
 
 ### 울산항 원자료 검토 반영
 
-[승현 검토·정정 기록](docs/data/upa_review_20260919.md)과 [최신 논문 v5.5 검토본](docs/submission/ack_paper_v5_5.md)에 데이터 활용 한계를 반영했습니다. 제공기관 용어 확인은 대기 중입니다. 해기원 한바다호 AB-LOG는 수령해 요약표 내부 검산을 마쳤으며 연도는 2026년으로 확인됐고 일별 단위는 kL로 정정됐습니다. 밀도·기준 조건·집계 시간 정합성은 미확인입니다.
+[승현 검토·정정 기록](docs/data/upa_review_20260919.md)과 [최신 논문 v5.6 검토본](docs/submission/ack_paper_v5_6.md)에 데이터 활용 한계를 반영했습니다. 제공기관 용어 확인은 대기 중입니다. 해기원 한바다호 AB-LOG는 수령해 요약표 내부 검산을 마쳤으며 연도는 2026년으로 확인됐고 일별 단위는 kL로 정정됐습니다. 밀도·기준 조건·집계 시간 정합성은 미확인입니다.
 
 ## 민재 급유 업무 관점 검토 수령
 

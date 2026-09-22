@@ -1,0 +1,81 @@
+{
+  "schema": "hanbada-comparison-inputs/v1",
+  "source_sha256": "eaf7945109e2675ba8dbd6716d357f4babe737c6f36195f3a8f4da8c21af6665",
+  "units": {
+    "summary": "M/T",
+    "daily": "kL"
+  },
+  "opening_rob": "670.3",
+  "closing_rob": "475.1",
+  "consumption": "195.2",
+  "summary_engines": {
+    "ME": {
+      "sum": "93.1",
+      "numeric_count": 8
+    },
+    "GE": {
+      "sum": "76.6000000000000007",
+      "numeric_count": 8
+    },
+    "Boiler": {
+      "sum": "25.5",
+      "numeric_count": 8
+    }
+  },
+  "windows": [
+    {
+      "id": "days_01_31",
+      "range": "B FOAM!T8:V68",
+      "engines": {
+        "ME": {
+          "sum": "123.4000000000000006",
+          "numeric_count": 16
+        },
+        "GE": {
+          "sum": "79.4",
+          "numeric_count": 26
+        },
+        "Boiler": {
+          "sum": "26.1000000000000002",
+          "numeric_count": 31
+        }
+      }
+    },
+    {
+      "id": "days_06_31",
+      "range": "B FOAM!T18:V68",
+      "engines": {
+        "ME": {
+          "sum": "123.4000000000000006",
+          "numeric_count": 16
+        },
+        "GE": {
+          "sum": "79.4",
+          "numeric_count": 26
+        },
+        "Boiler": {
+          "sum": "23.4000000000000002",
+          "numeric_count": 26
+        }
+      }
+    },
+    {
+      "id": "days_06_30",
+      "range": "B FOAM!T18:V66",
+      "engines": {
+        "ME": {
+          "sum": "107.2999999999999996",
+          "numeric_count": 15
+        },
+        "GE": {
+          "sum": "76.3",
+          "numeric_count": 25
+        },
+        "Boiler": {
+          "sum": "22.9000000000000002",
+          "numeric_count": 25
+        }
+      }
+    }
+  ]
+}
