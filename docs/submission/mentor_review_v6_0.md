@@ -4,14 +4,14 @@
 
 ## 검토 자료
 
-- [논문 v6.0 본문](ack_paper_v6_0.md) · [Word](ack_paper_v6_0.docx) · [PDF](ack_paper_v6_0.pdf)
+- [논문 v6.0 정식 양식 본문](ack_paper_v6_0.md) · [Word](ack_paper_v6_0.docx) · [PDF](ack_paper_v6_0.pdf)
 - [웹 시연](https://bunkering-ocean-lab.hc24734503.chatgpt.site)
 - [한바다호 집계 비교와 가정 실험](../technical/hanbada_comparison_experiment.md)
 - [제공기관 정정 반영](../technical/hanbada_provider_clarification.md)
 - [기존 합성 실험과 재현 근거](../technical/submission_alignment_v3_0.md)
 - [민재의 업무 관점 의견과 채택 범위](../technical/minjae_domain_review_20260920.md)
 
-Word와 PDF는 전체 내용을 읽기 위한 검토용 조판입니다. 학회 지정 양식과 최종 분량에 맞춘 접수본은 아닙니다. 저자 순서·영문 성명·소속 표기·이메일은 당사자 확인이 필요합니다.
+Word와 PDF는 사용자가 제공한 ACK 2026 KIPS 원본 양식을 적용한 A4 3쪽 원고입니다. 제목·저자·요약은 1단, 본문은 2단으로 구성했습니다. 상세 설명은 [보충자료](ack_paper_v6_0_supplement.md)에 보존했습니다. 저자 순서·영문 성명·소속 표기·이메일은 당사자 확인이 필요합니다.
 
 ## 먼저 확인할 결과
 
