@@ -1,6 +1,6 @@
 # 한바다호 집계 비교·민감도 실험 추가
 
-[논문 v5.6](submission/ack_paper_v5_6.md)에 같은 단위의 집계 비교, 날짜 선택 3개 × 가정 밀도 5개의 결정론적 계산을 반영했다. [실험 계약·결과](technical/hanbada_comparison_experiment.md). 원본 부피 합계를 임의로 질량으로 확정하지 않으며 실측 정합성·정책 성능은 미검증이다.
+[논문 v6.0](submission/ack_paper_v6_0.md)에 같은 단위의 집계 비교, 날짜 선택 3개 × 가정 밀도 5개의 결정론적 계산을 반영했다. [실험 계약·결과](technical/hanbada_comparison_experiment.md). 원본 부피 합계를 임의로 질량으로 확정하지 않으며 실측 정합성·정책 성능은 미검증이다.
 
 # 2026-09-22 한바다호 AB-LOG 추가 검토
 
