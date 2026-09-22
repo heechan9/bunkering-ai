@@ -35,7 +35,7 @@ export function reviewVoyages(rows:string[][],tolerance:number):Review[]{
  });
 }
 export async function readCSVFile(file:File,encoding:string){if(file.size>5*1024*1024)throw Error('CSV exceeds 5 MB');const bytes=await file.arrayBuffer();return parseCSV(new TextDecoder(encoding,{fatal:true}).decode(bytes))}
-export async function fileDigest(file:File){const bytes=await file.arrayBuffer();const hash=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(hash),v=>v.toString(16).padStart(2,'0')).join('')}
+export async function fileDigest(file:File){if(!globalThis.crypto?.subtle)throw Error('CSV review requires a secure HTTPS connection for SHA-256. Open the published HTTPS site.');const bytes=await file.arrayBuffer();const hash=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(hash),v=>v.toString(16).padStart(2,'0')).join('')}
 
 // Counts describe declared fields, not authenticity or operational safety.
 export function summarizeColumns(rows:string[][],reviews:Review[]){

@@ -1,6 +1,6 @@
 # 병커시유 · Ocean Lab
 
-Private interactive 3D visualization of user-supplied synthetic baseline voyage records.
+Public interactive 3D visualization of user-supplied synthetic baseline voyage records.
 
 ## What this experience does
 
@@ -128,3 +128,7 @@ Background source: [IMO Polar Code](https://www.imo.org/en/ourwork/safety/pages/
 - `pnpm check:regressions` checks translation coverage, seven destination markers, recorded replay values and replay selection validation.
 - Production build and local browser checks passed for language persistence, globe-to-region navigation, 3D vessel view, replay/pause/reset and strategy comparison. Physical mobile devices were not tested.
 - Dependency additions are development-only type declarations for Three.js and d3-geo. A fresh registry audit was unavailable (HTTP 503 maintenance); the preceding security release had zero reported advisories.
+
+## 2026-09-22 mentor-review polish
+
+Paper links point to v7.0 and a separately named layout-corrected PDF. The original mentor review document is preserved; this update changes no research text or numerical results. Tab, evidence, and boundary-case controls expose translated accessible names, and existing notices translate on language changes. CSV hashing requires a secure HTTPS context; an explicit message replaces an opaque browser exception otherwise.

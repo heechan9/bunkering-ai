@@ -1,9 +1,9 @@
 {
   "schema_version": "ocean-lab-source-import/v1",
   "site_url": "https://bunkering-ocean-lab.hc24734503.chatgpt.site/",
-  "site_version": 18,
-  "source_commit": "b88aa16f27381c9b9eea44ea165fafcb3f6b5016",
-  "research_commit": "3b38e8adfb73fa9a31f150e56a3ebbe256bb840d",
+  "site_version": 22,
+  "source_commit": "3e61217438a4184c31fe0da52b53a56cfa8fa920",
+  "research_commit": "881c858b7951bb972138ade1dd972fdf5433de2f",
   "import_mode": "byte-identical tracked source snapshot; not an automatic deployment link",
   "files": [
     {
@@ -24,7 +24,7 @@
     {
       "path": "README.md",
       "mode": "100644",
-      "sha256": "0af0fdc878243a099990c58f4808632ca87a6a8288c2544278757841b82c9260"
+      "sha256": "3b939e5bdd7f77510e84dece514dc341ba4af8e43f8ed9471716564610aefea2"
     },
     {
       "path": "app/chatgpt-auth.ts",
@@ -44,7 +44,7 @@
     {
       "path": "app/page.tsx",
       "mode": "100644",
-      "sha256": "cc9b148ec978d504343d83517cfb97a86f835e9309148b0d071c14a529cbb0d8"
+      "sha256": "c6921eeddb96cf747aa7f5e120b1c278db84ff2b46b32d069e4a325d106e0f5e"
     },
     {
       "path": "build/sites-vite-plugin.LICENSE",
@@ -67,9 +67,14 @@
       "sha256": "31f4ca67a4a62572571003d3d5aac85ee6fbfca67a192924bac6b168d95e98fd"
     },
     {
+      "path": "components/ocean/AbLogReview.tsx",
+      "mode": "100644",
+      "sha256": "48bf3e641d789c5cc01505f7063de26938ed825cb087d8e7071e66ea35fb9d65"
+    },
+    {
       "path": "components/ocean/DecisionGuide.tsx",
       "mode": "100644",
-      "sha256": "c1b797fa82ce6fc359031f12eddee8ac50c239943305aee38ffb3a7f34c32642"
+      "sha256": "1c5b137fea7a65b08c96d26a84cf8b7fc429128d978c2184f718f52214ab409a"
     },
     {
       "path": "components/ocean/Geography.tsx",
@@ -94,7 +99,7 @@
     {
       "path": "components/ocean/SourceInventory.tsx",
       "mode": "100644",
-      "sha256": "9297172fac92cf7d59a9f1f121ee6b57552592866a02f909d3d0dababee8b5ca"
+      "sha256": "e1e6c3bfa4d14bfec07f7c03e45110ab2317fb1069d25f2409ec6cf8ffcd61fc"
     },
     {
       "path": "components/ocean/Terrain.ts",
@@ -459,7 +464,7 @@
     {
       "path": "lib/en.json",
       "mode": "100644",
-      "sha256": "92c34da06cc21f38b5f09c52ee488e3ec0a92e83a107b2f21570d94f204da3ed"
+      "sha256": "d052cec859be4244a051f7cabdb3202db05582a80d82ae065c8cd9cf485fabbf"
     },
     {
       "path": "lib/locale.tsx",
@@ -484,7 +489,7 @@
     {
       "path": "lib/voyage-csv.ts",
       "mode": "100644",
-      "sha256": "661d29879f851cb7d2acdaeb302ad2852790a3554f62814f66cc4faaaaf396e6"
+      "sha256": "ad70b67117c6c34f285b670ddb199594d5c6f2f2432a7e189173e97be591b5a9"
     },
     {
       "path": "next.config.ts",
@@ -515,6 +520,16 @@
       "path": "public/data/coastlines.json",
       "mode": "100644",
       "sha256": "5a0368aafd6d3c9e14bb182afa8e611f51b9dd6962dbf957cc82444648a1d154"
+    },
+    {
+      "path": "public/data/hanbada-comparison.json",
+      "mode": "100644",
+      "sha256": "aa9b86d59ef8bbb825b589945fefcdbc384800601f24d6a346524b7fd64e17d8"
+    },
+    {
+      "path": "public/data/hanbada-review.json",
+      "mode": "100644",
+      "sha256": "c2b796dd7d5c328a4db03c33de40d6e267b83e8db18df444ddd30ee05f7f3547"
     },
     {
       "path": "public/data/integration-review.json",
