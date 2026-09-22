@@ -1,10 +1,12 @@
+> **멘토 최종 검토:** [v6.0 검토 자료·질문·요청문](docs/submission/mentor_review_v6_0.md). 최종 의견·저자 정보·학회 접수본 확정은 대기 중입니다.
+
 > **집계 비교·민감도 실험:** [3개 날짜 범위·15개 가정 시나리오](docs/technical/hanbada_comparison_experiment.md). 동일 단위 비교 및 가정 계산이며 실선 성능·비용절감 검증은 아닙니다.
 
 > **2026-09-22 업데이트:** [해기원 검토용 논문 v6.0](docs/submission/ack_paper_v6_0.md) · [한바다호 AB-LOG 검토 기능·근거](docs/technical/hanbada_ab_log_design_20260922.md). ROB 차감값의 산술 관계 확인이며 실선 급유정책·비용절감 검증은 아닙니다.
 
 <div align="center">
 
-최신 진행 상태: [완료·검증·남은 작업](docs/PROJECT_STATUS.md) · [논문 v5.0 검토본](docs/submission/ack_paper_v5_0.md). 과거 결과와 테스트 로그는 각 실행 시점의 증거로 보존합니다.
+최신 진행 상태: [완료·검증·남은 작업](docs/PROJECT_STATUS.md) · [논문 v6.0 검토본](docs/submission/ack_paper_v6_0.md). 과거 결과와 테스트 로그는 각 실행 시점의 증거로 보존합니다.
 
 ## 3D 웹 시연 · Ocean Lab
 
