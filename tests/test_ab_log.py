@@ -1,6 +1,6 @@
 import copy
 import unittest
-from scripts.review_ab_log import review_cells
+from scripts.review_ab_log import review_cells, CONFIRMED_SOURCE_SHA256
 
 
 def fixture():
@@ -38,5 +38,27 @@ class ReviewTests(unittest.TestCase):
     def test_date_year(self):
         f=fixture();f['AB-LOG']['X4']['value']='2027. 5.31'
         self.assertEqual(review_cells(f,'test')['file_year'],2027)
+
+class ProviderConfirmationTests(unittest.TestCase):
+    def test_confirmation_bound_to_exact_source(self):
+        r = review_cells(fixture(), 'different-workbook')
+        self.assertNotIn('daily_unit_confirmation', r)
+        self.assertEqual(r['year_confirmation'], 'pending')
+
+    def test_corrected_units_do_not_trigger_conversion(self):
+        r = review_cells(fixture(), CONFIRMED_SOURCE_SHA256)
+        self.assertEqual(r['daily_unit'], 'kL')
+        self.assertEqual(r['unit'], 'M/T')
+        self.assertIsNone(r['daily_mass_converted'])
+        self.assertIsNone(r['conversion_factor_applied'])
+        self.assertEqual(r['daily_selected_sum'], '4')
+
+    def test_derived_consumption_and_estimates_remain_explicit(self):
+        r = review_cells(fixture(), CONFIRMED_SOURCE_SHA256)
+        self.assertFalse(r['independent_consumption_measurement'])
+        self.assertEqual(r['reported_year'], 2026)
+        self.assertIn('estimate', r['rob_time_basis']['certainty'])
+        self.assertIn('pending', r['status'])
+        self.assertIsNone(r['supply'])
 
 if __name__=='__main__': unittest.main()

@@ -6,7 +6,7 @@ const sources=[
  {id:'simulation',ko:['합성환경 실험 결과','저장 결과·웹 수치 대조 완료','SCI는 합성 비용지수. 실선 비용절감 근거 아님'],en:['Synthetic experiments','Stored results checked against web figures','SCI is a synthetic cost index, not real-vessel savings'],path:'docs/technical/web_evidence_guard.md'},
  {id:'upa',ko:['울산항 정박지 신청자료','6,028행·8열 확인','벙커량 단위·실제 공급 여부 미확인. 소비·잔량·가격 없음'],en:['UPA anchorage applications','6,028 rows and 8 columns confirmed','Quantity unit and actual supply basis unconfirmed; no consumption, inventory or price'],path:'docs/data/upa_review_20260919.md'},
  {id:'minjae',ko:['민재 급유업무 관점 검토','수령·논문 v5.0 반영','팀 내 정성 검토. 공식 운항기준·현장 성능검증 아님'],en:['Minjae domain review','Received; incorporated in paper v5.0','Qualitative team review, not official operating standards or field validation'],path:'docs/technical/minjae_domain_review_20260920.md'},
- {id:'kmou',ko:['해기원 한바다호 AB-LOG','수령·요약표 조건부 검산','연도·ROB 시각·일별 집계 범위 미확인. 정책 실증 아님'],en:['KMOU HANBADA AB-LOG','Received; conditional summary check','Year, ROB timestamps and daily scope unconfirmed; not policy validation'],path:'docs/technical/hanbada_ab_log_design_20260922.md'},
+ {id:'kmou',ko:['해기원 한바다호 AB-LOG','회신 반영·ROB 차감 산술 확인','일별 kL·요약 M/T. 시각은 추정, 환산·기간 대조 보류. 정책 실증 아님'],en:['KMOU HANBADA AB-LOG','Provider clarified; ROB arithmetic check','Daily kL vs summary M/T; estimated times, conversion/alignment pending; not policy validation'],path:'docs/technical/hanbada_ab_log_design_20260922.md'},
 ];
 export default function SourceInventory(){
  const {lang}=useLocale();const en=lang==='en';

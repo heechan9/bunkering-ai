@@ -114,8 +114,8 @@ def review_cells(sheets: dict, sha256: str) -> dict:
     delta = opening - consumed - closing
     aggregate_delta = aggregate - consumed
     tol = Decimal('0.000001')  # numeric storage tolerance, never an operating limit
-    return {
-        'schema': 'hanbada-ab-log-review/v1', 'source_sha256': sha256,
+    result = {
+        'schema': 'hanbada-ab-log-review/v2', 'source_sha256': sha256,
         'record_date': date, 'voyage_id': voyage, 'unit': 'M/T',
         'status': 'review_pending', 'source_kind': 'provided_vessel_record',
         'reported_year': 2025, 'file_year': int(date[:4]) if date[:4].isdigit() else None,
@@ -138,6 +138,51 @@ def review_cells(sheets: dict, sha256: str) -> dict:
                    'ROB timestamps and consumption derivation unconfirmed',
                    'Blank cells are not observed zeros; selected sums do not prove completeness'],
     }
+
+
+    return apply_provider_confirmation(result)
+
+
+CONFIRMED_SOURCE_SHA256 = 'eaf7945109e2675ba8dbd6716d357f4babe737c6f36195f3a8f4da8c21af6665'
+
+
+def apply_provider_confirmation(result: dict) -> dict:
+    """Apply correspondence only to the exact workbook, never infer from the template."""
+    if result['source_sha256'] != CONFIRMED_SOURCE_SHA256:
+        return result
+    result.update({
+        'status': 'provider_clarified_reconciliation_pending',
+        'reported_year': 2026,
+        'initial_relay_year': 2025,
+        'year_confirmation': 'confirmed_by_provider',
+        'record_date_role': 'monthly_submission_date',
+        'consumption_basis': 'opening_rob_minus_closing_rob',
+        'independent_consumption_measurement': False,
+        'balance_interpretation': 'arithmetic_identity_not_independent_validation',
+        'daily_unit': 'kL',
+        'daily_unit_confirmation': 'provider_final_reply_corrects_initial_MT',
+        'daily_comparison_status': 'held_density_reference_conditions_and_time_alignment',
+        'daily_mass_converted': None,
+        'sheet1_status': 'excluded_provider_confirmed_unrelated',
+        'conversion_factor_applied': None,
+        'rob_time_basis': {
+            'opening': '2026-05-06 approximately 15:54 (S/B ENG)',
+            'closing': 'voyage end approximately 13:00',
+            'certainty': 'provider_estimate_not_verified_timestamp',
+        },
+        'noon_record_explanation': 'provider_tentatively_attributes_May31_underway_record_to_berthing_at_noon',
+        'publication_scope': 'citation_and_aggregates_allowed_original_workbook_not_public',
+        'provider_evidence': 'docs/technical/hanbada_provider_clarification.md',
+    })
+    result['limits'] = [
+        'ROB-derived consumption is not an independent measurement validation',
+        'No real policy or savings validation',
+        'ROB times and noon/berthing explanation are provider estimates',
+        'kL and M/T cannot be compared without density, reference conditions and aligned periods',
+        'Sheet1 is unrelated; never use its 0.95 factor',
+        'Blank cells are not observed zeros; selected sums do not prove completeness',
+    ]
+    return result
 
 
 def review(path: Path) -> dict:
