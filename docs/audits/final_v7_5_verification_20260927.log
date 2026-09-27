@@ -1,0 +1,72 @@
+===== 00_environment
+commit: 3b5f95b61162263d84034b94208d3e001069cc12
+date: 2026-09-27T17:53:14+09:00
+OS: Windows 11 Pro 10.0.26200
+Python 3.13.14
+torch 2.13.0+cpu gymnasium 1.3.0 numpy 2.5.1 pandas 3.0.5
+checkpoint sha256: 970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392
+v24.16.0
+===== 01_pytest
+.............................................................. [ 25%]
+........................................................................ [ 54%]
+........................................................................ [ 84%]
+.......................................                           [100%]
+245 passed, 17 subtests passed in 17.92s
+exit=0
+===== 02_audit_paper_evidence
+Paper Evidence Audit complete:
+  Total claims: 8
+  Passed: 8
+  Provisional: 0
+  Missing evidence: 0
+  Failed: 0
+  CSV summary saved to: results\paper_audit\paper_evidence_summary.csv
+  JSON report saved to: results\paper_audit\paper_evidence_report.json
+exit=0
+===== 03_compare_ab_log_check
+PASS: 3 selected windows and 15 hypothetical density scenarios reproduce exactly
+exit=0
+===== 05_eval_compare
+IDENTICAL evaluation_results.csv
+IDENTICAL evaluation/summary.csv
+IDENTICAL evaluation/termination_reasons.csv
+IDENTICAL evaluation/raw_fixed_fueling.csv
+IDENTICAL evaluation/raw_price_reactive.csv
+IDENTICAL evaluation/raw_safe_stock.csv
+IDENTICAL evaluation/raw_double_dqn.csv
+(git status above: empty = worktree unchanged)
+===== 04_evaluate (tail)
+policy            eps         reward mean/std         cost index mean/std  success  fuel_dep    bunkers mean/std
+----------------------------------------------------------------------------------------------------------------
+fixed_fueling     100        -2.0300 / 0.0000              0.0 /      0.0    0.000     1.000         0.00 / 0.00
+price_reactive    100        -1.9519 / 0.2848          17369.5 / 103346.1    0.030     0.970         0.08 / 0.50
+safe_stock        100        -0.4928 / 0.0108         545392.7 /  63453.9    1.000     0.000         1.00 / 0.00
+double_dqn        100         0.0443 / 0.0579         847117.9 / 102320.3    1.000     0.000         5.31 / 3.48
+
+termination reasons
+  fixed_fueling   arrived=0  fuel_depleted=100  timeout=0
+  price_reactive  arrived=3  fuel_depleted=97  timeout=0
+  safe_stock      arrived=100  fuel_depleted=0  timeout=0
+  double_dqn      arrived=100  fuel_depleted=0  timeout=0
+
+Canonical per-episode CSV: <scratch>\eval_out\evaluation_results.csv
+Evaluation manifest:       <scratch>\eval_out\evaluation_manifest.json
+Summary CSV:               <scratch>\eval_out\evaluation\summary.csv
+Termination CSV:           <scratch>\eval_out\evaluation\termination_reasons.csv
+Comparison figure:         <scratch>\eval_out\evaluation\comparison.png
+Per-policy raw CSV:        <scratch>\eval_out\evaluation\raw_fixed_fueling.csv
+Per-policy raw CSV:        <scratch>\eval_out\evaluation\raw_price_reactive.csv
+Per-policy raw CSV:        <scratch>\eval_out\evaluation\raw_safe_stock.csv
+Per-policy raw CSV:        <scratch>\eval_out\evaluation\raw_double_dqn.csv
+exit=0
+===== web lint (tail, local copy of web/ocean-lab)
+$ eslint . --ignore-pattern dist --ignore-pattern .next
+===== web build (tail, local copy of web/ocean-lab)
+  ? Unknown
+
+  ? Some routes could not be classified. vinext currently uses static analysis
+    and cannot detect dynamic API usage (headers(), cookies(), etc.) at build time.
+    Automatic classification will be improved in a future release.
+
+  Build complete. Run `vinext start` to start the production server.
+
