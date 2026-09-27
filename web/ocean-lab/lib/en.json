@@ -312,8 +312,8 @@
   "선택 링크 복사": "Copy selection link",
   "링크를 선택해 복사하세요": "Select and copy the link",
   "현재 선택 링크를 복사했어요. 열면 일시정지 상태로 표시됩니다.": "Selection link copied. It opens with playback paused.",
-  "이 화면은 기본조건 30단계의 합성 기록을 재생합니다. 한바다호 AB-LOG를 수령해 요약 소비량이 ROB 차감값임을 확인했습니다. 일별 kL와 요약 M/T의 환산·기간 대조는 보류 중입니다. 실제 구매정책 검증 자료는 확보되지 않았습니다. 공개 소비율 자료와 상용 플랫폼은 후속 검토 후보이며 이 실험에 투입하지 않았습니다.": "This screen replays synthetic 30-step records. HANBADA summary consumption is ROB-derived. Daily kL and summary M/T reconciliation is held pending conversion conditions and time alignment. Real purchasing-policy validation data are unavailable. Public consumption-rate data and commercial platforms were not used in this experiment.",
   "논문 v5.5 검토본 ↗": "Paper v5.5 review draft ↗",
-  "논문 v7.0 검토본 ↗": "Paper v7.0 review draft ↗",
-  "v7.0 조판 수정본 PDF ↗": "v7.0 layout-corrected PDF ↗"
+  "이 화면은 기본조건 30단계의 합성 기록을 재생합니다. 한바다호 AB-LOG의 ROB 차감 산술, 같은 단위의 집계 비교와 가정 시나리오 15개 계산을 완료했습니다. 일별 kL와 요약 M/T의 실측 환산·집계 기간 정합성은 미확인입니다. 실제 구매정책 검증 자료는 확보되지 않았습니다. 공개 소비율 자료와 상용 플랫폼은 후속 검토 후보이며 이 실험에 투입하지 않았습니다.": "This screen replays synthetic 30-step baseline records. ROB arithmetic, same-unit aggregate comparisons and 15 hypothetical scenarios for HANBADA AB-LOG are complete. Measured conversion between daily kL and summary M/T and alignment of reporting periods remain unverified. No data validating actual purchasing policies have been obtained. Public consumption-rate data and commercial platforms remain future review candidates and were not inputs to this experiment.",
+  "논문 v7.5 검토본 ↗": "Paper v7.5 review draft ↗",
+  "v7.5 PDF ↗": "v7.5 PDF ↗"
 }

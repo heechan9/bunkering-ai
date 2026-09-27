@@ -1,0 +1,78 @@
+{
+  "source_archive": "bunkering-backup-20260912-200117.zip",
+  "source_archive_sha256": "7317943a9f31d76c3c01129dd2771eb51eb92cb65a1043ecbfee6ddd30604a7e",
+  "scope": "Recalculated from preserved baseline diagnostic episodes; not new model evaluation or V1.5 stress replay.",
+  "sources": [
+    {
+      "train_seed": 42,
+      "episodes_sha256": "7653729b41297d62e4235ada8d0caa3a2ccb4a2be08aa069d83524b82955362e",
+      "checkpoint_sha256": "be543c8cab041de802a03de7752e376cfe2037d7700ceef9742af218ad9bc6f8"
+    },
+    {
+      "train_seed": 1042,
+      "episodes_sha256": "4fc69f69545eaffd474a714c207d22d688702d1bce1515495a9f99e2cee40076",
+      "checkpoint_sha256": "e4b77a26c1cf5e5c1156c88c561842692a6b33e47d9852deb49f1817c4b4d689"
+    },
+    {
+      "train_seed": 2042,
+      "episodes_sha256": "1e3a100392f29ed1f7ab7a27058cd6612381f46d20b254c920687229d0fc67ae",
+      "checkpoint_sha256": "ffc86e08253e1d36f37aacd845d16777c432aaff786e52318267ccc932b9a104"
+    },
+    {
+      "train_seed": 3042,
+      "episodes_sha256": "ac9ee9ff9cdef8c80b7269d8888194ba76a9ca831347fa13ff9ed9790fe0f1b1",
+      "checkpoint_sha256": "8ea393a778cf335b1c985e35d8bbab870891ffac85bcd47769ce8bd8b47e5763"
+    }
+  ],
+  "per_seed": [
+    {
+      "train_seed": 42,
+      "reward_min": -0.03639182489044395,
+      "reward_bottom5": -0.008616983249284293,
+      "sci_max": 1237344.9658800955,
+      "sci_top5": 1108264.044196986,
+      "bunkering_max": 17.0,
+      "sci_mean": 840076.6038216762,
+      "bunkering_mean": 5.22
+    },
+    {
+      "train_seed": 1042,
+      "reward_min": -0.00037840605783600115,
+      "reward_bottom5": -7.568121156720022e-05,
+      "sci_max": 1081775.7482421712,
+      "sci_top5": 1049879.3997836239,
+      "bunkering_max": 15.0,
+      "sci_mean": 826282.1124685805,
+      "bunkering_mean": 4.42
+    },
+    {
+      "train_seed": 2042,
+      "reward_min": -0.0317846801399315,
+      "reward_bottom5": -0.0064373663663744,
+      "sci_max": 1113203.3532506188,
+      "sci_top5": 1068562.462306448,
+      "bunkering_max": 18.0,
+      "sci_mean": 846347.0501964793,
+      "bunkering_mean": 4.91
+    },
+    {
+      "train_seed": 3042,
+      "reward_min": 0.0,
+      "reward_bottom5": 0.0,
+      "sci_max": 1086546.3881026339,
+      "sci_top5": 1063882.502918952,
+      "bunkering_max": 17.0,
+      "sci_mean": 846347.8729072566,
+      "bunkering_mean": 5.05
+    }
+  ],
+  "means": {
+    "reward_min": -0.017138727772052862,
+    "reward_bottom5": -0.003782507706806473,
+    "sci_max": 1129717.6138688799,
+    "sci_top5": 1072647.1023015024,
+    "bunkering_max": 16.75,
+    "sci_mean": 839763.4098484982,
+    "bunkering_mean": 4.9
+  }
+}

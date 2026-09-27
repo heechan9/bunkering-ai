@@ -94,3 +94,17 @@ html[lang=en] .topbar .status{display:none}
  .regional-exhibit .passage-progress input{min-width:100px}
  .regional-exhibit .map-information .map-source{font-size:12px;line-height:1.6}
 }
+
+/* Keep all three navigation tabs visible, including long English labels. */
+@media(max-width:800px){
+ .topbar .main-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;max-width:100%;gap:8px;height:auto!important}
+ .topbar .main-tabs button{min-width:0;width:100%;height:auto!important;min-height:56px;padding:10px 4px;white-space:normal;overflow-wrap:anywhere;line-height:1.4;font-size:14px;text-align:center}
+}
+@media(max-width:800px){
+ .region-buttons button>span:not(.region-number){min-width:0}
+ .region-buttons strong,.region-buttons small{white-space:normal;overflow-wrap:anywhere}
+ .region-nav-heading{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px}
+ .region-nav-heading .world-back{float:none;order:2}
+ .region-nav-heading>strong{flex:1 1 150px;min-width:0}
+ .region-nav-heading>span{flex-basis:100%;order:3}
+}
