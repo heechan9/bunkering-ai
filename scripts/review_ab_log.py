@@ -122,7 +122,7 @@ def review_cells(sheets: dict, sha256: str) -> dict:
         'year_confirmation': 'pending',
         'opening_rob': str(opening), 'closing_rob': str(closing), 'consumption': str(consumed),
         'supply': None, 'supply_record': 'blank' if not supply_cells else 'present_requires_review',
-        'non_bunkering_basis': 'user_relay_of_provider_via_seunghyeon',
+        'non_bunkering_basis': 'user_relay_of_provider_via_data_reviewer',
         'conditional_balance_residual': str(delta),
         'conditional_balance_status': 'consistent_if_no_supply' if not supply_cells and abs(delta) <= tol else 'review_required',
         'summary_consumption_sum': str(aggregate), 'summary_numeric_cells': aggregate_count,

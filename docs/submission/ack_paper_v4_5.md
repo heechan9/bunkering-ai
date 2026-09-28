@@ -1,10 +1,12 @@
+> 공개용 익명화 사본입니다. 일부 저자 실명은 비공개 처리했으며 제출용 저자 명단이 아닙니다.
+
 # ACK 2026 병커시유 논문 v4.5
 
 > 검토본: 저자 순서는 임시 배치이며 영문 성명·소속 번역·이메일은 제출 전 확정이 필요하다. 소속은 사용자 제공 정보다.
 
 합성 항해환경에서 Double DQN 기반 벙커유 구매 의사결정의 강건성 및 연료수지 평가
 
-최희찬¹, 이현수², 신민재³, 김승현³
+최희찬¹, 이현수², 해양 분야 검토 담당자³, 자료 검토 담당자³
 
 ¹한국공학대학교 전자공학부   ²한국공학대학교 게임공학과
 ³한국해양대학교 기관시스템공학부
@@ -13,7 +15,7 @@
 
 Robustness and Fuel Accounting Evaluation of Double DQN-Based Bunker Purchasing Decisions in a Synthetic Voyage Environment
 
-Hee-Chan Choi¹, Hyun-Soo Lee², Min-Jae Shin³, Seung-Hyeon Kim³
+Hee-Chan Choi¹, Hyun-Soo Lee², Maritime Reviewer³, Data Reviewer³
 
 ¹Department of Electronic Engineering, Tech University of Korea
 ²Department of Game Engineering, Tech University of Korea

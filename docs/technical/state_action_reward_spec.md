@@ -6,7 +6,7 @@
 
 > 본 문서는 사업화 전략 문서 03장(AI 시스템 워크플로우) 및 개발 프로세스 문서 STEP 02에서
 > 정의한 State/Action/Reward 개념을 `BunkeringEnv` 코드로 옮기기 위한 구체화 명세서입니다.
-> 실측 데이터 확보 전이므로 값의 범위·정규화 방식은 데이터 조사(신민재) 결과에 따라 조정될 수 있습니다.
+> 실측 데이터 확보 전이므로 값의 범위·정규화 방식은 데이터 조사(해양 분야 검토 담당자) 결과에 따라 조정될 수 있습니다.
 
 ## 1. State Space
 
@@ -19,7 +19,7 @@
 | `ship_lat`, `ship_lon` | 선박 위치 | float | AIS | 공개 API 우선, 실무데이터는 협의 중 |
 | `fuel_remaining` | 연료 잔량 (탱크 대비 %) | float | 시뮬레이션 상태값 | |
 | `route_remaining` | 잔여 항로 거리 | float | AIS 기반 계산 | |
-| `sfc` | 연료 소비율 (Specific Fuel Consumption) | float | 신민재 현장 상수값 | |
+| `sfc` | 연료 소비율 (Specific Fuel Consumption) | float | 해양 분야 검토 담당자 현장 상수값 | |
 | `port_wait_time` | 예상 항만 대기시간 | float | 항만 API | 선택적 |
 | `weather_risk` | 기상 리스크 지수 | float | 기상청 API | 선택적, 초기 버전 제외 가능 |
 

@@ -58,7 +58,7 @@ for episode in range(N_EPISODES):
         state = next_state
     if episode % target_update_freq_episodes == 0:
         agent.sync_target_network()
-    logger.log_scalar("episode_reward", ...)   # TensorBoard (김승현 파이프라인 연동)
+    logger.log_scalar("episode_reward", ...)   # TensorBoard (자료 검토 담당자 파이프라인 연동)
 ```
 
 - `episode_ended`는 환경 상호작용 종료에만 사용한다.
@@ -68,7 +68,7 @@ for episode in range(N_EPISODES):
 
 ## 5. 구현 우선순위 (7~8월)
 1. `agents/dqn.py` — Q-Network, Replay Buffer, Double DQN 업데이트 로직 (7월 말)
-2. `scripts/train.py` — 학습 루프 + TensorBoard 로깅 연동 (8월 초, 김승현과 협업)
+2. `scripts/train.py` — 학습 루프 + TensorBoard 로깅 연동 (8월 초, 자료 검토 담당자과 협업)
 3. `configs/dqn.yaml` — 하이퍼파라미터 외부화
 4. 8월 중순: 첫 학습 실행 → Episode Reward 수렴 여부 1차 확인
 

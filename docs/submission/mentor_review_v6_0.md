@@ -4,12 +4,12 @@
 
 ## 검토 자료
 
-- [논문 v6.0 정식 양식 본문](ack_paper_v6_0.md) · [Word](ack_paper_v6_0.docx) · [PDF](ack_paper_v6_0.pdf)
+- [논문 v6.0 정식 양식 본문](ack_paper_v6_0.md) · [공개용 텍스트](ack_paper_v6_0.md) · [공개용 텍스트](ack_paper_v6_0.md)
 - [웹 시연](https://bunkering-ocean-lab.hc24734503.chatgpt.site)
 - [한바다호 집계 비교와 가정 실험](../technical/hanbada_comparison_experiment.md)
 - [제공기관 정정 반영](../technical/hanbada_provider_clarification.md)
 - [기존 합성 실험과 재현 근거](../technical/submission_alignment_v3_0.md)
-- [민재의 업무 관점 의견과 채택 범위](../technical/minjae_domain_review_20260920.md)
+- [해양 분야 검토 담당자의 업무 관점 의견과 채택 범위](../technical/maritime_domain_review_20260920.md)
 
 Word와 PDF는 사용자가 제공한 ACK 2026 KIPS 원본 양식을 적용한 A4 3쪽 원고입니다. 제목·저자·요약은 1단, 본문은 2단으로 구성했습니다. 상세 설명은 [보충자료](ack_paper_v6_0_supplement.md)에 보존했습니다. 저자 순서·영문 성명·소속 표기·이메일은 당사자 확인이 필요합니다.
 
@@ -31,7 +31,7 @@ Word와 PDF는 사용자가 제공한 ACK 2026 KIPS 원본 양식을 적용한 A
 1. DQN의 기여를 비용절감 대신 재현 가능한 정책 비교와 보상·구매·재고의 상충관계 분석으로 제시하는 것이 적절한가요?
 2. Safe Stock의 수치 경계 문제를 기존 결과의 한계로 설명하고, 환경 수정·재학습은 후속 연구로 남겨도 이번 제출의 주장 범위에 충분한가요?
 3. 한바다호 집계표와 가정 민감도는 본문에 어느 정도 남기는 것이 적절한가요? 총량이 가까운 예시를 실측 검증으로 오해할 표현은 없나요?
-4. 민재 의견의 세 제약인 공급·규격, 급유·대기시간, 최소 주문량·고정비를 후속 과제로 구분한 것이 타당한가요?
+4. 해양 분야 검토 담당자 의견의 세 제약인 공급·규격, 급유·대기시간, 최소 주문량·고정비를 후속 과제로 구분한 것이 타당한가요?
 5. 현재 제목·초록·결론에서 과도한 표현이나 제출 전에 반드시 추가해야 할 실험이 있나요? 필요하다면 검증할 주장과 최소 실행 범위를 지정 부탁드립니다.
 
 ## 피드백 반영 기록

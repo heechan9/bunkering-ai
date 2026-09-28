@@ -1,6 +1,8 @@
+> 공개용 익명화 사본입니다. 일부 저자 실명은 비공개 처리했으며 제출용 저자 명단이 아닙니다.
+
 # 합성 항해환경에서 Double DQN 기반 벙커유 구매 의사결정의 강건성 및 연료수지 평가
 
-최희찬¹, 이현수², 신민재³, 김승현³
+최희찬¹, 이현수², 해양 분야 검토 담당자³, 자료 검토 담당자³
 
 ¹한국공학대학교 전자공학부
 ²한국공학대학교 게임공학과
@@ -10,7 +12,7 @@ E-mail: 4434503@naver.com
 
 Robustness and Fuel Accounting Evaluation of Double DQN-Based Bunker Purchasing Decisions in a Synthetic Voyage Environment
 
-Hee-Chan Choi¹, Hyun-Soo Lee², Min-Jae Shin³, Seung-Hyeon Kim³
+Hee-Chan Choi¹, Hyun-Soo Lee², Maritime Reviewer³, Data Reviewer³
 ¹Department of Electronic Engineering, Tech University of Korea
 ²Department of Game Engineering, Tech University of Korea
 ³Division of Marine System Engineering, Korea Maritime & Ocean University
@@ -66,7 +68,7 @@ Safe Stock은 17번째 전이의 0.1499999999999997을 0.15 미만으로 판정�
 
 ## 4. 실선 기록의 집계 비교
 
-해기교육원이 김승현을 통해 제공한 한바다호 AB-LOG[4]는 2026년 5월 자료이며 상단 날짜는 제출일이다. 요약 소비량 195.2 M/T는 ROB 670.3−475.1의 차감값이다. 그 일치와 기관별 합계의 일치는 산술 관계이며 독립 소비량 계측 검증이 아니다. 일별표(B FOAM)는 최초 M/T 안내에서 kL로 정정됐다. 무관하게 포함된 Sheet1은 제외하고 ×0.95를 환산계수로 사용하지 않았다.
+해기교육원이 자료 검토 담당자을 통해 제공한 한바다호 AB-LOG[4]는 2026년 5월 자료이며 상단 날짜는 제출일이다. 요약 소비량 195.2 M/T는 ROB 670.3−475.1의 차감값이다. 그 일치와 기관별 합계의 일치는 산술 관계이며 독립 소비량 계측 검증이 아니다. 일별표(B FOAM)는 최초 M/T 안내에서 kL로 정정됐다. 무관하게 포함된 Sheet1은 제외하고 ×0.95를 환산계수로 사용하지 않았다.
 
 담당자는 ROB가 통상 정오 기준이며 31일 접안 진행이 항해 기록을 설명할 수 있다고 회신했다. 초기 ROB는 5월 6일 15:54경, 종료는 항차 종료일 약 13시경이라는 추정이다. 확정 시각으로 취급하지 않고, 날짜 표기 행 3개 범위만 비교하였다(표 3). 빈 칸을 관측된 0으로 바꾸거나 부분일을 배분하지 않았다.
 

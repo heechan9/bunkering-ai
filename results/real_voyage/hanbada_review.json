@@ -14,7 +14,7 @@
   "consumption": "195.2",
   "supply": null,
   "supply_record": "blank",
-  "non_bunkering_basis": "user_relay_of_provider_via_seunghyeon",
+  "non_bunkering_basis": "user_relay_of_provider_via_data_reviewer",
   "conditional_balance_residual": "0.0",
   "conditional_balance_status": "consistent_if_no_supply",
   "summary_consumption_sum": "195.2000000000000007",
