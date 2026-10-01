@@ -7,6 +7,8 @@ import csv
 import hashlib
 import json
 import math
+import platform
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -84,10 +86,49 @@ def audit(root=ROOT):
             'transitions_checked': transitions, 'model_execution': False}
 
 
+# Fixed allowlist: no credentials, private voyage files, or arbitrary directories.
+AUDIT_INPUTS = (WEB / 'replay.json', WEB / 'integration-review.json',
+                RESEARCH / 'policy_accounting_comparison.csv', RESEARCH / 'provenance.json')
+
+
+def evidence_record(root=ROOT):
+    """Record input identity and existing audit outcome, not a new model evaluation."""
+    root = Path(root)
+    record = {
+        'schema': 'bunkering-web-audit/v1',
+        'checked_at': datetime.now(timezone.utc).isoformat(),
+        'python': platform.python_version(),
+        'status': 'failed', 'inputs': {}, 'result': None, 'error': None,
+        'scope': 'Committed replay and research-summary consistency only',
+        'model_execution': False, 'real_world_validation': False,
+    }
+    try:
+        for name in AUDIT_INPUTS:
+            raw = (root / name).read_bytes()
+            record['inputs'][name.as_posix()] = {
+                'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw)}
+        result = audit(root)
+        # Never label a concurrently changed input snapshot as passed.
+        for name in AUDIT_INPUTS:
+            digest = hashlib.sha256((root / name).read_bytes()).hexdigest()
+            if digest != record['inputs'][name.as_posix()]['sha256']:
+                raise ValueError('Input changed during audit: ' + name.as_posix())
+        record['result'] = result
+        record['status'] = 'passed'
+    except (ValueError, KeyError, TypeError, OSError, IndexError) as exc:
+        record['error'] = {'type': type(exc).__name__, 'message': str(exc)}
+    return record
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=ROOT)
+    parser.add_argument('--json', action='store_true', help='Emit a structured audit record, including on failure')
     args = parser.parse_args()
+    if args.json:
+        record = evidence_record(args.root)
+        print(json.dumps(record, indent=2))
+        raise SystemExit(0 if record['status'] == 'passed' else 1)
     try:
         print(json.dumps(audit(args.root), indent=2))
     except (ValueError, KeyError, TypeError, OSError, IndexError) as exc:
