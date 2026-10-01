@@ -108,3 +108,5 @@ html[lang=en] .topbar .status{display:none}
  .region-nav-heading>strong{flex:1 1 150px;min-width:0}
  .region-nav-heading>span{flex-basis:100%;order:3}
 }
+
+.source-catalog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px;margin-top:20px}.source-catalog-card{min-width:0;border:1px solid #46616a;border-radius:10px;padding:16px;overflow-wrap:anywhere}.source-catalog-card h3{font-size:18px;margin:0 0 8px}.source-catalog-card .source-kind{color:#c5f578;font-size:14px}.source-catalog-card dl>div{margin:12px 0}.source-catalog-card dt{font-size:13px;color:#aac2cb}.source-catalog-card dd{margin:4px 0 0;font-size:14px;line-height:1.6}.source-catalog-card details{margin-top:16px;font-size:13px}.source-catalog a{text-decoration:underline;text-underline-offset:3px}

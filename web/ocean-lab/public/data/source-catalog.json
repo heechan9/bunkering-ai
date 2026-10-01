@@ -1,0 +1,148 @@
+{
+  "schema": "bunkering-source-catalog/v1",
+  "repository": "heechan9/bunkering-ai",
+  "revision": "0e7874de35ccc54d95ffca46b0c55c1ab2f742c2",
+  "reviewed_on": "2026-10-01",
+  "sources": [
+    {
+      "id": "simulation",
+      "title": {
+        "ko": "합성환경 실험 결과",
+        "en": "Synthetic experiments"
+      },
+      "status": {
+        "ko": "저장 결과·웹 수치 대조 완료",
+        "en": "Stored results checked against web figures"
+      },
+      "limits": {
+        "ko": "SCI는 합성 비용지수. 실선 비용절감 근거 아님",
+        "en": "SCI is a synthetic cost index, not real-vessel savings"
+      },
+      "kind": {
+        "ko": "합성환경 계산값",
+        "en": "Synthetic calculations"
+      },
+      "unit": {
+        "ko": "정규화 연료량·SCI (실제 통화 아님)",
+        "en": "Normalized fuel · SCI (not currency)"
+      },
+      "period": {
+        "ko": "평가 사례 seed 42–141; 실제 날짜 없음",
+        "en": "Evaluation seeds 42–141; no calendar period"
+      },
+      "scope": {
+        "ko": "합성 항해환경의 저장 결과",
+        "en": "Stored synthetic-voyage results"
+      },
+      "path": "docs/technical/web_evidence_guard.md",
+      "sha256": "e18be17b97e3ab3f2e38149186e0edc454dda1f6ba90c96c6c59b4c4e5db7a62",
+      "bytes": 2289,
+      "url": "https://github.com/heechan9/bunkering-ai/blob/0e7874de35ccc54d95ffca46b0c55c1ab2f742c2/docs/technical/web_evidence_guard.md"
+    },
+    {
+      "id": "upa",
+      "title": {
+        "ko": "울산항 정박지 신청자료",
+        "en": "UPA anchorage applications"
+      },
+      "status": {
+        "ko": "6,028행·8열 확인",
+        "en": "6,028 rows and 8 columns confirmed"
+      },
+      "limits": {
+        "ko": "벙커량 단위·실제 공급 여부 미확인. 소비·잔량·가격 없음",
+        "en": "Quantity unit and actual supply basis unconfirmed; no consumption, inventory or price"
+      },
+      "kind": {
+        "ko": "행정 신청 기록",
+        "en": "Administrative applications"
+      },
+      "unit": {
+        "ko": "벙커량 단위 미확인",
+        "en": "Bunker quantity unit unconfirmed"
+      },
+      "period": {
+        "ko": "보관본 2024-08-19; 예정일은 실제 작업 시각 아님",
+        "en": "Snapshot 2024-08-19; scheduled times are not actual operations"
+      },
+      "scope": {
+        "ko": "울산항 정박지 신청 6,028행; 고유 항차 수 아님",
+        "en": "6,028 UPA application rows; not unique voyages"
+      },
+      "path": "docs/data/upa_review_20260919.md",
+      "sha256": "8daba134938bdfd15b8947a6244145818f5bd5c735a836aa94802643c99faeec",
+      "bytes": 4403,
+      "url": "https://github.com/heechan9/bunkering-ai/blob/0e7874de35ccc54d95ffca46b0c55c1ab2f742c2/docs/data/upa_review_20260919.md"
+    },
+    {
+      "id": "maritime_review",
+      "title": {
+        "ko": "급유업무 관점 검토",
+        "en": "Maritime domain review"
+      },
+      "status": {
+        "ko": "수령·논문 반영 (v5.0부터)",
+        "en": "Received; incorporated since paper v5.0"
+      },
+      "limits": {
+        "ko": "팀 내 정성 검토. 공식 운항기준·현장 성능검증 아님",
+        "en": "Qualitative team review, not official operating standards or field validation"
+      },
+      "kind": {
+        "ko": "정성 검토",
+        "en": "Qualitative review"
+      },
+      "unit": {
+        "ko": "수치 계측 자료 아님",
+        "en": "Not numerical measurements"
+      },
+      "period": {
+        "ko": "2026-09-20 검토 기록",
+        "en": "Review dated 2026-09-20"
+      },
+      "scope": {
+        "ko": "팀 내 급유업무 관점 의견",
+        "en": "Team review of bunkering operations"
+      },
+      "path": "docs/technical/maritime_domain_review_20260920.md",
+      "sha256": "e4dc1f81fbe777eabdb906118c9ea291bda75f53a9b4dad9bfd8c531357f165e",
+      "bytes": 4646,
+      "url": "https://github.com/heechan9/bunkering-ai/blob/0e7874de35ccc54d95ffca46b0c55c1ab2f742c2/docs/technical/maritime_domain_review_20260920.md"
+    },
+    {
+      "id": "kmou",
+      "title": {
+        "ko": "해기원 한바다호 AB-LOG",
+        "en": "KMOU HANBADA AB-LOG"
+      },
+      "status": {
+        "ko": "ROB 산술·동일 단위 집계·가정 15개 계산 완료",
+        "en": "ROB arithmetic, same-unit aggregates and 15 hypothetical scenarios checked"
+      },
+      "limits": {
+        "ko": "일별 kL·요약 M/T. 시각은 추정, 실측 환산·기간 정합성 미확인. 정책 실증 아님",
+        "en": "Daily kL vs summary M/T; estimated times, measured conversion/period alignment unverified; not policy validation"
+      },
+      "kind": {
+        "ko": "실선 기록·파생 계산·가정",
+        "en": "Vessel records, derived calculations and assumptions"
+      },
+      "unit": {
+        "ko": "일별 kL / 요약 M/T; 실측 환산 미확인",
+        "en": "Daily kL / summary M/T; measured conversion unverified"
+      },
+      "period": {
+        "ko": "2026년 5월; 선택 날짜 행 기준, 정확한 시각 미확인",
+        "en": "May 2026; selected date rows, exact time alignment unverified"
+      },
+      "scope": {
+        "ko": "한바다호 기관별 집계; 원본 비공개",
+        "en": "HANBADA engine aggregates; private original"
+      },
+      "path": "docs/technical/hanbada_comparison_experiment.md",
+      "sha256": "8e430c3a5afe779a316ad274845f61b67e5197eb16339afdea7fd0152c38bfa9",
+      "bytes": 3850,
+      "url": "https://github.com/heechan9/bunkering-ai/blob/0e7874de35ccc54d95ffca46b0c55c1ab2f742c2/docs/technical/hanbada_comparison_experiment.md"
+    }
+  ]
+}
