@@ -1,17 +1,18 @@
 'use client';
 import {useLocale} from '@/lib/locale';
+import catalog from '@/public/data/source-catalog.json';
 
-const root='https://github.com/heechan9/bunkering-ai/blob/main/';
-const sources=[
- {id:'simulation',ko:['합성환경 실험 결과','저장 결과·웹 수치 대조 완료','SCI는 합성 비용지수. 실선 비용절감 근거 아님'],en:['Synthetic experiments','Stored results checked against web figures','SCI is a synthetic cost index, not real-vessel savings'],path:'docs/technical/web_evidence_guard.md'},
- {id:'upa',ko:['울산항 정박지 신청자료','6,028행·8열 확인','벙커량 단위·실제 공급 여부 미확인. 소비·잔량·가격 없음'],en:['UPA anchorage applications','6,028 rows and 8 columns confirmed','Quantity unit and actual supply basis unconfirmed; no consumption, inventory or price'],path:'docs/data/upa_review_20260919.md'},
- {id:'maritime_review',ko:['급유업무 관점 검토','수령·논문 반영 (v5.0부터)','팀 내 정성 검토. 공식 운항기준·현장 성능검증 아님'],en:['Maritime domain review','Received; incorporated since paper v5.0','Qualitative team review, not official operating standards or field validation'],path:'docs/technical/maritime_domain_review_20260920.md'},
- {id:'kmou',ko:['해기원 한바다호 AB-LOG','ROB 산술·동일 단위 집계·가정 15개 계산 완료','일별 kL·요약 M/T. 시각은 추정, 실측 환산·기간 정합성 미확인. 정책 실증 아님'],en:['KMOU HANBADA AB-LOG','ROB arithmetic, same-unit aggregates and 15 hypothetical scenarios checked','Daily kL vs summary M/T; estimated times, measured conversion/period alignment unverified; not policy validation'],path:'docs/technical/hanbada_comparison_experiment.md'},
-];
 export default function SourceInventory(){
- const {lang}=useLocale();const en=lang==='en';
- return <details className="voyage-review"><summary>{en?'Sources and confirmation status':'자료 출처·확인 상태'}</summary>
-  <p>{en?'Project record as of 27 September 2026. Each link opens the supporting record with its stated evidence scope. Locally uploaded files are reviewed separately below.':'2026년 9월 27일 프로젝트 기록 기준입니다. 링크에서 해당 판단의 근거 기록을 확인할 수 있습니다. 직접 올린 파일은 아래 항차 CSV 검토에서 별도로 확인합니다.'}</p>
-  <div className="review-table"><table><thead><tr>{(en?['Source','Confirmed status','Limits / needed information','Evidence']:['자료','확인 상태','한계·추가 필요 정보','근거']).map(h=><th scope="col" key={h}>{h}</th>)}</tr></thead><tbody>{sources.map(s=>{const v=en?s.en:s.ko;return <tr key={s.id}><th scope="row">{v[0]}</th><td>{v[1]}</td><td>{v[2]}</td><td><a href={(s.id==='kmou'?'https://github.com/heechan9/bunkering-ai/blob/main/':root)+s.path} target="_blank" rel="noreferrer">{en?'View record':'기록 보기'}</a></td></tr>})}</tbody></table></div>
+ const {lang}=useLocale(); const en=lang==='en'; const locale=en?'en':'ko';
+ return <details className="voyage-review source-catalog"><summary>{en?'Sources and confirmation status':'자료 출처·확인 상태'}</summary>
+  <p>{en?`Source descriptions reviewed on ${catalog.reviewed_on}. Record periods are listed separately. Links preserve the reviewed version.`:`자료 설명 검토일: ${catalog.reviewed_on}. 실제 자료 기간은 아래에 따로 표시하며, 근거 링크는 검토한 버전으로 고정됩니다.`}</p>
+  <p>{en?'Source verification and model performance are separate. Locally uploaded files are reviewed in the voyage CSV section.':'자료 확인과 모델 성능 검증은 구분합니다. 직접 올린 파일은 항차 CSV 검토에서 별도로 확인합니다.'}</p>
+  <a href="/data/source-catalog.json" download="bunkering-source-catalog.json">{en?'Download source catalog (JSON)':'자료 목록 내려받기 (JSON)'}</a>
+  <div className="source-catalog-grid">{catalog.sources.map(s=><article className="source-catalog-card" key={s.id}>
+   <h3>{s.title[locale]}</h3><p className="source-kind">{s.kind[locale]}</p>
+   <dl>{(['unit','period','scope','status','limits'] as const).map((field,i)=><div key={field}><dt>{(en?['Units','Record period','Coverage','Checked','Still needed']:['단위','자료 기간','집계 범위','확인한 내용','남은 확인사항'])[i]}</dt><dd>{s[field][locale]}</dd></div>)}</dl>
+   <a href={s.url} target="_blank" rel="noreferrer">{en?'Open reviewed evidence':'검토한 근거 보기'}</a>
+   <details><summary>{en?'Record identification':'근거 파일 식별 정보'}</summary><p className="file-hash">{s.path}</p><p className="file-hash">SHA-256: {s.sha256}</p><p>{s.bytes.toLocaleString(locale)} bytes · {catalog.revision.slice(0,7)}</p><p>{en?'Identifies the public supporting document, not the private original or proof of authenticity.':'공개 근거 문서를 식별하는 값입니다. 비공개 원본의 해시나 진위 인증이 아닙니다.'}</p></details>
+  </article>)}</div>
  </details>;
 }
