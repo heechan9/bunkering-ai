@@ -315,5 +315,6 @@
   "논문 v5.5 검토본 ↗": "Paper v5.5 review draft ↗",
   "이 화면은 기본조건 30단계의 합성 기록을 재생합니다. 한바다호 AB-LOG의 ROB 차감 산술, 같은 단위의 집계 비교와 가정 시나리오 15개 계산을 완료했습니다. 일별 kL와 요약 M/T의 실측 환산·집계 기간 정합성은 미확인입니다. 실제 구매정책 검증 자료는 확보되지 않았습니다. 공개 소비율 자료와 상용 플랫폼은 후속 검토 후보이며 이 실험에 투입하지 않았습니다.": "This screen replays synthetic 30-step baseline records. ROB arithmetic, same-unit aggregate comparisons and 15 hypothetical scenarios for HANBADA AB-LOG are complete. Measured conversion between daily kL and summary M/T and alignment of reporting periods remain unverified. No data validating actual purchasing policies have been obtained. Public consumption-rate data and commercial platforms remain future review candidates and were not inputs to this experiment.",
   "논문 v7.5 검토본 ↗": "Paper v7.5 review draft ↗",
-  "v7.5 PDF ↗": "v7.5 PDF ↗"
+  "v7.5 PDF ↗": "v7.5 PDF ↗",
+  "논문 제출 상태·최종본 안내 ↗": "Paper submission status and final-file record ↗"
 }
