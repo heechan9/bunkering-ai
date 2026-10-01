@@ -73,3 +73,42 @@ class WebEvidenceTests(unittest.TestCase):
     def test_canonical(self):
         with tempfile.TemporaryDirectory() as directory:
             canonical_csv_changed(snapshot(Path(directory)))
+
+
+class EvidenceRecordTests(unittest.TestCase):
+    def test_success_has_input_identity_and_scope(self):
+        from scripts.audit_web_evidence import evidence_record
+        record = evidence_record()
+        self.assertEqual(record['status'], 'passed')
+        self.assertEqual(len(record['inputs']), 4)
+        self.assertEqual(record['result']['transitions_checked'], 19030)
+        self.assertFalse(record['model_execution'])
+        self.assertFalse(record['real_world_validation'])
+
+    def test_failure_keeps_identity_and_does_not_claim_success(self):
+        from scripts.audit_web_evidence import evidence_record
+        with tempfile.TemporaryDirectory() as directory:
+            root = snapshot(Path(directory))
+            path = root / WEB / 'replay.json'
+            path.write_bytes(path.read_bytes() + b' ')
+            record = evidence_record(root)
+            self.assertEqual(record['status'], 'failed')
+            self.assertIsNone(record['result'])
+            self.assertIn('hash', record['error']['message'])
+            self.assertEqual(len(record['inputs']), 4)
+
+    def test_missing_input_is_failure(self):
+        from scripts.audit_web_evidence import evidence_record
+        with tempfile.TemporaryDirectory() as directory:
+            record = evidence_record(Path(directory))
+            self.assertEqual(record['status'], 'failed')
+            self.assertEqual(record['error']['type'], 'FileNotFoundError')
+
+    def test_cli_failure_is_json_and_nonzero(self):
+        import subprocess
+        import sys
+        with tempfile.TemporaryDirectory() as directory:
+            proc = subprocess.run([sys.executable, str(ROOT / 'scripts/audit_web_evidence.py'),
+                                   '--root', directory, '--json'], capture_output=True, text=True)
+            self.assertEqual(proc.returncode, 1)
+            self.assertEqual(json.loads(proc.stdout)['status'], 'failed')
