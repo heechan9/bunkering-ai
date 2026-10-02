@@ -1,123 +1,112 @@
-> 개인정보 보호를 위해 공개 문서의 일부 이름을 역할명으로 대체하고, 실명이 포함된 Word/PDF 다운로드를 내렸습니다. 과거 커밋 기록에는 남아 있을 수 있습니다.
-
-> **ACK 2026 논문 제출 완료:** 멘토 검토를 반영한 최종 파일로 제출했음을 사용자가 2026-10-01 확인했습니다. [제출 상태·파일 식별 기록](docs/submission/submission_status.md). 채택·심사 결과를 뜻하지 않습니다.
-
-> **공개 과거 원고:** [v7.5 검토본](docs/submission/ack_paper_v7_5.md)은 최종 제출본이 아닙니다. 멘토 전달본 v7.0과 [당시 검토 요청](docs/submission/mentor_review_v7_0.md)은 이력으로 보존합니다. 최종 Word는 실명·이메일을 포함해 공개 저장소에 재게시하지 않습니다.
-
-> **집계 비교·민감도 실험:** [3개 날짜 범위·15개 가정 시나리오](docs/technical/hanbada_comparison_experiment.md). 동일 단위 비교 및 가정 계산이며 실선 성능·비용절감 검증은 아닙니다.
-
-> **2026-09-27 안내 정리:** [해기원 검토용 논문 v7.5](docs/submission/ack_paper_v7_5.md) · [한바다호 AB-LOG 검토 기능·근거](docs/technical/hanbada_ab_log_design_20260922.md). ROB 차감값의 산술 관계 확인이며 실선 급유정책·비용절감 검증은 아닙니다.
-
-<div align="center">
-
-최신 진행 상태: [완료·검증·남은 작업](docs/PROJECT_STATUS.md) · [논문 제출 상태](docs/submission/submission_status.md). 과거 결과와 테스트 로그는 각 실행 시점의 증거로 보존합니다.
-
-## 3D 웹 시연 · Ocean Lab
-
-- **[웹 열기](https://bunkering-ocean-lab.hc24734503.chatgpt.site/)** — Sites 접근 권한이 필요할 수 있습니다.
-- **2026-10-02 웹 배포 30판 완료:** 자료 출처 카드·검토 커밋 고정 링크·자료 목록 다운로드 반영. 실제 브라우저 클릭·모바일 화면 검증은 미완료입니다. [배포 기록](web/README.md).
-- **[전체 웹 소스](web/ocean-lab/)** · **[실행 방법과 검증 범위](web/README.md)**
-- 합성 항차 기록의 급유·소비·잔량과 정책 비교를 재생하고, 7개 지역의 지형 및 지구본을 제공합니다. 지형은 설명용이며 정책 입력이나 실제 항로 시뮬레이션이 아닙니다.
-- 실제 선박의 구매·소비·ROB 연결 자료를 확보하거나 실무 비용절감을 검증한 결과가 아닙니다.
-
-
 # 병커시유 | Bunkering-AI
 
-### 항해 상태를 고려한 선박 벙커시유 의사결정 실험 플랫폼
+선박의 가격·환율·연료잔량·잔여항로를 바탕으로 급유 의사결정을 실험하는 프로젝트입니다.
+합성 항해 환경에서 규칙 기반 정책 3종과 Double DQN을 같은 조건으로 비교하고,
+구매·소비·최종잔량과 결과의 근거를 함께 확인합니다.
 
-<img src="docs/assets/bunkering-project-hero.png" alt="병커시유 프로젝트 대표 이미지" width="900">
+[웹 시연](https://bunkering-ocean-lab.hc24734503.chatgpt.site/) ·
+[빠른 시작](#빠른-시작) ·
+[평가 결과](#평가-결과) ·
+[자료 위치](#자료-위치와-최신본) ·
+[진행 상태](docs/PROJECT_STATUS.md)
 
-<br>
+![병커시유 프로젝트 대표 이미지](docs/assets/bunkering-project-hero.png)
 
-![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch-Double_DQN-EE4C2C?logo=pytorch&logoColor=white)
-![Gymnasium](https://img.shields.io/badge/Gymnasium-BunkeringEnv-2D3748)
-![Tests](https://img.shields.io/badge/tests-245_passed-2EA44F)
+## 현재 상태
 
-검증 배지는 main `3b5f95b` 기준 이현수의 2026-09-27 실행 기록입니다. [보고서·로그·캡처 PR #66](https://github.com/heechan9/bunkering-ai/pull/66). 후속 UI·근거 추적은 [작업 기록](docs/audits/pr66_followup_20260927.md)을 확인하세요.
-![Evidence Audit](https://img.shields.io/badge/evidence_audit-8%2F8_passed-2EA44F)
-![Data](https://img.shields.io/badge/UPA_public_data-6%2C028_rows-0054A6)
+2026-10-03 문서 정리 기준입니다. 상세 기록은 각 실행 시점의 근거를 따릅니다.
 
-가격·환율·연료잔량·잔여항로를 함께 고려하고,  
-Rule-based 3종과 Double DQN을 동일한 평가계약으로 비교합니다.
+| 항목 | 상태와 확인 위치 |
+|---|---|
+| 코드·공개 결과 | 이 저장소에서 관리. [평가계약](docs/technical/evaluation_contract.md)과 CSV·JSON을 함께 확인 |
+| 웹 | 30판 배포 완료 기록. [웹 소스·실행 안내](web/README.md), [최종 검사 기록](docs/audits/final_web_check_20261002.md) |
+| 논문 | 멘토 검토 반영 최종 파일로 제출했다고 사용자가 2026-10-01 확인. [제출 상태·파일 식별](docs/submission/submission_status.md) |
+| 비공개 자료 | Google Drive에 원본 데이터·제출본·수정본·인수인계 자료 분류. 아래 자료 목록 참조 |
+| 남은 확인 | 최신 배포본의 실제 브라우저·모바일 UI, 실선 자료의 밀도·시간 정합성, 실제 구매정책 성능 |
 
-[공식 평가](docs/technical/official_evaluation.md) · [4-seed 결과](docs/technical/multiseed_results_4seed.md) · [V1.5 결과](docs/technical/v1_5_results_4seed.md) · [연료수지·안전선 진단](docs/technical/reward_diagnostics_results_4seed.md) · [V1.5 강건성](docs/technical/v1_5_robustness.md) · [모델 경계](docs/technical/model_boundary_and_research_roadmap.md) · [보안 검토](docs/technical/security_review.md) · [공공데이터](docs/data/upa_bunkering_anchorage.md) · [재현 방법](docs/technical/evaluation_contract.md) · [Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)
+논문 제출은 채택·심사 통과를 뜻하지 않습니다.
+공개 [v7.5 원고](docs/submission/ack_paper_v7_5.md)와 이전 원고는 작성 이력이며 최종 제출본이 아닙니다.
 
-</div>
+## 주요 기능
 
----
+- **정책 비교:** 고정 급유·가격 반응형·안전재고·Double DQN을 동일 seed·평가 횟수·환경설정으로 평가합니다.
+- **결과 추적:** 구매량·소비량·잔량·급유 행동 횟수·합성비용과 원본 CSV·체크포인트 해시를 연결합니다.
+- **Ocean Lab:** 한·영 전환, 7개 지역 지도, 항차 기록 재생·초기화, 구매안 비교와 자료 출처 확인을 제공합니다.
+- **항차 자료 검토:** CSV 입력·연료수지·자료 변경 비교와 한바다호 AB-LOG 집계 검토를 지원합니다.
 
-## 30초 요약
+지도·선박 모형은 설명용입니다. 지역 선택은 평가 조건을 바꾸지 않으며, 실제 항적이나 선박 물리 시뮬레이션을 의미하지 않습니다.
 
-> **한 문장으로:** 선박의 시장·항해 상태를 바탕으로 급유 시점을 결정하는 여러 전략을 같은 가상 항해 조건에서 비교하고, 결과의 근거까지 다시 확인할 수 있게 만든 프로젝트입니다.
+## 빠른 시작
 
-선박은 항해 중 연료가 떨어지면 안 되지만, 필요 이상으로 자주 급유하면 비용이 커질 수 있습니다. 병커시유는 **현재 가격·환율·남은 연료·남은 항로를 보고 지금 급유할지 기다릴지를 실험하는 시스템**입니다.
+### Python 환경
 
-- 단순한 의사결정 규칙 3개와 강화학습 AI를 같은 가상 항해 조건에서 비교했습니다.
-- 네 개 정책 모두 같은 난수 조건과 평가 횟수를 적용해 공정하게 검증했습니다.
-- 울산항만공사 공공데이터 6,028건은 현장 변수와 분포를 이해하는 참고자료로만 사용했습니다.
-- 이번 실험에서는 AI의 보상이 가장 높았지만, 안전재고 정책보다 급유 횟수와 합성비용도 높아 **AI가 무조건 우수하다고 결론 내리지 않았습니다.**
+Python 3.11 환경에서 저장소 루트 기준으로 실행합니다.
 
-## 한눈에 보는 작동 방식
-
-<div align="center">
-
-<img src="docs/assets/bunkering-ai-decision-system-hero-v2.jpg" alt="가격·환율·연료·항로 상태를 입력받아 항만과 급유 행동을 선택하는 병커시유 의사결정 흐름" width="1000">
-
-</div>
-
-1. **현재 상황을 확인합니다.** 유가·환율·연료잔량·잔여항로·연료소비율 등 시장과 항해 상태를 입력으로 사용합니다.
-2. **급유 전략을 비교합니다.** 세 가지 규칙 기반 정책과 Double DQN이 같은 가상 항해 조건에서 급유 여부와 행동을 결정합니다.
-3. **항해 결과를 함께 평가합니다.** 목적지 도착, 연료고갈, 보상, 급유횟수와 합성비용을 기록해 안전성과 비용의 장단점을 확인합니다.
-
-> 이 그림은 시스템의 개념적 흐름을 설명하기 위한 시각화입니다. 실제 선박을 자동 제어하거나 실시간 항만 운영시스템과 연동한 화면이 아닙니다.
-
-## 연구 질문과 검증 설계
-
-이 저장소는 다음 세 질문에 답하도록 구성했습니다.
-
-1. **안전하게 목적지에 도달하는가?** 성공률과 연료고갈률로 확인합니다.
-2. **같은 조건에서 정책별 차이가 재현되는가?** 동일 seed·episode·환경설정과 공통 출력 형식을 적용합니다.
-3. **높은 보상이 곧 운영상 우수함을 뜻하는가?** 급유횟수와 Synthetic Cost Index를 함께 보고 상충관계를 해석합니다.
-
-병커시유는 선박의 순차 급유 의사결정을 실험하기 위한 강화학습 프로젝트입니다. 합성 항해 환경에서 가격·환율과 운항 상태를 함께 관측하고, 규칙 기반 정책과 학습 정책을 재현 가능한 조건으로 평가합니다.
-
-- **실험 환경**: 선박 상태와 시장 조건을 재현한 Gymnasium 기반 `BunkeringEnv`
-- **비교 정책**: 고정 급유, 가격 반응형, 안전재고, Double DQN 학습 정책
-- **공정한 비교**: 동일한 난수 조건(seed)·평가 횟수(episode)·환경설정과 공통 결과 형식
-- **근거 관리**: 공식 CSV·JSON, 체크포인트 해시, 논문 근거감사
-- **현장 참고자료**: 울산항만공사 벙커링정박지 신청현황 6,028건
-
-```mermaid
-flowchart LR
-    A["시장·항해 상태"] --> B["BunkeringEnv"]
-    B --> C["Rule-based 3종"]
-    B --> D["Double DQN"]
-    C --> E["공통 평가계약"]
-    D --> E
-    E --> F["CSV · 그래프 · 근거감사"]
+```bash
+git clone https://github.com/heechan9/bunkering-ai.git
+cd bunkering-ai
+python -m pip install -r requirements.txt
 ```
 
-## 검증한 내용과 근거
+가상환경 생성·활성화는 사용하는 Conda 또는 venv 환경에 맞춰 진행합니다.
 
-| 문제와 판단 | 수행 내용 | 확인 가능한 근거 | 실무 연결 |
-|---|---|---|---|
-| 강화학습 정책만 제시하면 우수성을 공정하게 판단하기 어렵다고 정의 | 규칙 기반 3종과 Double DQN에 동일 seed·episode·환경설정을 적용 | 공통 평가계약, 공식 CSV·JSON, 체크포인트 해시 | 알고리즘 비교평가·재현 가능한 실험 설계 |
-| 높은 보상만으로 운영상 우수하다고 결론 내리지 않음 | 성공률·연료고갈률·급유횟수·합성비용을 함께 비교 | 100회 가상 항해 공식 평가, 근거감사 8/8 | 안전·비용·성능의 다목적 의사결정 |
-| 실험 데이터와 현장 참고자료의 역할을 구분 | 공공데이터는 업무변수 이해에 사용하고 DQN 성능 근거에서는 제외 | 데이터 설명서·해시·분석 스크립트 | 데이터 거버넌스·주장 범위 관리 |
+### 공식 결과 재현 — 재학습 불필요
 
-> **최희찬의 역할:** 프로젝트 리드로서 문제와 요구사항, State·Action·Reward 및 KPI 방향, 실험 우선순위를 정하고 결과 검토·문서 통합·저장소 운영을 담당했습니다. 구현·검증의 세부 기여는 [기여 정책](CONTRIBUTIONS.md)에 구분해 기록합니다.
+[공식 Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)에서
+`dqn_final.pt`를 내려받아 `checkpoints/dqn_final.pt`로 저장합니다.
+`checkpoints` 폴더가 없으면 먼저 생성합니다. 다운로드·해시 대조의
+[Bash 및 PowerShell 예시](docs/technical/official_evaluation.md)를 참고하세요.
 
-## 공식 동일조건 평가
+공식 파일 SHA-256:
 
-### 실험 결과: 무엇이 나왔나
+```text
+970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392
+```
 
-- **Safe Stock(안전재고)**: 항해 성공률 100%, 평균 급유 1회로 안정적인 결과를 보였습니다.
-- **Double DQN(학습 정책)**: 항해 성공률 100%와 가장 높은 평균 보상을 기록했지만, 평균 급유횟수와 Synthetic Cost Index도 가장 높았습니다.
-- **Fixed Fueling·Price Reactive**: 현재 설정에서는 연료고갈률이 높아 안정적인 항해 전략으로 보기 어려웠습니다.
-Rule-based 3종과 Double DQN의 **공식 동일조건 성능비교를 수행했으며**, 정본은
-[`results/evaluation_results.csv`](results/evaluation_results.csv)와
-[`results/evaluation_manifest.json`](results/evaluation_manifest.json)입니다.
+```bash
+python scripts/evaluate.py --episodes 100 --seed 42 --checkpoint checkpoints/dqn_final.pt --output-dir results/local_reproduction
+```
+
+결과는 `results/local_reproduction/`의 `evaluation_results.csv`,
+`evaluation_manifest.json`, `evaluation/summary.csv` 등에 생성됩니다.
+저장소의 공식 결과와 별도 경로에 기록합니다.
+재학습은 동일 가중치를 보장하지 않으므로 공식 수치 대조에는 배포 체크포인트를 사용합니다.
+
+### 검사와 추가 실험
+
+```bash
+# 현재 저장소의 테스트 및 공식 근거 검사
+python -m pytest -q
+python -m scripts.audit_paper_evidence
+```
+
+근거 감사는 저장소의 공식 결과를 대상으로 합니다. 위 별도 재현 폴더를 자동 검사하는 명령은 아닙니다.
+새 학습·기준선·항로 스트레스·소비량 민감도 실행은
+[공식 평가](docs/technical/official_evaluation.md),
+[Route-stress](docs/technical/route_stress_minimum_slice.md),
+[V1.5 평가](docs/technical/v1_5_robustness.md)를 따릅니다.
+
+### 웹 로컬 실행
+
+Node.js·pnpm 요구 버전은 [웹 README](web/README.md)를 확인합니다.
+
+```bash
+cd web/ocean-lab
+pnpm install --frozen-lockfile
+pnpm dev
+```
+
+출력된 로컬 주소를 엽니다. 프로덕션 빌드는 `pnpm build`입니다.
+GitHub 반영과 웹 배포는 별개이며 GitHub push만으로 자동 배포되지 않습니다.
+
+## 평가 결과
+
+### 공식 단일 체크포인트 비교
+
+Rule-based 3종과 Double DQN의 **공식 동일조건 성능비교를 수행했으며**,
+정본은 [원본 CSV](results/evaluation_results.csv)와
+[평가 manifest](results/evaluation_manifest.json)입니다.
+학습 seed 42의 모델 하나를 평가 seed 42~141의 100개 합성 항차에서 비교했습니다.
 
 | 정책 | 평균 Reward | Synthetic Cost Index | 성공률 | 연료고갈률 | 평균 급유횟수 |
 |---|---:|---:|---:|---:|---:|
@@ -126,81 +115,15 @@ Rule-based 3종과 Double DQN의 **공식 동일조건 성능비교를 수행했
 | Safe Stock (안전재고) | -0.493 | 545,393 | 100% | 0% | 1.00 |
 | Double DQN (학습 정책) | 0.044 | 847,118 | 100% | 0% | 5.31 |
 
-> **보충 진단에 따른 해석 정정:** 원래 환경은 안전선 0.15를 허용오차 없이 비교한다.
-> 기본조건 Safe Stock의 기록값 0.1499999999999997이 항차당 안전 벌점 -0.5를 유발했다.
-> 기존 reward와 공식 수치는 보존하지만, 이 경계 판정을 실질적인 안전성 열세로 해석하지 않는다.
-> [독립 원본 대조 및 경계 민감도](docs/technical/reward_diagnostics_results_4seed.md)를 함께 읽어야 한다.
 
-![공식 동일조건 평가 비교 그래프](results/evaluation/comparison.png)
+Double DQN은 평균 보상이 가장 높았지만 Safe Stock보다 SCI와 급유 행동 횟수도 높았습니다.
+낮은 SCI만으로 실패 정책을 우수하다고 평가하지 않으며, 도착 여부·연료 부족·잔량을 함께 봅니다.
+[공식 평가 상세](docs/technical/official_evaluation.md)
 
-### 결과 해석: 무엇을 의미하나
+### 네 개 학습 체크포인트의 연료수지 진단
 
-Double DQN은 이 보상설계에서 가장 높은 평균 reward를 보였지만, Safe Stock보다 더 자주 급유했고 Synthetic Cost Index도 높았습니다. 따라서 이 결과는 학습 정책의 보편적 우월성을 뜻하지 않으며, **정책마다 안전성·보상·비용·운용 복잡도 사이의 선택이 달라진다**는 근거로 해석합니다.
-
-> **정확한 해석 범위**  
-> 위 결과는 난수 조건(seed) 42로 한 번 학습한 단일 모델을, 평가 난수 조건 42~141의 가상 항해 100회(episode)에서 검증한 값입니다. 표준편차는 여러 번 다시 학습했을 때의 차이가 아니라 평가 항해별 차이를 나타냅니다. Double DQN은 평균 reward가 높지만 Safe Stock보다 Synthetic Cost Index와 급유횟수도 높으므로, 전체적인 우수성을 주장하지 않습니다.
-
-공식 체크포인트 `dqn_final.pt`는 [GitHub Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01)에 보존되어 있습니다.
-
-- SHA-256: `970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392`
-- 상세 조건과 검증 절차: [공식 평가 문서](docs/technical/official_evaluation.md)
-
-Rule-based 3종은 별도 하네스로 seed 200개까지 확장한 독립 강건성 검증을 따로 두었습니다([문서](docs/technical/rulebased_robustness.md)). 위 공식 100-seed 결과를 대체하지 않는 부록이며, 겹치는 100개 seed에서 두 결과는 에피소드 단위로 완전히 일치합니다.
-
-Suez/Cape 대표 우회 가정에 대한 별도 route-stress 민감도 평가도 제공합니다.
-Hormuz 자료는 정량 충격을 적용하지 않는 맥락적 대조군이며 독립 성능 시나리오로
-세지 않습니다. 공개 Release의 frozen Double DQN 체크포인트를 재학습 없이 평가하고,
-누적값과 함께 step 정규화 지표를 제시합니다. 43-step 조건은 실제 운항 검증이나
-일반화 성능 주장이 아닌 합성환경의 탐색적 시나리오입니다
-([문서](docs/technical/route_stress_minimum_slice.md)).
-항로별 속도·기상·해류·연료소비 변화는 반영하지 않았으며, step 정규화 값을
-실측 해리당 또는 운항일당 지표로 해석하지 않습니다.
-
-<div align="center">
-
-<img src="docs/assets/international-evidence-pipeline.jpg" alt="해외 근거를 시험 시나리오 설계에만 사용하고, 동일한 frozen Double DQN을 재학습 없이 평가해 정규화 지표로 비교하는 과정" width="1000">
-
-<br>
-
-<img src="docs/assets/international-evidence-flow-ko.png" alt="해외 공공자료에서 Suez/Cape 항로 근거와 Hormuz 통항 맥락을 구분하고 frozen Double DQN 평가와 정규화 지표로 연결하는 한글 흐름도" width="720">
-
-</div>
-
-> 해외자료는 시험상황을 설계하는 근거이며, AI 학습이나 실제 운항 입력으로 사용하지 않습니다.
-
-### 네 개 독립 학습 seed에서 확인한 안정성
-
-공식 단일 체크포인트 결과는 그대로 유지하면서, 학습 seed
-`42·1042·2042·3042`에서 각각 5,000 episode를 학습한 네 개 Double DQN을
-동일한 100-case 평가계약으로 추가 검증했습니다.
-
-| 항목 | Normal | Suez/Cape 대표 조건 | 페어드 변화 |
-|---|---:|---:|---:|
-| 성공률 | 100% | 100% | 0%p |
-| 연료고갈률 | 0% | 0% | 0%p |
-| SCI/step | 27,992.11 | 29,418.37 | +5.10% |
-| 급유횟수/30-step | 4.900 | 5.587 | +13.97% |
-
-네 체크포인트 모두 같은 변화 방향을 보였습니다. 이는 현재 합성환경과
-공유 평가 seed 안에서의 학습 안정성 근거이며 실제 항차 성능·비용절감이나
-Double DQN의 보편적 우월성을 뜻하지 않습니다
-([4-seed 결과 스냅샷](docs/technical/multiseed_results_4seed.md)).
-
-V1.5에서는 같은 네 frozen 체크포인트에 정규화 소비량 충격과
-42/43/44-step 민감도를 적용했습니다. 소비량 +10%와 +20%에서 DQN은 모두
-성공률 100%·연료고갈률 0%를 유지했지만 SCI/step은 각각 평균 +11.68%,
-+22.59% 증가했습니다. 43-step 대비 42/44-step의 SCI/step 변화는
--0.48%와 +0.30%로 작았습니다. 이는 합성환경 강건성 결과이며 실제 연료량,
-항해거리 또는 비용절감의 증거가 아닙니다
-([V1.5 4-seed 결과](docs/technical/v1_5_results_4seed.md)).
-
-## 구매 소비 잔량 보충 진단 완료
-
-사용자 Windows/Conda에서 PR #44 진단 버전의 전체 테스트 **215 passed in 37.78s**를
-확인했고, 네 학습 체크포인트의 기본조건 진단 CSV를 독립 대조했다.
-1,600개 항차 기록·40,120개 step의 수지·SCI·보상·집계는 허용오차 내 일치했다.
-반복 규칙을 제거하면 규칙 300개와 DQN 400개 정책/체크포인트/case 조합이다.
-서로 독립적인 시장 경로 700개를 뜻하지 않는다.
+학습 seed 42·1042·2042·3042의 기본조건 결과입니다.
+위 단일 체크포인트 표와 구분해서 사용합니다.
 
 | 항차 평균 | Safe Stock | DQN 4개 체크포인트 평균 |
 |---|---:|---:|
@@ -211,138 +134,89 @@ V1.5에서는 같은 네 frozen 체크포인트에 정규화 소비량 충격과
 | SCI | 545,392.72 | 839,763.41 |
 | 급유횟수 | 1.00 | 4.90 |
 
-연료량은 정규화 단위다. DQN의 추가 구매량은 추가 최종잔량과 일치하며,
-SCI는 53.97% 높다. Safe Stock의 기존 안전선 위반 100%는 경계 오차에서 발생했고,
-기존 기록을 1e-12 허용오차로 재분류하면 0%가 된다. 이는 수정 환경 재평가가 아니다.
-DQN의 더 큰 잔량 여유와 비용·재고 차이를 함께 설명하며 안전성·경제성 우위를 단정하지 않는다.
-소량 급유의 반복은 관측됐으나 보상 설계의 인과효과는 미검증이다.
 
-이번 반영은 자료·문서 보완이다. 환경과 보상, 기존 체크포인트·공식 결과는 변경하지 않았다.
-FuelCast는 V2 소비량 모델 후보이며 이번 실험에 사용하지 않았다.
-기본조건의 네 체크포인트 Linux 재실행에서는 Windows 전이 CSV 4개와 바이트 단위로 일치했고, 가중치·타깃·optimizer 불변을 확인했다.
-2026-09-12 제출 정리 작업의 전체 회귀는 **225 passed**(기존 215개 + 기록 감사 10개)다.
-[당시 논문 v3.0](docs/submission/ack_paper_v3_0.md) · [검증 및 병합 완료 기록](docs/technical/submission_alignment_v3_0.md).
+연료량은 정규화 단위입니다. DQN의 추가 구매량은 추가 최종잔량과 일치하며 SCI는 53.97% 높았습니다.
+기본조건 Safe Stock의 기존 안전선 위반 판정에는 부동소수점 경계 효과가 확인됐습니다.
+허용오차를 적용한 후처리 재분류와 환경 수정·재평가는 서로 다릅니다.
+[진단 결과](docs/technical/reward_diagnostics_results_4seed.md) ·
+[결과표](results/diagnostics/review_4seed/policy_accounting_comparison.csv) ·
+[원본 출처·해시](results/diagnostics/review_4seed/provenance.json)
 
-자세한 네 가지 보완 자료는 [진단 결과](docs/technical/reward_diagnostics_results_4seed.md)를 참조한다.
+결과를 읽을 때 다음을 구분합니다.
 
-## 공공데이터 활용
+- **목적지 도착과 안전여유 확보:** 도착률만으로 항해 전 과정의 안전잔량 확보를 판단하지 않습니다.
+- **급유 행동과 기항:** 표의 급유횟수는 환경 내 행동 집계이며 실제 기항 횟수가 아닙니다.
+- **SCI와 실화폐 비용:** Synthetic Cost Index는 합성환경 내부 지표로 실제 USD/KRW 비용이나 비용절감 실적이 아닙니다.
+- **단일 모델과 4-seed 확장:** 서로 다른 평가 묶음이며 수치를 섞어 인용하지 않습니다.
 
-공공데이터포털의 울산항만공사 `벙커링정박지 신청현황` 6,028건을 분석하여 총톤수·벙커량·예정 시작일·종료일 등 실제 업무변수의 구조와 분포를 확인했습니다.
+추가 실험은 [4-seed 결과](docs/technical/multiseed_results_4seed.md),
+[V1.5 소비량·horizon 민감도](docs/technical/v1_5_results_4seed.md),
+[규칙 정책 강건성](docs/technical/rulebased_robustness.md)에 분리해 보존합니다.
 
-공공데이터를 DQN 학습 입력이나 공식 성능평가 데이터로 사용하지 않았으며, 실시간 API 연동도 아직 구현하지 않았습니다. 해당 분석은 향후 시나리오 설계와 실증 범위를 검토하기 위한 **도메인 참고자료**입니다.
+## 자료 위치와 최신본
 
-| 확인 항목 | 저장소 근거 |
+| 자료 | 기준 위치 | 사용 안내 |
+|---|---|---|
+| 코드·실행 방법 | 이 저장소와 [웹 README](web/README.md) | 현재 구현은 main, 재현 시에는 사용한 커밋을 함께 기록 |
+| 공개 실험 결과 | [results](results/), [평가 manifest](results/evaluation_manifest.json) | 조건·체크포인트·원본 해시와 함께 확인 |
+| 공개 체크포인트 | [GitHub Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01) | 공식 단일 모델. 4-seed 체크포인트 전체 보관을 뜻하지 않음 |
+| 원본 데이터·논문·인수인계 | [병커시유 Drive](https://drive.google.com/drive/folders/1g5uRRYEoS69lhMiuRyHNi_u1lwkd33Bx) | 비공개 보관함. 허가된 계정만 열 수 있음 |
+| 자료별 위치·최신본 목록 | [Drive 자료 목록](https://drive.google.com/file/d/1H42yNhpf0Ho0kJyZsCt7b7sdUn3UMzfb/view) | 파일 링크·최종본 식별·중복 확인·미확보 항목 |
+| 논문 공개 안내 | [제출 상태](docs/submission/submission_status.md) | 최종 Word 식별 기록. 최종본 전문은 공개하지 않음 |
+
+Drive는 `01_원본데이터`, `02_실험결과`, `03_논문제출본`,
+`04_논문수정본`, `05_인수인계`로 구분했습니다.
+최종 논문은 `03_논문제출본`의 버전 번호 없는 Word이며,
+v12.0·v12.5·멘토 검토본은 수정 이력입니다.
+업로드 날짜만으로 최신본을 판단하지 않습니다.
+
+기존 자료는 삭제하지 않았고 동일 파일은 해시를 대조해 중복 업로드를 줄였습니다.
+코드와 공개 결과는 GitHub에 유지하고 Drive 목록에서 연결합니다.
+원본 AB-LOG와 실명·이메일이 포함된 최종 논문은 공개 저장소에 추가하지 않습니다.
+과거 Git 기록에는 개인정보가 남아 있을 수 있습니다.
+
+## 현장 참고자료
+
+- **울산항만공사 벙커링정박지 신청현황:** 6,028건의 업무변수·분포를 검토했습니다.
+  공공데이터를 DQN 학습 입력이나 공식 성능평가 데이터로 사용하지 않았으며,
+  실시간 API 연동도 구현하지 않았습니다.
+  [출처·해시](docs/data/upa_bunkering_anchorage.md) ·
+  [검토 기록](docs/data/upa_review_20260919.md) · [분석 결과](results/public_data/)
+- **한바다호 AB-LOG:** 2026년 5월 기록의 요약표 M/T·일별표 kL를 구분하고
+  날짜 범위 3개 × 가정 밀도 5개의 산술 민감도를 계산했습니다.
+  ROB 차감값의 일치는 독립 소비량 계측 검증이 아니며 밀도·기준 조건·시간 정합성은 미확인입니다.
+  [검토 기능](docs/technical/hanbada_ab_log_design_20260922.md) ·
+  [집계 비교·15개 가정 시나리오](docs/technical/hanbada_comparison_experiment.md)
+
+## 검증 기록과 남은 범위
+
+| 기록 | 확인 범위 |
 |---|---|
-| 원자료·출처·해시 | [데이터 설명서](docs/data/upa_bunkering_anchorage.md) |
-| 재현 가능한 분석 | [분석 스크립트](scripts/analyze_upa_public_data.py) |
-| 기초통계·품질검사 | [공공데이터 결과](results/public_data/) |
-| 보고서 반영 범위 | [보고서 업데이트 가이드](docs/submission/public_data_report_updates.md) |
+| [PR #66](https://github.com/heechan9/bunkering-ai/pull/66) | 2026-09-27 main `3b5f95b` 기준 245개 테스트 기록 |
+| [최종 웹 검사](docs/audits/final_web_check_20261002.md) | 관련 Python 25개, 구매 비교·CSV·한영 검사와 소스 동기화 기록 |
+| [근거 감사](docs/technical/paper_evidence_audit.md) | 문서·코드·공식 산출물의 일관성 검사 |
+| [보안 검토](docs/technical/security_review.md) | 당시 오프라인 정적 검토 범위와 미검증 항목 |
 
-## 보안 검토 현황
+테스트 수는 해당 시점의 실행 기록이며 최신 main 전체 재검증 배지가 아닙니다.
+최신 배포본의 실제 브라우저 클릭·모바일·WebGL·다운로드 실사용 검증은 별도로 남아 있습니다.
+실제 운항 비용절감, 항만별 가격·공급·대기 제약 및 외부 성능 검증도 완료되지 않았습니다.
+[모델 경계와 연구 로드맵](docs/technical/model_boundary_and_research_roadmap.md)
 
-2026-09-11 Codex Security 저장소 정적 감사에서 Python 23개, Notebook
-2개의 실행 셀, YAML 2개와 인수인계용 압축파일 내부 소스를 확인했다.
-**부분 커버리지의 오프라인 정적 검토 범위에서 보고 가능한 확정 취약점은
-0건**이었다. 대상 코드·테스트는 실행하지 않았으며, 동적 분석·침투 테스트와
-설치 의존성의 최신 CVE 대조를 완료했다는 뜻은 아니다.
+## 저장소와 문서 안내
 
-외부 CSV/Excel 공유 기능에는 입력 스키마·크기 검증과 수식 주입 방어가
-필요하다. 웹/API로 확장할 때는 인증·권한·업로드·자원 제한을 포함한 별도
-위협 모델과 보안시험을 수행한다
-([검토 범위와 후속 체크리스트](docs/technical/security_review.md)).
-
-## 빠른 시작
-
-```bash
-pip install -r requirements.txt
-
-# Rule-based 기준선
-python scripts/baseline.py
-
-# Double DQN 학습
-python scripts/train.py --seed 42 --checkpoint checkpoints/dqn_final.pt
-
-# 저장 체크포인트 독립 평가
-python scripts/evaluate.py --episodes 100 --seed 42 --checkpoint checkpoints/dqn_final.pt
-
-# Route-stress 탐색 평가(공식 평가와 별도)
-python -m scripts.route_stress.evaluate_rulebased
-python -m scripts.route_stress.evaluate_frozen_dqn --checkpoint checkpoints/dqn_final.pt
-
-# 선택: 독립 학습 seed 결과의 페어드 route-stress 집계
-python -m scripts.multiseed.aggregate
-
-# 선택: frozen 정책의 연료소비·42/43/44-step V1.5 강건성 평가
-python -m scripts.robustness.evaluate_v1_5 --checkpoint checkpoints/dqn_final.pt
-
-# 전체 검증
-python -m pytest -q
-python -m scripts.audit_paper_evidence
-```
-
-`scripts/evaluate.py`는 학습 없이 저장된 AI 모델(checkpoint)을 불러와 네 개 정책을 동일한 난수 조건(seed)·평가 횟수(episode)·환경설정에서 평가합니다.
-
-## 저장소 구성
-
-| 경로 | 역할 |
+| 경로·문서 | 내용 |
 |---|---|
-| `agents/` | Double DQN 에이전트와 신경망 |
-| `envs/` | Gymnasium 기반 `BunkeringEnv` |
-| `configs/` | 학습 하이퍼파라미터 |
-| `evaluation/` | 공통 평가계약과 논문 근거감사 |
-| `route_stress/` | 출처·가정이 분리된 항로 스트레스 시나리오 |
-| `scripts/robustness/` | 공식 결과와 분리된 V1.5 소비량·horizon 민감도 및 집계 |
-| `scripts/` | 기준선·학습·평가·데이터 분석 CLI |
-| `data/public/` | 출처와 해시를 기록한 공공데이터 |
-| `results/evaluation/` | 공식 동일조건 평가 요약과 시각화 |
-| `tests/` | 환경·에이전트·평가·데이터 검증 |
+| `agents/`, `envs/`, `configs/` | 에이전트·환경·학습 설정 |
+| `evaluation/`, `scripts/`, `tests/` | 공통 평가·실행 CLI·검사 |
+| `web/ocean-lab/` | Ocean Lab 웹 소스 |
+| `data/public/`, `results/` | 공개 데이터와 실험 산출물 |
+| [상태·행동·보상 명세](docs/technical/state_action_reward_spec.md) | 환경 계약 |
+| [공통 평가계약](docs/technical/evaluation_contract.md) | 정책 간 동일조건 비교 |
+| [다중 학습 seed 평가](docs/technical/multiseed_evaluation.md) | 독립 체크포인트·페어드 집계 |
+| [항차 CSV 검토](docs/technical/voyage_intake.md) | 입력 필드·연료수지·변경 감지 |
+| [운항 검증 로드맵](docs/technical/causal_operational_validation.md) | 실선 효과 검증에 필요한 조건 |
+| [팀 검토 절차](docs/technical/ax_evidence_communication.md) | 결과 설명과 근거 확인 |
+| [해양 분야 검토](docs/technical/maritime_domain_review_20260920.md) | 팀 검토 의견과 채택 범위 |
+| [기여 정책](CONTRIBUTIONS.md) · [직무 연계](docs/ROLE_ALIGNMENT.md) | 사람·AI 협업 역할과 구현 근거 |
 
-## 문서 안내
-
-| 문서 | 내용 |
-|---|---|
-| [상태·행동·보상 명세](docs/technical/state_action_reward_spec.md) | 환경 계약과 주장 경계 |
-| [공통 평가계약](docs/technical/evaluation_contract.md) | 정책 간 공정 비교 기준 |
-| [공식 평가](docs/technical/official_evaluation.md) | 실행 조건·산출물·체크포인트 검증 |
-| [논문 근거감사](docs/technical/paper_evidence_audit.md) | 문서·코드·정본 근거 일관성 검사 |
-| [Rule-based 강건성 검증](docs/technical/rulebased_robustness.md) | 공식 결과와 분리된 200-seed 독립 재현 |
-| [Route-stress 최소 슬라이스](docs/technical/route_stress_minimum_slice.md) | 해외 항로 근거·대표 가정·frozen DQN 민감도 평가 |
-| [다중 학습 seed 평가](docs/technical/multiseed_evaluation.md) | 독립 체크포인트 검증·페어드 효과·자동 보고서 생성 |
-| [4-seed 결과 스냅샷](docs/technical/multiseed_results_4seed.md) | 네 체크포인트의 안정성·페어드 route-stress 효과·주장 경계 |
-| [모델 경계와 연구 로드맵](docs/technical/model_boundary_and_research_roadmap.md) | V1 포함·제외 범위, 공정성 감사, V1.5~V5 연구계획 |
-| [V1.5 강건성 평가](docs/technical/v1_5_robustness.md) | 연료소비 충격·42/43/44-step 민감도·tail-risk 계약 |
-| [V1.5 4-seed 결과](docs/technical/v1_5_results_4seed.md) | 네 frozen 체크포인트의 소비량·horizon 민감도 결과와 주장 경계 |
-| [정적 보안 검토](docs/technical/security_review.md) | 검토 범위·비검증 항목·CSV 및 웹/API 확장 체크리스트 |
-| [운항 검증 로드맵](docs/technical/causal_operational_validation.md) | 합성환경과 실제 운항 효과의 구분 |
-| [직무 연계 가이드](docs/ROLE_ALIGNMENT.md) | 구현 증거·직무 연결·주장 한계 |
-| [기여 정책](CONTRIBUTIONS.md) | 사람·AI 협업 역할과 검증 원칙 |
-
-## 현재 한계
-
-- 공식 결과는 합성환경 평가이며 실제 운항 성능을 의미하지 않습니다.
-- 실제 유가·환율의 실시간 연동은 구현 범위 밖입니다.
-- 항만 1·2·3의 가격·대기시간·수수료는 아직 차등화하지 않았습니다.
-- 공식 비교 정본은 단일 학습 seed 모델 기준입니다. 별도 4-seed 확장평가는 합성환경 내 안정성을 보강하지만 정본을 대체하거나 실제 운항 일반화를 입증하지 않습니다.
-- Synthetic Cost Index는 실제 통화 비용이 아닌 합성환경 내부 지표입니다.
-- V1.5 연료소비 충격은 정규화된 미관측 전이 변화이며 실제 SFC·엔진·추진 모델이 아닙니다.
-
----
-
-<div align="center">
-
-**재현 가능한 평가와 과장 없는 근거 관리를 우선합니다.**
-
-</div>
-
-
-### 웹 결과 해석과 현장 검토
-
-Ocean Lab 전략 비교에서 구매지출·재고·급유횟수를 함께 확인하고, 안전선 판정 정정과 사람·AI의 기여 기록을 볼 수 있습니다. [AX·영업관리 강의 적용 및 팀 검토 절차](docs/technical/ax_evidence_communication.md)를 참고하세요.
-
-### 울산항 원자료 검토 반영
-
-[자료 검토 담당자 검토·정정 기록](docs/data/upa_review_20260919.md)과 [최신 논문 v7.5 검토본](docs/submission/ack_paper_v7_5.md)에 데이터 활용 한계를 반영했습니다. 제공기관 용어 확인은 대기 중입니다. 해기원 한바다호 AB-LOG는 수령해 요약표 내부 검산을 마쳤으며 연도는 2026년으로 확인됐고 일별 단위는 kL로 정정됐습니다. 밀도·기준 조건·집계 시간 정합성은 미확인입니다.
-
-## 해양 분야 검토 담당자 급유 업무 관점 검토 수령
-
-2026-09-20 [해양 분야 검토 담당자 검토와 채택 범위](docs/technical/maritime_domain_review_20260920.md)를 기록했습니다. 고정 안전잔량의 한계, 공급·규격/시간/최소 주문량 제약, 구매량·SCI·잔량의 종합 해석을 팀 내 검토 의견으로 채택했습니다. 미확인 수치를 모델 설정값으로 사용하지 않으며 기존 실험 수치는 유지합니다. 논문 v5.0과 한·영 웹 설명에 반영했습니다. 정성적 검토 의견이며 새 실측 검증이 아닙니다.
+과거 논문·검토·배포 이력은 [진행 상태 문서](docs/PROJECT_STATUS.md)와 각 상세 문서에 보존합니다.
