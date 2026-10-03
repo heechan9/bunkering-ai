@@ -1,0 +1,18 @@
+{
+  "checkpoint_sha256": "970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392",
+  "eia_source_sha256": "b1553614e4f9f125bef51b7982c78792e1191f4ec3f1858e8bcfc60bea4ca86f",
+  "hanbada_original_sha256": "eaf7945109e2675ba8dbd6716d357f4babe737c6f36195f3a8f4da8c21af6665",
+  "episodes": 3456,
+  "time_contract": "one synthetic step per calendar day; monthly values held until next monthly bucket; assumed lags 1/2/3 months, NOT verified publication vintages",
+  "normalization": "500 * lagged monthly price / first lagged price; clip250..850; FX1300; constant fuel .05",
+  "limitations": [
+    "Historical US residual fuel oil retail price, not port-specific bunker quote",
+    "Lagged values are proxy scenarios, not executable historical daily prices",
+    "Current downloaded historical vintage may include revisions",
+    "No future-month interpolation, but true historical release availability not established",
+    "Calendar mapping does not calibrate physical daily fuel or route duration",
+    "Quarterly windows may share price history; annual sensitivity is descriptive",
+    "Hanbada aggregate matching cannot identify density, reference conditions or period alignment"
+  ],
+  "training": "none"
+}

@@ -1,0 +1,83 @@
+{
+  "split": "ordered index 60/20/20; 288 index-unit embargo; train-only fitting; validation selects 7 or 15 leaves; fixed test",
+  "features": [
+    "Ship_SpeedOverGround",
+    "Environment_SeaFloorDepth",
+    "Weather_Temperature2M",
+    "Weather_WindSpeed10M",
+    "Weather_WindDirection10M",
+    "Weather_WaveHeight",
+    "Weather_WaveDirection",
+    "Weather_WavePeriod",
+    "Weather_OceanCurrentVelocity",
+    "Weather_OceanCurrentDirection"
+  ],
+  "ships": [
+    {
+      "ship": "CPS_Poseidon",
+      "excluded_missing_index": 0,
+      "sha256": "fcc4fff3e86de3d02b034376429e4cd98c794befb4e8f610187643d52552571b",
+      "train": 62965,
+      "validation": 20796,
+      "test": 21085,
+      "index_ranges": [
+        [
+          0.0,
+          62964.0
+        ],
+        [
+          63253.0,
+          84048.0
+        ],
+        [
+          84337.0,
+          105421.0
+        ]
+      ]
+    },
+    {
+      "ship": "CPS_Triton",
+      "excluded_missing_index": 4,
+      "sha256": "327581b0d35c756db207e6992a1d78f6f7e4f68dcfd299c77188912fdbd6aab8",
+      "train": 14920,
+      "validation": 4781,
+      "test": 5070,
+      "index_ranges": [
+        [
+          0.0,
+          14919.0
+        ],
+        [
+          15208.0,
+          19988.0
+        ],
+        [
+          20277.0,
+          25346.0
+        ]
+      ]
+    },
+    {
+      "ship": "OSS_Ceto",
+      "excluded_missing_index": 8,
+      "sha256": "a81eefff2bb6bedbb85455e4fb408906a1de5356f0633fda450d7e794410b7ef",
+      "train": 25635,
+      "validation": 8353,
+      "test": 8641,
+      "index_ranges": [
+        [
+          0.0,
+          25634.0
+        ],
+        [
+          25923.0,
+          34275.0
+        ],
+        [
+          34564.0,
+          43204.0
+        ]
+      ]
+    }
+  ]
+}

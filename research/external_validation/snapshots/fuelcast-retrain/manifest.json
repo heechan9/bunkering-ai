@@ -1,0 +1,74 @@
+{
+  "training": "warm-start original weights; fresh Adam; 3 seeds; 1500 episodes each; 4-step updates; 500-step target sync; 6 original observations; uniform ship sampling",
+  "reward": "-purchase SCI/650000; terminal stock credit/650000; failure penalty -50",
+  "selection": [
+    {
+      "seed": 41,
+      "episode": 500,
+      "macro_success": 0.5150462962962963,
+      "successful_adjusted_cost": 1791271.0994975113
+    },
+    {
+      "seed": 41,
+      "episode": 1000,
+      "macro_success": 0.9907806513409962,
+      "successful_adjusted_cost": 1911828.6853009441
+    },
+    {
+      "seed": 41,
+      "episode": 1500,
+      "macro_success": 1.0,
+      "successful_adjusted_cost": 1936726.5966425426
+    },
+    {
+      "seed": 42,
+      "episode": 500,
+      "macro_success": 1.0,
+      "successful_adjusted_cost": 1935911.4501500318
+    },
+    {
+      "seed": 42,
+      "episode": 1000,
+      "macro_success": 1.0,
+      "successful_adjusted_cost": 1939231.6039801743
+    },
+    {
+      "seed": 42,
+      "episode": 1500,
+      "macro_success": 1.0,
+      "successful_adjusted_cost": 1936875.2228956812
+    },
+    {
+      "seed": 43,
+      "episode": 500,
+      "macro_success": 0.9942528735632185,
+      "successful_adjusted_cost": 1919165.4617192547
+    },
+    {
+      "seed": 43,
+      "episode": 1000,
+      "macro_success": 1.0,
+      "successful_adjusted_cost": 1939518.0936418548
+    },
+    {
+      "seed": 43,
+      "episode": 1500,
+      "macro_success": 1.0,
+      "successful_adjusted_cost": 1940703.1390158888
+    }
+  ],
+  "original_sha256": "970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392",
+  "limitations": [
+    "synthetic tank and route steps",
+    "reward and termination changed together with training data; no data-only causal ablation",
+    "ONS contextual only; not learned input",
+    "reused holdout previously examined; new blind validation required before official adoption",
+    "price seeds not independent fuel traces"
+  ],
+  "versions": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "torch": "2.14.1+cpu",
+    "numpy": "2.5.3",
+    "pandas": "2.2.3"
+  }
+}

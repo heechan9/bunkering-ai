@@ -1,0 +1,20 @@
+{
+  "rule": "act when stock <= 2*max(train95_prior,last3_observed_consumptions)+0.02+1e-8",
+  "priors": {
+    "CPS_Poseidon": 0.10547727447978626,
+    "CPS_Triton": 0.07025885225522539,
+    "OSS_Ceto": 0.10751495115923707
+  },
+  "synthetic_prior": 0.05,
+  "reason": "consumption occurs before refill; wait must leave room for next interval before next purchase",
+  "parameters": "fixed .02 margin; no test tuning; no future consumption supplied",
+  "limitations": [
+    "past-only estimator does not guarantee safety under unseen abrupt jumps",
+    "training95 prior requires vessel historical training data",
+    "FuelCast test was previously examined, not blind validation",
+    "full capped refill unchanged; policy and environment are research-only",
+    "new subwindows from same vessels and same held-out period; not independent external vessels"
+  ],
+  "episodes": 5040,
+  "evaluation": "unused offset144..186 within each held-out 288-sample block; new price seeds; synthetic persistent jumps1.5/2/3/4x at steps5/10/15"
+}
