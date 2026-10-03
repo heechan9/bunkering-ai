@@ -316,5 +316,15 @@
   "이 화면은 기본조건 30단계의 합성 기록을 재생합니다. 한바다호 AB-LOG의 ROB 차감 산술, 같은 단위의 집계 비교와 가정 시나리오 15개 계산을 완료했습니다. 일별 kL와 요약 M/T의 실측 환산·집계 기간 정합성은 미확인입니다. 실제 구매정책 검증 자료는 확보되지 않았습니다. 공개 소비율 자료와 상용 플랫폼은 후속 검토 후보이며 이 실험에 투입하지 않았습니다.": "This screen replays synthetic 30-step baseline records. ROB arithmetic, same-unit aggregate comparisons and 15 hypothetical scenarios for HANBADA AB-LOG are complete. Measured conversion between daily kL and summary M/T and alignment of reporting periods remain unverified. No data validating actual purchasing policies have been obtained. Public consumption-rate data and commercial platforms remain future review candidates and were not inputs to this experiment.",
   "논문 v7.5 검토본 ↗": "Paper v7.5 review draft ↗",
   "v7.5 PDF ↗": "v7.5 PDF ↗",
-  "논문 제출 상태·최종본 안내 ↗": "Paper submission status and final-file record ↗"
+  "논문 제출 상태·최종본 안내 ↗": "Paper submission status and final-file record ↗",
+  "이 화면은 기본조건 30단계의 합성 기록을 재생합니다. 실제 항차의 구매·소비·잔량 자료는 아직 확보되지 않았습니다. 이 화면의 기존 기록에는 외부자료를 투입하지 않았습니다. 별도 후속 실험과 채택·보류 판단은 아래 연구 결과에서 확인할 수 있습니다.": "This screen replays synthetic baseline records over 30 steps. Hanbada AB-LOG arithmetic and assumed scenarios were checked, but daily kL versus summary M/T conversion and period alignment remain unverified. Actual purchase-policy validation data are unavailable. External datasets were used only in separate follow-up experiments linked below.",
+  "안전·비용 보충 평가": "Supplementary safety and cost audit",
+  "기존 도착률과 별도로 급유 직전 부족, 항차 전체 안전여유, 잔여 연료 가치를 확인합니다. 보정 비용은 같은 사례에서 안전하게 도착한 정책끼리 비교하며 실제 통화 비용이 아닙니다.": "Check pre-refill shortages, voyage-wide reserve compliance and remaining fuel value separately from legacy arrival rates. Compare adjusted costs only for paired safe arrivals; these are not monetary costs.",
+  "평가 정의와 실행 결과 ↗": "Audit definitions and results ↗",
+  "외부자료 후속 검증 · 공식 DQN 유지": "External validation · official DQN retained",
+  "FuelCast 재학습은 교체 근거가 부족해 보류했습니다. ONS와 추가 재고 정책은 연구용 시나리오·비교 기준이며, 실선 성능 검증이나 공식 모델 반영을 뜻하지 않습니다.": "FuelCast retraining did not justify replacement. ONS and additional inventory policies are research scenarios and baselines, not validation on operating ships or official model integration.",
+  "채택·보류 결과 ↗": "Adoption and hold decisions ↗",
+  "재현 방법 ↗": "Reproduction guide ↗",
+  "공식 모델 100개 사례: DQN 안전 도착 100개, Safe Stock 0개. Safe Stock도 기존 도착 기준으로는 100개 성공했지만, 급유 전 15% 안전여유는 유지하지 못했습니다.": "Official checkpoint, 100 cases: DQN met voyage-wide reserve requirements in 100 cases, Safe Stock in zero. Safe Stock still arrived in all 100 cases under the legacy definition but did not maintain the 15% pre-refill reserve.",
+  "이 화면은 기본조건 30단계의 합성 기록을 재생합니다. 한바다호 AB-LOG의 ROB 차감 산술, 같은 단위의 집계 비교와 가정 시나리오 15개 계산을 완료했습니다. 일별 kL와 요약 M/T의 실측 환산·집계 기간 정합성은 미확인입니다. 실제 구매정책 검증 자료는 확보되지 않았습니다. 이 화면의 기존 기록에는 외부자료를 투입하지 않았습니다. 별도 후속 실험과 채택·보류 판단은 아래 연구 결과에서 확인할 수 있습니다.": "This screen replays synthetic baseline records over 30 steps. Hanbada AB-LOG arithmetic and 15 assumed scenarios were checked, but daily kL versus summary M/T conversion and period alignment remain unverified. Actual purchase-policy validation data are unavailable. External datasets were used only in separate follow-up experiments linked below."
 }
