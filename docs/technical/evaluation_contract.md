@@ -46,3 +46,7 @@ result = EpisodeResult(
 
 Double DQN과 세 baseline의 우열은 이 계약의 일부가 아니다. 비교 주장은 같은
 계획을 통과하고 실제로 수집한 결과가 있을 때만 별도로 판단한다.
+
+## 급유 전 안전·잔여 연료 보충 진단
+
+공식 평가 실행은 기존 계약 CSV와 함께 `evaluation/safety_accounting.csv`를 생성한다. 도착 성공, 급유 전 부족, 항차 전체 안전여유 및 재고 가치 보정 SCI는 [별도 정의](safety_accounting.md)를 따른다. 기존 `success`를 안전 인증으로 해석하지 않는다.

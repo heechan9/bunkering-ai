@@ -42,6 +42,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from evaluation.safety_accounting import VoyageAudit
 from agents.dqn import DQNAgent
 from envs.bunkering_env import BunkeringEnv
 from evaluation.contract import (
@@ -190,16 +191,18 @@ def build_evaluation_plan(
     return cases
 
 
-def run_episode(policy: Policy, case: EvaluationCase) -> EpisodeResult:
+def run_episode(policy: Policy, case: EvaluationCase, *, audit_rows: list | None = None) -> EpisodeResult:
     """Run one seeded episode and convert it into a validated contract record."""
     env = BunkeringEnv(**case.env_config)
     observation, _ = env.reset(seed=case.seed)
+    audit = VoyageAudit(env._fuel_remaining, env.raw_fuel_price * env._raw_fx_rate, env.min_safe_fuel)
     total_reward = 0.0
     bunkering_count = 0
     step_index = 0
 
     while True:
         action = policy.select_action(env, observation, step_index)
+        audit.observe(env._fuel_remaining, env.fuel_consumption_per_step)
         observation, reward, terminated, truncated, info = env.step(action)
         total_reward += reward
         bunkering_count += int(
@@ -216,6 +219,9 @@ def run_episode(policy: Policy, case: EvaluationCase) -> EpisodeResult:
             f"policy {case.policy!r} seed {case.seed}"
         )
 
+    if audit_rows is not None:
+        audit_rows.append({"seed": case.seed, "episode": case.episode, "policy": case.policy, **audit.finish(end_reason == "arrived", info["cumulative_cost_index"], env._fuel_remaining, env.raw_fuel_price * env._raw_fx_rate)})
+
     return EpisodeResult(
         seed=case.seed,
         episode=case.episode,
@@ -230,13 +236,13 @@ def run_episode(policy: Policy, case: EvaluationCase) -> EpisodeResult:
 
 
 def run_evaluation(
-    policies: Mapping[str, Policy], cases: Sequence[EvaluationCase]
+    policies: Mapping[str, Policy], cases: Sequence[EvaluationCase], *, audit_rows: list | None = None
 ) -> list[EpisodeResult]:
     """Execute every planned case, so results cannot drift from the fair plan."""
     missing = sorted({case.policy for case in cases} - set(policies))
     if missing:
         raise KeyError(f"no runner supplied for planned policies: {missing}")
-    return [run_episode(policies[case.policy], case) for case in cases]
+    return [run_episode(policies[case.policy], case, audit_rows=audit_rows) for case in cases]
 
 
 def count_termination_reasons(
@@ -508,18 +514,26 @@ def main(argv: list[str] | None = None) -> int:
         base_seed=args.seed,
         env_config=env_config,
     )
-    results = run_evaluation(policies, cases)
+    audit_rows: list[dict] = []
+    results = run_evaluation(policies, cases, audit_rows=audit_rows)
     aggregates = aggregate_results(results)
     termination_counts = count_termination_reasons(results)
 
     output_dir: Path = args.output_dir
     evaluation_dir = output_dir / "evaluation"
     results_path = write_results_csv(results, output_dir / "evaluation_results.csv")
+    audit_path = evaluation_dir / "safety_accounting.csv"
+    evaluation_dir.mkdir(parents=True, exist_ok=True)
+    with audit_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(audit_rows[0]))
+        writer.writeheader()
+        writer.writerows(audit_rows)
     manifest_path = write_manifest_json(
         cases,
         policy_names,
         output_dir / "evaluation_manifest.json",
         provenance={
+            "safety_accounting": {"path": "evaluation/safety_accounting.csv", "mode": "observational_audit_not_strict_termination", "tolerance": 1e-9, "valuation": "purchase_sci + initial_fuel*initial_price_fx - final_fuel*terminal_price_fx", "cost_comparison": "paired_safe_arrivals_only"},
             "n_episodes": int(args.episodes),
             "base_seed": int(args.seed),
             "env_config": dict(env_config),
