@@ -24,19 +24,29 @@
 ![Data](https://img.shields.io/badge/UPA_public_data-6%2C028_rows-0054A6)
 
 
-## 현재 상태
+## 지금 어디까지 완료됐나
 
-2026-10-03 문서 정리 기준입니다. 상세 기록은 각 실행 시점의 근거를 따릅니다.
+2026-10-03 공개 근거 기준입니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
+아래 상태는 각 항목의 확인 범위이며 전체 프로젝트의 검증 완료를 뜻하지 않습니다.
 
-| 항목 | 상태와 확인 위치 |
-|---|---|
-| 코드·공개 결과 | 이 저장소에서 관리. [평가계약](docs/technical/evaluation_contract.md)과 CSV·JSON을 함께 확인 |
-| 웹 | 30판 배포 완료 기록. [웹 소스·실행 안내](web/README.md), [최종 검사 기록](docs/audits/final_web_check_20261002.md) |
-| 논문 | 멘토 검토 반영 최종 파일로 제출했다고 사용자가 2026-10-01 확인. [제출 상태·파일 식별](docs/submission/submission_status.md) |
-| 비공개 자료 | Google Drive에 원본 데이터·제출본·수정본·인수인계 자료 분류. 아래 자료 목록 참조 |
-| 남은 확인 | 최신 배포본의 실제 브라우저·모바일 UI, 실선 자료의 밀도·시간 정합성, 실제 구매정책 성능 |
+| 연구·개발 단계 | 상태 | 확인된 범위와 남은 일 |
+|---|---|---|
+| 논문 제출 | ✅ 제출 확인 | 사용자가 10월 1일 제출 확인. 채택·심사 통과와 구분. [제출 기록](docs/submission/submission_status.md) |
+| 규칙 3종·Double DQN 비교 | ✅ 합성 환경 평가 완료 | 동일 조건 비교 및 공식 결과 보관. 실선 성능 검증은 아님. [평가계약](docs/technical/evaluation_contract.md) |
+| 4시드 재현·연료수지 진단 | ✅ 기록 대조 완료 | 구매·소비·최종잔량·보상 대조. DQN의 높은 보상을 비용 절감으로 해석하지 않음. [독립 대조](docs/technical/reward_diagnostics_results_4seed.md) |
+| 급유 전 부족·예비연료·잔량가치 | ✅ 기존 항차 감사 완료 | 공식 기록의 추가 회계·안전 검사. 새 환경 재학습과 구분. [안전·비용 기준](docs/technical/safety_accounting.md) |
+| 웹 결과·원문 일치 검사 | ✅ 근거 검사 구현 | 요약 70개 값·19,030개 전이 검사와 변조 검사. [검사 범위](docs/technical/web_evidence_guard.md) |
+| Ocean Lab 지도·항차 재생 | 🛠 기능 반영·개선 중 | 지도 제목·지형높이 배치 소스는 [PR #78](https://github.com/heechan9/bunkering-ai/pull/78) 반영. 병합과 실제 배포·모바일 사용 검증은 구분 |
+| ONS·FuelCast 외부 평가 | ✅ 연구용 연결 | ONS는 통항·우회 맥락, FuelCast는 정규화한 소비 변동. 실제 선박 단위 보정은 미완료. [결정 기록](research/external_validation/DECISIONS.md) |
+| FuelCast 재학습 모델 교체 | ⏸ 보류 | 비교에서 보정 비용 개선 근거 부족. 기존 공식 DQN 유지. [결정 기록](research/external_validation/DECISIONS.md) |
+| 추가 안전재고 정책 | ✅ 연구용 비교 완료 | AdaptiveStock·최소 예비연료 기준선 비교. 공식 모델 교체와 구분. [결정 기록](research/external_validation/DECISIONS.md) |
+| EIA·Brest·한바다호 | ⏸ 운영·학습 편입 보류 | 지연 가정·항차 연결·밀도와 시간 정합성 해결 필요. [자료별 판단](research/external_validation/DECISIONS.md) |
+| Strathclyde·UCL | 📚 참고 범위 확정 | 민감도 사례·문헌 참고. 직접 운영 모델 연결은 아님. [자료별 판단](research/external_validation/DECISIONS.md) |
+| Dockflow·일본 OCTARVIA | ⏳ 데이터 확보 대기 | 실항차 샘플·접근 조건 확보 필요. [자료별 판단](research/external_validation/DECISIONS.md) |
+| 공개 문서 근거 검색 | 🛠 로컬 구현 | 원문·행 번호·파일 해시 반환. 웹 챗봇·생성형 답변 기능은 아님. [사용법](docs/technical/evidence_search.md) |
+| 실제 선박 적용 | ○ 후속 검증 | 실측 단위·시간·가격 연결과 실제 급유 제약을 반영한 독립 평가 필요 |
 
-논문 제출은 채택·심사 통과를 뜻하지 않습니다.
+비공개 원자료·최종 제출 파일은 Google Drive에서 관리합니다. 상세 날짜별 이력은 [진행 기록](docs/PROJECT_STATUS.md)을 확인하세요.
 
 ## 주요 기능
 

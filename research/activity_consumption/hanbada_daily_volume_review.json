@@ -1,0 +1,38 @@
+{
+  "source_sha256": "03a46c562ecb6b41816063525b929375d85422132ce8c1ef7792b63d888fbb75",
+  "scope": "descriptive_only; rates use only documented single-activity paired consumption-duration records",
+  "groups": [
+    {
+      "activity": "unknown",
+      "unit": "kL",
+      "records": 1,
+      "known_consumption_total": 228.9,
+      "missing_consumption_records": 0,
+      "rate_eligible_hours": 0.0,
+      "rate_eligible_consumption": 0.0,
+      "evidence": [
+        {
+          "record_id": "daily_volume",
+          "source": "results/real_voyage/hanbada_review.json;B FOAM!T8:V68; populated numeric cells only; notes excluded",
+          "csv_line": 2
+        }
+      ],
+      "consumption_per_hour": null
+    }
+  ],
+  "issues": [
+    {
+      "record_id": "daily_volume",
+      "reason": "unconfirmed_duration"
+    },
+    {
+      "record_id": "daily_volume",
+      "reason": "activity_not_separable"
+    }
+  ],
+  "aggregate_source_sha256": "500c3147a6beb809ded0ab57949af7870692eb983b0d96479c461e5a03c7318f",
+  "workbook_sha256_from_existing_review": "eaf7945109e2675ba8dbd6716d357f4babe737c6f36195f3a8f4da8c21af6665",
+  "source_scope": "existing_public_aggregate_not_original_workbook_reexecution",
+  "interpretation": "Selected populated volume cells; completeness and period alignment unresolved",
+  "policy_training_eligible": false
+}
