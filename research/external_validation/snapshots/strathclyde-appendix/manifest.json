@@ -1,0 +1,18 @@
+{
+  "pdf_sha256": "712a711133c21857344c58cab7066e6c82e5facfc6c1c9034a6377b311ba9d5b",
+  "source": "https://api.figshare.com/v2/articles/5472880",
+  "license": "CC BY 4.0",
+  "figure": "S7, PDF page 7, 180m bulk carrier",
+  "extraction": "manual approximate purple bar heights rounded to integer percentage points; not exact source data; uncertainty unquantified",
+  "mapping": "fuel_multiplier = 1 + (1-auxiliary_share)*PE_increase/100; assumes unchanged speed, propulsion efficiency and propulsion SFC; fixed auxiliary load",
+  "limitations": [
+    "not measured fuel consumption",
+    "auxiliary fractions are assumptions, not dataset estimates",
+    "one ship figure only",
+    "synthetic normalized fuel and route horizon",
+    "no retraining or official model replacement",
+    "local \u00b11 percentage-point check is not a calibrated digitization confidence interval"
+  ],
+  "episodes": 2480,
+  "additional_check": "240 local sensitivity episodes at 58/59/60 percent PE increase, zero auxiliary share"
+}

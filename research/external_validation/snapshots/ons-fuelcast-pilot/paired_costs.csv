@@ -1,0 +1,13 @@
+ship,scenario,mode,paired_success,cases,raw_cost_change_pct,adjusted_cost_change_pct
+CPS_Poseidon,normal,constant_control,365,365,52.04907425880065,0.12816780436417652
+CPS_Poseidon,normal,fuelcast_actual,170,365,35.971499053327726,0.20615488379021052
+CPS_Poseidon,suez_cape_representative,constant_control,365,365,16.939040939272854,0.33929858161179105
+CPS_Poseidon,suez_cape_representative,fuelcast_actual,170,365,17.41506640935615,0.37508021893137844
+CPS_Triton,normal,constant_control,85,85,52.04907425880063,0.12816780436417652
+CPS_Triton,normal,fuelcast_actual,85,85,37.894897940849944,0.38556741578372744
+CPS_Triton,suez_cape_representative,constant_control,85,85,16.939040939272832,0.33929858161179105
+CPS_Triton,suez_cape_representative,fuelcast_actual,85,85,18.17755163220589,0.6078215264137876
+OSS_Ceto,normal,constant_control,150,150,52.04907425880065,0.12816780436422093
+OSS_Ceto,normal,fuelcast_actual,135,150,30.343830277685214,0.4039110839707982
+OSS_Ceto,suez_cape_representative,constant_control,150,150,16.939040939272807,0.33929858161181325
+OSS_Ceto,suez_cape_representative,fuelcast_actual,135,150,21.012003580334326,0.5517616340209752

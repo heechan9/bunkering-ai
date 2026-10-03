@@ -1,0 +1,654 @@
+{
+  "checkpoint_sha256": "970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392",
+  "ons_sha256": "fc94f713f1dc43f248faab34244bf61f109169de35788e34e717ed87e67def10",
+  "windows": [
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 84337,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 84625,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 84913,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 85201,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 85489,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 85777,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 86065,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 86353,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 86641,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 86929,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 87217,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 87505,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 87793,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 88081,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 88369,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 88657,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 88945,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 89233,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 89521,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 89809,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 90097,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 90385,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 90673,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 90961,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 91249,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 91537,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 91825,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 92113,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 92401,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 92689,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 92977,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 93265,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 93553,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 93841,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 94129,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 94417,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 94705,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 94993,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 95281,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 95569,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 95857,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 96145,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 96433,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 96721,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 97009,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 97297,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 97585,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 97873,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 98161,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 98449,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 98737,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 99025,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 99313,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 99601,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 99889,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 100177,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 100465,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 100753,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 101041,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 101329,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 101617,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 101905,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 102193,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 102481,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 102769,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 103057,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 103345,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 103633,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 103921,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 104209,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 104497,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 104785,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Poseidon",
+      "start_index": 105073,
+      "train_mean_kg_s": 0.6644740461440146
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 20277,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 20565,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 20853,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 21141,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 21429,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 21717,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 22005,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 22293,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 22581,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 22869,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 23157,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 23445,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 23733,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 24021,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 24309,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 24597,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "CPS_Triton",
+      "start_index": 24885,
+      "train_mean_kg_s": 0.1771002508912975
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 34564,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 34852,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 35140,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 35428,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 35716,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 36004,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 36292,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 36580,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 36868,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 37156,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 37444,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 37732,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 38020,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 38308,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 38596,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 38884,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 39172,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 39460,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 39748,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 40036,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 40324,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 40612,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 40900,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 41188,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 41476,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 41764,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 42052,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 42340,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 42628,
+      "train_mean_kg_s": 0.1672344853033632
+    },
+    {
+      "ship": "OSS_Ceto",
+      "start_index": 42916,
+      "train_mean_kg_s": 0.1672344853033632
+    }
+  ],
+  "seeds": [
+    820000,
+    820001,
+    820002,
+    820003,
+    820004
+  ],
+  "assumptions": [
+    {
+      "assumption_id": "normal_30_step_reference",
+      "scenario_id": "normal",
+      "baseline_distance_nm": 8288,
+      "scenario_distance_nm": 8288,
+      "baseline_max_steps": 30,
+      "source_url": "https://www.suezcanal.gov.eg/English/About/Pages/WhySuezCanal.aspx",
+      "operational_effect": true,
+      "scope": "synthetic representative-route assumption",
+      "distance_multiplier": 1.0,
+      "extra_distance_nm": 0,
+      "scenario_max_steps": 30,
+      "claim_boundary": "Synthetic environment scaling only; not measured voyage duration, fuel consumption, cost, or realized diversion."
+    },
+    {
+      "assumption_id": "sca_singapore_rotterdam_cape_distance_v1",
+      "scenario_id": "suez_cape_representative",
+      "baseline_distance_nm": 8288,
+      "scenario_distance_nm": 11755,
+      "baseline_max_steps": 30,
+      "source_url": "https://www.suezcanal.gov.eg/English/About/Pages/WhySuezCanal.aspx",
+      "operational_effect": true,
+      "scope": "synthetic representative-route assumption",
+      "distance_multiplier": 1.4183156370656371,
+      "extra_distance_nm": 3467,
+      "scenario_max_steps": 43,
+      "claim_boundary": "Synthetic environment scaling only; not measured voyage duration, fuel consumption, cost, or realized diversion."
+    }
+  ],
+  "mapping": "actual kg/s / training-only mean kg/s * 0.05 normalized tank per synthetic step; implied tank = training mean * 300 seconds * 20; not real tank capacity",
+  "limitations": [
+    "5-minute sample variability replayed on synthetic route steps, not real voyage duration",
+    "ONS weekly passage context has no shared ship/date key with FuelCast: no joined causal dataset",
+    "30/43 horizons come from existing route assumptions, not an ONS traffic-to-delay estimate",
+    "Frozen policy gets no new forecast/weather input; no training performed",
+    "Strict success additionally requires no pre-refill unmet demand; original environment clips fuel at zero before refill",
+    "Five price seeds are repeated scenarios, not independent demand records",
+    "Costs compared only on mutually successful pairs; not actual currency"
+  ],
+  "episodes": 9600
+}

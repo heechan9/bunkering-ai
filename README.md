@@ -204,6 +204,17 @@ Hormuz 자료는 정량 충격을 적용하지 않는 맥락적 대조군이며 
 
 > 해외자료는 시험상황을 설계하는 근거이며, AI 학습이나 실제 운항 입력으로 사용하지 않습니다.
 
+### 외부자료 검증과 추가 안전재고 기준선
+
+FuelCast 소비 변동, ONS 항로 맥락, 가격·선체 저항 가정과 추가 안전재고 전략을
+**별도 연구 환경**에서 비교했습니다. 공식 DQN과 위 공식 수치는 유지합니다.
+FuelCast 추가 학습과 최소 예비연료 전략에서 공식 모델을 교체할 비용 개선 근거는
+확보하지 못했습니다. 결과는 실선 검증이나 실제 비용 절감으로 해석하지 않습니다.
+
+[최종 채택·보류 결정](research/external_validation/DECISIONS.md) ·
+[코드·입력·재현 순서](research/external_validation/README.md) ·
+[후속 연구 서술 초안](docs/technical/external_validation_writeup.md)
+
 ### 네 개 독립 학습 seed에서 확인한 안정성
 
 공식 단일 체크포인트 결과는 그대로 유지하면서, 학습 seed

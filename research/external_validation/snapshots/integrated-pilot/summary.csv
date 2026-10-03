@@ -1,0 +1,9 @@
+market,policy,cases,success_rate,SCI
+eia_replay,double_dqn,90,1.0,1166309.9652588316
+eia_replay,fixed_fueling,90,0.2777777777777778,0.0
+eia_replay,price_reactive,90,0.5555555555555556,381480.40391200676
+eia_replay,safe_stock,90,1.0,976119.8352336546
+synthetic,double_dqn,90,1.0,978344.962477717
+synthetic,fixed_fueling,90,0.2777777777777778,0.0
+synthetic,price_reactive,90,0.2777777777777778,0.0
+synthetic,safe_stock,90,1.0,764769.0011997276

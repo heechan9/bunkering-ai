@@ -1,0 +1,32 @@
+[
+  {
+    "file": "brest.zip",
+    "bytes": 366922,
+    "sha256": "c1bf2bfe52777be68864ff0ce771bac34956f96772249abd78fa12b8864d55b0"
+  },
+  {
+    "file": "eia.html",
+    "bytes": 19341,
+    "sha256": "584aa53cf788c593d5b8dd6ecca8b492588af88c56899ec85c2b8950481e4a82"
+  },
+  {
+    "file": "eia.xls",
+    "bytes": 50176,
+    "sha256": "cb33bcdef914c30a977ea824500d7e8752b71595ba94079e415e57c2e76fd7d5"
+  },
+  {
+    "file": "jbc.html",
+    "bytes": 2350,
+    "sha256": "839a40d73782da8dd4ec68d4644b1ab337be1f65d1e3ffaa7ca31248d3094154"
+  },
+  {
+    "file": "jbc_geometry.html",
+    "bytes": 13694,
+    "sha256": "fc2ce9054a8b7842162bac94365853fa076da2527e8c7e455832f9710f58f875"
+  },
+  {
+    "file": "jbc_tests.pdf",
+    "bytes": 12673324,
+    "sha256": "a03a76cf95dd714dcfa42f08ac25695c99702f82df6b43d91a5ae99b59968d20"
+  }
+]

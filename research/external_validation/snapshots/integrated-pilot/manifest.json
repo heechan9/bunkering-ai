@@ -1,0 +1,641 @@
+{
+  "checkpoint_sha256": "970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392",
+  "route_length_reference": 22344.0,
+  "settings": [
+    [
+      "original_30",
+      30
+    ],
+    [
+      "R_01",
+      19
+    ],
+    [
+      "R_02",
+      20
+    ],
+    [
+      "R_03",
+      15
+    ],
+    [
+      "R_04",
+      13
+    ],
+    [
+      "R_05",
+      30
+    ],
+    [
+      "R_06",
+      27
+    ],
+    [
+      "R_07",
+      14
+    ],
+    [
+      "R_08",
+      13
+    ],
+    [
+      "R_09",
+      30
+    ],
+    [
+      "R_10",
+      47
+    ],
+    [
+      "R_11",
+      42
+    ],
+    [
+      "R_12",
+      56
+    ],
+    [
+      "R_13",
+      53
+    ],
+    [
+      "R_14",
+      61
+    ],
+    [
+      "R_15",
+      68
+    ],
+    [
+      "R_16",
+      62
+    ],
+    [
+      "R_17",
+      55
+    ]
+  ],
+  "starts": [
+    0,
+    60,
+    120,
+    180,
+    240
+  ],
+  "price_mapping": "500 * monthly_price / first_price, clipped 250..850; FX=1300 fixed on replay",
+  "limitations": "monthly observations replayed on synthetic steps; route length ratio scales synthetic horizon, NOT real voyage clock or calibrated fuel consumption",
+  "pairs": [
+    {
+      "market": "eia_replay",
+      "paired_success": 90,
+      "DQN_vs_safe_adjusted_change_pct": -6.09824778612581
+    },
+    {
+      "market": "synthetic",
+      "paired_success": 90,
+      "DQN_vs_safe_adjusted_change_pct": 1.0978570862707038
+    }
+  ],
+  "clipping": [
+    {
+      "route": "original_30",
+      "start": 0,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "original_30",
+      "start": 60,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "original_30",
+      "start": 120,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "original_30",
+      "start": 180,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "original_30",
+      "start": 240,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_01",
+      "start": 0,
+      "clipped": 0,
+      "count": 20
+    },
+    {
+      "route": "R_01",
+      "start": 60,
+      "clipped": 0,
+      "count": 20
+    },
+    {
+      "route": "R_01",
+      "start": 120,
+      "clipped": 0,
+      "count": 20
+    },
+    {
+      "route": "R_01",
+      "start": 180,
+      "clipped": 0,
+      "count": 20
+    },
+    {
+      "route": "R_01",
+      "start": 240,
+      "clipped": 0,
+      "count": 20
+    },
+    {
+      "route": "R_02",
+      "start": 0,
+      "clipped": 0,
+      "count": 21
+    },
+    {
+      "route": "R_02",
+      "start": 60,
+      "clipped": 0,
+      "count": 21
+    },
+    {
+      "route": "R_02",
+      "start": 120,
+      "clipped": 0,
+      "count": 21
+    },
+    {
+      "route": "R_02",
+      "start": 180,
+      "clipped": 0,
+      "count": 21
+    },
+    {
+      "route": "R_02",
+      "start": 240,
+      "clipped": 0,
+      "count": 21
+    },
+    {
+      "route": "R_03",
+      "start": 0,
+      "clipped": 0,
+      "count": 16
+    },
+    {
+      "route": "R_03",
+      "start": 60,
+      "clipped": 0,
+      "count": 16
+    },
+    {
+      "route": "R_03",
+      "start": 120,
+      "clipped": 0,
+      "count": 16
+    },
+    {
+      "route": "R_03",
+      "start": 180,
+      "clipped": 0,
+      "count": 16
+    },
+    {
+      "route": "R_03",
+      "start": 240,
+      "clipped": 0,
+      "count": 16
+    },
+    {
+      "route": "R_04",
+      "start": 0,
+      "clipped": 0,
+      "count": 14
+    },
+    {
+      "route": "R_04",
+      "start": 60,
+      "clipped": 0,
+      "count": 14
+    },
+    {
+      "route": "R_04",
+      "start": 120,
+      "clipped": 0,
+      "count": 14
+    },
+    {
+      "route": "R_04",
+      "start": 180,
+      "clipped": 0,
+      "count": 14
+    },
+    {
+      "route": "R_04",
+      "start": 240,
+      "clipped": 0,
+      "count": 14
+    },
+    {
+      "route": "R_05",
+      "start": 0,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_05",
+      "start": 60,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_05",
+      "start": 120,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_05",
+      "start": 180,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_05",
+      "start": 240,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_06",
+      "start": 0,
+      "clipped": 0,
+      "count": 28
+    },
+    {
+      "route": "R_06",
+      "start": 60,
+      "clipped": 0,
+      "count": 28
+    },
+    {
+      "route": "R_06",
+      "start": 120,
+      "clipped": 0,
+      "count": 28
+    },
+    {
+      "route": "R_06",
+      "start": 180,
+      "clipped": 0,
+      "count": 28
+    },
+    {
+      "route": "R_06",
+      "start": 240,
+      "clipped": 0,
+      "count": 28
+    },
+    {
+      "route": "R_07",
+      "start": 0,
+      "clipped": 0,
+      "count": 15
+    },
+    {
+      "route": "R_07",
+      "start": 60,
+      "clipped": 0,
+      "count": 15
+    },
+    {
+      "route": "R_07",
+      "start": 120,
+      "clipped": 0,
+      "count": 15
+    },
+    {
+      "route": "R_07",
+      "start": 180,
+      "clipped": 0,
+      "count": 15
+    },
+    {
+      "route": "R_07",
+      "start": 240,
+      "clipped": 0,
+      "count": 15
+    },
+    {
+      "route": "R_08",
+      "start": 0,
+      "clipped": 0,
+      "count": 14
+    },
+    {
+      "route": "R_08",
+      "start": 60,
+      "clipped": 0,
+      "count": 14
+    },
+    {
+      "route": "R_08",
+      "start": 120,
+      "clipped": 0,
+      "count": 14
+    },
+    {
+      "route": "R_08",
+      "start": 180,
+      "clipped": 0,
+      "count": 14
+    },
+    {
+      "route": "R_08",
+      "start": 240,
+      "clipped": 0,
+      "count": 14
+    },
+    {
+      "route": "R_09",
+      "start": 0,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_09",
+      "start": 60,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_09",
+      "start": 120,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_09",
+      "start": 180,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_09",
+      "start": 240,
+      "clipped": 0,
+      "count": 31
+    },
+    {
+      "route": "R_10",
+      "start": 0,
+      "clipped": 7,
+      "count": 48
+    },
+    {
+      "route": "R_10",
+      "start": 60,
+      "clipped": 0,
+      "count": 48
+    },
+    {
+      "route": "R_10",
+      "start": 120,
+      "clipped": 0,
+      "count": 48
+    },
+    {
+      "route": "R_10",
+      "start": 180,
+      "clipped": 5,
+      "count": 48
+    },
+    {
+      "route": "R_10",
+      "start": 240,
+      "clipped": 1,
+      "count": 48
+    },
+    {
+      "route": "R_11",
+      "start": 0,
+      "clipped": 3,
+      "count": 43
+    },
+    {
+      "route": "R_11",
+      "start": 60,
+      "clipped": 0,
+      "count": 43
+    },
+    {
+      "route": "R_11",
+      "start": 120,
+      "clipped": 0,
+      "count": 43
+    },
+    {
+      "route": "R_11",
+      "start": 180,
+      "clipped": 5,
+      "count": 43
+    },
+    {
+      "route": "R_11",
+      "start": 240,
+      "clipped": 1,
+      "count": 43
+    },
+    {
+      "route": "R_12",
+      "start": 0,
+      "clipped": 7,
+      "count": 57
+    },
+    {
+      "route": "R_12",
+      "start": 60,
+      "clipped": 0,
+      "count": 57
+    },
+    {
+      "route": "R_12",
+      "start": 120,
+      "clipped": 0,
+      "count": 57
+    },
+    {
+      "route": "R_12",
+      "start": 180,
+      "clipped": 6,
+      "count": 57
+    },
+    {
+      "route": "R_12",
+      "start": 240,
+      "clipped": 6,
+      "count": 57
+    },
+    {
+      "route": "R_13",
+      "start": 0,
+      "clipped": 7,
+      "count": 54
+    },
+    {
+      "route": "R_13",
+      "start": 60,
+      "clipped": 0,
+      "count": 54
+    },
+    {
+      "route": "R_13",
+      "start": 120,
+      "clipped": 0,
+      "count": 54
+    },
+    {
+      "route": "R_13",
+      "start": 180,
+      "clipped": 5,
+      "count": 54
+    },
+    {
+      "route": "R_13",
+      "start": 240,
+      "clipped": 3,
+      "count": 54
+    },
+    {
+      "route": "R_14",
+      "start": 0,
+      "clipped": 7,
+      "count": 62
+    },
+    {
+      "route": "R_14",
+      "start": 60,
+      "clipped": 0,
+      "count": 62
+    },
+    {
+      "route": "R_14",
+      "start": 120,
+      "clipped": 0,
+      "count": 62
+    },
+    {
+      "route": "R_14",
+      "start": 180,
+      "clipped": 9,
+      "count": 62
+    },
+    {
+      "route": "R_14",
+      "start": 240,
+      "clipped": 11,
+      "count": 62
+    },
+    {
+      "route": "R_15",
+      "start": 0,
+      "clipped": 7,
+      "count": 69
+    },
+    {
+      "route": "R_15",
+      "start": 60,
+      "clipped": 0,
+      "count": 69
+    },
+    {
+      "route": "R_15",
+      "start": 120,
+      "clipped": 0,
+      "count": 69
+    },
+    {
+      "route": "R_15",
+      "start": 180,
+      "clipped": 15,
+      "count": 69
+    },
+    {
+      "route": "R_15",
+      "start": 240,
+      "clipped": 18,
+      "count": 69
+    },
+    {
+      "route": "R_16",
+      "start": 0,
+      "clipped": 7,
+      "count": 63
+    },
+    {
+      "route": "R_16",
+      "start": 60,
+      "clipped": 0,
+      "count": 63
+    },
+    {
+      "route": "R_16",
+      "start": 120,
+      "clipped": 0,
+      "count": 63
+    },
+    {
+      "route": "R_16",
+      "start": 180,
+      "clipped": 10,
+      "count": 63
+    },
+    {
+      "route": "R_16",
+      "start": 240,
+      "clipped": 12,
+      "count": 63
+    },
+    {
+      "route": "R_17",
+      "start": 0,
+      "clipped": 7,
+      "count": 56
+    },
+    {
+      "route": "R_17",
+      "start": 60,
+      "clipped": 0,
+      "count": 56
+    },
+    {
+      "route": "R_17",
+      "start": 120,
+      "clipped": 0,
+      "count": 56
+    },
+    {
+      "route": "R_17",
+      "start": 180,
+      "clipped": 5,
+      "count": 56
+    },
+    {
+      "route": "R_17",
+      "start": 240,
+      "clipped": 5,
+      "count": 56
+    }
+  ]
+}
