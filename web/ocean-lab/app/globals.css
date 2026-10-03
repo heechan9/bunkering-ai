@@ -118,3 +118,20 @@ html[lang=en] .topbar .status{display:none}
  .regional-exhibit .terrain-controls button{flex:1 1 100px;min-height:44px;font-size:14px;padding:8px;white-space:normal}
  .regional-exhibit .terrain-controls small{grid-column:1/-1;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
 }
+
+/* Keep the region title and camera action outside the interactive terrain. */
+.regional-exhibit .geography-workspace{height:auto;grid-template-rows:auto minmax(0,1fr)}
+.map-header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 30px;background:#0b2533;border-bottom:1px solid #36515a;min-width:0}
+.map-header .map-heading{position:static;pointer-events:auto;text-shadow:none;min-width:0}
+.map-header .map-heading .kicker{margin:0}
+.map-header .map-heading h1{margin:10px 0;font-size:34px}
+.map-header .map-heading>p:last-child{margin:0}
+.map-header .map-toolbar{position:static;flex-shrink:0}
+@media(max-width:800px){.map-header{padding:20px 22px;align-items:flex-start;gap:14px}.regional-exhibit .map-header .map-heading h1{font-size:30px}.map-header .map-toolbar button{min-width:44px;min-height:44px}html[lang=en] .map-header .map-heading{max-width:none}.map-header .kicker{font-size:11px;letter-spacing:2px}}
+
+/* Height selection sits between the region heading and its map. */
+.regional-exhibit .map-height-bar{grid-column:1/-1;min-width:0;background:#0b2533;border-bottom:1px solid #36515a;padding:0 30px 20px}
+.regional-exhibit .map-height-bar .terrain-controls{position:static;inset:auto;max-width:none;width:auto;margin:0;padding:14px;box-sizing:border-box;display:flex;flex-wrap:wrap;gap:8px}
+.regional-exhibit .map-height-bar .terrain-controls button{min-height:44px}
+.regional-exhibit .map-height-bar .terrain-controls small{flex-basis:100%;font-size:13px;line-height:1.5}
+@media(max-width:800px){.regional-exhibit .map-height-bar{padding:0 22px 18px}.regional-exhibit .map-height-bar .terrain-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:0;border:0}.regional-exhibit .map-height-bar .terrain-controls>span,.regional-exhibit .map-height-bar .terrain-controls small{grid-column:1/-1}}
