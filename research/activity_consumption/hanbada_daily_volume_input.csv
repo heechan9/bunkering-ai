@@ -1,0 +1,2 @@
+record_id,activity,duration_hours,consumption,unit,evidence
+daily_volume,unknown,,228.9000000000000008,kL,results/real_voyage/hanbada_review.json;B FOAM!T8:V68; populated numeric cells only; notes excluded

@@ -1,0 +1,38 @@
+{
+  "source_sha256": "6d922da6d72ad2c2ba07fb52e309560826ce7cca7288057ffd4e09f35453ca7f",
+  "scope": "descriptive_only; rates use only documented single-activity paired consumption-duration records",
+  "groups": [
+    {
+      "activity": "unknown",
+      "unit": "t",
+      "records": 1,
+      "known_consumption_total": 195.2,
+      "missing_consumption_records": 0,
+      "rate_eligible_hours": 0.0,
+      "rate_eligible_consumption": 0.0,
+      "evidence": [
+        {
+          "record_id": "rob_mass",
+          "source": "results/real_voyage/hanbada_review.json;AB-LOG!S42",
+          "csv_line": 2
+        }
+      ],
+      "consumption_per_hour": null
+    }
+  ],
+  "issues": [
+    {
+      "record_id": "rob_mass",
+      "reason": "unconfirmed_duration"
+    },
+    {
+      "record_id": "rob_mass",
+      "reason": "activity_not_separable"
+    }
+  ],
+  "aggregate_source_sha256": "500c3147a6beb809ded0ab57949af7870692eb983b0d96479c461e5a03c7318f",
+  "workbook_sha256_from_existing_review": "eaf7945109e2675ba8dbd6716d357f4babe737c6f36195f3a8f4da8c21af6665",
+  "source_scope": "existing_public_aggregate_not_original_workbook_reexecution",
+  "interpretation": "ROB difference; not independently measured consumption",
+  "policy_training_eligible": false
+}
