@@ -1,0 +1,655 @@
+{
+  "status": "posthoc_diagnostic_not_operating_gate",
+  "rules": "Training quartiles for condition bins; training min/max plus5-NN distance95th percentile on every-sixth eligible training reference; validation supported n>=30 and MAE better than cubic required. No test thresholds tuned.",
+  "data_sha256": "bafd4a5109f55ad4e9c61a1d87e992b4ae156c004871ea9ae077f5c01c08aaf9",
+  "model_sha256": {
+    "french_basic_adapted_ship1_seed42.pt": "0ecb53d6f95f19dcd0453399061dc4933a6506aa41b5eb212ded61de40911c7f",
+    "french_basic_adapted_ship1_seed43.pt": "956c025f99ea99d6907aa7d24db80804cc267cd84b87d8317516879c4648f110",
+    "french_basic_adapted_ship1_seed44.pt": "dd28e2e203d3bd632c65677f0ffcf6618ea16fe8d8236dc6a9f60a5f2fb3cb0d",
+    "ship_1_candidate.joblib": "213c4d5548dd0b8fd7b75033a93c6fc01ce540d0630cbaa57131caac14635bcb",
+    "french_basic_adapted_ship3_seed42.pt": "796d8a1ba287de0e8a0cdbe6e820fa68d7207381cc419dcebce8b68a3a6bbf29",
+    "french_basic_adapted_ship3_seed43.pt": "361d16c657d4ed0a9d40bb3e3d5fe329891f58354fd0919d6b01740174f379e2",
+    "french_basic_adapted_ship3_seed44.pt": "f34d51677d3222c453d7d96f1efe26dcaa1e4f98b7d6b335fdfdf5eef8ef7da8",
+    "ship_3_candidate.joblib": "5323b446d600c0e22398cf6685bb58969f6472f610f7bc596459862ca08a5ea2"
+  },
+  "models": [
+    {
+      "ship": 1,
+      "mode": "power",
+      "seed": 42,
+      "unit": "kW",
+      "split_counts": {
+        "train": 1937,
+        "validation": 308,
+        "test": 634
+      },
+      "overall": {
+        "n": 634,
+        "mae": 124.09548947432002,
+        "baseline_mae": 133.9936568992525,
+        "improvement_pct": 7.387041785399395,
+        "bias": 0.02941725924234225,
+        "p90_absolute_error": 254.12865365355117
+      },
+      "train_domain": {
+        "reference_rows": 323,
+        "distance_threshold": 0.8595856651209449,
+        "min": {
+          "Ship_SpeedLOG": 2.0466666666666664,
+          "draft_mean": 5.891666666666667,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        },
+        "max": {
+          "Ship_SpeedLOG": 14.613333333333333,
+          "draft_mean": 7.971666666666667,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        }
+      },
+      "validation_supported": {
+        "n": 292,
+        "mae": 117.49154969672007,
+        "baseline_mae": 103.46855198543179,
+        "improvement_pct": -13.55290805003504,
+        "bias": -14.666985586008105,
+        "p90_absolute_error": 231.35824234900497
+      },
+      "validation_gate_pass": false,
+      "test_supported": {
+        "n": 606,
+        "mae": 117.92167506126333,
+        "baseline_mae": 124.18408882736514,
+        "improvement_pct": 5.04284713543901,
+        "bias": 2.471265170747307,
+        "p90_absolute_error": 236.8206888447653
+      },
+      "test_outside_support": {
+        "n": 28,
+        "mae": 257.7144728426185,
+        "baseline_mae": 346.30073731224286,
+        "improvement_pct": 25.58073227252484,
+        "bias": -52.81914825404366,
+        "p90_absolute_error": 566.7680359803516
+      },
+      "accepted": {
+        "n": 0
+      },
+      "accepted_fraction": 0.0,
+      "validation_abs_error_q90": 253.76294767725153,
+      "test_interval_coverage": 0.8990536277602523
+    },
+    {
+      "ship": 1,
+      "mode": "power",
+      "seed": 43,
+      "unit": "kW",
+      "split_counts": {
+        "train": 1937,
+        "validation": 308,
+        "test": 634
+      },
+      "overall": {
+        "n": 634,
+        "mae": 123.25818510337994,
+        "baseline_mae": 133.9936568992525,
+        "improvement_pct": 8.011925373411044,
+        "bias": 3.824784378357369,
+        "p90_absolute_error": 250.34058566240847
+      },
+      "train_domain": {
+        "reference_rows": 323,
+        "distance_threshold": 0.8595856651209449,
+        "min": {
+          "Ship_SpeedLOG": 2.0466666666666664,
+          "draft_mean": 5.891666666666667,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        },
+        "max": {
+          "Ship_SpeedLOG": 14.613333333333333,
+          "draft_mean": 7.971666666666667,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        }
+      },
+      "validation_supported": {
+        "n": 292,
+        "mae": 111.74014572154688,
+        "baseline_mae": 103.46855198543179,
+        "improvement_pct": -7.994307040538962,
+        "bias": -16.614505693992125,
+        "p90_absolute_error": 227.23784853598124
+      },
+      "validation_gate_pass": false,
+      "test_supported": {
+        "n": 606,
+        "mae": 116.75178459160641,
+        "baseline_mae": 124.18408882736514,
+        "improvement_pct": 5.984908619083051,
+        "bias": 5.982970229217783,
+        "p90_absolute_error": 227.86643415178958
+      },
+      "test_outside_support": {
+        "n": 28,
+        "mae": 264.07528189390763,
+        "baseline_mae": 346.30073731224286,
+        "improvement_pct": 23.743944658193573,
+        "bias": -42.88452367955016,
+        "p90_absolute_error": 565.0683699815621
+      },
+      "accepted": {
+        "n": 0
+      },
+      "accepted_fraction": 0.0,
+      "validation_abs_error_q90": 247.79093588986098,
+      "test_interval_coverage": 0.8958990536277602
+    },
+    {
+      "ship": 1,
+      "mode": "power",
+      "seed": 44,
+      "unit": "kW",
+      "split_counts": {
+        "train": 1937,
+        "validation": 308,
+        "test": 634
+      },
+      "overall": {
+        "n": 634,
+        "mae": 127.12758908350906,
+        "baseline_mae": 133.9936568992525,
+        "improvement_pct": 5.124173766602935,
+        "bias": 11.027932682454074,
+        "p90_absolute_error": 249.61967825802768
+      },
+      "train_domain": {
+        "reference_rows": 323,
+        "distance_threshold": 0.8595856651209449,
+        "min": {
+          "Ship_SpeedLOG": 2.0466666666666664,
+          "draft_mean": 5.891666666666667,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        },
+        "max": {
+          "Ship_SpeedLOG": 14.613333333333333,
+          "draft_mean": 7.971666666666667,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        }
+      },
+      "validation_supported": {
+        "n": 292,
+        "mae": 119.39569417413765,
+        "baseline_mae": 103.46855198543179,
+        "improvement_pct": -15.393220339015068,
+        "bias": -3.643441860679964,
+        "p90_absolute_error": 247.66148573892556
+      },
+      "validation_gate_pass": false,
+      "test_supported": {
+        "n": 606,
+        "mae": 120.78981215080162,
+        "baseline_mae": 124.18408882736514,
+        "improvement_pct": 2.7332621341547902,
+        "bias": 14.36678880532647,
+        "p90_absolute_error": 232.41152069300483
+      },
+      "test_outside_support": {
+        "n": 28,
+        "mae": 264.2951898413922,
+        "baseline_mae": 346.30073731224286,
+        "improvement_pct": 23.680442642809098,
+        "bias": -61.23445340542704,
+        "p90_absolute_error": 562.6544887331795
+      },
+      "accepted": {
+        "n": 0
+      },
+      "accepted_fraction": 0.0,
+      "validation_abs_error_q90": 271.22653705344305,
+      "test_interval_coverage": 0.9148264984227129
+    },
+    {
+      "ship": 1,
+      "mode": "fuel",
+      "seed": 42,
+      "unit": "L/h",
+      "split_counts": {
+        "train": 1918,
+        "validation": 479,
+        "test": 489
+      },
+      "overall": {
+        "n": 489,
+        "mae": 33.014757382892626,
+        "baseline_mae": 30.386513519134414,
+        "improvement_pct": -8.64937618494206,
+        "bias": 0.17135096121625573,
+        "p90_absolute_error": 76.15060892237645
+      },
+      "train_domain": {
+        "reference_rows": 320,
+        "distance_threshold": 1.4071247171495311,
+        "min": {
+          "Ship_SpeedLOG": 2.0466666666666664,
+          "draught_aft_side": 4.758333333333334,
+          "draught_fore_side": 6.671666666666667,
+          "wind_velocity": 0.0,
+          "ship_wind_angle": 0.0
+        },
+        "max": {
+          "Ship_SpeedLOG": 14.613333333333333,
+          "draught_aft_side": 9.271666666666667,
+          "draught_fore_side": 7.1466666666666665,
+          "wind_velocity": 0.0,
+          "ship_wind_angle": 0.0
+        }
+      },
+      "validation_supported": {
+        "n": 430,
+        "mae": 28.31748531792799,
+        "baseline_mae": 22.376417225441685,
+        "improvement_pct": -26.5505779259934,
+        "bias": -2.1340968181664257,
+        "p90_absolute_error": 58.36509111143504
+      },
+      "validation_gate_pass": false,
+      "test_supported": {
+        "n": 403,
+        "mae": 27.120902681961862,
+        "baseline_mae": 25.24869532552874,
+        "improvement_pct": -7.415065738229054,
+        "bias": -0.8545934303764382,
+        "p90_absolute_error": 67.53897877273396
+      },
+      "test_outside_support": {
+        "n": 86,
+        "mae": 60.633634644230995,
+        "baseline_mae": 54.46256854265866,
+        "improvement_pct": -11.330839265758751,
+        "bias": 4.978974098563416,
+        "p90_absolute_error": 121.12741159451991
+      },
+      "accepted": {
+        "n": 0
+      },
+      "accepted_fraction": 0.0,
+      "validation_abs_error_q90": 64.8034752444708,
+      "test_interval_coverage": 0.820040899795501
+    },
+    {
+      "ship": 3,
+      "mode": "power",
+      "seed": 42,
+      "unit": "kW",
+      "split_counts": {
+        "train": 1682,
+        "validation": 78,
+        "test": 607
+      },
+      "overall": {
+        "n": 607,
+        "mae": 387.1034481635199,
+        "baseline_mae": 400.1968916646142,
+        "improvement_pct": 3.271750424305475,
+        "bias": -346.5727762276809,
+        "p90_absolute_error": 864.364135367802
+      },
+      "train_domain": {
+        "reference_rows": 281,
+        "distance_threshold": 0.2872385160930859,
+        "min": {
+          "Ship_SpeedLOG": 2.0983333333333336,
+          "draft_mean": 12.6,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        },
+        "max": {
+          "Ship_SpeedLOG": 16.14,
+          "draft_mean": 12.6,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        }
+      },
+      "validation_supported": {
+        "n": 66,
+        "mae": 212.8620088267354,
+        "baseline_mae": 183.5999993727662,
+        "improvement_pct": -15.937913700401518,
+        "bias": 91.048550797843,
+        "p90_absolute_error": 419.00679998014004
+      },
+      "validation_gate_pass": false,
+      "test_supported": {
+        "n": 593,
+        "mae": 388.7496222725214,
+        "baseline_mae": 400.1730058737461,
+        "improvement_pct": 2.8546112390271494,
+        "bias": -350.75433418579615,
+        "p90_absolute_error": 864.6342974394986
+      },
+      "test_outside_support": {
+        "n": 14,
+        "mae": 317.3762162608124,
+        "baseline_mae": 401.2086255206709,
+        "improvement_pct": 20.894966839525075,
+        "bias": -169.45392843037013,
+        "p90_absolute_error": 468.1115369496255
+      },
+      "accepted": {
+        "n": 0
+      },
+      "accepted_fraction": 0.0,
+      "validation_abs_error_q90": 452.1611458718064,
+      "test_interval_coverage": 0.6177924217462932
+    },
+    {
+      "ship": 3,
+      "mode": "power",
+      "seed": 43,
+      "unit": "kW",
+      "split_counts": {
+        "train": 1682,
+        "validation": 78,
+        "test": 607
+      },
+      "overall": {
+        "n": 607,
+        "mae": 388.98464245760005,
+        "baseline_mae": 400.1968916646142,
+        "improvement_pct": 2.801683231565577,
+        "bias": -353.6974079606186,
+        "p90_absolute_error": 861.9236024374326
+      },
+      "train_domain": {
+        "reference_rows": 281,
+        "distance_threshold": 0.2872385160930859,
+        "min": {
+          "Ship_SpeedLOG": 2.0983333333333336,
+          "draft_mean": 12.6,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        },
+        "max": {
+          "Ship_SpeedLOG": 16.14,
+          "draft_mean": 12.6,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        }
+      },
+      "validation_supported": {
+        "n": 66,
+        "mae": 211.16276855245164,
+        "baseline_mae": 183.5999993727662,
+        "improvement_pct": -15.012401565276857,
+        "bias": 65.11057607011122,
+        "p90_absolute_error": 431.17706400809357
+      },
+      "validation_gate_pass": false,
+      "test_supported": {
+        "n": 593,
+        "mae": 388.977049037258,
+        "baseline_mae": 400.1730058737461,
+        "improvement_pct": 2.797779128565314,
+        "bias": -355.2389816802651,
+        "p90_absolute_error": 863.122098681165
+      },
+      "test_outside_support": {
+        "n": 14,
+        "mae": 389.3062780478041,
+        "baseline_mae": 401.2086255206709,
+        "improvement_pct": 2.9666230274636995,
+        "bias": -288.4007496927359,
+        "p90_absolute_error": 582.8329631450271
+      },
+      "accepted": {
+        "n": 0
+      },
+      "accepted_fraction": 0.0,
+      "validation_abs_error_q90": 492.37455966122525,
+      "test_interval_coverage": 0.6359143327841845
+    },
+    {
+      "ship": 3,
+      "mode": "power",
+      "seed": 44,
+      "unit": "kW",
+      "split_counts": {
+        "train": 1682,
+        "validation": 78,
+        "test": 607
+      },
+      "overall": {
+        "n": 607,
+        "mae": 398.17249258006314,
+        "baseline_mae": 400.1968916646142,
+        "improvement_pct": 0.5058507766341203,
+        "bias": -366.07379240948245,
+        "p90_absolute_error": 879.6607733814762
+      },
+      "train_domain": {
+        "reference_rows": 281,
+        "distance_threshold": 0.2872385160930859,
+        "min": {
+          "Ship_SpeedLOG": 2.0983333333333336,
+          "draft_mean": 12.6,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        },
+        "max": {
+          "Ship_SpeedLOG": 16.14,
+          "draft_mean": 12.6,
+          "wind_head": 0.0,
+          "wind_cross": 0.0
+        }
+      },
+      "validation_supported": {
+        "n": 66,
+        "mae": 208.14209527227968,
+        "baseline_mae": 183.5999993727662,
+        "improvement_pct": -13.367154675030935,
+        "bias": 61.025208028137506,
+        "p90_absolute_error": 440.5317225496792
+      },
+      "validation_gate_pass": false,
+      "test_supported": {
+        "n": 593,
+        "mae": 397.9586312187878,
+        "baseline_mae": 400.1730058737461,
+        "improvement_pct": 0.5533543298662513,
+        "bias": -367.5554585745956,
+        "p90_absolute_error": 880.3336520022511
+      },
+      "test_outside_support": {
+        "n": 14,
+        "mae": 407.23104881122373,
+        "baseline_mae": 401.2086255206709,
+        "improvement_pct": -1.5010702431278,
+        "bias": -303.3146469871891,
+        "p90_absolute_error": 609.5018130769491
+      },
+      "accepted": {
+        "n": 0
+      },
+      "accepted_fraction": 0.0,
+      "validation_abs_error_q90": 505.0936245227572,
+      "test_interval_coverage": 0.6359143327841845
+    },
+    {
+      "ship": 3,
+      "mode": "fuel",
+      "seed": 42,
+      "unit": "L/h",
+      "split_counts": {
+        "train": 1609,
+        "validation": 201,
+        "test": 545
+      },
+      "overall": {
+        "n": 545,
+        "mae": 96.88330381997878,
+        "baseline_mae": 98.76767616141737,
+        "improvement_pct": 1.907883646425923,
+        "bias": -91.98360782933665,
+        "p90_absolute_error": 216.44978952638527
+      },
+      "train_domain": {
+        "reference_rows": 269,
+        "distance_threshold": 0.20887583869939275,
+        "min": {
+          "Ship_SpeedLOG": 2.0983333333333336,
+          "draught_aft_side": 13.2,
+          "draught_fore_side": 12.0,
+          "wind_velocity": 0.0,
+          "ship_wind_angle": 0.0
+        },
+        "max": {
+          "Ship_SpeedLOG": 16.14,
+          "draught_aft_side": 13.2,
+          "draught_fore_side": 12.0,
+          "wind_velocity": 0.0,
+          "ship_wind_angle": 0.0
+        }
+      },
+      "validation_supported": {
+        "n": 182,
+        "mae": 63.29863524860047,
+        "baseline_mae": 37.81259962429525,
+        "improvement_pct": -67.40090836793458,
+        "bias": 52.06574729076468,
+        "p90_absolute_error": 98.74293417115125
+      },
+      "validation_gate_pass": false,
+      "test_supported": {
+        "n": 534,
+        "mae": 97.56674092728939,
+        "baseline_mae": 99.59490955773359,
+        "improvement_pct": 2.036417964984949,
+        "bias": -92.81831921192352,
+        "p90_absolute_error": 217.10109264641866
+      },
+      "test_outside_support": {
+        "n": 11,
+        "mae": 63.70553879235494,
+        "baseline_mae": 58.60925492206645,
+        "improvement_pct": -8.695356863118464,
+        "bias": -51.46216434739203,
+        "p90_absolute_error": 91.40588459166207
+      },
+      "accepted": {
+        "n": 0
+      },
+      "accepted_fraction": 0.0,
+      "validation_abs_error_q90": 102.96215955050513,
+      "test_interval_coverage": 0.5853211009174312
+    }
+  ],
+  "raw_feature_availability": [
+    {
+      "ship": 1,
+      "raw_rows": 259503,
+      "fields": {
+        "wind_velocity": {
+          "nonmissing": 259503,
+          "unique": 1,
+          "zero": 259503,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "ship_wind_angle": {
+          "nonmissing": 259503,
+          "unique": 1,
+          "zero": 259503,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "draught_aft_side": {
+          "nonmissing": 259503,
+          "unique": 116,
+          "zero": 3,
+          "min": 0.0,
+          "max": 13.2
+        },
+        "draught_fore_side": {
+          "nonmissing": 259503,
+          "unique": 99,
+          "zero": 1,
+          "min": 0.0,
+          "max": 12.3
+        },
+        "Ship_SpeedLOG": {
+          "nonmissing": 259503,
+          "unique": 139,
+          "zero": 85604,
+          "min": 0.0,
+          "max": 14.9
+        }
+      }
+    },
+    {
+      "ship": 3,
+      "raw_rows": 264175,
+      "fields": {
+        "wind_velocity": {
+          "nonmissing": 264175,
+          "unique": 1,
+          "zero": 264175,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "ship_wind_angle": {
+          "nonmissing": 264175,
+          "unique": 1,
+          "zero": 264175,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "draught_aft_side": {
+          "nonmissing": 264175,
+          "unique": 1,
+          "zero": 0,
+          "min": 13.2,
+          "max": 13.2
+        },
+        "draught_fore_side": {
+          "nonmissing": 264175,
+          "unique": 1,
+          "zero": 0,
+          "min": 12.0,
+          "max": 12.0
+        },
+        "Ship_SpeedLOG": {
+          "nonmissing": 264175,
+          "unique": 164,
+          "zero": 47908,
+          "min": 0.0,
+          "max": 16.3
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Both ships wind speed/direction are all zero; this does not establish true calm weather. Ship3 draught is constant. Weather response and ship3 draught response cannot be validated.",
+    "Same previously examined holdout: exploratory post-hoc audit, not new independent validation.",
+    "Autocorrelated10min blocks and few voyage days; no confidence or safety guarantee.",
+    "Validation90% absolute-error interval is heuristic, not guaranteed conformal coverage under drift.",
+    "Consumption candidate retains original arithmetic mean wind angle; diagnostic does not repair it.",
+    "Power wind bins use magnitude of mean wind components; fuel bins use mean wind speed, so bins are not interchangeable.",
+    "Nearest-neighbour support thresholds are research heuristics, not a deployment authorization."
+  ],
+  "hanbada": {
+    "selected_days": 7,
+    "train_n": 4,
+    "test_n": 3,
+    "train_speed_range": [
+      10.25,
+      14.86
+    ],
+    "test_speed_supported_n": 2,
+    "test_speed_outside_n": 1,
+    "full_feature_gate": "not_evaluable_without_aligned_wind_draught_STW",
+    "decision": "seven_daily_rows_insufficient_for_validated_rejection_rule"
+  }
+}
