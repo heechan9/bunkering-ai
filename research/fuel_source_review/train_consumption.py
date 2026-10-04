@@ -8,6 +8,8 @@ from scipy.optimize import nnls
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score
 HERE=Path(__file__).resolve().parent
+(HERE/'models').mkdir(exist_ok=True)
+(HERE/'results').mkdir(exist_ok=True)
 FEATURES=['Ship_SpeedLOG','draught_aft_side','draught_fore_side','wind_velocity','ship_wind_angle']
 summary=[]
 with zipfile.ZipFile(HERE/'inputs/DataBioDataset1.zip') as z:
