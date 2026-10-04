@@ -1,0 +1,43 @@
+{
+  "record": "14982712",
+  "license": {
+    "id": "cc-by-nc-4.0"
+  },
+  "files": [
+    {
+      "file": "mmsi-daily-csvs-10-v3-2017.zip",
+      "bytes": 376762715,
+      "md5": "b30ba3a8c40804dc417b8279d4d7e7fb",
+      "sha256": "662fc8ca486f38cccee6460661be4e6257b7881f73edefe4949a82252db04c66",
+      "url": "https://zenodo.org/api/records/14982712/files/mmsi-daily-csvs-10-v3-2017.zip/content"
+    },
+    {
+      "file": "fishing-vessels-v3.csv",
+      "bytes": 114823860,
+      "md5": "b5ba27cedd5426c0bcb8e6009e911cf0",
+      "sha256": "3c62c6be482c4525cd8e187349ee27216b93d0b95d54f234e192c11733dc2c55",
+      "url": "https://zenodo.org/api/records/14982712/files/fishing-vessels-v3.csv/content"
+    },
+    {
+      "file": "README-known-issues-v3.txt",
+      "bytes": 11113,
+      "md5": "cfc37e00ead71adb68849a168f225867",
+      "sha256": "fb0a6846f3b3c567fac3466f261ba750dc57e88a79b5d63a154f4467544dee0a",
+      "url": "https://zenodo.org/api/records/14982712/files/README-known-issues-v3.txt/content"
+    },
+    {
+      "file": "README-fishing-vessels-v3.txt",
+      "bytes": 10068,
+      "md5": "3c8eb8822bfd459f4fe48135be6e5078",
+      "sha256": "5b7097eed951d5131051145fc8dcd3ac3590c8a5f276366404712a9c7bb6ae93",
+      "url": "https://zenodo.org/api/records/14982712/files/README-fishing-vessels-v3.txt/content"
+    },
+    {
+      "file": "README-mmsi-v3.txt",
+      "bytes": 3437,
+      "md5": "f0c95507d4449a3d2edb443bd54c30da",
+      "sha256": "09a508ba75de65918108eaca357da39e3e9d5dd4e28e0f8733f34aa3fe62b4d6",
+      "url": "https://zenodo.org/api/records/14982712/files/README-mmsi-v3.txt/content"
+    }
+  ]
+}

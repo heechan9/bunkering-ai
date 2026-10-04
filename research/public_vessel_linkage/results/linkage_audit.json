@@ -1,0 +1,40 @@
+{
+  "source": "https://zenodo.org/records/14982712",
+  "scope": "2017-09-30 through 2017-10-30 inclusive; daily calendar grid aggregation; exact timezone alignment with DataBio unconfirmed",
+  "registry_2017_rows": 58925,
+  "registry_2017_unique_mmsi": 58925,
+  "registry_duplicate_key_rows_held": 0,
+  "selected_days": 31,
+  "selected_cell_rows": 4685335,
+  "selected_unique_mmsi": 50360,
+  "valid_geometry_and_hours_rows": 4685335,
+  "invalid_geometry_or_hours_rows": 0,
+  "exact_registry_join_rows": 4685335,
+  "exact_registry_join_fraction": 1.0,
+  "vessel_days_hours_above24": 246676,
+  "databio_identity_columns_present": [],
+  "accepted_databio_ship1_matches": 0,
+  "decision": "registry_key_join_passed_daily_hours_quality_review_and_databio_identity_link_held",
+  "limitations": [
+    "MMSI can be reused or spoofed; exact key is not conclusive physical identity.",
+    "No IMO/name in this GFW table; vessel properties may be inferred, not measured.",
+    "Daily 0.1-degree lower-left grid locations are not AIS point tracks or port arrival timestamps.",
+    "No common identifier or positions in DataBio; ship1 match must not be guessed.",
+    "No fuel savings, operating adoption, or causal energy policy validation.",
+    "GFW date bins and unconfirmed DataBio timezone prevent exact interval certification.",
+    "Daily hours above24 are diagnostics and must not be silently capped or interpreted as exact port waiting; distinguish small boundary differences from material overcounting."
+  ],
+  "vessel_day_count": 785225,
+  "vessel_day_hours_quantiles": {
+    "0.0": 0.0,
+    "0.5": 23.6702,
+    "0.9": 24.7654,
+    "0.99": 36.551676,
+    "1.0": 47.9361
+  },
+  "vessel_days_above_24_01h": 228049,
+  "vessel_days_above25h": 70383,
+  "vessel_days_above48h": 0,
+  "duplicate_date_mmsi_grid_rows": 0,
+  "invalid_nine_digit_mmsi_rows": 10428
+}
