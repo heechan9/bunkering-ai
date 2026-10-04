@@ -1,7 +1,7 @@
 {
   "schema": "bunkering-source-catalog/v1",
   "repository": "heechan9/bunkering-ai",
-  "revision": "0e7874de35ccc54d95ffca46b0c55c1ab2f742c2",
+  "revision": "84d5951b87825c4975a252441f1ec097f5589a8a",
   "reviewed_on": "2026-10-01",
   "sources": [
     {
@@ -68,7 +68,7 @@
         "en": "6,028 UPA application rows; not unique voyages"
       },
       "path": "docs/data/upa_review_20260919.md",
-      "sha256": "8daba134938bdfd15b8947a6244145818f5bd5c735a836aa94802643c99faeec"
+      "sha256": "bfd7ecddd1ec7402b9fda39880ca5b8d80307d6b1652cae43223aeb43b6febbf"
     },
     {
       "id": "maritime_review",

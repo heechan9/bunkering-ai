@@ -1,7 +1,7 @@
 {
   "schema": "bunkering-source-catalog/v1",
   "repository": "heechan9/bunkering-ai",
-  "revision": "0e7874de35ccc54d95ffca46b0c55c1ab2f742c2",
+  "revision": "84d5951b87825c4975a252441f1ec097f5589a8a",
   "reviewed_on": "2026-10-01",
   "sources": [
     {
@@ -37,7 +37,7 @@
       "path": "docs/technical/web_evidence_guard.md",
       "sha256": "e18be17b97e3ab3f2e38149186e0edc454dda1f6ba90c96c6c59b4c4e5db7a62",
       "bytes": 2289,
-      "url": "https://github.com/heechan9/bunkering-ai/blob/0e7874de35ccc54d95ffca46b0c55c1ab2f742c2/docs/technical/web_evidence_guard.md"
+      "url": "https://github.com/heechan9/bunkering-ai/blob/84d5951b87825c4975a252441f1ec097f5589a8a/docs/technical/web_evidence_guard.md"
     },
     {
       "id": "upa",
@@ -70,9 +70,9 @@
         "en": "6,028 UPA application rows; not unique voyages"
       },
       "path": "docs/data/upa_review_20260919.md",
-      "sha256": "8daba134938bdfd15b8947a6244145818f5bd5c735a836aa94802643c99faeec",
-      "bytes": 4403,
-      "url": "https://github.com/heechan9/bunkering-ai/blob/0e7874de35ccc54d95ffca46b0c55c1ab2f742c2/docs/data/upa_review_20260919.md"
+      "sha256": "bfd7ecddd1ec7402b9fda39880ca5b8d80307d6b1652cae43223aeb43b6febbf",
+      "bytes": 4599,
+      "url": "https://github.com/heechan9/bunkering-ai/blob/84d5951b87825c4975a252441f1ec097f5589a8a/docs/data/upa_review_20260919.md"
     },
     {
       "id": "maritime_review",
@@ -107,7 +107,7 @@
       "path": "docs/technical/maritime_domain_review_20260920.md",
       "sha256": "e4dc1f81fbe777eabdb906118c9ea291bda75f53a9b4dad9bfd8c531357f165e",
       "bytes": 4646,
-      "url": "https://github.com/heechan9/bunkering-ai/blob/0e7874de35ccc54d95ffca46b0c55c1ab2f742c2/docs/technical/maritime_domain_review_20260920.md"
+      "url": "https://github.com/heechan9/bunkering-ai/blob/84d5951b87825c4975a252441f1ec097f5589a8a/docs/technical/maritime_domain_review_20260920.md"
     },
     {
       "id": "kmou",
@@ -142,7 +142,7 @@
       "path": "docs/technical/hanbada_comparison_experiment.md",
       "sha256": "8e430c3a5afe779a316ad274845f61b67e5197eb16339afdea7fd0152c38bfa9",
       "bytes": 3850,
-      "url": "https://github.com/heechan9/bunkering-ai/blob/0e7874de35ccc54d95ffca46b0c55c1ab2f742c2/docs/technical/hanbada_comparison_experiment.md"
+      "url": "https://github.com/heechan9/bunkering-ai/blob/84d5951b87825c4975a252441f1ec097f5589a8a/docs/technical/hanbada_comparison_experiment.md"
     }
   ]
 }
