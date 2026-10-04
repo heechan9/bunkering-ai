@@ -380,3 +380,6 @@ Drive는 `01_원본데이터`, `02_실험결과`, `03_프로젝트논문`,
 | [해양 분야 검토](docs/technical/maritime_domain_review_20260920.md) | 팀 검토 의견과 채택 범위 |
 
 과거 논문·검토·배포 이력은 [진행 상태 문서](docs/PROJECT_STATUS.md)와 각 상세 문서에 보존합니다.
+
+
+외부 소비·출력 검토 최신 상태: [2026-10-05 결과와 적용 범위](docs/technical/external_fuel_power_status_20261005.md). 선박 1 출력 예측은 후속 후보이며, 공식 모델 교체·실제 연료절감 검증은 보류입니다.

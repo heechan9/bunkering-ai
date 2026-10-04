@@ -1,0 +1,172 @@
+{
+  "source": "https://zenodo.org/records/3563390",
+  "md5": "d733e2cfa450e26580295cf3fc2fd7a0",
+  "md5_matches_publisher": true,
+  "sha256": "bafd4a5109f55ad4e9c61a1d87e992b4ae156c004871ea9ae077f5c01c08aaf9",
+  "ships": [
+    {
+      "file": "ship_1.csv",
+      "rows": 259503,
+      "first": "2017-09-30 17:49:14",
+      "last": "2017-10-30 18:39:34",
+      "duplicate_timestamps": 0,
+      "invalid_timestamps": 0,
+      "median_interval_seconds": 10.0,
+      "absent_columns": [
+        "FO_density"
+      ],
+      "fields": {
+        "AE_FO_consumption": {
+          "unit": "KG/H",
+          "missing": 129,
+          "negative": 0,
+          "zero": 38,
+          "min": 0.0,
+          "max": 499.6
+        },
+        "ME_FO_consumption": {
+          "unit": "l/h",
+          "missing": 1,
+          "negative": 0,
+          "zero": 82010,
+          "min": 0.0,
+          "max": 1033.6
+        },
+        "propeller_shaft_output": {
+          "unit": "kW",
+          "missing": 0,
+          "negative": 0,
+          "zero": 82816,
+          "min": 0.0,
+          "max": 4103.5
+        },
+        "ship_speed_actual": {
+          "unit": "knot",
+          "missing": 0,
+          "negative": 0,
+          "zero": 39124,
+          "min": 0.0,
+          "max": 16.2
+        },
+        "Ship_SpeedLOG": {
+          "unit": "knot",
+          "missing": 0,
+          "negative": 0,
+          "zero": 85604,
+          "min": 0.0,
+          "max": 14.9
+        }
+      }
+    },
+    {
+      "file": "ship_2.csv",
+      "rows": 260224,
+      "first": "2017-09-30 09:25:22",
+      "last": "2017-10-31 09:25:12",
+      "duplicate_timestamps": 0,
+      "invalid_timestamps": 0,
+      "median_interval_seconds": 10.0,
+      "absent_columns": [
+        "Ship_SpeedLOG"
+      ],
+      "fields": {
+        "AE_FO_consumption": {
+          "unit": "KG/H",
+          "missing": 6,
+          "negative": 0,
+          "zero": 36,
+          "min": 0.0,
+          "max": 543.012
+        },
+        "FO_density": {
+          "unit": "per unit",
+          "missing": 1,
+          "negative": 0,
+          "zero": 5,
+          "min": 0.0,
+          "max": 0.9
+        },
+        "ME_FO_consumption": {
+          "unit": "l/h",
+          "missing": 53,
+          "negative": 0,
+          "zero": 83697,
+          "min": 0.0,
+          "max": 1605.77
+        },
+        "propeller_shaft_output": {
+          "unit": "kW",
+          "missing": 1,
+          "negative": 13,
+          "zero": 166623,
+          "min": -3650.3,
+          "max": 3930.7
+        },
+        "ship_speed_actual": {
+          "unit": "knot",
+          "missing": 1,
+          "negative": 0,
+          "zero": 260223,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    {
+      "file": "ship_3.csv",
+      "rows": 264175,
+      "first": "2017-09-30 06:12:55",
+      "last": "2017-10-30 20:01:55",
+      "duplicate_timestamps": 0,
+      "invalid_timestamps": 0,
+      "median_interval_seconds": 10.0,
+      "absent_columns": [
+        "ship_speed_actual"
+      ],
+      "fields": {
+        "AE_FO_consumption": {
+          "unit": "KG/H",
+          "missing": 43,
+          "negative": 0,
+          "zero": 34,
+          "min": 0.0,
+          "max": 499.4
+        },
+        "FO_density": {
+          "unit": "per unit",
+          "missing": 0,
+          "negative": 0,
+          "zero": 264175,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "ME_FO_consumption": {
+          "unit": "l/h",
+          "missing": 0,
+          "negative": 0,
+          "zero": 118203,
+          "min": 0.0,
+          "max": 1076.4
+        },
+        "propeller_shaft_output": {
+          "unit": "kW",
+          "missing": 0,
+          "negative": 0,
+          "zero": 121192,
+          "min": 0.0,
+          "max": 4329.5
+        },
+        "Ship_SpeedLOG": {
+          "unit": "knot",
+          "missing": 0,
+          "negative": 0,
+          "zero": 47908,
+          "min": 0.0,
+          "max": 16.3
+        }
+      }
+    }
+  ],
+  "unit_issue": "Documentation lists main engine l/h, auxiliary kg/h; do not add without justified conversion. Total documented unit kg is ambiguous relative to rate inputs.",
+  "status": "downloaded_and_audited_not_trained_not_adopted"
+}

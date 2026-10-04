@@ -1,0 +1,4 @@
+inputs/*.xlsx
+inputs/*pdf*
+results/episodes.csv
+__pycache__/

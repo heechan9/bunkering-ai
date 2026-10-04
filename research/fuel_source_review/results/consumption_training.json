@@ -1,0 +1,134 @@
+{
+  "status": "trained_external_candidates_not_adopted",
+  "python": "3.12.14",
+  "sklearn": "1.8.0",
+  "input_sha256": "bafd4a5109f55ad4e9c61a1d87e992b4ae156c004871ea9ae077f5c01c08aaf9",
+  "ships": [
+    {
+      "ship": 1,
+      "raw_rows": 259503,
+      "eligible_10min_blocks": 2903,
+      "split_counts": {
+        "train": 1918,
+        "validation": 479,
+        "test": 489
+      },
+      "split_ranges": {
+        "train": [
+          "2017-09-30 17:50:00",
+          "2017-10-21 16:50:00"
+        ],
+        "validation": [
+          "2017-10-22 04:20:00",
+          "2017-10-26 04:50:00"
+        ],
+        "test": [
+          "2017-10-26 07:50:00",
+          "2017-10-30 18:00:00"
+        ]
+      },
+      "features": [
+        "Ship_SpeedLOG",
+        "draught_aft_side",
+        "draught_fore_side",
+        "wind_velocity",
+        "ship_wind_angle"
+      ],
+      "target": "ME_FO_consumption L/h",
+      "speed": "SpeedLOG water-relative; no cross-ship mixing",
+      "cubic_coefficients": [
+        394.7404682562417,
+        0.1324111731580086
+      ],
+      "chosen_leaves": 7,
+      "metrics": {
+        "train_mean": {
+          "mae_L_h": 71.76743388612742,
+          "rmse_L_h": 100.17516095062483,
+          "r2": -6.541672736837256e-08,
+          "predicted_volume_bias_pct": -0.0036679646252757436
+        },
+        "nonnegative_speed_cubed": {
+          "mae_L_h": 30.386513519134414,
+          "rmse_L_h": 45.53630298093903,
+          "r2": 0.7933690051200949,
+          "predicted_volume_bias_pct": 0.09540241518304349
+        },
+        "speed_cubed_residual_ml": {
+          "mae_L_h": 33.014757382892626,
+          "rmse_L_h": 47.02177382164364,
+          "r2": 0.7796678121214001,
+          "predicted_volume_bias_pct": 0.024530547532397584
+        }
+      },
+      "hybrid_mae_improvement_vs_cubic_pct": -8.64937618494206
+    },
+    {
+      "ship": 3,
+      "raw_rows": 264175,
+      "eligible_10min_blocks": 2369,
+      "split_counts": {
+        "train": 1609,
+        "validation": 201,
+        "test": 545
+      },
+      "split_ranges": {
+        "train": [
+          "2017-09-30 06:20:00",
+          "2017-10-18 20:40:00"
+        ],
+        "validation": [
+          "2017-10-19 03:30:00",
+          "2017-10-23 02:10:00"
+        ],
+        "test": [
+          "2017-10-23 06:00:00",
+          "2017-10-27 04:10:00"
+        ]
+      },
+      "features": [
+        "Ship_SpeedLOG",
+        "draught_aft_side",
+        "draught_fore_side",
+        "wind_velocity",
+        "ship_wind_angle"
+      ],
+      "target": "ME_FO_consumption L/h",
+      "speed": "SpeedLOG water-relative; no cross-ship mixing",
+      "cubic_coefficients": [
+        440.310225514198,
+        0.1195909653056648
+      ],
+      "chosen_leaves": 7,
+      "metrics": {
+        "train_mean": {
+          "mae_L_h": 156.17497804019064,
+          "rmse_L_h": 182.60592870265185,
+          "r2": -1.4200306601745418,
+          "predicted_volume_bias_pct": -16.5282800661811
+        },
+        "nonnegative_speed_cubed": {
+          "mae_L_h": 98.76767616141737,
+          "rmse_L_h": 126.02068774274596,
+          "r2": -0.15258990512249504,
+          "predicted_volume_bias_pct": -10.98170616422215
+        },
+        "speed_cubed_residual_ml": {
+          "mae_L_h": 96.88330381997878,
+          "rmse_L_h": 127.91278665676711,
+          "r2": -0.1874601431601759,
+          "predicted_volume_bias_pct": -10.868880217663602
+        }
+      },
+      "hybrid_mae_improvement_vs_cubic_pct": 1.907883646425923
+    }
+  ],
+  "limitations": [
+    "Simplified speed-cubed residual ML is not a reproduction of French CFD/MLP method.",
+    "Fishing vessel measured consumption predicts observations, not causal policy savings.",
+    "10min blocks require >=48 paired observations; retain positive fuel and >=2kn mean speed, not verified transit.",
+    "Hanbada transfer reviewed separately on seven daily blocks; no vessel-independent transfer validation.",
+    "No DQN retraining or operating-model replacement."
+  ],
+  "script_sha256": "8b14c2ef913b17ffd67a5bf3e92ea2246abeeb626a0069600bf632de3a48bdbe"
+}
