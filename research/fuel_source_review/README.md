@@ -23,3 +23,8 @@ Place authorized DataBioDataset1.zip in inputs/; audit_databio.py verifies the p
 Run `python research/fuel_source_review/validate_hanbada.py --workbook /absolute/private/workbook.xlsx`, then `python research/fuel_source_review/hanbada_policy_review.py --workbook /absolute/private/workbook.xlsx`. Both require the exact audited workbook SHA256; neither downloads private data. These scripts write aggregate results under results/.
 
 Private/licensed originals, row-level predictions, PDFs, correspondence and weights are excluded from this repository. Acquire inputs under applicable terms. Published JSON is aggregate diagnostic evidence; no operational safety or measured fuel-saving claim follows from it. Hanbada folds include later periods when holding out earlier legs, so they are diagnostic rather than prospective validation.
+
+
+## Condition audit, 2026-10-05
+
+Both ships have all-zero wind speed/direction. Ship3 draught is constant. Weather sensitivity cannot be validated; the four-input MLP has only two varying inputs for ship1 and one for ship3. All8 frozen candidates fail the validation-based baseline replacement gate despite some holdout improvements. [Detailed report](results/condition_diagnostics/판정.md). Run condition_diagnostics.py; optional --hanbada takes the authorized private workbook path.

@@ -113,3 +113,8 @@ AB-LOG 수령 후 읽기 전용 검산 기능, 웹 검토 화면, 논문 v5.5 �
 ## External consumption and shaft-power review — 2026-10-05
 
 DataBio audit, separate consumption/power candidate training, private Hanbada daily-block diagnostics, and Australia aggregate-delay scenarios completed. Ship 1 power MLP improves holdout MAE across three seeds; fuel-model replacement and operational/actual-saving claims remain on hold. [Results and limits](technical/external_fuel_power_status_20261005.md).
+
+
+## 조건별 소비·출력 감사 — 2026-10-05
+
+저장된8개 후보의 기존 MAE 재현 및 속도·흘수·일자별 진단 완료. 선박1·3 풍속/풍향은 전부0, 선박3 흘수는 상수여서 해당 조건 변화 효과를 검증할 수 없다. 선박1 출력 테스트 개선은 유지되지만 학습 조건 내 검증 구간에서3시드 모두 cubic보다 악화했다.8개 후보 모두 검증 MAE 기반 교체 기준 미통과. 한바다7개 일별 기록은 전체 입력 조건 이식에 부족하다. [상세 판정](../research/fuel_source_review/results/condition_diagnostics/판정.md).
