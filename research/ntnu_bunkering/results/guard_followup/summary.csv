@@ -1,0 +1,13 @@
+demand_error,policy,n,safe_rate,feasible_rate,gated_steps
+0.0,frozen,600,1.0,0.98,0
+0.0,minimum_buffer20,600,1.0,0.98,2034
+0.0,range_gate,600,1.0,0.98,2034
+0.0,range_gate_buffer20,600,1.0,0.98,2034
+0.1,frozen,600,1.0,0.98,0
+0.1,minimum_buffer20,600,1.0,0.98,2034
+0.1,range_gate,600,0.8766666666666667,0.875,2034
+0.1,range_gate_buffer20,600,1.0,0.98,2034
+0.2,frozen,600,1.0,0.98,0
+0.2,minimum_buffer20,600,1.0,0.98,2034
+0.2,range_gate,600,0.8416666666666667,0.84,2034
+0.2,range_gate_buffer20,600,1.0,0.98,2034

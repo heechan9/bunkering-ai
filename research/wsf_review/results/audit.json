@@ -1,0 +1,24 @@
+{
+  "scope": "WSF fleet monthly aggregates; no vessel_id,ROB,physical delivery date or port-level purchase price",
+  "pages": "FY2025 report printed pp8-10; visually transcribed image tables",
+  "budget_sum": 18232062,
+  "budget_report": 18232062,
+  "consumption_sum": 15225993,
+  "consumption_report": 15225993,
+  "notional_sum": 10290000,
+  "notional_report": 10290000,
+  "monthly_settlement_sum": -1952961,
+  "settlement_report": -1952962,
+  "budget_minus_actual_pct": 16.487816901895133,
+  "issues": [
+    "Executive summary describes86533 received; this equals swap6 alone. Appendix B total is negative1952962; do not claim net hedging gain.",
+    "Some headings say FY2024 in FY2025 tables; Attachment A B5-inclusive prices differ from Appendix B swap strike prices; not interchangeable.",
+    "Monthly rounded cash amounts differ from reported total by1USD. Preserve both.",
+    "Budget underspend is not causal fuel saving: service changes and vessel availability confound it.",
+    "FY2021 consumption differs across reports:15391626 in FY2025 hedging text vs15415327 in FY2024 performance table. Do not silently join."
+  ],
+  "source_sha256": {
+    "hedging2025.pdf": "5e193a8b63acd5366110d61d5c97a6576017a4e3cd27488101bc24b852effa66",
+    "performance2024.pdf": "0094d16f7864e95cc0693d5c9682ad7ca65237851d115d081baccc13c2106cfd"
+  }
+}
