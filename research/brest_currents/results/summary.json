@@ -1,0 +1,25 @@
+{
+  "retrospective": true,
+  "fuel_validation": false,
+  "source_sha256": "c1bf2bfe52777be68864ff0ce771bac34956f96772249abd78fa12b8864d55b0",
+  "current_dataset": "cmems_mod_ibi_phy-cur_my_0.027deg_PT1H-m",
+  "version": "202511",
+  "units": {
+    "uo": "m s-1",
+    "vo": "m s-1"
+  },
+  "timestamp_assumption": "AIS ts interpreted as Unix seconds UTC; source documentation confirmation pending",
+  "tracklets": 800,
+  "points": 4000,
+  "complete_tracklets": 409,
+  "status_counts": {
+    "held_access_error": 355,
+    "held_current_missing_or_time": 1435,
+    "held_tracklet_time": 140,
+    "matched": 2070
+  },
+  "method": "nearest grid and hour; missing coastal cell held; no replacement; no extrapolation intended",
+  "script_sha256": "495449463bec965523def6f006c29a87fa3548759a6a07b3ff15de5282970b61",
+  "point_matches_sha256": "a655bc9f960494b2b5021cc776f84fb2755e6aa9379d92596781e4b502b89101",
+  "audit": "4000 counts; matched finite; time offset <=1800 seconds; coordinate deltas <=0.014 degrees; passed"
+}
