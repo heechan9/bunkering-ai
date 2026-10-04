@@ -1,0 +1,56 @@
+[
+  {
+    "error": 0,
+    "policy": "range_gate",
+    "common_feasible_n": 588,
+    "cost_change_pct": -2.7291229711613796
+  },
+  {
+    "error": 0,
+    "policy": "range_gate_buffer20",
+    "common_feasible_n": 588,
+    "cost_change_pct": -2.685289979783567
+  },
+  {
+    "error": 0,
+    "policy": "minimum_buffer20",
+    "common_feasible_n": 588,
+    "cost_change_pct": -2.685289979783567
+  },
+  {
+    "error": 0.1,
+    "policy": "range_gate",
+    "common_feasible_n": 525,
+    "cost_change_pct": -2.914358346881707
+  },
+  {
+    "error": 0.1,
+    "policy": "range_gate_buffer20",
+    "common_feasible_n": 588,
+    "cost_change_pct": -2.497846792971181
+  },
+  {
+    "error": 0.1,
+    "policy": "minimum_buffer20",
+    "common_feasible_n": 588,
+    "cost_change_pct": -2.497846792971181
+  },
+  {
+    "error": 0.2,
+    "policy": "range_gate",
+    "common_feasible_n": 504,
+    "cost_change_pct": -2.9592431486666793
+  },
+  {
+    "error": 0.2,
+    "policy": "range_gate_buffer20",
+    "common_feasible_n": 588,
+    "cost_change_pct": -2.3557426885331134
+  },
+  {
+    "error": 0.2,
+    "policy": "minimum_buffer20",
+    "common_feasible_n": 588,
+    "cost_change_pct": -2.3557426885331134
+  }
+]

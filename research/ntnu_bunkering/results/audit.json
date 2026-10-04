@@ -1,0 +1,80 @@
+{
+  "source_sha256": "aa751f28705336cbca379b1499021cb17b299709a7563f398ef066aa75c6381f",
+  "checkpoint_sha256": "970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392",
+  "network_files": 5,
+  "audit": [
+    {
+      "instance": "Baltic",
+      "ports": 12,
+      "mgo_hypothetical": 0
+    },
+    {
+      "instance": "MED1",
+      "ports": 33,
+      "mgo_hypothetical": 0
+    },
+    {
+      "instance": "MED2",
+      "ports": 32,
+      "mgo_hypothetical": 0
+    },
+    {
+      "instance": "Norwegian coast",
+      "ports": 22,
+      "mgo_hypothetical": 0
+    },
+    {
+      "instance": "WAF",
+      "ports": 20,
+      "mgo_hypothetical": 0
+    }
+  ],
+  "scenarios": 1800,
+  "episodes": 12600,
+  "paired_to_inventory_lp": [
+    {
+      "policy": "fixed_fueling",
+      "common_feasible_n": 1604,
+      "total_cost_gap_pct": 2.61003217075253
+    },
+    {
+      "policy": "price_reactive",
+      "common_feasible_n": 1403,
+      "total_cost_gap_pct": 0.0
+    },
+    {
+      "policy": "safe_stock",
+      "common_feasible_n": 1455,
+      "total_cost_gap_pct": 0.6081819101118047
+    },
+    {
+      "policy": "frozen_dqn",
+      "common_feasible_n": 1624,
+      "total_cost_gap_pct": 3.2466153732884306
+    },
+    {
+      "policy": "guarded_dqn",
+      "common_feasible_n": 1624,
+      "total_cost_gap_pct": 3.2466153732884306
+    },
+    {
+      "policy": "minimum_next_leg",
+      "common_feasible_n": 1626,
+      "total_cost_gap_pct": 0.3871098809692608
+    }
+  ],
+  "limitations": [
+    "Not NTNU full network design replication; five network files vs six advertised instances.",
+    "20 seeded three-call round trips per network, six vessel sizes, speeds10/14/18; routes are constructed, not observed voyages.",
+    "14kn consumption uses source;10/18kn use assumed cubic power, not measured response.",
+    "Initial tank50%;NTNU reserve10%;legacy safe-stock trigger15%,refill90% capped95%.",
+    "Frozen DQN six-state mapping; FX1300,SFC0.19 constants; port actions collapsed to refuel here; purchase-before-leg differs from original environment.",
+    "MA30 uses up to30 visited-port prices, NOT30daily market observations. No USDA prices used.",
+    "All prices are static published scenario inputs, not future realized market prices.",
+    "Guarded DQN adds next-leg reserve logic; gains cannot be attributed to DQN learning.",
+    "Inventory LP optimal for fixed route/speed energy cost with terminal inventory valued at minimum route price; no fixed-stop time constraint in solver. Feasibility checked afterwards.",
+    "Time includes sailing and bunkering only; cargo handling, queues,full cargo network constraints omitted.",
+    "Source labels energy_consumption as propulsion energy; conversion efficiency is not supplied here. Energy balance treats it as stored-energy demand proxy, not verified fuel burn.",
+    "No training, deployed model changes, real savings or independent vessel replication."
+  ]
+}

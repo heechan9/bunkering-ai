@@ -1,0 +1,5 @@
+inputs/
+results/episodes.csv
+__pycache__/
+
+results/**/episodes.csv
