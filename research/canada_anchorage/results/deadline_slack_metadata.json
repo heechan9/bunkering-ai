@@ -1,0 +1,18 @@
+{
+  "episodes": 453600,
+  "observations": 63,
+  "source_sha256": {
+    "vancouver_anchor_monthly.csv": "b568a671d1cbbaf0443f27b37050f53de5d00b8c0e6e3d0de7c7a20718a43771",
+    "australia_waterline71_original_cells.csv": "d6e33930b50929d088944d65291f4ca74f7da02bd0b5dc8683dc47b77f54bcef",
+    "slack_experiment.py": "5badc9bf89366f9062f86b11bed160328d85faa942ec823010caf80d346b98e6",
+    "deadline_simulator.py": "b6e5f98d73a618f17d79631ca2004c348e5b86e5eebffd10835ccf964a349d58"
+  },
+  "validated_default_parity_cases": 1200,
+  "limitations": [
+    "synthetic fuel units; no measured fuel savings",
+    "aggregate means, not individual distributions",
+    "Australia excludes waits under two hours; proxy sets excluded delay to zero",
+    "single port delay; no auxiliary-engine fuel",
+    "buffer purchase policy only; no DQN training"
+  ]
+}

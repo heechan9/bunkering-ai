@@ -108,3 +108,8 @@ AB-LOG 수령 후 읽기 전용 검산 기능, 웹 검토 화면, 논문 v5.5 �
 
 - 자료 수령 준비 도구 완료: [항차 CSV 검토·원자료 변경 감지·웹 정본 생성](technical/voyage_intake.md). 실제 해기원 자료 분석은 수령 후 진행.
 
+
+
+## External consumption and shaft-power review — 2026-10-05
+
+DataBio audit, separate consumption/power candidate training, private Hanbada daily-block diagnostics, and Australia aggregate-delay scenarios completed. Ship 1 power MLP improves holdout MAE across three seeds; fuel-model replacement and operational/actual-saving claims remain on hold. [Results and limits](technical/external_fuel_power_status_20261005.md).

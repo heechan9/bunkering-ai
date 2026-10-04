@@ -1,0 +1,12 @@
+{
+  "rows": 50,
+  "matched_port_period_keys": 50,
+  "anchor_counts_match": 50,
+  "max_absolute_difference": {
+    "anchor_share_pct": 0.04838709677419395,
+    "mean_anchor_hours": 0.05000000000000071,
+    "median_anchor_hours": 0.05000000000000071
+  },
+  "status": "PDF transcription matches original XLSX to published one-decimal precision",
+  "sha256": "2693f150645b91a05308766213dc3725fbbec371cf4b10c9e698c34d16dea1e6"
+}

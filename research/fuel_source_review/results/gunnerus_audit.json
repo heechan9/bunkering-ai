@@ -1,0 +1,23 @@
+{
+  "rows": 7800,
+  "fuel_columns": {
+    "engine1_fuel_consumption": {
+      "valid": 6133,
+      "min": 8.6,
+      "max": 46.6
+    },
+    "engine2_fuel_consumption": {
+      "valid": 6132,
+      "min": 11.4,
+      "max": 43.4
+    },
+    "engine3_fuel_consumption": {
+      "valid": 6130,
+      "min": 0.0,
+      "max": 0.0
+    }
+  },
+  "fuel_units": "as logged; unresolved",
+  "context": "single 130 minute DP wave-shielding experiment; not transit",
+  "sha256": "704764c1d38808e4edf9d8eb79d6e43601792af3bd8ef53f70e73d9de4551e74"
+}

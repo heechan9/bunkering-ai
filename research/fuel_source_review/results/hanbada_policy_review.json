@@ -1,0 +1,199 @@
+{
+  "source_sha256": "eaf7945109e2675ba8dbd6716d357f4babe737c6f36195f3a8f4da8c21af6665",
+  "selected_blocks": 7,
+  "selected_hours": 168,
+  "selected_observed_me_kL": 67.7,
+  "selected_observed_aux_boiler_kL": 29.2,
+  "leave_one_leg_out": [
+    {
+      "held_out_leg": 1,
+      "train_count": 6,
+      "test_count": 1,
+      "coefficients": [
+        11.67581765945581,
+        0.1999099668820561
+      ],
+      "mae_L_h": 35.290320172135836,
+      "volume_bias_pct": 18.41234095937523,
+      "test_speed_outside_train_range": 1
+    },
+    {
+      "held_out_leg": 2,
+      "train_count": 6,
+      "test_count": 1,
+      "coefficients": [
+        27.82284713624018,
+        0.1796665353524219
+      ],
+      "mae_L_h": 132.62311076093192,
+      "volume_bias_pct": -17.683081434790925,
+      "test_speed_outside_train_range": 0
+    },
+    {
+      "held_out_leg": 3,
+      "train_count": 4,
+      "test_count": 3,
+      "coefficients": [
+        0.0,
+        0.20434863610898124
+      ],
+      "mae_L_h": 28.36510095851769,
+      "volume_bias_pct": 1.8285325475136505,
+      "test_speed_outside_train_range": 0
+    },
+    {
+      "held_out_leg": 4,
+      "train_count": 5,
+      "test_count": 2,
+      "coefficients": [
+        0.0,
+        0.21627312630197817
+      ],
+      "mae_L_h": 59.92131756457914,
+      "volume_bias_pct": 10.812869334961661,
+      "test_speed_outside_train_range": 1
+    }
+  ],
+  "out_of_fold_mae_L_h": 53.264481276825585,
+  "out_of_fold_volume_bias_pct": 1.2976584789641255,
+  "full_fit_coefficients": [
+    0.0,
+    0.2035109572923728
+  ],
+  "scenarios": [
+    {
+      "speed_reduction_pct": 0,
+      "extra_time_total_selected_blocks_h": 0.0,
+      "extra_time_per_24h_block_h": 0.0,
+      "estimated_volume_saving_pct_full_fit": 0.0,
+      "fold_coefficient_sensitivity_range_pct": [
+        0.0,
+        1.4610623381341027e-14
+      ],
+      "minimum_scenario_speed_kn": 10.25,
+      "below_selected_observed_speed_range_blocks": 0,
+      "deadline_checks": [
+        {
+          "assumed_slack_h": 0,
+          "selected_blocks_time_budget_feasible": true
+        },
+        {
+          "assumed_slack_h": 6,
+          "selected_blocks_time_budget_feasible": true
+        },
+        {
+          "assumed_slack_h": 12,
+          "selected_blocks_time_budget_feasible": true
+        },
+        {
+          "assumed_slack_h": 24,
+          "selected_blocks_time_budget_feasible": true
+        }
+      ]
+    },
+    {
+      "speed_reduction_pct": 2.0,
+      "extra_time_total_selected_blocks_h": 3.42857142857142,
+      "extra_time_per_24h_block_h": 0.4897959183673457,
+      "estimated_volume_saving_pct_full_fit": 2.153286282300769,
+      "fold_coefficient_sensitivity_range_pct": [
+        1.7909913462215832,
+        2.2291484474789622
+      ],
+      "minimum_scenario_speed_kn": 10.045,
+      "below_selected_observed_speed_range_blocks": 2,
+      "deadline_checks": [
+        {
+          "assumed_slack_h": 0,
+          "selected_blocks_time_budget_feasible": false
+        },
+        {
+          "assumed_slack_h": 6,
+          "selected_blocks_time_budget_feasible": true
+        },
+        {
+          "assumed_slack_h": 12,
+          "selected_blocks_time_budget_feasible": true
+        },
+        {
+          "assumed_slack_h": 24,
+          "selected_blocks_time_budget_feasible": true
+        }
+      ]
+    },
+    {
+      "speed_reduction_pct": 5.0,
+      "extra_time_total_selected_blocks_h": 8.842105263157897,
+      "extra_time_per_24h_block_h": 1.2631578947368425,
+      "estimated_volume_saving_pct_full_fit": 5.229868598129982,
+      "fold_coefficient_sensitivity_range_pct": [
+        4.323460072381037,
+        5.41966455289386
+      ],
+      "minimum_scenario_speed_kn": 9.737499999999999,
+      "below_selected_observed_speed_range_blocks": 2,
+      "deadline_checks": [
+        {
+          "assumed_slack_h": 0,
+          "selected_blocks_time_budget_feasible": false
+        },
+        {
+          "assumed_slack_h": 6,
+          "selected_blocks_time_budget_feasible": false
+        },
+        {
+          "assumed_slack_h": 12,
+          "selected_blocks_time_budget_feasible": true
+        },
+        {
+          "assumed_slack_h": 24,
+          "selected_blocks_time_budget_feasible": true
+        }
+      ]
+    },
+    {
+      "speed_reduction_pct": 10.0,
+      "extra_time_total_selected_blocks_h": 18.66666666666665,
+      "extra_time_per_24h_block_h": 2.6666666666666643,
+      "estimated_volume_saving_pct_full_fit": 9.934207191263521,
+      "fold_coefficient_sensitivity_range_pct": [
+        8.116270683684863,
+        10.314871081059678
+      ],
+      "minimum_scenario_speed_kn": 9.225,
+      "below_selected_observed_speed_range_blocks": 4,
+      "deadline_checks": [
+        {
+          "assumed_slack_h": 0,
+          "selected_blocks_time_budget_feasible": false
+        },
+        {
+          "assumed_slack_h": 6,
+          "selected_blocks_time_budget_feasible": false
+        },
+        {
+          "assumed_slack_h": 12,
+          "selected_blocks_time_budget_feasible": false
+        },
+        {
+          "assumed_slack_h": 24,
+          "selected_blocks_time_budget_feasible": true
+        }
+      ]
+    }
+  ],
+  "actual_deadline": "not present; port event timestamps are actual events, not planned deadlines",
+  "decision": "exploratory_only_no_operating_adoption_no_measured_savings",
+  "assumptions": [
+    "Only7 selected24h records represent parts of4 legs, not complete voyage.",
+    "Observed daily ME kL divided by underway hours is a proxy with unverified exact interval.",
+    "Each daily average speed treated constant; ignore intra-day speed variance.",
+    "Fixed recorded distance approximated by original speed times hours, not charted route change.",
+    "G/E+boiler rate held fixed at recorded kL/24h; hotel load/weather effects unknown.",
+    "Counterfactual consumes modelled ME; baseline also modelled ME, observed auxiliaries.",
+    "Coefficient ranges are sensitivity, not confidence intervals.",
+    "Added-time budget applies only selected blocks; no actual voyage deadline certification.",
+    "Sea/wind/draught/current/engine constraints and safety-stock initial-condition units unresolved.",
+    "Slower speeds outside observed subset are extrapolation; not deployable recommendations."
+  ]
+}
