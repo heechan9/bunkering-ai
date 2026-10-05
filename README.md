@@ -49,6 +49,7 @@
 | 영국 급유·프랑스 항로 연구 | ✅ 별도 합성 실험 완료 | 지연·가격·소비 불확실성과 경로 탐색 비교. 원 논문 전체 재현·실선 적용은 아님. [영국](research/uk_bunkering/README.md) · [프랑스](research/french_routing/README.md) |
 | DataBio 소비·프랑스 참고 출력 모델 | ✅ 학습·조건별 진단 / ⏸ 교체 보류 | 8개 후보 모두 검증 MAE 기반 교체 기준 미통과. 선박 1 출력의 테스트 개선만으로 채택하지 않음. [판정](research/fuel_source_review/results/condition_diagnostics/판정.md) |
 | NTNU 급유정책 이식 | ✅ 동결 모델 비교 / ⏸ 운영 적용 보류 | 1,800개 구성 조건·7전략 평가. 추진효율 미확정, 입력 스케일·전이 차이 확인. [공개 결과](research/ntnu_bunkering/README.md) |
+| NTNU 별도 DQN 재학습 | ✅ 3시드 학습·산출물 검산 / ⏸ 교체 보류 | 3,052조건·18,312평가 행. 최소급유보다 비용이 낮은 조건은 있으나 저가항 규칙보다 우위 없음. 효율은 가정. [재학습 결과](research/ntnu_bunkering/RETRAINING.md) |
 | UPA 인센티브 | ✅ 가정 비용 실험 완료 | 72조합 중 엄격한 비용 우위 전환 11개. 실제 요율·실제 절감액 평가가 아님. [실험](research/upa_incentive/README.md) |
 | 미국 WSF·싱가포르 MPA | ✅ 집계 원본 검산 완료 | 선대 소비·헤지와 항만 판매량의 집계 참고. 개별 선박 ROB·실구매가와 구분. [WSF](research/wsf_review/README.md) · [MPA](research/public_bunker_review/README.md) |
 | 울산세관 LNG 공급 사례 | ✅ 원문·합계 대조 / ⏳ 날짜 확인 대기 | 월 95,604톤, LNG 1,675톤. ATLANTIC TOPAZ 공급일이 세관·UPA 간 불일치. [대조 결과](research/public_bunker_review/results/ulsan_customs_202608_review.md) |

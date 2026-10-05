@@ -1,0 +1,15 @@
+{
+  "artifact_hashes": {
+    "retrain.py": true,
+    "candidate_42.pt": true,
+    "candidate_43.pt": true,
+    "candidate_44.pt": true,
+    "route_manifest.json": true
+  },
+  "evaluation_rows": 18312,
+  "paired_conditions": 3052,
+  "checks": "hashes, complete six-policy pairs, finite costs, safety flags, LP lower bound, summary counts and feasible rates",
+  "training_rerun": false,
+  "torch_checker_rerun": true,
+  "torch_checker_result": "PASS"
+}
