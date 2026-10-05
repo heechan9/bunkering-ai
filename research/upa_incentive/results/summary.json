@@ -1,0 +1,9 @@
+{
+  "scenario_count": 72,
+  "choice_changed_including_ties": 19,
+  "strict_switch_simultaneous_to_separate": 11,
+  "maximum_assumed_discount_KRW": 600000,
+  "official_model_changed": false,
+  "actual_savings_estimated": false,
+  "scope": "conditional incentive sensitivity; all prices, amounts, hours and linear fee rates are assumptions"
+}
