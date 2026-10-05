@@ -52,7 +52,7 @@
 | NTNU 별도 DQN 재학습 | ✅ 3시드 학습·산출물 검산 / ⏸ 교체 보류 | 3,052조건·18,312평가 행. 최소급유보다 비용이 낮은 조건은 있으나 저가항 규칙보다 우위 없음. 효율은 가정. [재학습 결과](research/ntnu_bunkering/RETRAINING.md) |
 | UPA 인센티브 | ✅ 가정 비용 실험 완료 | 72조합 중 엄격한 비용 우위 전환 11개. 실제 요율·실제 절감액 평가가 아님. [실험](research/upa_incentive/README.md) |
 | 미국 WSF·싱가포르 MPA | ✅ 집계 원본 검산 완료 | 선대 소비·헤지와 항만 판매량의 집계 참고. 개별 선박 ROB·실구매가와 구분. [WSF](research/wsf_review/README.md) · [MPA](research/public_bunker_review/README.md) |
-| 울산세관 LNG 공급 사례 | ✅ 원문·합계 대조 / ⏳ 날짜 확인 대기 | 월 95,604톤, LNG 1,675톤. ATLANTIC TOPAZ 공급일이 세관·UPA 간 불일치. [대조 결과](research/public_bunker_review/results/ulsan_customs_202608_review.md) |
+| 울산세관 LNG 공급 사례 | ✅ 원문·합계 대조 / ⏳ 날짜 확인 대기 | 전 연료 월 공급 통계 95,604톤(소비·절감 근거 아님)과 그 안의 LNG 1,675톤(세관 기재 선박별 사례 2건)을 구분. ATLANTIC TOPAZ 공급일이 세관·UPA 간 불일치. [대조 결과](research/public_bunker_review/results/ulsan_customs_202608_review.md) |
 | 실제 선박 적용 | ⏳ 추가 기록 확보·독립 평가 필요 | 같은 선박·기간의 공급량·ROB·소비·가격 연결 미완료. 실제 비용·연료 절감률은 미입증 |
 
 비공개 원자료·최종 제출 파일은 Google Drive에서 관리합니다. 상세 날짜별 이력은 [진행 기록](docs/PROJECT_STATUS.md)을 확인하세요.
