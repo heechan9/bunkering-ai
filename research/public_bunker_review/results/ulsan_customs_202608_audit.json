@@ -1,0 +1,62 @@
+{
+  "source_sha256": "a54d3e9d93ae1429965b3bd10b59e4ef7a337db4aba21c85e782d6acd15c0d6c",
+  "source_kind": "user_supplied_customs_press_release",
+  "release_date": "2026-09-10",
+  "period": "2026-08",
+  "unit": "tonnes",
+  "total": 95604,
+  "previous_month_total": 109921,
+  "previous_year_same_month": 114360,
+  "ship_types_sum": 95604,
+  "fuel_types_sum": 95604,
+  "reported_bunkering_vessels": 277,
+  "ship_types_vessel_count_sum": 277,
+  "arrivals": 683,
+  "bunkering_rate_pct_recalculated": 40.55636896046852,
+  "mom_pct": -13.024808726267045,
+  "yoy_pct": -16.400839454354667,
+  "events": [
+    {
+      "vessel_name": "ATLANTIC TOPAZ",
+      "fuel": "LNG",
+      "supplied_tonnes": 850,
+      "customs_reported_date": "2026-08-06",
+      "upa_reported_date": "2026-08-08",
+      "date": null,
+      "date_status": "conflicting_official_sources",
+      "imo_candidate": "1020942",
+      "imo_status": "secondary AIS corroboration; primary PDF retrieval blocked",
+      "upa_supply_details": {
+        "supplier_vessel": "BLUE WHALE",
+        "method": "STS",
+        "start_local_approx": "13:00",
+        "duration_hours_approx": 10,
+        "quantity_tonnes_approx": 850
+      }
+    },
+    {
+      "date": "2026-08-28",
+      "vessel_name": "NOCC PACIFIC",
+      "fuel": "LNG",
+      "supplied_tonnes": 825,
+      "imo": "1041831",
+      "imo_source": "https://gard.no/vessels/520386/"
+    }
+  ],
+  "event_quantity_sum": 1675,
+  "ROB": null,
+  "price": null,
+  "independent_consumption": null,
+  "full_operational_linkage": false,
+  "issues": [
+    "Page 1 prints 94,468만톤 for monthly average; likely typo, not used as corrected observation.",
+    "Narrative continued increase conflicts with reported month-on-month decline; use tables.",
+    "Publication date in PDF Sept10 differs from website posting Sept17.",
+    "ATLANTIC TOPAZ date conflict: Customs Aug6 vs UPA Aug8; do not assign a canonical event date."
+  ],
+  "emsa_name_imo_search": {
+    "2024-v246.xlsx": 0,
+    "2025-v59.xlsx": 0
+  },
+  "event_source_contains_IMO_MMSI": false
+}
