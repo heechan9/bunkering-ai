@@ -1,0 +1,176 @@
+{
+  "application": {
+    "sha256": "b42537ebde057e87ef15f91a8c0fca6ab0ee010ff557b78a531112d4e79da1b7",
+    "encoding": "utf-8-sig",
+    "columns": [
+      "입항구분명",
+      "입항년도",
+      "입항항차",
+      "총톤수",
+      "벙커량",
+      "예정시작일",
+      "예정종료일",
+      "등록일"
+    ],
+    "duplicate_excess_rows": 38,
+    "year_voyage_combinations": 99,
+    "date_audit": {
+      "예정시작일": {
+        "missing": 0,
+        "invalid_nonmissing": 0,
+        "min": "2022-01-02",
+        "max": "2024-08-26"
+      },
+      "예정종료일": {
+        "missing": 0,
+        "invalid_nonmissing": 0,
+        "min": "2022-01-02",
+        "max": "2024-08-26"
+      },
+      "등록일": {
+        "missing": 0,
+        "invalid_nonmissing": 0,
+        "min": "2021-12-31",
+        "max": "2024-08-09"
+      }
+    },
+    "all_records": {
+      "rows": 6028,
+      "year_counts": {
+        "2022": 2505,
+        "2023": 2258,
+        "2024": 1265
+      },
+      "periods": {
+        "예정시작일/예정종료일": {
+          "negative_rows": 55,
+          "nonnegative_rows": 5973,
+          "nonnegative_median_calendar_days": 0.0,
+          "nonnegative_mean_calendar_days": 0.3926000334840114,
+          "zero_day_rows": 4552
+        }
+      }
+    },
+    "identical_rows_collapsed_sensitivity_only": {
+      "rows": 5990,
+      "year_counts": {
+        "2022": 2493,
+        "2023": 2237,
+        "2024": 1260
+      },
+      "periods": {
+        "예정시작일/예정종료일": {
+          "negative_rows": 55,
+          "nonnegative_rows": 5935,
+          "nonnegative_median_calendar_days": 0.0,
+          "nonnegative_mean_calendar_days": 0.3942712721145746,
+          "zero_day_rows": 4519
+        }
+      }
+    },
+    "interpretation": "Collapsed rows are a sensitivity comparison, not confirmed erroneous duplicates. Date differences are calendar days, not measured waiting or pumping hours. No vessel linkage or fuel savings inferred."
+  },
+  "allocation": {
+    "sha256": "ba58002a55f93e9f5cb9676ab2d5d5d8b8b40c0953cbdb1a5ef04f951e2090e8",
+    "encoding": "cp949",
+    "columns": [
+      "입항구분명",
+      "입항년도",
+      "입항항차",
+      "예정시작일",
+      "예정종료일",
+      "등록일",
+      "배정종료일",
+      "배정일"
+    ],
+    "duplicate_excess_rows": 2230,
+    "year_voyage_combinations": 222,
+    "date_audit": {
+      "예정시작일": {
+        "missing": 0,
+        "invalid_nonmissing": 0,
+        "min": "2020-05-28",
+        "max": "2025-11-12"
+      },
+      "예정종료일": {
+        "missing": 0,
+        "invalid_nonmissing": 0,
+        "min": "2020-06-04",
+        "max": "2025-11-13"
+      },
+      "등록일": {
+        "missing": 0,
+        "invalid_nonmissing": 0,
+        "min": "2020-06-04",
+        "max": "2025-11-11"
+      },
+      "배정종료일": {
+        "missing": 0,
+        "invalid_nonmissing": 0,
+        "min": "2020-06-04",
+        "max": "2025-11-13"
+      },
+      "배정일": {
+        "missing": 0,
+        "invalid_nonmissing": 0,
+        "min": "2020-06-04",
+        "max": "2025-11-11"
+      }
+    },
+    "all_records": {
+      "rows": 10099,
+      "year_counts": {
+        "2020": 503,
+        "2021": 1626,
+        "2022": 2319,
+        "2023": 2068,
+        "2024": 1937,
+        "2025": 1646
+      },
+      "periods": {
+        "예정시작일/예정종료일": {
+          "negative_rows": 115,
+          "nonnegative_rows": 9984,
+          "nonnegative_median_calendar_days": 0.0,
+          "nonnegative_mean_calendar_days": 0.32311698717948717,
+          "zero_day_rows": 7830
+        },
+        "배정일/배정종료일": {
+          "negative_rows": 5,
+          "nonnegative_rows": 10094,
+          "nonnegative_median_calendar_days": 1.0,
+          "nonnegative_mean_calendar_days": 1.44947493560531,
+          "zero_day_rows": 970
+        }
+      }
+    },
+    "identical_rows_collapsed_sensitivity_only": {
+      "rows": 7869,
+      "year_counts": {
+        "2020": 432,
+        "2021": 1317,
+        "2022": 1722,
+        "2023": 1555,
+        "2024": 1505,
+        "2025": 1338
+      },
+      "periods": {
+        "예정시작일/예정종료일": {
+          "negative_rows": 114,
+          "nonnegative_rows": 7755,
+          "nonnegative_median_calendar_days": 0.0,
+          "nonnegative_mean_calendar_days": 0.3904577691811734,
+          "zero_day_rows": 5799
+        },
+        "배정일/배정종료일": {
+          "negative_rows": 5,
+          "nonnegative_rows": 7864,
+          "nonnegative_median_calendar_days": 1.0,
+          "nonnegative_mean_calendar_days": 1.5062309257375381,
+          "zero_day_rows": 873
+        }
+      }
+    },
+    "interpretation": "Collapsed rows are a sensitivity comparison, not confirmed erroneous duplicates. Date differences are calendar days, not measured waiting or pumping hours. No vessel linkage or fuel savings inferred."
+  }
+}
