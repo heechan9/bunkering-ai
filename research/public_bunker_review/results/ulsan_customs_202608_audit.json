@@ -32,7 +32,8 @@
         "start_local_approx": "13:00",
         "duration_hours_approx": 10,
         "quantity_tonnes_approx": 850
-      }
+      },
+      "event_identity_linkage": "vessel_name_only; IMO not present in event source"
     },
     {
       "date": "2026-08-28",
@@ -40,7 +41,9 @@
       "fuel": "LNG",
       "supplied_tonnes": 825,
       "imo": "1041831",
-      "imo_source": "https://gard.no/vessels/520386/"
+      "imo_source": "https://gard.no/vessels/520386/",
+      "event_identity_linkage": "vessel_name_only; IMO not present in event source",
+      "date_status": "customs_reported; not independently confirmed"
     }
   ],
   "event_quantity_sum": 1675,
@@ -52,11 +55,86 @@
     "Page 1 prints 94,468만톤 for monthly average; likely typo, not used as corrected observation.",
     "Narrative continued increase conflicts with reported month-on-month decline; use tables.",
     "Publication date in PDF Sept10 differs from website posting Sept17.",
-    "ATLANTIC TOPAZ date conflict: Customs Aug6 vs UPA Aug8; do not assign a canonical event date."
+    "ATLANTIC TOPAZ date conflict: Customs Aug6 vs UPA Aug8; do not assign a canonical event date.",
+    "Page 5 other-vessel count ratio prints 67% for 2 -> 3 vessels; 3/2*100 = 150%. Counts and monthly total retained; reported ratio not used."
   ],
   "emsa_name_imo_search": {
     "2024-v246.xlsx": 0,
     "2025-v59.xlsx": 0
   },
-  "event_source_contains_IMO_MMSI": false
+  "event_source_contains_IMO_MMSI": false,
+  "BDR_ledger": null,
+  "pdf_recheck": {
+    "checked_on": "2026-10-05",
+    "source_sha256_matches": true,
+    "source_pages": {
+      "release_date_and_previous_month": 1,
+      "nationality_counts": 4,
+      "ship_types_fuel_types_and_event_footnotes": 5
+    },
+    "method": "pdftotext -layout extraction and visual review of PDF pages 1, 4, 5; arithmetic recalculation",
+    "ship_type_rows_202608": [
+      {
+        "type": "원유운반선",
+        "tonnes": 7375,
+        "vessels": 10
+      },
+      {
+        "type": "석유제품운반선",
+        "tonnes": 34531,
+        "vessels": 109
+      },
+      {
+        "type": "케미컬운반선",
+        "tonnes": 10730,
+        "vessels": 60
+      },
+      {
+        "type": "LPG운반선",
+        "tonnes": 11331,
+        "vessels": 26
+      },
+      {
+        "type": "일반화물선",
+        "tonnes": 20728,
+        "vessels": 48
+      },
+      {
+        "type": "산물선",
+        "tonnes": 7618,
+        "vessels": 21
+      },
+      {
+        "type": "기타선",
+        "tonnes": 3291,
+        "vessels": 3
+      }
+    ],
+    "fuel_rows_202608_tonnes": {
+      "벙커유": 80173,
+      "경유": 13756,
+      "LNG": 1675,
+      "메탄올": null
+    },
+    "dash_handling": "Methanol is printed as a dash; sum numeric cells without asserting an observed zero.",
+    "nationality_rows_202608": [
+      {
+        "nationality": "내국적",
+        "arrivals": 171,
+        "bunkering_vessels": 64
+      },
+      {
+        "nationality": "외국적",
+        "arrivals": 512,
+        "bunkering_vessels": 213
+      }
+    ],
+    "other_vessels_count_ratio": {
+      "previous_year_count": 2,
+      "current_year_count": 3,
+      "reported_pct": 67,
+      "recalculated_pct": 150,
+      "status": "source_internal_arithmetic_inconsistency; original values preserved; no source correction inferred"
+    }
+  }
 }
