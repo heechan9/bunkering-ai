@@ -1,0 +1,368 @@
+{
+  "source": "https://mrv.emsa.europa.eu/#public/emission-report",
+  "files": [
+    {
+      "year": 2024,
+      "version": 246,
+      "sha256": "ff3dc8b9ef4b02f9bd12d63131e290eba7de1332044101842f3b2496cba899cf",
+      "bytes": 9468643,
+      "download_url": "https://mrv.emsa.europa.eu/api/public-emission-report/reporting-period-document/binary/2024/246",
+      "sheets": [
+        {
+          "name": "2024 Full ERs",
+          "rows": 14174,
+          "columns": 113,
+          "unique_ship_imo": 14174,
+          "duplicate_ship_imo_rows": 0,
+          "fuel_missing_or_nonnumeric": 0,
+          "fuel_zero": 1206,
+          "fuel_negative": 0,
+          "distance_intensity_missing_or_nonnumeric": 1212,
+          "sea_time_zero": 1214,
+          "hanbada_name_matches": 1,
+          "ship_types": {
+            "Bulk carrier": 4495,
+            "Container ship": 2159,
+            "Oil tanker": 1981,
+            "Chemical tanker": 1460,
+            "General cargo ship": 1367,
+            "Vehicle carrier": 469,
+            "Ro-pax ship": 429,
+            "Other ship types": 416,
+            "Gas carrier": 368,
+            "LNG carrier": 355,
+            "Ro-ro ship": 229,
+            "Passenger ship": 211,
+            "Refrigerated cargo carrier": 132,
+            "Container/ro-ro cargo ship": 69,
+            "Passenger ship (Cruise Passenger ship)": 18,
+            "Combination carrier": 10,
+            "Other ship types (Offshore)": 6
+          },
+          "positive_numeric_reference_rows": 12959,
+          "reference_by_ship_type": [
+            {
+              "ship_type": "Bulk carrier",
+              "eligible_rows": 3727,
+              "median_reported_fuel_tonnes": 1076.2,
+              "median_reported_kg_per_nm": 84.09
+            },
+            {
+              "ship_type": "Chemical tanker",
+              "eligible_rows": 1406,
+              "median_reported_fuel_tonnes": 1885.5575,
+              "median_reported_kg_per_nm": 80.875
+            },
+            {
+              "ship_type": "Combination carrier",
+              "eligible_rows": 10,
+              "median_reported_fuel_tonnes": 1087.89,
+              "median_reported_kg_per_nm": 96.065
+            },
+            {
+              "ship_type": "Container ship",
+              "eligible_rows": 2098,
+              "median_reported_fuel_tonnes": 5705.823979999999,
+              "median_reported_kg_per_nm": 170.05
+            },
+            {
+              "ship_type": "Container/ro-ro cargo ship",
+              "eligible_rows": 65,
+              "median_reported_fuel_tonnes": 5733.0,
+              "median_reported_kg_per_nm": 136.22
+            },
+            {
+              "ship_type": "Gas carrier",
+              "eligible_rows": 332,
+              "median_reported_fuel_tonnes": 1928.03,
+              "median_reported_kg_per_nm": 80.75
+            },
+            {
+              "ship_type": "General cargo ship",
+              "eligible_rows": 1279,
+              "median_reported_fuel_tonnes": 1236.1,
+              "median_reported_kg_per_nm": 58.59
+            },
+            {
+              "ship_type": "LNG carrier",
+              "eligible_rows": 351,
+              "median_reported_fuel_tonnes": 5708.261,
+              "median_reported_kg_per_nm": 205.18
+            },
+            {
+              "ship_type": "Oil tanker",
+              "eligible_rows": 1857,
+              "median_reported_fuel_tonnes": 2578.28,
+              "median_reported_kg_per_nm": 129.4
+            },
+            {
+              "ship_type": "Other ship types",
+              "eligible_rows": 372,
+              "median_reported_fuel_tonnes": 1889.35,
+              "median_reported_kg_per_nm": 68.60499999999999
+            },
+            {
+              "ship_type": "Other ship types (Offshore)",
+              "eligible_rows": 6,
+              "median_reported_fuel_tonnes": 1052.3899999999999,
+              "median_reported_kg_per_nm": 39.235
+            },
+            {
+              "ship_type": "Passenger ship",
+              "eligible_rows": 207,
+              "median_reported_fuel_tonnes": 8529.82,
+              "median_reported_kg_per_nm": 240.51
+            },
+            {
+              "ship_type": "Passenger ship (Cruise Passenger ship)",
+              "eligible_rows": 18,
+              "median_reported_fuel_tonnes": 5732.52,
+              "median_reported_kg_per_nm": 204.64
+            },
+            {
+              "ship_type": "Refrigerated cargo carrier",
+              "eligible_rows": 118,
+              "median_reported_fuel_tonnes": 1545.7305000000001,
+              "median_reported_kg_per_nm": 81.41
+            },
+            {
+              "ship_type": "Ro-pax ship",
+              "eligible_rows": 424,
+              "median_reported_fuel_tonnes": 9638.165,
+              "median_reported_kg_per_nm": 149.25
+            },
+            {
+              "ship_type": "Ro-ro ship",
+              "eligible_rows": 227,
+              "median_reported_fuel_tonnes": 7558.07,
+              "median_reported_kg_per_nm": 105.09
+            },
+            {
+              "ship_type": "Vehicle carrier",
+              "eligible_rows": 462,
+              "median_reported_fuel_tonnes": 2716.995,
+              "median_reported_kg_per_nm": 102.695
+            }
+          ]
+        },
+        {
+          "name": "2024 Partial ERs",
+          "rows": 1027,
+          "columns": 113,
+          "unique_ship_imo": 1008,
+          "duplicate_ship_imo_rows": 19,
+          "fuel_missing_or_nonnumeric": 0,
+          "fuel_zero": 90,
+          "fuel_negative": 0,
+          "distance_intensity_missing_or_nonnumeric": 92,
+          "sea_time_zero": 91,
+          "hanbada_name_matches": 0,
+          "ship_types": {
+            "Bulk carrier": 356,
+            "Oil tanker": 189,
+            "Container ship": 125,
+            "Chemical tanker": 117,
+            "General cargo ship": 74,
+            "Ro-pax ship": 28,
+            "Gas carrier": 27,
+            "Other ship types": 26,
+            "Vehicle carrier": 25,
+            "Ro-ro ship": 22,
+            "LNG carrier": 21,
+            "Refrigerated cargo carrier": 7,
+            "Passenger ship": 7,
+            "Container/ro-ro cargo ship": 2,
+            "Combination carrier": 1
+          }
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "version": 59,
+      "sha256": "620a34bf0205ae6ea4f440e179bcd253b8a1da6e0c48b7b87e57f576c379cb61",
+      "bytes": 11840930,
+      "download_url": "https://mrv.emsa.europa.eu/api/public-emission-report/reporting-period-document/binary/2025/59",
+      "sheets": [
+        {
+          "name": "2025 Full ERs",
+          "rows": 17346,
+          "columns": 113,
+          "unique_ship_imo": 17346,
+          "duplicate_ship_imo_rows": 0,
+          "fuel_missing_or_nonnumeric": 0,
+          "fuel_zero": 2052,
+          "fuel_negative": 0,
+          "distance_intensity_missing_or_nonnumeric": 2058,
+          "sea_time_zero": 2063,
+          "hanbada_name_matches": 1,
+          "ship_types": {
+            "Bulk carrier": 4837,
+            "General cargo ship": 3008,
+            "Container ship": 2374,
+            "Oil tanker": 2006,
+            "Chemical tanker": 1633,
+            "Other ship types (Offshore)": 590,
+            "Vehicle carrier": 533,
+            "Other ship types": 433,
+            "Ro-pax ship": 425,
+            "Gas carrier": 418,
+            "LNG carrier": 408,
+            "Ro-ro ship": 243,
+            "Passenger ship (Cruise Passenger ship)": 207,
+            "Refrigerated cargo carrier": 125,
+            "Container/ro-ro cargo ship": 67,
+            "Passenger ship": 34,
+            "Combination carrier": 5
+          },
+          "positive_numeric_reference_rows": 15282,
+          "reference_by_ship_type": [
+            {
+              "ship_type": "Bulk carrier",
+              "eligible_rows": 3731,
+              "median_reported_fuel_tonnes": 1033.17,
+              "median_reported_kg_per_nm": 83.01
+            },
+            {
+              "ship_type": "Chemical tanker",
+              "eligible_rows": 1493,
+              "median_reported_fuel_tonnes": 1754.23,
+              "median_reported_kg_per_nm": 79.8
+            },
+            {
+              "ship_type": "Combination carrier",
+              "eligible_rows": 5,
+              "median_reported_fuel_tonnes": 1075.2,
+              "median_reported_kg_per_nm": 101.46
+            },
+            {
+              "ship_type": "Container ship",
+              "eligible_rows": 2239,
+              "median_reported_fuel_tonnes": 5254.66,
+              "median_reported_kg_per_nm": 175.78
+            },
+            {
+              "ship_type": "Container/ro-ro cargo ship",
+              "eligible_rows": 60,
+              "median_reported_fuel_tonnes": 5821.645,
+              "median_reported_kg_per_nm": 134.215
+            },
+            {
+              "ship_type": "Gas carrier",
+              "eligible_rows": 367,
+              "median_reported_fuel_tonnes": 1889.217,
+              "median_reported_kg_per_nm": 81.55
+            },
+            {
+              "ship_type": "General cargo ship",
+              "eligible_rows": 2844,
+              "median_reported_fuel_tonnes": 848.6500000000001,
+              "median_reported_kg_per_nm": 35.36
+            },
+            {
+              "ship_type": "LNG carrier",
+              "eligible_rows": 394,
+              "median_reported_fuel_tonnes": 7349.88651,
+              "median_reported_kg_per_nm": 191.04500000000002
+            },
+            {
+              "ship_type": "Oil tanker",
+              "eligible_rows": 1714,
+              "median_reported_fuel_tonnes": 2518.917,
+              "median_reported_kg_per_nm": 128.615
+            },
+            {
+              "ship_type": "Other ship types",
+              "eligible_rows": 359,
+              "median_reported_fuel_tonnes": 1598.016,
+              "median_reported_kg_per_nm": 75.4
+            },
+            {
+              "ship_type": "Other ship types (Offshore)",
+              "eligible_rows": 555,
+              "median_reported_fuel_tonnes": 1197.44,
+              "median_reported_kg_per_nm": 106.23
+            },
+            {
+              "ship_type": "Passenger ship",
+              "eligible_rows": 33,
+              "median_reported_fuel_tonnes": 2020.9,
+              "median_reported_kg_per_nm": 76.42
+            },
+            {
+              "ship_type": "Passenger ship (Cruise Passenger ship)",
+              "eligible_rows": 205,
+              "median_reported_fuel_tonnes": 9764.92,
+              "median_reported_kg_per_nm": 263.36
+            },
+            {
+              "ship_type": "Refrigerated cargo carrier",
+              "eligible_rows": 111,
+              "median_reported_fuel_tonnes": 1662.15,
+              "median_reported_kg_per_nm": 82.96
+            },
+            {
+              "ship_type": "Ro-pax ship",
+              "eligible_rows": 418,
+              "median_reported_fuel_tonnes": 9565.75,
+              "median_reported_kg_per_nm": 150.075
+            },
+            {
+              "ship_type": "Ro-ro ship",
+              "eligible_rows": 240,
+              "median_reported_fuel_tonnes": 6748.615,
+              "median_reported_kg_per_nm": 104.105
+            },
+            {
+              "ship_type": "Vehicle carrier",
+              "eligible_rows": 514,
+              "median_reported_fuel_tonnes": 2311.6850000000004,
+              "median_reported_kg_per_nm": 99.69999999999999
+            }
+          ]
+        },
+        {
+          "name": "2025 Partial ERs",
+          "rows": 1532,
+          "columns": 113,
+          "unique_ship_imo": 1492,
+          "duplicate_ship_imo_rows": 40,
+          "fuel_missing_or_nonnumeric": 0,
+          "fuel_zero": 402,
+          "fuel_negative": 0,
+          "distance_intensity_missing_or_nonnumeric": 411,
+          "sea_time_zero": 413,
+          "hanbada_name_matches": 1,
+          "ship_types": {
+            "Bulk carrier": 541,
+            "Container ship": 261,
+            "General cargo ship": 216,
+            "Oil tanker": 178,
+            "Chemical tanker": 150,
+            "Other ship types (Offshore)": 26,
+            "Gas carrier": 26,
+            "Other ship types": 25,
+            "Ro-pax ship": 24,
+            "Vehicle carrier": 23,
+            "Ro-ro ship": 18,
+            "LNG carrier": 16,
+            "Passenger ship (Cruise Passenger ship)": 10,
+            "Refrigerated cargo carrier": 8,
+            "Passenger ship": 6,
+            "Container/ro-ro cargo ship": 4
+          }
+        }
+      ]
+    }
+  ],
+  "decision": "annual_ship_reference_only_not_operational_model_validation",
+  "limitations": [
+    "Full and partial reports are audited separately; never summed together.",
+    "Positive numeric screening is not proof of record accuracy.",
+    "Annual MRV-scope total fuel in mass units does not match the existing 10-minute main-engine L/h target.",
+    "No speed-through-water, draught and wind synchronized series, bunkering event or ROB sequence is provided.",
+    "No inferred distance/speed derived from fuel targets is fed back as a predictor.",
+    "Hanbada name search is not an IMO-based identity verification.",
+    "No model retraining, replacement or causal fuel-saving claim."
+  ]
+}
