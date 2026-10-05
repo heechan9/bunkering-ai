@@ -1,0 +1,43 @@
+{
+  "source_sha256": "aa751f28705336cbca379b1499021cb17b299709a7563f398ef066aa75c6381f",
+  "efficiencies": [
+    1.0,
+    0.5,
+    0.4
+  ],
+  "counts": {
+    "train": {
+      "all": 7200,
+      "capacity_feasible": 7200
+    },
+    "validation": {
+      "all": 1440,
+      "capacity_feasible": 1440
+    },
+    "test": {
+      "all": 2160,
+      "capacity_feasible": 2160
+    },
+    "external": {
+      "all": 900,
+      "capacity_feasible": 892
+    }
+  },
+  "production_model_changed": false,
+  "runtime": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "torch": "2.14.1+cpu",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.17.0"
+  },
+  "artifact_sha256": {
+    "retrain.py": "3e6cd9966dfcbd88c71cd05a7ceb987b398b4f0b18fe2a8f21669f51830cf373",
+    "candidate_42.pt": "5839ae9aea03b86c0aa0a77a04c930bf04e9efc825545d640dd0cd0343eed758",
+    "candidate_43.pt": "97291001eb3d72bed2608993b1a79000601876c62e495d4f10dfee3a6442b992",
+    "candidate_44.pt": "1f256b519499189b7e9aae647885a2d0a7b567223f0fdfac9985f17386ed3eac",
+    "route_manifest.json": "c0ae69f9b33009bfbd2a4cff0763a49ea1eb9ffa9569c8e8b90d681c4e968c18"
+  },
+  "validation": "check_retraining.py passed",
+  "decision": "Do not replace production model: no advantage over cheaper-port rule; efficiency unresolved."
+}

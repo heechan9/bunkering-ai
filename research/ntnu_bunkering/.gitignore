@@ -3,3 +3,5 @@ results/episodes.csv
 __pycache__/
 
 results/**/episodes.csv
+
+results/retraining/candidate_*.pt
