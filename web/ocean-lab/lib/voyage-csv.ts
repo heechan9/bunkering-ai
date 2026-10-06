@@ -12,7 +12,9 @@ export function parseCSV(text:string):string[][]{
  if(rows[0].some(h=>!h.trim())||new Set(rows[0]).size!==rows[0].length)throw Error('Empty or duplicate header');
  if(rows.some(r=>r.length!==rows[0].length))throw Error('Inconsistent column count');return rows;
 }
-export function exportCSV(rows:unknown[][]){return '\uFEFF'+rows.map(row=>row.map(v=>{let s=String(v??'');if(/^[\s]*[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}).join(',')).join('\r\n')}
+// Finite number values are computed by this app (not user text), so they stay numeric (-5, -0.5, 0).
+// Every string, including numeric-looking user text, keeps the spreadsheet formula-injection guard.
+export function exportCSV(rows:unknown[][]){return '\uFEFF'+rows.map(row=>row.map(v=>{let s=String(v??'');if(!(typeof v==='number'&&Number.isFinite(v))&&/^[\s]*[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}).join(',')).join('\r\n')}
 export function reviewVoyages(rows:string[][],tolerance:number):Review[]{
  if(!Number.isFinite(tolerance)||tolerance<0)throw Error('Invalid tolerance');
  const h=rows[0];if(!h||headers.some(k=>!h.includes(k))||h.length!==headers.length)throw Error('Use the template headers');

@@ -13,7 +13,7 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
     "typecheck": "tsc --noEmit --incremental false",
-    "check:regressions": "node scripts/check-localization.mjs && node scripts/check-source-catalog.mjs"
+    "check:regressions": "node scripts/check-localization.mjs && node scripts/check-source-catalog.mjs && node scripts/check-voyage-csv.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
