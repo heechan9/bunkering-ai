@@ -26,7 +26,7 @@
 
 ## 지금 어디까지 완료됐나
 
-2026-10-05, PR #93까지 병합된 공개 근거 기준입니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
+2026-10-07 확인 기준입니다. PR #99까지의 기능 변경과 [Sites 36판 운영 검증](docs/audits/ocean_lab_live_verification_20261007.md)을 반영했습니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
 아래 상태는 각 항목의 확인 범위이며 전체 프로젝트의 검증 완료를 뜻하지 않습니다.
 
 | 연구·개발 단계 | 상태 | 확인된 범위와 남은 일 |
@@ -36,7 +36,7 @@
 | 4시드 재현·연료수지 진단 | ✅ 기록 대조 완료 | 구매·소비·최종잔량·보상 대조. DQN의 높은 보상을 비용 절감으로 해석하지 않음. [독립 대조](docs/technical/reward_diagnostics_results_4seed.md) |
 | 급유 전 부족·예비연료·잔량가치 | ✅ 기존 항차 감사 완료 | 공식 기록의 추가 회계·안전 검사. 새 환경 재학습과 구분. [안전·비용 기준](docs/technical/safety_accounting.md) |
 | 웹 결과·원문 일치 검사 | ✅ 근거 검사 구현 | 요약 70개 값·19,030개 전이 검사와 변조 검사. [검사 범위](docs/technical/web_evidence_guard.md) |
-| Ocean Lab 지도·항차 재생 | 🛠 기능 반영·개선 중 | 지도 제목·지형높이 배치 소스는 [PR #78](https://github.com/heechan9/bunkering-ai/pull/78) 반영. 병합과 실제 배포·모바일 사용 검증은 구분 |
+| Ocean Lab 지도·항차 재생 | ✅ 운영 확인 / 🛠 개선 중 | 기존 Sites 36판에서 PR #99 CSV 숫자 수정, 입력 오류 후 복구, 공유 상태 복원, CSV·GLB 다운로드 확인. 360/390/412px는 로딩 후 정상이며 초기 2~4px 넘침 기록. 실제 휴대폰·iOS Safari·다른 브라우저는 미검증. [운영 검사](docs/audits/ocean_lab_live_verification_20261007.md) |
 | ONS·FuelCast 외부 평가 | ✅ 연구용 연결 | ONS는 통항·우회 맥락, FuelCast는 정규화한 소비 변동. 실제 선박 단위 보정은 미완료. [결정 기록](research/external_validation/DECISIONS.md) |
 | FuelCast 재학습 모델 교체 | ⏸ 보류 | 비교에서 보정 비용 개선 근거 부족. 기존 공식 DQN 유지. [결정 기록](research/external_validation/DECISIONS.md) |
 | 추가 안전재고 정책 | ✅ 연구용 비교 완료 | AdaptiveStock·최소 예비연료 기준선 비교. 공식 모델 교체와 구분. [결정 기록](research/external_validation/DECISIONS.md) |
