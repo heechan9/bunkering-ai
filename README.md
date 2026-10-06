@@ -15,10 +15,10 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Double_DQN-EE4C2C?logo=pytorch&logoColor=white)
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-BunkeringEnv-2D3748)
-![Tests](https://img.shields.io/badge/tests-245_passed-2EA44F)
+![Tests](https://img.shields.io/badge/tests-288_passed-2EA44F)
 
-검증 배지는 main `3b5f95b` 기준 이현수의 2026-09-27 실행 기록입니다. [보고서·로그·캡처 PR #66](https://github.com/heechan9/bunkering-ai/pull/66). 후속 UI·근거 추적은 [작업 기록](docs/audits/pr66_followup_20260927.md)을 확인하세요.
-근거감사 배지도 기존 공식 결과의 검사 기록이며 최신 전체 실행을 뜻하지 않습니다.
+검증 배지는 2026-10-07 Windows 재검사 기록의 **288 passed · 23 subtests passed**를 나타냅니다. 검사 기준 `7df50a5`에 UTF-8 명시 수정을 적용한 작업 트리의 결과이며 수정은 `bcd62be`에 반영됐습니다. [검사 조건·공식 400행 재현·근거 감사 8/8](docs/audits/local_verification_20261007.md). 이번 안내 갱신은 새 테스트 실행이 아닙니다.
+이현수의 2026-09-27 독립 검증(245 passed)은 [PR #66](https://github.com/heechan9/bunkering-ai/pull/66)에 보존합니다. 근거 감사 배지는 공식 결과의 주장 8개 검사이며 실선 성능 검증을 뜻하지 않습니다.
 
 ![Evidence Audit](https://img.shields.io/badge/evidence_audit-8%2F8_passed-2EA44F)
 ![Data](https://img.shields.io/badge/UPA_public_data-6%2C028_rows-0054A6)
