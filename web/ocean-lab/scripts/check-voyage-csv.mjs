@@ -9,6 +9,18 @@ assert(reviewVoyages([headers,row,row],0).every(r=>r.status==='held'));
 const mismatch=[...row];mismatch[9]='80';assert.equal(review(mismatch).status,'review');
 assert.deepEqual(parseCSV(exportCSV([headers,row])),[headers,row]);
 assert(exportCSV([['=SUM(A1)','@test']]).includes("'=SUM"));
+// Numeric export: finite numbers stay numeric; strings (even numeric-looking) keep the formula guard.
+{const cell=v=>parseCSV(exportCSV([['x','y'],[v,'k']]))[1][0];
+ for(const [v,out]of [[-5,'-5'],[-0.5,'-0.5'],[0,'0'],[-0,'0'],[5,'5'],[0.25,'0.25'],[null,''],[undefined,''],['','']])assert.equal(cell(v),out,String(v));
+ for(const v of ['=1+1','+1','-1','@SUM(A1)','-5',' =1','\t=1','\r=1','  -2'])assert.equal(cell(v),"'"+v,JSON.stringify(v));
+ for(const v of [NaN,Infinity])assert.equal(cell(v),String(v));
+ assert.equal(cell(-Infinity),"'-Infinity");
+ assert.equal(cell('safe-text'),'safe-text');}
+// Review export path: a negative residual reaches the file as a number, text fields stay guarded.
+{const bad=[...row];bad[9]='95';const r=review(bad);assert.equal(r.residual,-5);
+ const out=parseCSV(exportCSV([['balance_residual','source_ref'],[r.residual,'=cmd'],[review(row).residual,'ok']]));
+ assert.deepEqual(out.slice(1),[['-5',"'=cmd"],['0','ok']]);}
+console.log('PASS: negative/zero/positive/empty numeric export and formula-guarded text');
 assert.throws(()=>parseCSV('a,a\n1,2'));assert.throws(()=>parseCSV('a,b\n1'));assert.throws(()=>parseCSV('a\n"unfinished'));
 const cp949=new File([new Uint8Array([0x61,0x0a,0xb0,0xa1])],'k.csv');assert.equal((await readCSVFile(cp949,'euc-kr'))[1][0],'가');
 console.log('PASS: CSV, zero/missing, dates, duplicates, units, supply basis, balances, safe export and CP949');

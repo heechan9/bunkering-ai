@@ -18,6 +18,29 @@ from evaluation.paper_audit import (
 from scripts.audit_paper_evidence import main as audit_main
 
 
+# The audit reads only tracked sources and result files. Dependency, build-output and
+# local runtime caches (web/ocean-lab/node_modules, .sites-runtime, dist, ...) are never
+# audit inputs, and copying them can use tens of GB. "build" is tracked source; keep it.
+REPO_COPY_IGNORE = (
+    ".git",
+    "__pycache__",
+    ".venv",
+    "runs",
+    "node_modules",
+    ".sites-runtime",
+    "dist",
+    ".next",
+    ".wrangler",
+    ".pytest_cache",
+)
+
+
+def _copy_repo(destination: Path) -> None:
+    import shutil
+
+    shutil.copytree(".", destination, ignore=shutil.ignore_patterns(*REPO_COPY_IGNORE))
+
+
 def make_claim(**overrides) -> PaperClaim:
     data = {
         "claim_id": "TEST-001",
@@ -103,11 +126,7 @@ def _repo_copy_without_official_results(tmp_path: Path) -> Path:
     import shutil
 
     repo_copy = tmp_path / "repo_without_results"
-    shutil.copytree(
-        ".",
-        repo_copy,
-        ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"),
-    )
+    _copy_repo(repo_copy)
     (repo_copy / "results/evaluation_results.csv").unlink(missing_ok=True)
     (repo_copy / "results/evaluation_manifest.json").unlink(missing_ok=True)
     return repo_copy
@@ -162,7 +181,7 @@ def test_audit_cli_main_missing_evidence_returns_exit_code_1(tmp_path):
 def test_audit_cli_main_clean_checkout_with_eval_csv_returns_exit_code_0(tmp_path):
     import shutil
     repo_copy = tmp_path / "repo"
-    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+    _copy_repo(repo_copy)
 
     # Create valid evaluation results CSV and manifest
     eval_csv = repo_copy / "results/evaluation_results.csv"
@@ -201,7 +220,7 @@ def test_audit_cli_main_clean_checkout_with_eval_csv_returns_exit_code_0(tmp_pat
 def test_audit_cli_tamper_upa_metrics_csv_fails(tmp_path):
     import shutil
     repo_copy = tmp_path / "repo"
-    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+    _copy_repo(repo_copy)
 
     upa_csv = repo_copy / "results/public_data/upa_summary_metrics.csv"
     original_text = upa_csv.read_text(encoding="utf-8")
@@ -222,7 +241,7 @@ def test_audit_cli_tamper_upa_metrics_csv_fails(tmp_path):
 def test_audit_cli_tamper_safe_stock_status_fails(tmp_path):
     import shutil
     repo_copy = tmp_path / "repo"
-    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+    _copy_repo(repo_copy)
 
     spec_file = repo_copy / "docs/technical/state_action_reward_spec.md"
     original_text = spec_file.read_text(encoding="utf-8")
@@ -243,7 +262,7 @@ def test_audit_cli_tamper_safe_stock_status_fails(tmp_path):
 def test_audit_cli_ungrounded_dqn_superiority_claim_fails(tmp_path):
     import shutil
     repo_copy = tmp_path / "repo"
-    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+    _copy_repo(repo_copy)
 
     doc_file = repo_copy / "docs/technical/dqn_design.md"
     # Insert ungrounded claim of DQN outperforming rule-based baseline
@@ -262,7 +281,7 @@ def test_audit_cli_ungrounded_dqn_superiority_claim_fails(tmp_path):
 def test_audit_cli_invalid_evaluation_csv_row_schema_fails(tmp_path):
     import shutil
     repo_copy = tmp_path / "repo"
-    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+    _copy_repo(repo_copy)
 
     eval_csv = repo_copy / "results/evaluation_results.csv"
     eval_json = repo_copy / "results/evaluation_manifest.json"
@@ -286,7 +305,7 @@ def test_audit_cli_invalid_evaluation_csv_row_schema_fails(tmp_path):
 def test_audit_cli_invalid_boolean_string_fails(tmp_path, invalid_bool):
     import shutil
     repo_copy = tmp_path / "repo"
-    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+    _copy_repo(repo_copy)
 
     eval_csv = repo_copy / "results/evaluation_results.csv"
     eval_json = repo_copy / "results/evaluation_manifest.json"
@@ -308,7 +327,7 @@ def test_audit_cli_invalid_boolean_string_fails(tmp_path, invalid_bool):
 def test_audit_cli_empty_evaluation_csv_fails(tmp_path):
     import shutil
     repo_copy = tmp_path / "repo"
-    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+    _copy_repo(repo_copy)
 
     eval_csv = repo_copy / "results/evaluation_results.csv"
     eval_json = repo_copy / "results/evaluation_manifest.json"
@@ -327,7 +346,7 @@ def test_audit_cli_empty_evaluation_csv_fails(tmp_path):
 def test_audit_cli_evaluation_csv_present_but_manifest_missing_is_missing_evidence(tmp_path):
     import shutil
     repo_copy = tmp_path / "repo"
-    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+    _copy_repo(repo_copy)
 
     eval_csv = repo_copy / "results/evaluation_results.csv"
     eval_csv.parent.mkdir(parents=True, exist_ok=True)
@@ -346,7 +365,7 @@ def test_audit_cli_evaluation_csv_present_but_manifest_missing_is_missing_eviden
 def test_audit_cli_evaluation_csv_and_manifest_case_mismatch_fails(tmp_path):
     import shutil
     repo_copy = tmp_path / "repo"
-    shutil.copytree(".", repo_copy, ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"))
+    _copy_repo(repo_copy)
 
     eval_csv = repo_copy / "results/evaluation_results.csv"
     eval_json = repo_copy / "results/evaluation_manifest.json"
@@ -393,11 +412,7 @@ def _repo_copy(tmp_path: Path, name: str = "repo") -> Path:
     import shutil
 
     repo_copy = tmp_path / name
-    shutil.copytree(
-        ".",
-        repo_copy,
-        ignore=shutil.ignore_patterns(".git", "__pycache__", ".venv", "runs"),
-    )
+    _copy_repo(repo_copy)
     return repo_copy
 
 
