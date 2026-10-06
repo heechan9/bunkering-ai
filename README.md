@@ -369,11 +369,12 @@ Drive는 `01_원본데이터`, `02_실험결과`, `03_프로젝트논문`,
 |---|---|
 | [PR #66](https://github.com/heechan9/bunkering-ai/pull/66) | 2026-09-27 main `3b5f95b` 기준 245개 테스트 기록 |
 | [최종 웹 검사](docs/audits/final_web_check_20261002.md) | 관련 Python 25개, 구매 비교·CSV·한영 검사와 소스 동기화 기록 |
+| [운영 웹 확인](docs/audits/ocean_lab_live_verification_20261007.md) | Sites 36판의 실제 CSV·GLB 다운로드, 공유 상태 복원, 데스크톱 360/390/412px 검사 |
 | [근거 감사](docs/technical/paper_evidence_audit.md) | 문서·코드·공식 산출물의 일관성 검사 |
 | [보안 검토](docs/technical/security_review.md) | 당시 오프라인 정적 검토 범위와 미검증 항목 |
 
 테스트 수는 해당 시점의 실행 기록이며 최신 main 전체 재검증 배지가 아닙니다.
-최신 배포본의 실제 브라우저 클릭·모바일·WebGL·다운로드 실사용 검증은 별도로 남아 있습니다.
+2026-10-07 기존 Sites 36판에서 실제 파일 선택·CSV/GLB 다운로드·공유 링크 복원과 데스크톱 브라우저의 360/390/412px 배치를 확인했습니다. 지도 로딩 중에는 2~4px의 일시적 가로 넘침이 관측됐으며, 로딩 완료 후에는 없었습니다. 실제 휴대폰·iOS Safari 및 다른 브라우저의 사용 검증은 남아 있습니다.
 실제 운항 비용절감, 항만별 가격·공급·대기 제약 및 외부 성능 검증도 완료되지 않았습니다.
 [모델 경계와 연구 로드맵](docs/technical/model_boundary_and_research_roadmap.md)
 
