@@ -327,6 +327,16 @@ Drive는 `01_원본데이터`, `02_실험결과`, `03_프로젝트논문`,
 원본 AB-LOG와 실명·이메일이 포함된 최종 논문은 공개 저장소에 추가하지 않습니다.
 과거 Git 기록에는 개인정보가 남아 있을 수 있습니다.
 
+
+### 학습 모델·재현 자료 바로가기
+
+| 자료 | 보관 위치 | 구분 |
+|---|---|---|
+| 기존 4-seed 모델·원본 평가 | [Drive 보관 폴더](https://drive.google.com/drive/folders/1dNGPH5qu2QoWmC66-crlLtSHpJ_tbnxP) | 모델·원본 평가 백업과 독립 재실행 검증 ZIP. [공개 출처·해시](results/diagnostics/review_4seed/provenance.json)와 함께 확인 |
+| 소비·출력 후보 모델, 항만 대기 연구, 공개자료 연결 검토 | [학습모델 및 재현](https://drive.google.com/drive/folders/1rnSBEGCh9byHomAAuu2N4XGiI4lY1pDT) | 하위 폴더별 연구 자료. 공식 DQN 교체·운영 채택 여부는 각 결과의 판정을 따름 |
+
+공식 단일 모델은 위 Release에서 받습니다. Drive ZIP의 원본 평가와 재실행 결과는 서로 다른 기록이므로 원본을 덮어쓰지 않습니다.
+
 ## 현장 참고자료
 
 - **울산항만공사 벙커링정박지 신청현황:** 6,028건의 업무변수·분포를 검토했습니다.
