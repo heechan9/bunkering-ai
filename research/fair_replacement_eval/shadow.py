@@ -551,11 +551,12 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     out.mkdir(parents=True, exist_ok=True)
 
-    from research.fair_replacement_eval.evaluate import base_env_config, scenario_config
+    from research.fair_replacement_eval.evaluate import base_env_config, ensure_hashable_checkpoint, scenario_config
 
     env_config = scenario_config(base_env_config(), crit, "nominal")
     sha, payload, load_error = None, None, None
-    try:  # reading the file for the hash or the payload may fail (missing, unreadable, corrupt): record, do not crash
+    try:  # reading the file for the hash or the payload may fail (missing, unreadable, corrupt, not a regular file): record, do not crash
+        ensure_hashable_checkpoint(args.checkpoint)  # a named pipe or /dev/zero would block the hash forever
         sha = file_sha256(args.checkpoint)
         payload = preflight.load_payload(args.checkpoint)
     except Exception as exc:  # noqa: BLE001

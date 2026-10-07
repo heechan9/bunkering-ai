@@ -654,3 +654,32 @@ def test_summary_reports_unreaped_and_protocol_counters():
     iso = result["planner_isolation"]
     assert iso["workers"]["protocol_errors"] == 0 and iso["unreaped_worker_pids"] == []
     assert "send+wait+receive" in iso["note"]
+
+
+# ---------------------------------------------------------------------- non-regular checkpoint path (same defect class as evaluate.py)
+
+
+def _run_shadow_cli(checkpoint, out):
+    import subprocess
+
+    cmd = [sys.executable, "-m", "research.fair_replacement_eval.shadow", "--checkpoint", str(checkpoint), "--out", str(out), "--seeds", "60000000:60000000"]
+    return subprocess.run(cmd, cwd=ROOT, env={**os.environ, "PYTHONPATH": str(ROOT)}, capture_output=True, text=True, timeout=90)
+
+
+@pytest.mark.skipif(not hasattr(os, "mkfifo"), reason="named pipes need a POSIX platform")
+@pytest.mark.parametrize("kind", ["fifo", "device"])
+def test_shadow_records_a_non_regular_checkpoint_and_runs_no_episode(kind, tmp_path):
+    if kind == "fifo":
+        path = tmp_path / "checkpoint.pt"
+        os.mkfifo(path)
+    else:
+        path = Path("/dev/zero")
+        if not path.exists():
+            pytest.skip("no /dev/zero")
+    out = tmp_path / "out"
+    proc = _run_shadow_cli(path, out)  # before the fix this blocked forever while hashing
+    assert proc.returncode == 3, proc.stderr
+    record = json.loads((out / "preflight.json").read_text(encoding="utf-8"))
+    check = next(c for c in record["checks"] if c["id"] == "checkpoint_file")
+    assert record["overall"] == "fail" and "not a regular file" in " ".join(check["reasons"])
+    assert not (out / "shadow_steps.csv.gz").exists() and not (out / "summary.json").exists()
