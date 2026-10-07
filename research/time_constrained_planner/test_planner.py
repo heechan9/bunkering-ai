@@ -30,4 +30,24 @@ class PlannerTests(unittest.TestCase):
         self.assertAlmostEqual(r['q'][1],.8)
     def test_invalid(self):
         with self.assertRaises(ValueError):plan(dict(d=[float('nan')],p=[.1],fixed=[1],variable=[1],sailing=1,limit=10,cap=1))
+        with self.assertRaises(ValueError):plan("not a dict")
+        with self.assertRaises(ValueError):plan(dict(d=[.1],p=[.1],fixed=[1],variable=[1],sailing=1,limit=10))
+        with self.assertRaises(ValueError):plan(dict(d=[[0.1]],p=[[0.1]],fixed=[[1]],variable=[[1]],sailing=1,limit=10,cap=1))
+
+    def test_numerical_noise_cleaning(self):
+        c = dict(d=[0.1, 0.1], p=[100.0, 200.0], fixed=[5.0, 5.0], variable=[1.0, 1.0], sailing=10.0, limit=20.0, cap=100.0)
+        res = plan(c)
+        self.assertIsNotNone(res)
+        self.assertTrue((res['q'] == 0.0).all())
+        self.assertEqual(res['hours'], 10.0)
+
+    def test_boundary_exact_limits(self):
+        # Demand 0.6 requires q >= 0.2 to maintain safe stock 0.1 (initial 0.5 + 0.2 - 0.6 = 0.1)
+        # Bunkering time = fixed 2.0 + variable 1.0 * 0.2 = 2.2 hours
+        # Total hours = 10.0 + 2.2 = 12.2, matching exact limit 12.2
+        c = dict(d=[0.6], p=[100.0], fixed=[2.0], variable=[1.0], sailing=10.0, limit=12.2, cap=100.0)
+        res = plan(c)
+        self.assertIsNotNone(res)
+        self.assertAlmostEqual(res['hours'], 12.2, places=5)
+
 if __name__=='__main__':unittest.main()
