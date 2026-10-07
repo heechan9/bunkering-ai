@@ -33,6 +33,17 @@ from research.fair_replacement_eval.policies import PlannerPolicy, make_planners
 BASELINES = ("fixed_fueling", "price_reactive", "safe_stock")
 
 
+def _hits_used_ranges(seeds: list[int], crit: dict[str, Any]) -> bool:
+    """True if any seed lies in a range already used (reuse, development, diagnostics, surrogate)."""
+    sets = crit["evaluation_sets"]
+    ranges = [tuple(r["range"]) for r in sets["seed_ranges_already_used"]]
+    for key in ("reuse", "development_holdout"):
+        cfg = sets[key]
+        ranges.append((int(cfg["base_seed"]), int(cfg["base_seed"]) + int(cfg["episodes"]) - 1))
+    lo, hi = min(seeds), max(seeds)
+    return any(not (hi < a or lo > b) for a, b in ranges)
+
+
 def base_env_config() -> dict[str, Any]:
     from scripts.evaluate import load_env_config
 
@@ -180,11 +191,12 @@ def main(argv: list[str] | None = None) -> int:
 
     base = base_env_config()
     legs, reserve = int(base["max_steps"]), float(base["min_safe_fuel"])
-    reuse_cfg, hold_cfg = crit["evaluation_sets"]["reuse"], crit["evaluation_sets"]["holdout"]
+    reuse_cfg, hold_cfg = crit["evaluation_sets"]["reuse"], crit["evaluation_sets"]["confirmation"]
+    th = crit["thresholds"]
     n_reuse = 12 if args.smoke else int(reuse_cfg["episodes"])
-    n_hold = 40 if args.smoke else int(hold_cfg["episodes"])
+    n_conf = 40 if args.smoke else int(hold_cfg["episodes"])
     reuse_seeds = [int(reuse_cfg["base_seed"]) + i for i in range(n_reuse)]
-    hold_seeds = [int(hold_cfg["base_seed"]) + i for i in range(n_hold)]
+    conf_seeds = [int(hold_cfg["base_seed"]) + i for i in range(n_conf)]
     sigma_grid = crit["replacement_criteria"]["forecast_sigma_grid"]
     stops_map = deadline_stop_map(crit, legs)
 
@@ -200,7 +212,7 @@ def main(argv: list[str] | None = None) -> int:
         if train_lo is None:
             return None
         return any(int(train_lo) <= s < train_hi for s in seeds)
-    hold_overlap, reuse_overlap = overlaps(hold_seeds), overlaps(reuse_seeds)
+    conf_overlap, reuse_overlap = overlaps(conf_seeds), overlaps(reuse_seeds)
 
     planner_names = ["planner_ops", "planner_ops_hist"]
     voi_names = ["planner_oracle" if s == 0 else f"planner_fcst_{s:g}" for s in sigma_grid]
@@ -217,21 +229,21 @@ def main(argv: list[str] | None = None) -> int:
         if scenario == "nominal":
             names += voi_names + dl_names
         for name in names:
-            jobs.append(("holdout", name, scenario, hold_seeds, scenario_config(base, crit, scenario), ckpt, crit, False))
+            jobs.append(("confirmation", name, scenario, conf_seeds, scenario_config(base, crit, scenario), ckpt, crit, False))
 
     started = time.time()
-    print(f"jobs={len(jobs)} workers={args.workers} holdout_n={n_hold} reuse_n={n_reuse}", flush=True)
+    print(f"jobs={len(jobs)} workers={args.workers} confirmation_n={n_conf} reuse_n={n_reuse}", flush=True)
     raw = run_jobs(jobs, args.workers)
-    holdout: dict[str, dict[str, list[dict[str, Any]]]] = {}
+    confirmation: dict[str, dict[str, list[dict[str, Any]]]] = {}
     reuse_rows: dict[str, list[dict[str, Any]]] = {}
     for (which, name, scenario), rows in raw.items():
         if which == "reuse":
             reuse_rows[name] = rows
         else:
-            holdout.setdefault(scenario, {})[name] = rows
+            confirmation.setdefault(scenario, {})[name] = rows
 
     print("runtime benchmark (serial)...", flush=True)
-    bench_seeds = hold_seeds[: (10 if args.smoke else 200)]
+    bench_seeds = conf_seeds[: (10 if args.smoke else 200)]
     runtime = runtime_benchmark([*ref_names, *planner_names, "planner_oracle"], ckpt, scenario_config(base, crit, "nominal"), crit, bench_seeds)
 
     print("consistency vs scripts.evaluate ...", flush=True)
@@ -239,29 +251,29 @@ def main(argv: list[str] | None = None) -> int:
 
     gates = {
         "G1_official_incumbent": bool(official),
-        "G2_holdout_disjoint": bool(hold_overlap is False and not set(hold_seeds) & set(reuse_seeds)),
+        "G2_holdout_disjoint": bool(conf_overlap is False and not _hits_used_ranges(conf_seeds, crit)),
         "G3_criteria_hash": True,
-        "G4_holdout_size": n_hold >= 1000,
+        "G4_holdout_size": n_conf >= int(th["min_confirmation_episodes"]),
         "G5_reuse_consistency": bool(consistency["pass"]),
     }
-    decision = evaluate_criteria(holdout, runtime, gates, official, crit, legs, reserve)
-    voi = forecast_sensitivity(holdout["nominal"], sigma_grid, crit)
+    decision = evaluate_criteria(confirmation, runtime, gates, official, crit, legs, reserve)
+    voi = forecast_sensitivity(confirmation["nominal"], sigma_grid, crit)
 
-    summaries = {sc: {name: policy_summary(rows) for name, rows in per.items()} for sc, per in holdout.items()}
-    nominal_time = time_table({n: r for n, r in holdout["nominal"].items() if n in (*ref_names, *planner_names)}, float(crit["env_scenarios"]["nominal"]["fuel_consumption_per_step"]), legs, reserve, crit)
+    summaries = {sc: {name: policy_summary(rows) for name, rows in per.items()} for sc, per in confirmation.items()}
+    nominal_time = time_table({n: r for n, r in confirmation["nominal"].items() if n in (*ref_names, *planner_names)}, float(crit["env_scenarios"]["nominal"]["fuel_consumption_per_step"]), legs, reserve, crit)
     dl_time = {}
     for label in stops_map:
-        rows = holdout["nominal"][f"planner_ops_dl_{label}"]
+        rows = confirmation["nominal"][f"planner_ops_dl_{label}"]
         dl_time[label] = {"deadline_hours": crit["time_overlay"]["deadlines_hours"][label], **policy_summary(rows)}
     reuse_summary = {name: policy_summary(rows) for name, rows in reuse_rows.items()}
     time_by_scenario = {
         sc: time_table({n: r for n, r in per.items() if n in (*ref_names, *planner_names)}, float(crit["env_scenarios"][sc]["fuel_consumption_per_step"]), legs, reserve, crit)
-        for sc, per in holdout.items()
+        for sc, per in confirmation.items()
     }
 
-    for sc, per in holdout.items():
+    for sc, per in confirmation.items():
         for name, rows in per.items():
-            write_episodes(out / "episodes" / f"holdout_{sc}_{name}.csv.gz", rows)
+            write_episodes(out / "episodes" / f"confirmation_{sc}_{name}.csv.gz", rows)
     for name, rows in reuse_rows.items():
         write_episodes(out / "episodes" / f"reuse_nominal_{name}.csv.gz", rows)
 
@@ -272,19 +284,19 @@ def main(argv: list[str] | None = None) -> int:
         "verdict_note": "SYNTHETIC_VALIDATION_ONLY means the incumbent was not the official checkpoint: numbers validate the harness only.",
         "would_pass_all_criteria_if_incumbent_were_official": decision["would_pass_all_if_official"],
         "incumbent": {"checkpoint_file": args.checkpoint.name, "sha256": sha, "official": official, "metadata": meta,
-                      "holdout_overlaps_training_seeds": hold_overlap, "reuse_overlaps_training_seeds": reuse_overlap},
+                      "confirmation_overlaps_training_seeds": conf_overlap, "reuse_overlaps_training_seeds": reuse_overlap},
         "gates": gates,
         "criteria": decision["criteria"],
         "nominal_comparison": decision["nominal_comparison"],
         "forecast_sensitivity": voi,
-        "holdout_summaries": summaries,
-        "holdout_time_nominal": nominal_time,
-        "holdout_time_by_scenario": time_by_scenario,
+        "confirmation_summaries": summaries,
+        "confirmation_time_nominal": nominal_time,
+        "confirmation_time_by_scenario": time_by_scenario,
         "deadline_aware_extension_nominal": dl_time,
         "reuse_summaries": reuse_summary,
         "reuse_consistency": consistency,
         "runtime": runtime,
-        "seeds": {"reuse": [reuse_seeds[0], reuse_seeds[-1]], "holdout": [hold_seeds[0], hold_seeds[-1]]},
+        "seeds": {"reuse": [reuse_seeds[0], reuse_seeds[-1]], "confirmation": [conf_seeds[0], conf_seeds[-1]]},
     }
     manifest = {
         "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),

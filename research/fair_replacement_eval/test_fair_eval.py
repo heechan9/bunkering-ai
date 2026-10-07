@@ -41,17 +41,27 @@ class CriteriaTests(unittest.TestCase):
             common.CRITERIA_PATH.write_bytes(original)
         common.load_criteria()
 
-    def test_holdout_seeds_disjoint_from_reuse_and_default_training(self):
+    def test_confirmation_seeds_unused_and_disjoint(self):
+        from research.fair_replacement_eval.evaluate import _hits_used_ranges
+
         crit = common.load_criteria()
-        reuse = crit["evaluation_sets"]["reuse"]
-        hold = crit["evaluation_sets"]["holdout"]
-        reuse_seeds = set(range(reuse["base_seed"], reuse["base_seed"] + reuse["episodes"]))
-        hold_seeds = set(range(hold["base_seed"], hold["base_seed"] + hold["episodes"]))
-        self.assertFalse(reuse_seeds & hold_seeds)
-        self.assertFalse(hold_seeds & set(range(42, 42 + 5000)))  # default train seed range
+        sets = crit["evaluation_sets"]
+        conf = sets["confirmation"]
+        conf_seeds = list(range(conf["base_seed"], conf["base_seed"] + conf["episodes"]))
+        self.assertFalse(_hits_used_ranges(conf_seeds, crit))
+        self.assertFalse(set(conf_seeds) & set(range(42, 42 + 5000)))  # default train seed range
+        # The development holdout and the surrogate training seeds are recognised as used.
+        dev = sets["development_holdout"]
+        self.assertTrue(_hits_used_ranges([dev["base_seed"]], crit))
         sur = crit["surrogate_for_synthetic_validation"]
-        sur_seeds = set(range(sur["train_seed"], sur["train_seed"] + sur["episodes"]))
-        self.assertFalse(sur_seeds & (reuse_seeds | hold_seeds))
+        self.assertTrue(_hits_used_ranges([sur["train_seed"] + 5], crit))
+        self.assertTrue(_hits_used_ranges([42], crit))
+        self.assertTrue(_hits_used_ranges([30000100], crit))  # diagnostic range
+
+    def test_development_holdout_not_a_decision_set(self):
+        sets = common.load_criteria()["evaluation_sets"]
+        self.assertIn("DEVELOPMENT", sets["development_holdout"]["role"])
+        self.assertIn("pass/fail", sets["confirmation"]["role"])
 
 
 class DynamicsTests(unittest.TestCase):
@@ -245,13 +255,66 @@ class DecisionTests(unittest.TestCase):
         self.assertFalse(judged["zero_stop"]["judged"])
         self.assertTrue(judged["one_stop"]["judged"])
 
+    def _with_thresholds(self, **changes):
+        import copy
+
+        crit = copy.deepcopy(self.crit)
+        crit["thresholds"].update(changes)
+        return crit
+
+    def _eval_crit(self, crit):
+        return evaluate_criteria(self.hold, self.runtime, self.gates, True, crit, 30, 0.15)
+
+    def test_no_numeric_threshold_is_hard_coded_in_decision_code(self):
+        import re
+
+        source = Path(common.HERE / "decision.py").read_text(encoding="utf-8")
+        body = source.split("def evaluate_criteria", 1)[1]
+        for literal in ("0.005", "0.01", "0.9", "50.0", "1000", "97.5", "2.5"):
+            self.assertIsNone(re.search(r"(?<![\w.])" + re.escape(literal) + r"(?![\w])", body), literal)
+
+    def test_thresholds_in_criteria_change_the_actual_decision(self):
+        base = self._eval_crit(self.crit)
+        self.assertEqual(base["verdict"], "REPLACEMENT_EVIDENCE_SUFFICIENT")
+        # The candidate is cheaper than the incumbent here; demanding a 50% saving must fail.
+        out = self._eval_crit(self._with_thresholds(cost_upper_bound=-0.5))
+        self.assertFalse(out["criteria"]["R2_cost"]["pass"])
+        self.assertEqual(out["verdict"], "REPLACEMENT_EVIDENCE_INSUFFICIENT")
+        # Runtime bound read from criteria.
+        out = self._eval_crit(self._with_thresholds(runtime_p99_ms=1.0))
+        self.assertFalse(out["criteria"]["R4_runtime"]["pass"])
+        # Joint-safe share requirement read from criteria (share is 1.0, so >1 must fail).
+        out = self._eval_crit(self._with_thresholds(min_joint_safe_share=1.01))
+        self.assertFalse(out["criteria"]["R2_cost"]["pass"])
+        # Safety bound: lower bound is 0.0 for identical safety, so a positive bound must fail.
+        out = self._eval_crit(self._with_thresholds(safety_lower_bound=0.001))
+        self.assertFalse(out["criteria"]["R1_safety"]["pass"])
+        out = self._eval_crit(self._with_thresholds(demand_safety_lower_bound=0.001))
+        self.assertFalse(out["criteria"]["R5_demand_robustness"]["pass"])
+        # Time bound: candidate is better than the incumbent, so only an impossible bound fails.
+        out = self._eval_crit(self._with_thresholds(time_lower_bound=1.5))
+        self.assertFalse(out["criteria"]["R3_time"]["pass"])
+
+    def test_candidate_depletion_limit_is_configurable(self):
+        seeds = list(range(1000))
+        rows = _rows(seeds, [True] * 1000, [1000.0 + (i % 5) for i in seeds])
+        rows[3] = {**rows[3], "depleted": 1}  # one depleted episode, still counted safe for the test
+        self.hold["nominal"]["planner_ops"] = rows
+        self.assertFalse(self._eval_crit(self.crit)["criteria"]["R1_safety"]["pass"])
+        self.assertTrue(self._eval_crit(self._with_thresholds(candidate_max_depleted=1))["criteria"]["R1_safety"]["pass"])
+
+    def test_ci_percentiles_are_read_from_criteria(self):
+        wide = self._eval_crit(self._with_thresholds(ci_percentiles=[0.5, 99.5]))["nominal_comparison"]["cost"]
+        narrow = self._eval_crit(self._with_thresholds(ci_percentiles=[25.0, 75.0]))["nominal_comparison"]["cost"]
+        self.assertGreater(wide["hi"] - wide["lo"], narrow["hi"] - narrow["lo"])
+
     def test_bootstrap_identity(self):
         rng = np.random.default_rng(0)
         a = np.ones(50)
-        d = rate_diff(a, a.copy(), rng, 200)
+        d = rate_diff(a, a.copy(), rng, 200, [2.5, 97.5])
         self.assertEqual((d["diff"], d["lo"], d["hi"]), (0.0, 0.0, 0.0))
         c = np.linspace(1, 2, 50)
-        r = relative_cost_diff(c, c, np.ones(50, dtype=bool), rng, 200)
+        r = relative_cost_diff(c, c, np.ones(50, dtype=bool), rng, 200, [2.5, 97.5])
         self.assertEqual(r["rel_diff"], 0.0)
 
 

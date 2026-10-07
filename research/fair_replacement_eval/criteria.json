@@ -3,7 +3,8 @@
   "status": "pre_registered_before_any_evaluation",
   "base_commit": "e0dd59fd912ae8f46eae1f3b5c96b14d98c05e54",
   "amendments": [
-    "A1 (before any evaluation run; after a single smoke test on seed 42 showed that ranking reserve margin above stop count yields a degenerate buy-every-step plan): tie-break order changed from (margin, stops) to (stops, margin) and 'prefer waiting' added as final tie-break. No evaluation result existed. Smoke tests (one episode each, planner variants x demand scenarios, output not recorded) used seed 42 (reuse set, never a pass/fail input) and seed 10000000 (the first holdout seed; its single-episode outcome was seen, which cannot influence aggregate criteria but is disclosed)."
+    "A1 (before any evaluation run; after a single smoke test on seed 42 showed that ranking reserve margin above stop count yields a degenerate buy-every-step plan): tie-break order changed from (margin, stops) to (stops, margin) and 'prefer waiting' added as final tie-break. No evaluation result existed. Smoke tests (one episode each, planner variants x demand scenarios, output not recorded) used seed 42 (reuse set, never a pass/fail input) and seed 10000000 (the first holdout seed; its single-episode outcome was seen, which cannot influence aggregate criteria but is disclosed).",
+    "A2 (after the synthetic validation recorded in results/synthetic_validation under criteria hash 79269406..., and before any evaluation of the official checkpoint): (1) numeric decision thresholds moved from prose into 'thresholds', read directly by decision.py/evaluate.py, with the same values the first synthetic run used; (2) the first 1000-episode holdout is reclassified as 'development_holdout' (seen during design and in the synthetic run; kept, not used for decisions) and a new unseen 'confirmation' set is designated for all pass/fail criteria; (3) no planner parameter, metric or criterion logic changed. The first synthetic result is preserved and must not be described as an independent confirmation."
   ],
   "purpose": "Decide whether evidence exists to replace the operational DQN with a same-observation planner. This file is fixed before any evaluation run. Changing it after results exist invalidates the verdict; evaluate.py refuses to run if its sha256 differs from criteria.sha256.",
   "units_note": "All costs are the repository's Synthetic Cost Index (SCI), a normalized-tank synthetic index. Not a currency; no real saving is claimed.",
@@ -37,19 +38,76 @@
       "base_seed": 42,
       "episodes": 100
     },
-    "holdout": {
-      "role": "New holdout used for all pass/fail criteria.",
+    "development_holdout": {
+      "role": "DEVELOPMENT evaluation only. Its first seed's single-episode outcome was seen in smoke tests and the full set was used in the first synthetic validation (results/synthetic_validation). Preserved and reported, never used for pass/fail, and not an independent confirmation.",
       "base_seed": 10000000,
+      "episodes": 1000
+    },
+    "confirmation": {
+      "role": "CONFIRMATION set for all pass/fail criteria. Designated after the candidate, parameters and thresholds were fixed; no run, smoke test or diagnostic has used these seeds.",
+      "base_seed": 40000000,
       "episodes": 1000,
-      "disjointness_check": "Seeds must not intersect [train_seed, train_seed + n_episodes) read from checkpoint metadata, nor the reuse seeds."
-    }
+      "disjointness_check": "Seeds must not intersect [train_seed, train_seed + n_episodes) read from checkpoint metadata, the reuse seeds, the development holdout, or any range in seed_ranges_already_used."
+    },
+    "seed_ranges_already_used": [
+      {
+        "range": [
+          42,
+          141
+        ],
+        "use": "reuse set / existing evaluation path"
+      },
+      {
+        "range": [
+          5000000,
+          5002999
+        ],
+        "use": "surrogate DQN training"
+      },
+      {
+        "range": [
+          10000000,
+          10000999
+        ],
+        "use": "development holdout (seen)"
+      },
+      {
+        "range": [
+          20000000,
+          20003999
+        ],
+        "use": "diagnostic: price*fx drift of the env under no-op, no policy"
+      },
+      {
+        "range": [
+          30000000,
+          30002999
+        ],
+        "use": "diagnostic: planner_ops vs surrogate DQN cost difference"
+      }
+    ]
   },
   "env_scenarios": {
-    "nominal": {"fuel_consumption_per_step": 0.05, "decision_use": "primary"},
-    "demand_minus_10pct": {"fuel_consumption_per_step": 0.045, "decision_use": "required"},
-    "demand_plus_10pct": {"fuel_consumption_per_step": 0.055, "decision_use": "required"},
-    "demand_minus_20pct": {"fuel_consumption_per_step": 0.04, "decision_use": "report_only"},
-    "demand_plus_20pct": {"fuel_consumption_per_step": 0.06, "decision_use": "report_only"},
+    "nominal": {
+      "fuel_consumption_per_step": 0.05,
+      "decision_use": "primary"
+    },
+    "demand_minus_10pct": {
+      "fuel_consumption_per_step": 0.045,
+      "decision_use": "required"
+    },
+    "demand_plus_10pct": {
+      "fuel_consumption_per_step": 0.055,
+      "decision_use": "required"
+    },
+    "demand_minus_20pct": {
+      "fuel_consumption_per_step": 0.04,
+      "decision_use": "report_only"
+    },
+    "demand_plus_20pct": {
+      "fuel_consumption_per_step": 0.06,
+      "decision_use": "report_only"
+    },
     "note": "Demand error is realized by changing the environment's true consumption while policies keep the nominal 0.05 model. Demand is constant per leg in BunkeringEnv; leg-by-leg demand variation is not modelled (documented limitation)."
   },
   "time_overlay": {
@@ -57,7 +115,13 @@
     "leg_hours": 24.0,
     "stop_hours": 8.0,
     "voyage_hours": "legs * leg_hours + stops * stop_hours",
-    "deadlines_hours": {"sailing_exceeds": 700.0, "zero_stop": 720.0, "one_stop": 728.0, "two_stop": 736.0, "slack": 760.0},
+    "deadlines_hours": {
+      "sailing_exceeds": 700.0,
+      "zero_stop": 720.0,
+      "one_stop": 728.0,
+      "two_stop": 736.0,
+      "slack": 760.0
+    },
     "classes": {
       "sailing_exceeds_deadline": "legs * leg_hours > deadline: sailing alone misses the deadline. Counted separately, excluded from compliance denominators, no claim made. Speed/route change would be a separate extension needing extra assumptions; not implemented as a decision input.",
       "stop_forced_exceeds_deadline": "sailing fits but the minimum number of stops needed for safe arrival (computed by DP for the scenario) exceeds the stops the deadline allows. Counted separately, excluded from compliance denominators.",
@@ -75,45 +139,58 @@
   "statistics": {
     "paired_bootstrap_resamples": 2000,
     "bootstrap_rng_seed": 20261007,
-    "interval": "two-sided 95 percent percentile interval; non-inferiority is judged against the relevant bound",
+    "interval": "percentile interval with endpoints thresholds.ci_percentiles; non-inferiority is judged against the relevant bound",
     "unit": "episode (seed); policies share seeds",
     "note": "No multiplicity correction is applied; because every required criterion must pass, the decision rule is conservative in the AND direction."
   },
   "gates": {
     "G1_official_incumbent": "incumbent checkpoint sha256 equals the official value",
-    "G2_holdout_disjoint": "holdout seeds disjoint from checkpoint training seed range and reuse seeds",
+    "G2_holdout_disjoint": "confirmation seeds disjoint from checkpoint training seed range, reuse seeds, development holdout and seed_ranges_already_used",
     "G3_criteria_hash": "criteria.json sha256 equals criteria.sha256 at evaluation time",
-    "G4_holdout_size": "holdout episodes >= 1000",
+    "G4_holdout_size": "confirmation episodes >= thresholds.min_confirmation_episodes",
     "G5_reuse_consistency": "runner reproduces scripts.evaluate.run_episode exactly on the reuse set for the incumbent and the three rule baselines",
     "failure_verdict": "NOT_DECIDABLE (any gate fails) ; SYNTHETIC_VALIDATION_ONLY (G1 fails because incumbent is a surrogate)"
   },
   "replacement_criteria": {
-    "applies_to": "planner_ops versus incumbent, I_ops only, holdout set",
+    "applies_to": "planner_ops versus incumbent, I_ops only, confirmation set",
     "R1_safety": {
       "scenario": "nominal",
-      "pass_if": "planner safe_arrival count == episodes with fuel_depleted == 0 for planner AND lower 95 percent bound of (planner safe rate - incumbent safe rate) >= -0.005"
+      "pass_if": "planner fuel_depleted episodes <= thresholds.candidate_max_depleted AND lower interval bound of (planner safe rate - incumbent safe rate) >= thresholds.safety_lower_bound"
     },
     "R2_cost": {
       "scenario": "nominal",
-      "pass_if": "joint-safe episodes >= 0.9 * episodes AND upper 95 percent bound of relative paired difference (mean(planner - incumbent) / mean(incumbent) on inventory_adjusted_sci) <= +0.005",
+      "pass_if": "joint-safe share >= thresholds.min_joint_safe_share AND upper interval bound of relative paired difference (mean(planner - incumbent) / mean(incumbent) on inventory_adjusted_sci) <= thresholds.cost_upper_bound",
       "superiority_label": "cost superior if the upper bound < 0; otherwise non-inferior only"
     },
     "R3_time": {
       "scenario": "nominal",
-      "pass_if": "for every deadline scenario in the attainable class: lower 95 percent bound of (planner on_time_safe rate - incumbent on_time_safe rate) >= -0.01; classes sailing_exceeds_deadline and stop_forced_exceeds_deadline are tabulated separately and do not enter pass/fail",
+      "pass_if": "for every deadline scenario in the attainable class: lower interval bound of (planner on_time_safe rate - incumbent on_time_safe rate) >= thresholds.time_lower_bound; classes sailing_exceeds_deadline and stop_forced_exceeds_deadline are tabulated separately and do not enter pass/fail",
       "requires_at_least_one_attainable_scenario": true
     },
     "R4_runtime": {
-      "pass_if": "planner per-decision p99 <= 50 ms on the measuring machine; ratio to incumbent reported for information only",
-      "note": "Absolute operational bound; hardware dependent. A bunkering decision cadence is far slower than 50 ms."
+      "pass_if": "planner per-decision p99 <= thresholds.runtime_p99_ms on the measuring machine; ratio to incumbent reported for information only",
+      "note": "Absolute operational bound; hardware dependent."
     },
     "R5_demand_robustness": {
-      "scenarios": ["demand_minus_10pct", "demand_plus_10pct"],
-      "pass_if": "in each required scenario, lower 95 percent bound of (planner safe rate - incumbent safe rate) >= -0.005 (the R1 non-inferiority test applied to that scenario; the zero-depletion clause of R1 is not required here)",
-      "report_only": ["demand_minus_20pct", "demand_plus_20pct"]
+      "scenarios": [
+        "demand_minus_10pct",
+        "demand_plus_10pct"
+      ],
+      "pass_if": "in each required scenario, lower interval bound of (planner safe rate - incumbent safe rate) >= thresholds.demand_safety_lower_bound (the zero-depletion clause of R1 is not required here)",
+      "report_only": [
+        "demand_minus_20pct",
+        "demand_plus_20pct"
+      ]
     },
     "R6_forecast_error": "Not a replacement criterion. Forecast sensitivity is a value-of-information analysis: report the cost advantage of forecast planners over planner_ops versus sigma, and the break-even sigma* where the paired 95 percent interval no longer excludes zero advantage. A forecast-based replacement needs a separate evaluation in which the incumbent receives the same forecast.",
-    "forecast_sigma_grid": [0.0, 0.005, 0.01, 0.02, 0.05, 0.1]
+    "forecast_sigma_grid": [
+      0.0,
+      0.005,
+      0.01,
+      0.02,
+      0.05,
+      0.1
+    ]
   },
   "verdicts": {
     "REPLACEMENT_EVIDENCE_SUFFICIENT": "all gates pass and R1-R5 pass. This is evidence for a human decision, not a deployment, replacement, or merge.",
@@ -125,7 +202,7 @@
     "assumed_consumption_per_step": 0.05,
     "reserve": 0.15,
     "reserve_margin": 0.0,
-    "cost_tie_tolerance": 1e-9,
+    "cost_tie_tolerance": 1e-09,
     "forecast_model": "persistence"
   },
   "surrogate_for_synthetic_validation": {
@@ -133,5 +210,20 @@
     "episodes": 3000,
     "config": "configs/dqn.yaml unchanged except episode count",
     "note": "Training seeds 5000000..5002999 are disjoint from reuse and holdout seeds. The surrogate is NOT the official model."
+  },
+  "thresholds": {
+    "_note": "Single source of truth. decision.py and evaluate.py read these values; the prose in replacement_criteria refers to them by name.",
+    "safety_lower_bound": -0.005,
+    "candidate_max_depleted": 0,
+    "cost_upper_bound": 0.005,
+    "min_joint_safe_share": 0.9,
+    "time_lower_bound": -0.01,
+    "runtime_p99_ms": 50.0,
+    "demand_safety_lower_bound": -0.005,
+    "min_confirmation_episodes": 1000,
+    "ci_percentiles": [
+      2.5,
+      97.5
+    ]
   }
 }
