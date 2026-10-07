@@ -2,6 +2,9 @@
   "schema_version": 1,
   "status": "pre_registered_before_any_evaluation",
   "base_commit": "e0dd59fd912ae8f46eae1f3b5c96b14d98c05e54",
+  "amendments": [
+    "A1 (before any evaluation run; after a single smoke test on seed 42 showed that ranking reserve margin above stop count yields a degenerate buy-every-step plan): tie-break order changed from (margin, stops) to (stops, margin) and 'prefer waiting' added as final tie-break. No evaluation result existed. Smoke tests (one episode each, planner variants x demand scenarios, output not recorded) used seed 42 (reuse set, never a pass/fail input) and seed 10000000 (the first holdout seed; its single-episode outcome was seen, which cannot influence aggregate criteria but is disclosed)."
+  ],
   "purpose": "Decide whether evidence exists to replace the operational DQN with a same-observation planner. This file is fixed before any evaluation run. Changing it after results exist invalidates the verdict; evaluate.py refuses to run if its sha256 differs from criteria.sha256.",
   "units_note": "All costs are the repository's Synthetic Cost Index (SCI), a normalized-tank synthetic index. Not a currency; no real saving is claimed.",
   "incumbent": {
@@ -12,7 +15,7 @@
   },
   "candidate": {
     "primary": "planner_ops",
-    "primary_definition": "Receding-horizon exact DP over the operational binary refill action, using ONLY the current observation (price, MA30, fx, fuel, route-remaining) plus fixed environment model constants (nominal consumption 0.05/step, refill rule, cap 0.95, reserve 0.15). Price/FX forecast = persistence (current value). Memoryless, like the DQN. Lexicographic objective: (1) safe under assumed consumption, (2) minimum forecast inventory-adjusted cost, (3) maximum minimum reserve margin, (4) fewest stops. Parameters are fixed here and are not tuned on any evaluation seed.",
+    "primary_definition": "Receding-horizon exact DP over the operational binary refill action, using ONLY the current observation (price, MA30, fx, fuel, route-remaining) plus fixed environment model constants (nominal consumption 0.05/step, refill rule, cap 0.95, reserve 0.15). Price/FX forecast = persistence (current value). Memoryless, like the DQN. Lexicographic objective: (1) safe under assumed consumption, (2) minimum forecast inventory-adjusted cost, (3) fewest stops, (4) maximum minimum reserve margin, (5) prefer waiting. Parameters are fixed here and are not tuned on any evaluation seed.",
     "extensions_reported_not_decided": [
       "planner_ops_hist: same, but estimates consumption from the previous observation (uses in-episode observation history; DQN is memoryless)",
       "planner_ops_dl: planner_ops plus knowledge of the deadline (schedule information the DQN does not receive)",
