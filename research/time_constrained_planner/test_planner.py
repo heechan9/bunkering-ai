@@ -35,21 +35,45 @@ class PlannerTests(unittest.TestCase):
         with self.assertRaises(ValueError):plan(dict(d=[.1],p=[.1],fixed=[1],variable=[1],sailing=1,limit=10))
         with self.assertRaises(ValueError):plan(dict(d=[[0.1]],p=[[0.1]],fixed=[[1]],variable=[[1]],sailing=1,limit=10,cap=1))
 
-    def test_numerical_noise_cleaning(self):
-        # Test controlled solver mock returning q_0 = 1e-10 slack
-        # Without q[q < 1e-8] = 0.0, post-processing falsely adds fixed port time (5.0h)
-        # causing total hours (15.0h) to exceed limit (12.0h) and fail assertion.
+    def _plan_with_mock_q(self, q0, c):
         import sys
         from unittest.mock import patch
         from scipy.optimize import OptimizeResult
-        c = dict(d=[0.1], p=[100.0], fixed=[5.0], variable=[1.0], sailing=10.0, limit=12.0, cap=100.0)
-        mock_res = OptimizeResult(x=np.array([1e-10, 0.0]), status=0, success=True)
+        mock_res = OptimizeResult(x=np.array([q0, 0.0]), status=0, success=True)
         planner_mod = sys.modules[plan.__module__]
         with patch.object(planner_mod, 'milp', return_value=mock_res):
-            res = plan(c)
-            self.assertIsNotNone(res)
-            self.assertEqual(res['q'][0], 0.0)
-            self.assertEqual(res['hours'], 10.0)
+            return plan(c)
+
+    def test_numerical_noise_cleaning(self):
+        # Checks q cleanup only: a 1e-10 solver residue is returned as exactly 0.
+        # This does NOT reproduce a stop-time bug: the original code (e0dd59f) adds fixed
+        # port time only for q > 1e-9, so 1e-10 never added stop time there.
+        c = dict(d=[0.1], p=[100.0], fixed=[5.0], variable=[1.0], sailing=10.0, limit=12.0, cap=100.0)
+        res = self._plan_with_mock_q(1e-10, c)
+        self.assertIsNotNone(res)
+        self.assertEqual(res['q'][0], 0.0)
+        self.assertEqual(res['hours'], 10.0)
+
+    def test_residue_above_original_threshold_adds_no_stop_time(self):
+        # Controlled counterexample for the stop-time claim: q = 5e-9 is above the original
+        # 1e-9 stop threshold but below the new 1e-8 cleanup. The original code counted a
+        # 5.0h fixed stop (hours 15.0 > limit 12.0) and failed its own assertion; this code
+        # cleans q to 0 and keeps hours at 10.0.
+        c = dict(d=[0.1], p=[100.0], fixed=[5.0], variable=[1.0], sailing=10.0, limit=12.0, cap=100.0)
+        res = self._plan_with_mock_q(5e-9, c)
+        self.assertEqual(res['q'][0], 0.0)
+        self.assertEqual(res['hours'], 10.0)
+
+    def test_cleanup_threshold_boundary_is_not_a_noise_filter_above_1e8(self):
+        # Limitation: quantities >= 1e-8 tank fraction are treated as real stops. If a solver
+        # returned 2e-8 for a leg that needs no purchase, the fixed time is charged and the
+        # hours assertion fires (the original code behaved the same). Zeroing q < 1e-8 can
+        # also remove a genuinely required purchase of that size, shifting inventory by up to
+        # 1e-8 per leg (the safety assertion tolerates 1e-7 in total); tank fractions are
+        # dimensionless here, so this says nothing about vessel weight or energy capacity.
+        c = dict(d=[0.1], p=[100.0], fixed=[5.0], variable=[1.0], sailing=10.0, limit=12.0, cap=100.0)
+        with self.assertRaises(AssertionError):
+            self._plan_with_mock_q(2e-8, c)
 
     def test_boundary_exact_limits(self):
         # Demand 0.6 requires q >= 0.2 to maintain safe stock 0.1 (initial 0.5 + 0.2 - 0.6 = 0.1)
