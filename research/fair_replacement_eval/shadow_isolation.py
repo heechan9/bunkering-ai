@@ -14,13 +14,17 @@ or ``["error", <short text>, compute_ns]``. The parent reads it with ``recv_byte
 parses it against a fixed schema; it never unpickles anything that came from the planner side. Any
 reply that does not match the schema is a protocol error: the worker is discarded.
 
-Deadline. ``timeout_sec`` bounds the parent-side time from starting to send the request until the
-complete reply has been received and parsed (``roundtrip_ns``). The request and the reply are far
-smaller than the pipe buffer, so sending never waits for the worker; the reply is a single bounded
-message. What the deadline does *not* cover: starting a worker (bounded separately by
-``startup_timeout_sec``) and terminating/joining a worker after a timeout or failure (bounded by
-at most about ``2 * grace_sec``). Planner code that deliberately writes to the worker's pipe is out of
-scope.
+Deadline (a soft per-call budget, not a hard real-time guarantee). ``poll()`` is given the time left
+until ``timeout_sec`` after the request was sent; if no reply starts within it, the call is a timeout
+and the worker is terminated. Once a reply has started, ``recv_bytes`` (size-capped) and the schema
+check run synchronously in the parent and are not preempted: with the built-in worker the reply is a
+single small message so this takes microseconds, but a reply whose header arrives and body does not
+(only possible if planner code writes to the pipe itself, which is out of scope) can wait longer than
+the budget. After the reply is parsed the deadline is checked again: a reply that completes after it is
+discarded and recorded as a timeout, never adopted as a recommendation. Not covered by ``timeout_sec``:
+starting a worker (``startup_timeout_sec`` only applies from after ``Process.start()`` returns, so the
+OS-level spawn call itself is unbounded) and terminating/joining a worker (each join waits at most
+``grace_sec``, so about ``2 * grace_sec`` per worker). OS scheduling delays are not bounded.
 
 Time accounting per call (all in nanoseconds, measured on this machine):
 
@@ -211,7 +215,7 @@ class SubprocessPlanner:
         self.stats: dict[str, Any] = {
             "workers_started": 0, "workers_killed_on_timeout": 0, "workers_died": 0,
             "workers_stopped_normally": 0, "workers_not_reaped": 0, "startup_failures": 0,
-            "protocol_errors": 0,
+            "protocol_errors": 0, "late_replies_discarded": 0,
         }
         self.reaped_pids: list[int] = []
         self.unreaped_pids: list[int] = []
@@ -395,6 +399,13 @@ class SubprocessPlanner:
         except ProtocolError as exc:
             return self._failed(out, t0, "PlannerProtocolError", str(exc), protocol=True)
         out["roundtrip_ns"] = time.perf_counter_ns() - t0
+        if time.perf_counter_ns() > deadline:
+            # The reply completed after the budget: never adopt a late recommendation.
+            out["cleanup_ns"] = self._reap()
+            self.stats["workers_killed_on_timeout"] += 1
+            self.stats["late_replies_discarded"] += 1
+            return {**out, "status": "timeout",
+                    "error": f"TimeoutError: reply completed after the {self.timeout_sec:g}s budget and was discarded; worker terminated"}
         out["compute_ns"] = int(compute_ns)
         out["ipc_ns"] = max(0, out["roundtrip_ns"] - out["compute_ns"])
         if kind == "ok":

@@ -358,7 +358,7 @@ def test_cli_with_a_hanging_planner_still_finishes_and_matches_the_dqn_alone(tmp
 def test_docs_describe_the_time_limit_its_basis_and_its_limits():
     text = (Path(__file__).parent / "SHADOW_MODE.md").read_text(encoding="utf-8")
     for needle in ("--planner-timeout-sec", "timeout", "skipped", "planner_history_intact", "planner_roundtrip_ns", "SIGKILL", "운영",
-                   "응답 프로토콜", "PlannerProtocolError", "이론적 상한", "최선 노력", "첫 실패", "planner_cleanup_ns"):
+                   "응답 프로토콜", "PlannerProtocolError", "대략적인 설계 상한", "최선 노력", "첫 실패", "planner_cleanup_ns", "soft deadline", "회수에 성공했을 때만"):
         assert needle in text, needle
     assert "no time limit" in shadow.__doc__ or "inprocess" in shadow.__doc__
     assert "성능 개선" in text  # states this is not a planner performance improvement
@@ -556,14 +556,31 @@ def test_normalise_result_only_ever_returns_plain_ints_or_short_text():
         assert kind == "invalid" and isinstance(text, str) and len(text) < shadow_isolation.MAX_TEXT_CHARS
 
 
-def test_the_deadline_covers_the_whole_receive_not_only_the_first_byte():
-    """The reply is one bounded message read right after poll(); a worker that never answers is cut at the deadline,
-    including a worker that blocks while *producing* a result (sleep inside select_action)."""
+def test_a_worker_that_never_answers_is_cut_at_the_deadline():
+    """Only checks a worker that blocks before replying (sleep inside select_action). It does NOT test partial
+    replies (a header written and then silence); those are out of scope and documented as such."""
     started = time.perf_counter()
     with SubprocessPlanner(partial(shadow_testing.Scripted, 1, (0,), "sleep"), timeout_sec=TIMEOUT) as remote:
         reply = remote.call(0, OBS, 30, 0.15)
     assert reply["status"] == "timeout" and TIMEOUT * 1e9 <= reply["roundtrip_ns"] < (TIMEOUT + 1.0) * 1e9
     assert time.perf_counter() - started < 10
+
+
+def test_a_reply_that_completes_after_the_deadline_is_discarded_as_timeout():
+    with SubprocessPlanner(partial(shadow_testing.Scripted, 1), timeout_sec=0.1) as remote:
+        assert remote.call(0, OBS, 30, 0.15)["status"] == "ok"  # start the worker
+        original = shadow_isolation.parse_message
+
+        def slow_parse(raw):
+            time.sleep(0.3)
+            return original(raw)
+
+        with mock.patch.object(shadow_isolation, "parse_message", slow_parse):
+            reply = remote.call(1, OBS, 30, 0.15)
+        assert reply["status"] == "timeout" and reply["action"] is None
+        assert remote.stats["late_replies_discarded"] == 1 and not remote.has_worker
+        assert remote.call(2, OBS, 30, 0.15)["status"] == "ok"  # reclaimed, so a new worker serves the next call
+    assert mp.active_children() == []
 
 
 # ---------------------------------------------------------------------- API validation
@@ -653,7 +670,8 @@ def test_summary_reports_unreaped_and_protocol_counters():
     result = run(partial(shadow_testing.Scripted, 1), timeout=GENEROUS, isolation_check=False)
     iso = result["planner_isolation"]
     assert iso["workers"]["protocol_errors"] == 0 and iso["unreaped_worker_pids"] == []
-    assert "send+wait+receive" in iso["note"]
+    assert "soft response-wait budget" in iso["note"]
+    assert "late_replies_discarded" in iso["workers"]
 
 
 # ---------------------------------------------------------------------- non-regular checkpoint path (same defect class as evaluate.py)

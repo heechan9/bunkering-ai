@@ -442,8 +442,9 @@ def run_shadow(
         "workers": None if remote is None else dict(remote.stats),
         "workers_reaped_pids_count": None if remote is None else len(remote.reaped_pids),
         "unreaped_worker_pids": None if remote is None else list(remote.unreaped_pids),
-        "note": "timeout_sec bounds the parent-side send+wait+receive of one recommendation (roundtrip). Worker start "
-                "(startup_timeout_sec) and terminate/join after a failure (about 2 x grace_sec) are additional, bounded separately.",
+        "note": "timeout_sec is a soft response-wait budget (poll deadline plus a re-check after parsing; late replies are discarded as "
+                "timeout), not a hard real-time bound: OS scheduling and the synchronous receive/parse are not preempted. Worker start "
+                "(startup_timeout_sec, applied after Process.start() returns) and terminate/join after a failure (about 2 x grace_sec) are additional.",
     }
     return result
 
