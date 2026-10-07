@@ -54,8 +54,8 @@
 | 미국 WSF·싱가포르 MPA | ✅ 집계 원본 검산 완료 | 선대 소비·헤지와 항만 판매량의 집계 참고. 개별 선박 ROB·실구매가와 구분. [WSF](research/wsf_review/README.md) · [MPA](research/public_bunker_review/README.md) |
 | 울산세관 LNG 공급 사례 | ✅ 원문·합계 대조 / ⏳ 날짜 확인 대기 | 전 연료 월 공급 통계 95,604톤(소비·절감 근거 아님)과 그 안의 LNG 1,675톤(세관 기재 선박별 사례 2건)을 구분. ATLANTIC TOPAZ 공급일이 세관·UPA 간 불일치. [대조 결과](research/public_bunker_review/results/ulsan_customs_202608_review.md) |
 | 시간 제약 계획기·공정 비교 하네스 | ✅ main 반영 | #100–#103 병합. 입력·수치 경계 검증, 동일 관측 계획기, 판정 임계값과 평가 집합 이력 정리. [공정 비교](research/fair_replacement_eval/README.md) |
-| 공식 DQN 동일 관측 비교 | ✅ 실행 완료 / 🔎 Draft 검토 중 | 공식 모델·새 1,000건으로 합성 기준 통과. 비용 절감 우위는 미입증, 운영 DQN 유지. [PR #104](https://github.com/heechan9/bunkering-ai/pull/104) |
-| 평가 사전 검증 보강 | 🔎 Draft·통합 검증 보고 | 메타데이터·환경·시드 검사 및 워커 시작 전 차단. Claude 통합 실행 90개 연구 / 전체 373개 통과(23 subtests). main 미반영. [PR #105](https://github.com/heechan9/bunkering-ai/pull/105) |
+| 공식 DQN 동일 관측 비교 | ✅ 실행 완료 · main 병합(PR #104, `aec66ba`) | 공식 모델·새 1,000건으로 합성 기준 통과. 비용 절감 우위는 미입증, 운영 DQN 유지. [PR #104](https://github.com/heechan9/bunkering-ai/pull/104) |
+| 평가 사전 검증 보강 | ✅ main 병합(PR #105, `9ddd64b`) | 메타데이터·환경·시드 검사 및 워커 시작 전 차단. 병합 후 main에서 Claude가 직접 실행: 연구 90개 / 전체 373개 통과(23 subtests). [PR #105](https://github.com/heechan9/bunkering-ai/pull/105) |
 | 실제 선박 적용 | ⏳ 추가 기록 확보·독립 평가 필요 | 같은 선박·기간의 공급량·ROB·소비·가격 연결 미완료. 실제 비용·연료 절감률은 미입증 |
 
 비공개 원자료·최종 제출 파일은 Google Drive에서 관리합니다. 상세 날짜별 이력은 [진행 기록](docs/PROJECT_STATUS.md)을 확인하세요.
@@ -186,7 +186,7 @@ GitHub 반영과 웹 배포는 별개이며 GitHub push만으로 자동 배포�
 
 ### 공식 모델과 동일 관측 계획기의 후속 비교 — 2026-10-07
 
-[PR #104](https://github.com/heechan9/bunkering-ai/pull/104)의 연구 평가에서 공식 Release 체크포인트를 재학습 없이 사용하고, 같은 관측만 받는 `planner_ops`와 비교했습니다. 대리 평가에 사용한 40M 시드를 이력에 남기고, A3에서 지정한 **50,000,000–50,000,999의 1,000건**으로 실행했습니다. 결과는 Draft 검토 중이며 아래 기존 공식 100항차 결과를 대체하지 않습니다.
+[PR #104](https://github.com/heechan9/bunkering-ai/pull/104)의 연구 평가에서 공식 Release 체크포인트를 재학습 없이 사용하고, 같은 관측만 받는 `planner_ops`와 비교했습니다. 대리 평가에 사용한 40M 시드를 이력에 남기고, A3에서 지정한 **50,000,000–50,000,999의 1,000건**으로 실행했습니다. PR은 main에 병합됐고(`aec66ba`), 아래 기존 공식 100항차 결과를 대체하지 않으며 운영 DQN 교체 결정이 아닙니다.
 
 | 항목 | 이번 공식 모델 비교 결과 | 해석 |
 |---|---|---|
@@ -200,7 +200,7 @@ GitHub 반영과 웹 배포는 별개이며 GitHub push만으로 자동 배포�
 
 [고정된 평가 보고서](https://github.com/heechan9/bunkering-ai/blob/2a73a05e9a7d79fc5e742f99b7c3897059a65b24/research/fair_replacement_eval/OFFICIAL_EVALUATION_20261007.md) · [집계 결과](https://github.com/heechan9/bunkering-ai/blob/2a73a05e9a7d79fc5e742f99b7c3897059a65b24/research/fair_replacement_eval/results/official_20261007_a3/summary.json)
 
-후속 [PR #105](https://github.com/heechan9/bunkering-ai/pull/105)는 학습 메타데이터 누락·환경 불일치·시드 중복을 평가 시작 전에 검사합니다. Claude는 #104 `2a73a05`와 #105 `9667d27`의 임시 통합에서 연구 90개·전체 373개(23 subtests) 통과를 [보고](https://github.com/heechan9/bunkering-ai/pull/105#issuecomment-6030595776)했습니다. 이는 Claude 실행값이며 Codex의 독립 재실행이나 CI 통과를 뜻하지 않습니다. 두 PR은 현재 Draft이며 Jules 후속 감사·정정 검토가 진행 중입니다.
+후속 [PR #105](https://github.com/heechan9/bunkering-ai/pull/105)는 학습 메타데이터 누락·환경 불일치·시드 중복을 평가 시작 전에 검사합니다. 두 PR은 병합됐습니다(#104 `aec66ba`, #105 `9ddd64b`). 병합 전 임시 통합(`a00651c`)과 병합 후 main `9ddd64b`에서 Claude가 연구 90개·전체 373개(23 subtests) 통과를 직접 실행했습니다([보고](https://github.com/heechan9/bunkering-ai/pull/105#issuecomment-6030595776)). Codex의 독립 재실행이나 CI 통과를 뜻하지 않습니다. Jules의 최종 감사는 검사한 범위에서 병합 차단 결함을 발견하지 못했다는 보고이며, 그 외 결함이 없음을 보증하지 않습니다.
 
 ### 공식 단일 체크포인트 비교
 
@@ -413,7 +413,7 @@ Drive는 `01_원본데이터`, `02_실험결과`, `03_프로젝트논문`,
 | `data/public/` | 출처와 해시를 기록한 공공데이터 |
 | `results/evaluation/` | 공식 동일조건 평가 요약과 시각화 |
 | `research/time_constrained_planner/` | 시간 제약 급유 계획기의 별도 연구·경계 검증 |
-| `research/fair_replacement_eval/` | 동일 관측 비교, 사전 판정 기준, 대리 평가 기록; 공식 후속 결과는 #104 검토 중 |
+| `research/fair_replacement_eval/` | 동일 관측 비교, 사전 판정 기준, 대리 평가 기록; 공식 후속 결과는 #104로 병합됨 |
 | `tests/` | 환경·에이전트·평가·데이터 검증 |
 | `web/ocean-lab/` | Ocean Lab 웹 소스 |
 
