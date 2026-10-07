@@ -134,3 +134,7 @@ python -m pytest research/fair_replacement_eval -q
 - criteria 해시, 확인 시드와 학습 범위·사용 이력·reuse 집합의 교차.
 
 `fail`이면 평가를 시작하지 않고(종료 코드 3), `undecidable`이면 기본적으로 시작하지 않는다. `--continue-undecidable`로 실행하면 게이트 `G0_preflight`/`G2`가 닫혀 판정은 `NOT_DECIDABLE`이다. 기준·계획기·시드는 바꾸지 않았다.
+
+## Shadow mode (추천 행동 비교)
+
+운영 교체 전 비교용 연구 CLI. DQN이 계속 행동을 결정하고 `planner_ops` 추천을 별도로 기록한다. 계획기의 비용·안전 성능은 측정하지 않는다. 사용법·격리 방식·한계는 [SHADOW_MODE.md](SHADOW_MODE.md).
