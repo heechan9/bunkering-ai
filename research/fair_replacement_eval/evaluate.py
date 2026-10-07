@@ -204,18 +204,30 @@ def main(argv: list[str] | None = None) -> int:
     stops_map = deadline_stop_map(crit, legs)
 
     ckpt = str(args.checkpoint)
-    sha = file_sha256(args.checkpoint)
-    # One pre-flight before any episode: checkpoint hash/format/dimensions, env_config, training-seed
-    # metadata, criteria hash, seed ranges. A missing n_episodes is never treated as 0.
-    pre = preflight.run_preflight(
-        args.checkpoint,
-        crit,
-        scenario_config(base, crit, "nominal"),
-        conf_seeds,
-        reuse_seeds,
-        sha256=sha,
-        criteria_check=criteria_check,
-    )
+    try:
+        sha = file_sha256(args.checkpoint)
+    except OSError as exc:
+        # Keep file-access failures in the same audit record as validation failures.
+        pre = {
+            "overall": preflight.FAIL,
+            "checks": [dict(criteria_check), {
+                "id": "checkpoint_file", "status": preflight.FAIL,
+                "reasons": [f"{type(exc).__name__}: {exc}"],
+            }],
+            "note": "Checkpoint could not be read. No episode was run.",
+        }
+    else:
+        # One pre-flight before any episode: checkpoint hash/format/dimensions, env_config, training-seed
+        # metadata, criteria hash, seed ranges. A missing n_episodes is never treated as 0.
+        pre = preflight.run_preflight(
+            args.checkpoint,
+            crit,
+            scenario_config(base, crit, "nominal"),
+            conf_seeds,
+            reuse_seeds,
+            sha256=sha,
+            criteria_check=criteria_check,
+        )
     pre["criteria_sha256"] = file_sha256(common.CRITERIA_PATH)
     (out / "preflight.json").write_text(json.dumps(pre, indent=2, ensure_ascii=False, default=float) + "\n", encoding="utf-8")
     for c in pre["checks"]:

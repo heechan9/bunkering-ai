@@ -324,3 +324,45 @@ def test_main_never_starts_workers_for_blocked_input(case, tmp_path, monkeypatch
     assert code == 3
     assert not (out / "episodes").exists() and not (out / "summary.json").exists()
     assert (out / "preflight.json").is_file()
+
+
+@pytest.mark.parametrize("case", ["missing", "directory", "corrupt", "permission"])
+@pytest.mark.parametrize("continue_undecidable", [False, True])
+def test_main_records_checkpoint_read_failure_before_workers(
+    case, continue_undecidable, tmp_path, monkeypatch
+):
+    checkpoint = tmp_path / "checkpoint.pt"
+    expected_error = {"missing": "FileNotFoundError", "directory": "IsADirectoryError",
+                      "permission": "PermissionError"}.get(case)
+    if case == "directory":
+        checkpoint.mkdir()
+    elif case == "corrupt":
+        checkpoint.write_bytes(b"not a checkpoint")
+    elif case == "permission":
+        checkpoint.write_bytes(b"unreadable")
+        original_hash = evaluate.file_sha256
+
+        def denied(path):
+            if path == checkpoint:
+                raise PermissionError("checkpoint access denied")
+            return original_hash(path)
+
+        monkeypatch.setattr(evaluate, "file_sha256", denied)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("workers started after checkpoint failure")
+
+    monkeypatch.setattr(evaluate, "run_jobs", forbidden)
+    out = tmp_path / "out"
+    args = ["--checkpoint", str(checkpoint), "--out", str(out), "--smoke"]
+    if continue_undecidable:
+        args.append("--continue-undecidable")
+    assert evaluate.main(args) == 3
+    record = json.loads((out / "preflight.json").read_text())
+    assert record["overall"] == preflight.FAIL
+    if expected_error:
+        assert expected_error in " ".join(status(record, "checkpoint_file")["reasons"])
+    else:
+        assert status(record, "checkpoint_format")["status"] == preflight.FAIL
+    assert not (out / "episodes").exists()
+    assert not (out / "summary.json").exists()
