@@ -9,7 +9,12 @@ step the same observation is also given to ``planner_ops`` (or ``planner_ops_his
   ``max_steps`` and ``min_safe_fuel``, never the live environment (so it cannot read or change
   environment state or its random generator);
 * python/numpy global random states are restored after each planner call;
-* any planner exception or invalid action is recorded and the DQN run continues.
+* any planner exception or invalid action is recorded and the DQN run continues;
+* with ``--planner-isolation subprocess`` (the CLI default) the planner runs in a separate worker
+  process under a per-call time limit. On expiry the worker is terminated and reaped, the step is
+  recorded as ``timeout`` and the DQN run continues; after ``--max-consecutive-timeouts`` timeouts in a
+  row the rest of that episode is recorded as ``skipped`` without calling the planner. See
+  ``shadow_isolation.py`` and SHADOW_MODE.md. ``inprocess`` has no time limit.
 
 Information tiers (recorded in ``summary.json``): ``planner_ops`` is ``I_ops``, i.e. it sees only
 the current observation, the same single observation the DQN receives. ``planner_ops_hist`` is
@@ -45,7 +50,18 @@ from research.fair_replacement_eval import common, preflight
 from envs.bunkering_env import BunkeringEnv
 from evaluation.safety_accounting import VoyageAudit
 from research.fair_replacement_eval.common import Episode, PROJECT_ROOT, file_sha256, load_criteria
-from research.fair_replacement_eval.policies import PlannerPolicy, make_planners
+from research.fair_replacement_eval.policies import PlannerPolicy
+from research.fair_replacement_eval.shadow_isolation import (
+    DEFAULT_GRACE_SEC,
+    DEFAULT_MAX_CONSECUTIVE_TIMEOUTS,
+    DEFAULT_STARTUP_TIMEOUT_SEC,
+    DEFAULT_TIMEOUT_SEC,
+    SubprocessPlanner,
+    build_planner,
+    finite_positive,
+    non_negative_int,
+    planner_factory_for,
+)
 
 MODE = "shadow_recommendation_comparison"
 CLAIM = (
@@ -67,8 +83,14 @@ PLANNER_TIERS = {
 ALLOWED_PLANNERS = tuple(PLANNER_TIERS)  # no variant may read the true future price
 STEP_FIELDS = [
     "seed", "step", "dqn_action", "planner_action", "planner_status", "disagree_raw", "disagree_buy",
-    "dqn_ns", "planner_ns", "planner_error", "obs",
+    "dqn_ns", "planner_ns", "planner_roundtrip_ns", "planner_ipc_ns", "planner_startup_ns", "planner_cleanup_ns",
+    "planner_history_intact", "planner_error", "obs",
 ]
+# planner_status values: ok, error (exception / worker died / unavailable), invalid_action,
+# timeout (no answer within the limit; worker terminated), skipped (circuit open, planner not called).
+# planner_ns = compute time inside the planner; planner_roundtrip_ns = parent-side wait (what blocks the
+# DQN loop); planner_ipc_ns = roundtrip - compute; startup/cleanup = worker spawn / terminate+reap time.
+# planner_history_intact = the planner has received every earlier observation of this episode in order.
 TRACE_FIELDS = ["seed", "step", "obs_sha256", "action", "reward", "terminated", "truncated", "next_obs_sha256"]
 # Deterministic fields compared to show the DQN voyage is identical with the shadow on and off.
 OUTCOME_FIELDS = [
@@ -80,16 +102,31 @@ OUTCOME_FIELDS = [
 class ShadowPolicy:
     """Wrap the DQN policy: delegate every decision to it, record the planner's recommendation."""
 
-    def __init__(self, primary: Any, planner: Any | None, *, enabled: bool = True, name: str | None = None) -> None:
+    def __init__(
+        self,
+        primary: Any,
+        planner: Any | None,
+        *,
+        enabled: bool = True,
+        name: str | None = None,
+        remote: SubprocessPlanner | None = None,
+        max_consecutive_timeouts: int = DEFAULT_MAX_CONSECUTIVE_TIMEOUTS,
+    ) -> None:
         self.primary = primary
         self.planner = planner
-        self.enabled = bool(enabled and planner is not None)
+        self.remote = remote  # when set, the planner runs in a time-bounded worker process instead of `planner`
+        self.max_consecutive_timeouts = non_negative_int("max_consecutive_timeouts", max_consecutive_timeouts)  # 0 = never skip
+        self.enabled = bool(enabled and (planner is not None or remote is not None))
         self.name = name or getattr(primary, "name", type(primary).__name__)
         self.records: list[dict[str, Any]] = []
         self.seed: int | None = None
+        self._consecutive_timeouts = 0
+        self._history_intact = True
 
     def begin_episode(self, seed: int) -> None:
         self.seed = int(seed)
+        self._consecutive_timeouts = 0
+        self._history_intact = True  # the planner resets itself at step 0 of every episode
 
     def select_action(self, env: Any, observation: Any, step_index: int) -> Any:
         t0 = time.perf_counter_ns()
@@ -104,20 +141,31 @@ class ShadowPolicy:
         n_actions = int(env.action_space.n)
         obs_copy = np.array(observation, dtype=float, copy=True)
         obs_copy.setflags(write=False)
-        view = SimpleNamespace(max_steps=int(env.max_steps), min_safe_fuel=float(env.min_safe_fuel))
-        py_state, np_state = random.getstate(), np.random.get_state()
-        status, error, planner_action, planner_ns = "ok", "", None, 0
-        t0 = time.perf_counter_ns()
-        try:
-            raw = self.planner.select_action(view, obs_copy, step_index)
-            planner_ns = time.perf_counter_ns() - t0
-            planner_action, status, error = self._validate(raw, n_actions)
-        except Exception as exc:  # noqa: BLE001 - a planner failure must never stop the DQN run
-            planner_ns = time.perf_counter_ns() - t0
-            status, error = "error", f"{type(exc).__name__}: {exc}"
-        finally:
-            random.setstate(py_state)
-            np.random.set_state(np_state)
+        max_steps, min_safe_fuel = int(env.max_steps), float(env.min_safe_fuel)
+        if step_index == 0:
+            self._history_intact = True  # new episode: the planner resets itself
+        elif self.remote is not None and not self.remote.has_worker:
+            self._history_intact = False  # a worker that must be (re)started mid-episode has no history
+        history_intact = self._history_intact  # state *before* this call: did the planner see all earlier steps?
+        timing: dict[str, Any] = {"compute": None, "roundtrip": None, "ipc": None, "startup": None, "cleanup": None}
+        planner_action: int | None = None
+        if self.remote is not None:
+            status, error, planner_action, timing = self._call_remote(step_index, obs_copy, max_steps, min_safe_fuel, n_actions)
+        else:
+            view = SimpleNamespace(max_steps=max_steps, min_safe_fuel=min_safe_fuel)
+            py_state, np_state = random.getstate(), np.random.get_state()
+            status, error = "ok", ""
+            t0 = time.perf_counter_ns()
+            try:
+                raw = self.planner.select_action(view, obs_copy, step_index)
+                timing["compute"] = time.perf_counter_ns() - t0
+                planner_action, status, error = self._validate(raw, n_actions)
+            except Exception as exc:  # noqa: BLE001 - a planner failure must never stop the DQN run
+                timing["compute"] = time.perf_counter_ns() - t0
+                status, error = "error", f"{type(exc).__name__}: {exc}"
+            finally:
+                random.setstate(py_state)
+                np.random.set_state(np_state)
         valid = status == "ok"
         dqn_int = int(dqn_action)
         self.records.append({
@@ -131,10 +179,38 @@ class ShadowPolicy:
             # meaningful comparison; raw disagreement is kept for transparency.
             "disagree_buy": int((planner_action > 0) != (dqn_int > 0)) if valid else None,
             "dqn_ns": int(dqn_ns),
-            "planner_ns": int(planner_ns),
+            "planner_ns": timing["compute"],
+            "planner_roundtrip_ns": timing["roundtrip"],
+            "planner_ipc_ns": timing["ipc"],
+            "planner_startup_ns": timing["startup"],
+            "planner_cleanup_ns": timing["cleanup"],
+            "planner_history_intact": bool(history_intact),
             "planner_error": error,
             "obs": [round(float(v), 6) for v in obs_copy],
         })
+
+    def _call_remote(self, step_index: int, obs_copy: Any, max_steps: int, min_safe_fuel: float, n_actions: int):
+        """Ask the time-bounded worker for a recommendation; returns (status, error, action, timing)."""
+        timing: dict[str, Any] = {"compute": None, "roundtrip": None, "ipc": None, "startup": None, "cleanup": None}
+        if self.max_consecutive_timeouts and self._consecutive_timeouts >= self.max_consecutive_timeouts:
+            self._history_intact = False  # the planner is not called, so it misses this observation
+            return "skipped", f"skipped after {self._consecutive_timeouts} consecutive timeouts in this episode", None, timing
+        reply = self.remote.call(step_index, obs_copy, max_steps, min_safe_fuel)
+        timing = {
+            "compute": reply["compute_ns"], "roundtrip": reply["roundtrip_ns"], "ipc": reply["ipc_ns"],
+            "startup": reply["startup_ns"], "cleanup": reply["cleanup_ns"],
+        }
+        status, error, action = reply["status"], reply["error"], None
+        if status == "ok":
+            action, status, error = self._validate(reply["action"], n_actions)  # the worker already normalised it to an int
+        if status == "timeout":
+            self._consecutive_timeouts += 1
+            self._history_intact = False  # worker killed: its history is gone and this observation is missed
+        else:
+            self._consecutive_timeouts = 0
+            if reply["status"] == "error" and reply["compute_ns"] is None:
+                self._history_intact = False  # worker died, protocol error or unavailable: this observation was not processed
+        return status, error, action, timing
 
     @staticmethod
     def _validate(raw: Any, n_actions: int) -> tuple[int | None, str, str]:
@@ -157,6 +233,8 @@ def run_traced_episode(
     env_config: dict[str, Any],
     *,
     enabled: bool = True,
+    remote: SubprocessPlanner | None = None,
+    max_consecutive_timeouts: int = DEFAULT_MAX_CONSECUTIVE_TIMEOUTS,
 ) -> tuple[dict[str, Any], list[dict[str, Any]], list[dict[str, Any]]]:
     """One voyage. Returns (DQN episode row, per-step shadow records, per-step DQN trace).
 
@@ -164,7 +242,7 @@ def run_traced_episode(
     the DQN saw and did at every step: observation digest, action, reward, terminated/truncated
     flags and the digest of the next observation. Timing is deliberately not part of the trace.
     """
-    shadow = ShadowPolicy(primary, planner, enabled=enabled)
+    shadow = ShadowPolicy(primary, planner, enabled=enabled, remote=remote, max_consecutive_timeouts=max_consecutive_timeouts)
     shadow.begin_episode(seed)
     env = BunkeringEnv(**dict(env_config))
     observation, _ = env.reset(seed=int(seed))
@@ -247,25 +325,52 @@ def summarize(steps: Sequence[dict[str, Any]], episodes: Sequence[dict[str, Any]
     ok = [s for s in steps if s["planner_status"] == "ok"]
     errors = [s for s in steps if s["planner_status"] == "error"]
     invalid = [s for s in steps if s["planner_status"] == "invalid_action"]
+    timeouts = [s for s in steps if s["planner_status"] == "timeout"]
+    skipped = [s for s in steps if s["planner_status"] == "skipped"]
     error_kinds: dict[str, int] = {}
     for s in errors + invalid:
         key = s["planner_error"].split(":")[0] if s["planner_status"] == "error" else "invalid_action"
         error_kinds[key] = error_kinds.get(key, 0) + 1
+    if timeouts:
+        error_kinds["timeout"] = len(timeouts)
     raw = sum(s["disagree_raw"] for s in ok)
     buy = sum(s["disagree_buy"] for s in ok)
+    intact = [s for s in ok if s["planner_history_intact"]]
+    buy_intact = sum(s["disagree_buy"] for s in intact)
+    measured = [s for s in steps if s["planner_status"] in ("ok", "error", "invalid_action")]
+
+    def col(rows: Sequence[dict[str, Any]], key: str) -> list[int]:
+        return [int(r[key]) for r in rows if r.get(key) is not None]
+
     return {
         "steps": n,
         "episodes": len(episodes),
         "planner_ok_steps": len(ok),
         "planner_error_steps": len(errors),
         "planner_invalid_action_steps": len(invalid),
+        "planner_timeout_steps": len(timeouts),
+        "planner_skipped_steps": len(skipped),
         "planner_failure_kinds": error_kinds,
         "disagreement_raw": {"count": raw, "rate_of_valid_recommendations": raw / len(ok) if ok else None},
         "disagreement_buy_vs_wait": {"count": buy, "rate_of_valid_recommendations": buy / len(ok) if ok else None},
         "agreement_buy_vs_wait_rate_of_valid_recommendations": (1 - buy / len(ok)) if ok else None,
+        "valid_recommendations_with_incomplete_planner_history": len(ok) - len(intact),
+        "disagreement_buy_vs_wait_history_intact_only": {
+            "count": buy_intact, "n": len(intact), "rate": buy_intact / len(intact) if intact else None,
+            "note": "valid recommendations made while the planner had seen every earlier observation of the episode "
+                    "(excludes the ones after a timeout/crash/skip in the same episode)",
+        },
         "episodes_with_any_disagreement": len({s["seed"] for s in ok if s["disagree_buy"]}),
         "latency_dqn": _percentiles([s["dqn_ns"] for s in steps]),
-        "latency_planner": _percentiles([s["planner_ns"] for s in steps]),
+        # compute = time inside planner.select_action; roundtrip = parent-side wait; ipc = roundtrip - compute.
+        # Timeouts have no compute time and are not part of these distributions (they are counted above).
+        "latency_planner": _percentiles(col(steps, "planner_ns")),
+        "latency_planner_compute": _percentiles(col(steps, "planner_ns")),
+        "latency_planner_roundtrip": _percentiles(col(measured, "planner_roundtrip_ns")),
+        "latency_planner_ipc": _percentiles(col(measured, "planner_ipc_ns")),
+        "planner_worker_startup_ms_total": sum(col(steps, "planner_startup_ns")) / 1e6,
+        "planner_worker_cleanup_ms_total": sum(col(steps, "planner_cleanup_ns")) / 1e6,
+        "planner_timeout_wait_ms_total": sum(col(timeouts, "planner_roundtrip_ns")) / 1e6,
         "dqn_executed_outcomes": {
             "note": "Outcomes of the DQN actions that were actually applied in this synthetic environment.",
             "safe_arrival": sum(int(e["safe"]) for e in episodes),
@@ -294,13 +399,65 @@ def run_shadow(
     env_config: dict[str, Any],
     *,
     isolation_check: bool = True,
+    planner_isolation: str = "inprocess",
+    timeout_sec: float = DEFAULT_TIMEOUT_SEC,
+    startup_timeout_sec: float = DEFAULT_STARTUP_TIMEOUT_SEC,
+    grace_sec: float = DEFAULT_GRACE_SEC,
+    max_consecutive_timeouts: int = DEFAULT_MAX_CONSECUTIVE_TIMEOUTS,
 ) -> dict[str, Any]:
     """Run all seeds with the shadow on and (optionally) off and compare the DQN voyages.
 
     The comparison covers the voyage aggregates AND a per-step trace (observation digest, action,
     reward, terminated/truncated, next-observation digest); execution time is excluded.
+
+    ``planner_isolation="subprocess"`` runs the planner in a time-bounded worker process (the factory
+    must then be picklable, e.g. ``planner_factory_for(name, sigma_grid)``); ``"inprocess"`` (the API
+    default, kept for scripted test planners) has no time limit.
     """
-    planner = planner_factory()
+    if planner_isolation not in ("inprocess", "subprocess"):
+        raise ValueError("planner_isolation must be 'inprocess' or 'subprocess'")
+    max_consecutive_timeouts = non_negative_int("max_consecutive_timeouts", max_consecutive_timeouts)
+    if planner_isolation == "subprocess":  # fail before any process is created
+        timeout_sec = finite_positive("timeout_sec", timeout_sec)
+        startup_timeout_sec = finite_positive("startup_timeout_sec", startup_timeout_sec)
+        grace_sec = finite_positive("grace_sec", grace_sec)
+    remote: SubprocessPlanner | None = None
+    planner: Any = None
+    if planner_isolation == "subprocess":
+        remote = SubprocessPlanner(planner_factory, timeout_sec=timeout_sec, startup_timeout_sec=startup_timeout_sec, grace_sec=grace_sec)
+    else:
+        planner = planner_factory()
+    try:
+        result = _run_shadow(primary, planner, remote, seeds, env_config, isolation_check, max_consecutive_timeouts)
+    finally:
+        if remote is not None:
+            remote.close()
+    result["planner_isolation"] = {
+        "mode": planner_isolation,
+        "time_limit_enforced": remote is not None,
+        "timeout_sec": float(timeout_sec) if remote is not None else None,
+        "startup_timeout_sec": float(startup_timeout_sec) if remote is not None else None,
+        "grace_sec": float(grace_sec) if remote is not None else None,
+        "max_consecutive_timeouts": int(max_consecutive_timeouts) if remote is not None else None,
+        "workers": None if remote is None else dict(remote.stats),
+        "workers_reaped_pids_count": None if remote is None else len(remote.reaped_pids),
+        "unreaped_worker_pids": None if remote is None else list(remote.unreaped_pids),
+        "note": "timeout_sec is a soft response-wait budget (poll deadline plus a re-check after parsing; late replies are discarded as "
+                "timeout), not a hard real-time bound: OS scheduling and the synchronous receive/parse are not preempted. Worker start "
+                "(startup_timeout_sec, applied after Process.start() returns) and terminate/join after a failure (about 2 x grace_sec) are additional.",
+    }
+    return result
+
+
+def _run_shadow(
+    primary: Any,
+    planner: Any,
+    remote: SubprocessPlanner | None,
+    seeds: Sequence[int],
+    env_config: dict[str, Any],
+    isolation_check: bool,
+    max_consecutive_timeouts: int,
+) -> dict[str, Any]:
     steps: list[dict[str, Any]] = []
     episodes: list[dict[str, Any]] = []
     traces_on: list[dict[str, Any]] = []
@@ -309,7 +466,9 @@ def run_shadow(
     trace_bad: list[int] = []
     first_diff: dict[str, Any] | None = None
     for seed in seeds:
-        row, recs, trace = run_traced_episode(primary, planner, int(seed), env_config, enabled=True)
+        row, recs, trace = run_traced_episode(
+            primary, planner, int(seed), env_config, enabled=True, remote=remote, max_consecutive_timeouts=max_consecutive_timeouts
+        )
         row = {**row, "shadow_steps": len(recs), "dqn_trace_sha256": trace_sha256(trace)}
         episodes.append(row)
         steps.extend(recs)
@@ -343,6 +502,20 @@ def run_shadow(
     return result
 
 
+def _positive_float(text: str) -> float:
+    value = float(text)
+    if not value > 0 or value != value or value == float("inf"):
+        raise argparse.ArgumentTypeError("must be a finite number > 0")
+    return value
+
+
+def _non_negative_int(text: str) -> int:
+    value = int(text)
+    if value < 0:
+        raise argparse.ArgumentTypeError("must be >= 0")
+    return value
+
+
 def parse_seed_range(text: str) -> list[int]:
     lo, _, hi = text.partition(":")
     a, b = int(lo), int(hi)
@@ -358,6 +531,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--seeds", required=True, type=parse_seed_range, help="inclusive range first:last, e.g. 60000000:60000099")
     parser.add_argument("--planner", choices=ALLOWED_PLANNERS, default="planner_ops",
                         help="planner_ops = I_ops (same single observation as the DQN); planner_ops_hist = I_ops_hist (also uses the previous observation: more information than the DQN)")
+    parser.add_argument("--planner-isolation", choices=("subprocess", "inprocess"), default="subprocess",
+                        help="subprocess (default): planner runs in a worker process under a time limit; inprocess: no time limit (an endless planner would hang the run)")
+    parser.add_argument("--planner-timeout-sec", type=_positive_float, default=DEFAULT_TIMEOUT_SEC,
+                        help=f"subprocess only: wall-clock limit for one recommendation (default {DEFAULT_TIMEOUT_SEC:g}s); on expiry the worker is terminated and the step recorded as timeout")
+    parser.add_argument("--planner-startup-timeout-sec", type=_positive_float, default=DEFAULT_STARTUP_TIMEOUT_SEC,
+                        help=f"subprocess only: limit for starting a worker (default {DEFAULT_STARTUP_TIMEOUT_SEC:g}s); a failed start makes the planner unavailable for the rest of the run")
+    parser.add_argument("--max-consecutive-timeouts", type=_non_negative_int, default=DEFAULT_MAX_CONSECUTIVE_TIMEOUTS,
+                        help=f"subprocess only: after this many consecutive timeouts the rest of the episode is recorded as skipped (default {DEFAULT_MAX_CONSECUTIVE_TIMEOUTS}; 0 = never skip)")
     parser.add_argument("--no-isolation-check", action="store_true", help="skip the second, shadow-off run used to prove DQN results are unchanged")
     args = parser.parse_args(argv)
 
@@ -371,11 +552,12 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     out.mkdir(parents=True, exist_ok=True)
 
-    from research.fair_replacement_eval.evaluate import base_env_config, scenario_config
+    from research.fair_replacement_eval.evaluate import base_env_config, ensure_hashable_checkpoint, scenario_config
 
     env_config = scenario_config(base_env_config(), crit, "nominal")
     sha, payload, load_error = None, None, None
-    try:  # reading the file for the hash or the payload may fail (missing, unreadable, corrupt): record, do not crash
+    try:  # reading the file for the hash or the payload may fail (missing, unreadable, corrupt, not a regular file): record, do not crash
+        ensure_hashable_checkpoint(args.checkpoint)  # a named pipe or /dev/zero would block the hash forever
         sha = file_sha256(args.checkpoint)
         payload = preflight.load_payload(args.checkpoint)
     except Exception as exc:  # noqa: BLE001
@@ -410,14 +592,15 @@ def main(argv: list[str] | None = None) -> int:
     primary = load_dqn_policy(args.checkpoint, env_config)
     sigma_grid = crit["replacement_criteria"]["forecast_sigma_grid"]
 
-    def planner_factory() -> PlannerPolicy:
-        planner = make_planners(sigma_grid, {})[args.planner]
-        if planner.forecast != "persistence":
-            raise ValueError("shadow mode rejects planners that read the true future price")
-        return planner
+    factory = planner_factory_for(args.planner, sigma_grid)  # module-level partial: picklable for the worker
+    build_planner(args.planner, sigma_grid)  # fail fast (rejects planners that read the true future price)
 
     started = time.time()
-    result = run_shadow(primary, planner_factory, args.seeds, env_config, isolation_check=not args.no_isolation_check)
+    result = run_shadow(
+        primary, factory, args.seeds, env_config, isolation_check=not args.no_isolation_check,
+        planner_isolation=args.planner_isolation, timeout_sec=args.planner_timeout_sec,
+        startup_timeout_sec=args.planner_startup_timeout_sec, max_consecutive_timeouts=args.max_consecutive_timeouts,
+    )
     _write_csv_gz(out / "shadow_steps.csv.gz", result["steps"], STEP_FIELDS)
     if "traces_off" in result:
         _write_csv_gz(out / "dqn_trace_shadow_on.csv.gz", result["traces_on"], TRACE_FIELDS)
@@ -438,6 +621,7 @@ def main(argv: list[str] | None = None) -> int:
         "preflight": {"overall": pre["overall"], "file": "preflight.json"},
         "seeds": seed_info,
         "isolation_check": result.get("isolation_check"),
+        "planner_isolation": result["planner_isolation"],
         **summarize(result["steps"], result["episodes"]),
     }
     manifest = {
@@ -454,7 +638,7 @@ def main(argv: list[str] | None = None) -> int:
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     iso = result.get("isolation_check")
     print(f"planner={args.planner} information_tier={PLANNER_TIERS[args.planner]['tier']} same_information_as_dqn={PLANNER_TIERS[args.planner]['same_information_as_dqn']}")
-    print(f"steps={summary['steps']} disagree_buy={summary['disagreement_buy_vs_wait']['count']} planner_failures={summary['planner_error_steps'] + summary['planner_invalid_action_steps']}")
+    print(f"steps={summary['steps']} disagree_buy={summary['disagreement_buy_vs_wait']['count']} planner_failures={summary['planner_error_steps'] + summary['planner_invalid_action_steps']} timeouts={summary['planner_timeout_steps']} skipped={summary['planner_skipped_steps']}")
     if iso is not None:
         print(f"isolation_check identical={iso['identical']} outcome={iso['outcome_identical']} trace={iso['trace_identical']} (episodes={iso['compared_episodes']})")
     print(f"wrote {out}")

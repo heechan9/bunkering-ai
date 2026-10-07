@@ -15,7 +15,9 @@ import csv
 import gzip
 import json
 import multiprocessing as mp
+import os
 import platform
+import stat
 import subprocess
 import sys
 import time
@@ -169,6 +171,18 @@ def reuse_consistency(checkpoint: str, env_config: dict[str, Any], seeds: list[i
     return {"pass": ok, "detail": detail, "repo_csv": repo_csv}
 
 
+def ensure_hashable_checkpoint(path: Path) -> None:
+    """Raise ``OSError`` if reading ``path`` for its hash could block forever.
+
+    A named pipe, device (``/dev/zero``) or socket never reaches end-of-file (or blocks on open), so
+    hashing it would hang before any record is written. Directories are left to ``open`` so they keep
+    failing with ``IsADirectoryError``; missing files fail with ``FileNotFoundError`` from ``os.stat``.
+    """
+    mode = os.stat(path).st_mode
+    if not (stat.S_ISREG(mode) or stat.S_ISDIR(mode)):
+        raise OSError(f"not a regular file (named pipe, device or socket): {path}")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", required=True, type=Path)
@@ -205,6 +219,7 @@ def main(argv: list[str] | None = None) -> int:
 
     ckpt = str(args.checkpoint)
     try:
+        ensure_hashable_checkpoint(args.checkpoint)
         sha = file_sha256(args.checkpoint)
     except OSError as exc:
         # Keep file-access failures in the same audit record as validation failures.
