@@ -127,7 +127,7 @@ def test_a_timeout_is_recorded_the_dqn_run_continues_and_the_worker_is_reclaimed
         assert first["status"] == "ok"
         pid_before = remote._proc.pid
         hung = remote.call(2, [0.0] * 6, 30, 0.15)
-        assert hung["status"] == "timeout" and hung["raw"] is None and hung["compute_ns"] is None
+        assert hung["status"] == "timeout" and hung["action"] is None and hung["compute_ns"] is None
         assert hung["roundtrip_ns"] >= TIMEOUT * 1e9 and hung["cleanup_ns"] > 0
         assert not remote.has_worker and not pid_alive(pid_before)  # terminated and reaped, nothing runs on
         assert pid_before in remote.reaped_pids
@@ -169,12 +169,12 @@ def test_planner_history_state_after_a_timeout_is_explicit():
 def test_a_restarted_worker_really_has_no_history_and_the_flag_says_so():
     # PrevStepProbe answers 1 only if it saw the previous step; losing the worker must therefore show as 0
     with SubprocessPlanner(shadow_testing.PrevStepProbe, timeout_sec=GENEROUS) as remote:
-        answers = [remote.call(i, [0.0] * 6, 30, 0.15)["raw"] for i in range(3)]
+        answers = [remote.call(i, [0.0] * 6, 30, 0.15)["action"] for i in range(3)]
         assert answers == [1, 1, 1]
         remote._reap()  # simulate a worker loss between steps 2 and 3
-        assert remote.call(3, [0.0] * 6, 30, 0.15)["raw"] == 0  # new worker: it never saw step 2
-        assert remote.call(4, [0.0] * 6, 30, 0.15)["raw"] == 1  # and then follows the steps again
-        assert remote.call(0, [0.0] * 6, 30, 0.15)["raw"] == 1  # a new episode starts clean
+        assert remote.call(3, [0.0] * 6, 30, 0.15)["action"] == 0  # new worker: it never saw step 2
+        assert remote.call(4, [0.0] * 6, 30, 0.15)["action"] == 1  # and then follows the steps again
+        assert remote.call(0, [0.0] * 6, 30, 0.15)["action"] == 1  # a new episode starts clean
 
 
 def test_consecutive_timeouts_open_a_circuit_for_the_rest_of_the_episode_and_reset_next_episode():
@@ -357,7 +357,300 @@ def test_cli_with_a_hanging_planner_still_finishes_and_matches_the_dqn_alone(tmp
 
 def test_docs_describe_the_time_limit_its_basis_and_its_limits():
     text = (Path(__file__).parent / "SHADOW_MODE.md").read_text(encoding="utf-8")
-    for needle in ("--planner-timeout-sec", "timeout", "skipped", "planner_history_intact", "planner_roundtrip_ns", "SIGKILL", "운영"):
+    for needle in ("--planner-timeout-sec", "timeout", "skipped", "planner_history_intact", "planner_roundtrip_ns", "SIGKILL", "운영",
+                   "응답 프로토콜", "PlannerProtocolError", "이론적 상한", "최선 노력", "첫 실패", "planner_cleanup_ns"):
         assert needle in text, needle
     assert "no time limit" in shadow.__doc__ or "inprocess" in shadow.__doc__
     assert "성능 개선" in text  # states this is not a planner performance improvement
+    assert "guaranteed" not in text and "보장한다" not in text.replace("보장하지 않", "")  # no absolute reclamation claim
+    assert "guaranteed" not in shadow_isolation.__doc__ and "guaranteed" not in SubprocessPlanner.__doc__
+
+
+# ====================================================================== review round (Codex R1/R2 and follow-ups)
+
+import multiprocessing.context  # noqa: E402
+import pickle  # noqa: E402
+from unittest import mock  # noqa: E402
+
+OBS = [0.0] * 6
+
+
+class SpyConn:
+    """Wrap a real Connection; optionally replace what recv_bytes/send do."""
+
+    def __init__(self, real, *, recv=None, send=None):
+        self.real, self._recv, self._send = real, recv, send
+        self.recv_maxlengths = []
+
+    def send(self, obj):
+        if self._send is not None:
+            return self._send(obj)
+        return self.real.send(obj)
+
+    def poll(self, timeout=0.0):
+        return self.real.poll(timeout)
+
+    def recv_bytes(self, maxlength=None):
+        self.recv_maxlengths.append(maxlength)
+        if self._recv is not None:
+            return self._recv(self.real, maxlength)
+        return self.real.recv_bytes(maxlength)
+
+    def close(self):
+        self.real.close()
+
+
+# ---------------------------------------------------------------------- R1: parent-side process creation failure
+
+
+def test_spawn_failure_is_recorded_as_unavailable_and_nothing_leaks():
+    remote = SubprocessPlanner(partial(shadow_testing.Scripted, 1), timeout_sec=TIMEOUT)
+    with mock.patch.object(multiprocessing.context.SpawnProcess, "start", side_effect=OSError("injected spawn failure")):
+        reply = remote.call(0, OBS, 30, 0.15)  # must not raise
+    assert reply["status"] == "error" and "PlannerUnavailable" in reply["error"] and "injected spawn failure" in reply["error"]
+    assert reply["startup_ns"] is not None and reply["worker_restarted"] is True
+    assert remote.stats["startup_failures"] == 1 and remote.stats["workers_started"] == 0 and not remote.has_worker
+    again = remote.call(1, OBS, 30, 0.15)  # stays unavailable: no new attempt, no retry storm
+    assert again["status"] == "error" and "PlannerUnavailable" in again["error"]
+    remote.close()
+
+
+def test_pipe_creation_failure_is_recorded_too():
+    remote = SubprocessPlanner(partial(shadow_testing.Scripted, 1), timeout_sec=TIMEOUT)
+    with mock.patch.object(remote._ctx, "Pipe", side_effect=OSError("too many open files")):
+        reply = remote.call(0, OBS, 30, 0.15)
+    assert reply["status"] == "error" and "too many open files" in reply["error"] and remote.stats["startup_failures"] == 1
+
+
+def test_partially_created_resources_are_closed_when_start_fails():
+    remote = SubprocessPlanner(partial(shadow_testing.Scripted, 1), timeout_sec=TIMEOUT)
+    created = []
+    real_pipe = remote._ctx.Pipe
+
+    def tracking_pipe(duplex=True):
+        pair = real_pipe(duplex)
+        created.extend(pair)
+        return pair
+
+    with mock.patch.object(remote._ctx, "Pipe", side_effect=tracking_pipe), \
+            mock.patch.object(multiprocessing.context.SpawnProcess, "start", side_effect=OSError("boom")):
+        assert remote.call(0, OBS, 30, 0.15)["status"] == "error"
+    assert len(created) == 2 and all(c.closed for c in created)  # both pipe ends released
+
+
+def test_keyboard_interrupt_during_start_is_not_swallowed_and_releases_resources():
+    remote = SubprocessPlanner(partial(shadow_testing.Scripted, 1), timeout_sec=TIMEOUT)
+    created = []
+    real_pipe = remote._ctx.Pipe
+
+    def tracking_pipe(duplex=True):
+        pair = real_pipe(duplex)
+        created.extend(pair)
+        return pair
+
+    with mock.patch.object(remote._ctx, "Pipe", side_effect=tracking_pipe), \
+            mock.patch.object(multiprocessing.context.SpawnProcess, "start", side_effect=KeyboardInterrupt):
+        with pytest.raises(KeyboardInterrupt):
+            remote.call(0, OBS, 30, 0.15)
+    assert all(c.closed for c in created)
+
+
+def test_spawn_failure_does_not_stop_the_dqn_run_and_the_trace_is_unchanged():
+    with mock.patch.object(multiprocessing.context.SpawnProcess, "start", side_effect=OSError("injected spawn failure")):
+        result = run(partial(shadow_testing.Scripted, 1))
+    assert set(statuses(result)) == {"error"} and "injected spawn failure" in result["steps"][0]["planner_error"]
+    assert result["isolation_check"]["identical"] is True and result["isolation_check"]["trace_identical"] is True
+    _, _, plain_trace = shadow.run_traced_episode(ScriptedDQN(), None, SEEDS[0], dict(ENV), enabled=False)
+    assert result["traces_on"] == plain_trace
+    assert result["planner_isolation"]["workers"]["startup_failures"] == 1
+
+
+def test_a_request_that_cannot_be_serialised_is_a_recorded_failure_and_the_next_call_gets_a_new_worker():
+    with SubprocessPlanner(partial(shadow_testing.Scripted, 1), timeout_sec=GENEROUS) as remote:
+        assert remote.call(0, OBS, 30, 0.15)["status"] == "ok"
+        remote._conn = SpyConn(remote._conn, send=mock.Mock(side_effect=pickle.PicklingError("cannot pickle request")))
+        reply = remote.call(1, OBS, 30, 0.15)
+        assert reply["status"] == "error" and "PlannerProtocolError" in reply["error"] and reply["cleanup_ns"] is not None
+        assert not remote.has_worker and remote.stats["protocol_errors"] == 1
+        nxt = remote.call(2, OBS, 30, 0.15)
+        assert nxt["status"] == "ok" and nxt["worker_restarted"] is True
+
+
+# ---------------------------------------------------------------------- R2: replies are validated in the worker, bounded, never unpickled
+
+
+def test_a_slow_to_unpickle_result_cannot_stall_the_parent():
+    with SubprocessPlanner(partial(shadow_testing.Scripted, 1, (0,), "slowdecode"), timeout_sec=TIMEOUT) as remote:
+        reply = remote.call(0, OBS, 30, 0.15)
+        assert reply["status"] == "invalid_action" and "non-integer" in reply["error"] and reply["action"] is None
+        assert reply["roundtrip_ns"] < TIMEOUT * 1e9  # Codex's counterexample took 2.0 s here
+        assert remote.stats["workers_started"] == 1 and remote.has_worker  # the worker was not even restarted
+
+
+@pytest.mark.parametrize("mode,fragment", [("bool", "non-integer"), ("string", "non-integer"), ("hugeint", "64-bit")])
+def test_non_integer_and_absurd_results_become_short_invalid_replies(mode, fragment):
+    with SubprocessPlanner(partial(shadow_testing.Scripted, 1, (0,), mode), timeout_sec=GENEROUS) as remote:
+        reply = remote.call(0, OBS, 30, 0.15)
+        assert reply["status"] == "invalid_action" and fragment in reply["error"] and len(reply["error"]) <= shadow_isolation.MAX_TEXT_CHARS
+        assert remote.call(1, OBS, 30, 0.15)["status"] == "ok"  # the worker keeps serving
+
+
+def test_a_numpy_integer_result_is_normalised_to_a_plain_int():
+    with SubprocessPlanner(partial(shadow_testing.Scripted, 2, (0,), "npint"), timeout_sec=GENEROUS) as remote:
+        reply = remote.call(0, OBS, 30, 0.15)
+        assert reply["status"] == "ok" and reply["action"] == 2 and type(reply["action"]) is int
+
+
+def test_a_huge_exception_message_is_truncated_not_sent_whole():
+    with SubprocessPlanner(partial(shadow_testing.Scripted, 1, (0,), "longerror"), timeout_sec=GENEROUS) as remote:
+        reply = remote.call(0, OBS, 30, 0.15)
+        assert reply["status"] == "error" and reply["error"].startswith("RuntimeError: xxx") and len(reply["error"]) <= shadow_isolation.MAX_TEXT_CHARS
+        assert remote.call(1, OBS, 30, 0.15)["status"] == "ok"
+
+
+def test_out_of_range_integer_is_still_rejected_by_the_parent_with_the_environment_range():
+    result = run(partial(shadow_testing.Scripted, 1, (2,), "invalid"), isolation_check=False)
+    assert statuses(result)[2] == "invalid_action" and "outside" in result["steps"][2]["planner_error"]
+
+
+def test_the_parent_reads_replies_with_a_size_cap_and_never_with_unpickling_recv():
+    with SubprocessPlanner(partial(shadow_testing.Scripted, 1), timeout_sec=GENEROUS) as remote:
+        assert remote.call(0, OBS, 30, 0.15)["status"] == "ok"  # starts the worker
+        spy = remote._conn = SpyConn(remote._conn)
+        assert remote.call(1, OBS, 30, 0.15)["status"] == "ok"
+        assert spy.recv_maxlengths == [shadow_isolation.MAX_MESSAGE_BYTES]
+        assert not hasattr(spy, "recv")  # the spy has no recv(): a call to it would have failed the call above
+
+
+@pytest.mark.parametrize("garbage", [b"\x80\x04garbage", b"not json", b'["ok", true, 5]', b'["ok", 1.5, 5]', b'["ok", 1]',
+                                     b'["mystery", "", 1]', b'["ok", 1, -3]', b'["error", "' + b"x" * 1000 + b'", 1]', b"[]", b"{}"])
+def test_a_reply_that_does_not_match_the_schema_discards_the_worker(garbage):
+    with pytest.raises(shadow_isolation.ProtocolError):
+        shadow_isolation.parse_message(garbage)
+    with SubprocessPlanner(partial(shadow_testing.Scripted, 1), timeout_sec=GENEROUS) as remote:
+        assert remote.call(0, OBS, 30, 0.15)["status"] == "ok"
+        remote._conn = SpyConn(remote._conn, recv=lambda real, maxlength: (real.recv_bytes(maxlength), garbage)[1])
+        reply = remote.call(1, OBS, 30, 0.15)
+        assert reply["status"] == "error" and "PlannerProtocolError" in reply["error"] and not remote.has_worker
+        assert remote.call(2, OBS, 30, 0.15)["status"] == "ok"  # a fresh worker takes over
+
+
+def test_an_oversized_reply_is_a_protocol_error():
+    def too_big(real, maxlength):
+        raise OSError("bad message length")
+
+    with SubprocessPlanner(partial(shadow_testing.Scripted, 1), timeout_sec=GENEROUS) as remote:
+        assert remote.call(0, OBS, 30, 0.15)["status"] == "ok"
+        remote._conn = SpyConn(remote._conn, recv=too_big)
+        reply = remote.call(1, OBS, 30, 0.15)
+        assert reply["status"] == "error" and "PlannerProtocolError" in reply["error"]
+
+
+def test_normalise_result_only_ever_returns_plain_ints_or_short_text():
+    assert shadow_isolation.normalise_result(3) == ("ok", 3)
+    import numpy as np
+
+    assert shadow_isolation.normalise_result(np.int64(2)) == ("ok", 2)
+    for bad in (True, 1.0, "1", None, [1], shadow_testing.SlowDecode(), 10**30):
+        kind, text = shadow_isolation.normalise_result(bad)
+        assert kind == "invalid" and isinstance(text, str) and len(text) < shadow_isolation.MAX_TEXT_CHARS
+
+
+def test_the_deadline_covers_the_whole_receive_not_only_the_first_byte():
+    """The reply is one bounded message read right after poll(); a worker that never answers is cut at the deadline,
+    including a worker that blocks while *producing* a result (sleep inside select_action)."""
+    started = time.perf_counter()
+    with SubprocessPlanner(partial(shadow_testing.Scripted, 1, (0,), "sleep"), timeout_sec=TIMEOUT) as remote:
+        reply = remote.call(0, OBS, 30, 0.15)
+    assert reply["status"] == "timeout" and TIMEOUT * 1e9 <= reply["roundtrip_ns"] < (TIMEOUT + 1.0) * 1e9
+    assert time.perf_counter() - started < 10
+
+
+# ---------------------------------------------------------------------- API validation
+
+
+@pytest.mark.parametrize("field", ["timeout_sec", "startup_timeout_sec", "grace_sec"])
+@pytest.mark.parametrize("bad", [0, -1, float("nan"), float("inf"), float("-inf"), True, "1", None])
+def test_every_duration_must_be_finite_and_positive(field, bad):
+    with pytest.raises(ValueError):
+        SubprocessPlanner(partial(shadow_testing.Scripted, 1), **{field: bad})
+    with pytest.raises(ValueError):  # run_shadow rejects it before any process exists
+        shadow.run_shadow(ScriptedDQN(), partial(shadow_testing.Scripted, 1), SEEDS[:1], dict(ENV),
+                          planner_isolation="subprocess", **{field: bad})
+    assert mp.active_children() == []
+
+
+@pytest.mark.parametrize("bad", [-1, 1.5, True, "3", None])
+def test_max_consecutive_timeouts_must_be_a_non_negative_integer(bad):
+    with pytest.raises(ValueError):
+        shadow.ShadowPolicy(ScriptedDQN(), None, max_consecutive_timeouts=bad)
+    with pytest.raises(ValueError):
+        shadow.run_shadow(ScriptedDQN(), partial(shadow_testing.Scripted, 1), SEEDS[:1], dict(ENV),
+                          planner_isolation="subprocess", max_consecutive_timeouts=bad)
+    assert mp.active_children() == []
+
+
+# ---------------------------------------------------------------------- reclamation failure, accounting
+
+
+class StubbornProc:
+    """A fake worker that survives terminate() and the first kill()."""
+
+    pid = 424242
+
+    def __init__(self):
+        self.alive, self.kills = True, 0
+
+    def is_alive(self):
+        return self.alive
+
+    def terminate(self):
+        pass
+
+    def kill(self):
+        self.kills += 1
+        if self.kills >= 2:
+            self.alive = False
+
+    def join(self, timeout=None):
+        pass
+
+    def close(self):
+        pass
+
+
+class StubConn:
+    closed = False
+
+    def send(self, obj):
+        pass
+
+    def close(self):
+        self.closed = True
+
+
+def test_a_worker_that_survives_sigkill_is_tracked_and_no_new_worker_is_started():
+    remote = SubprocessPlanner(partial(shadow_testing.Scripted, 1), timeout_sec=TIMEOUT, grace_sec=0.05)
+    proc, conn = StubbornProc(), StubConn()
+    remote._proc, remote._conn = proc, conn
+    remote._reap()
+    assert remote.stats["workers_not_reaped"] == 1 and remote.unreaped_pids == [proc.pid] and conn.closed
+    assert remote.unavailable and "could not be terminated" in remote.unavailable
+    reply = remote.call(0, OBS, 30, 0.15)  # refuses to pile up further workers
+    assert reply["status"] == "error" and "PlannerUnavailable" in reply["error"] and remote.stats["workers_started"] == 0
+    remote.close()  # one more kill attempt succeeds and the books are corrected
+    assert remote.stats["workers_not_reaped"] == 0 and remote.unreaped_pids == [] and proc.pid in remote.reaped_pids
+
+
+def test_failed_start_reports_startup_and_cleanup_time_separately():
+    with SubprocessPlanner(shadow_testing.slow_factory, timeout_sec=TIMEOUT, startup_timeout_sec=1.0) as remote:
+        reply = remote.call(0, OBS, 30, 0.15)
+    assert reply["startup_ns"] >= 1.0 * 1e9 and reply["cleanup_ns"] is not None and reply["cleanup_ns"] > 0
+    assert reply["roundtrip_ns"] is None  # never reached the request/reply phase
+
+
+def test_summary_reports_unreaped_and_protocol_counters():
+    result = run(partial(shadow_testing.Scripted, 1), timeout=GENEROUS, isolation_check=False)
+    iso = result["planner_isolation"]
+    assert iso["workers"]["protocol_errors"] == 0 and iso["unreaped_worker_pids"] == []
+    assert "send+wait+receive" in iso["note"]

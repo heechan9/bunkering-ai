@@ -11,11 +11,21 @@ import time
 from typing import Any
 
 
+class SlowDecode:
+    """Returned by a misbehaving planner: unpickling it would block for two seconds."""
+
+    def __reduce__(self):
+        return (time.sleep, (2.0,))
+
+
 class Scripted:
     """Return ``action`` normally; misbehave at the listed step indexes.
 
     ``mode`` is one of: ``sleep`` (block for an hour), ``spin`` (busy loop), ``raise``, ``invalid``
-    (return an out-of-range action), ``die`` (hard exit of the worker process).
+    (return an out-of-range action), ``die`` (hard exit of the worker process), ``slowdecode`` (return an
+    object that is slow to unpickle), ``bool`` / ``string`` / ``hugeint`` (return a non-integer or an
+    absurdly large integer), ``npint`` (return a numpy integer: valid), ``longerror`` (raise with a
+    10 000-character message).
     """
 
     name = "scripted_planner"
@@ -39,6 +49,20 @@ class Scripted:
                 return 99
             elif self.mode == "die":
                 os._exit(3)
+            elif self.mode == "slowdecode":
+                return SlowDecode()
+            elif self.mode == "bool":
+                return True
+            elif self.mode == "string":
+                return "1"
+            elif self.mode == "hugeint":
+                return 10**100
+            elif self.mode == "npint":
+                import numpy as np
+
+                return np.int64(self.action)
+            elif self.mode == "longerror":
+                raise RuntimeError("x" * 10_000)
         return self.action
 
 

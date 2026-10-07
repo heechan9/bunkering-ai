@@ -50,9 +50,11 @@ python -m research.fair_replacement_eval.shadow \
 
 - **정상**: worker가 `ok`로 답하면 기존과 같이 기록한다. worker는 에피소드와 seed를 넘어 재사용된다(계획기는 스텝 0에서 스스로 초기화).
 - **계획기 예외·잘못된 행동**: worker 안에서 잡혀 `error`/`invalid_action`으로 기록된다. worker는 그대로 유지되고 재시작 비용이 없다.
-- **시간 초과**: 그 스텝을 `timeout`으로 기록하고 DQN 행동·항차 실행은 그대로 이어진다. 기다리기만 멈추지 않고 worker를 **종료·회수**한다(SIGTERM → `grace` 1초 안에 안 끝나면 SIGKILL → `join` → 파이프 닫기). 그래서 백그라운드에서 계획기 계산이 계속 돌지 않는다. 다음 호출 때 새 worker를 만든다(시작 시간은 `planner_startup_ns`로 따로 기록).
+- **시간 초과**: 그 스텝을 `timeout`으로 기록하고 DQN 행동·항차 실행은 그대로 이어진다. 기다리기만 멈추지 않고 worker를 종료한다(SIGTERM → `grace` 1초 안에 안 끝나면 SIGKILL → `join` → 파이프 닫기). 그래서 보통은 백그라운드에서 계획기 계산이 계속 돌지 않는다. 회수는 **최선 노력**이다: SIGKILL과 `join` 뒤에도 worker가 살아 있으면 개수(`workers_not_reaped`)와 pid(`unreaped_worker_pids`)를 기록하고 핸들을 보관하며, 그 실행에서는 새 worker를 더 만들지 않는다(`PlannerUnavailable`). `close()`가 한 번 더 kill을 시도한다. 다음 호출 때 새 worker를 만든다(시작 시간은 `planner_startup_ns`로 따로 기록).
 - **worker 비정상 종료**(예: 계획기가 프로세스를 죽임): `error`(`PlannerWorkerDied`)로 기록하고 다음 호출에서 새 worker를 만든다.
-- **worker 시작 실패·시간 초과**(`--planner-startup-timeout-sec`): 계획기를 그 실행 동안 사용할 수 없는 것으로 보고 이후 스텝을 `error`(`PlannerUnavailable`)로 기록한다. 재시작을 반복하지 않는다.
+- **worker 시작 실패**: 부모의 프로세스 생성 실패(파이프·프로세스 생성/시작의 `OSError` 등), worker 안 factory 예외, 핸드셰이크 시간 초과(`--planner-startup-timeout-sec`)를 모두 같은 경로로 기록한다. 중간에 만들어진 파이프·프로세스는 정리하고, 계획기를 그 실행 동안 사용할 수 없는 것으로 보고 이후 스텝을 `error`(`PlannerUnavailable`)로 기록한다. 재시작을 반복하지 않는다. DQN 실행은 그대로 이어진다. (`KeyboardInterrupt`/`SystemExit`는 삼키지 않는다. 자원만 정리하고 그대로 전파한다.)
+- **응답 프로토콜**: worker는 계획기의 반환 객체를 부모로 보내지 않는다. 반환값을 **worker 안에서** 검증·정규화해 `[종류, 값, 계산시간]` 형태의 작은 JSON 메시지(최대 4096바이트, 문자열 300자)로만 보낸다(`ok`+정수 행동 / `invalid`+짧은 사유 / `error`+짧은 사유). 부모는 `recv_bytes(최대 길이)`로 읽고 고정 스키마로 검사하며 계획기 쪽에서 온 어떤 것도 unpickle하지 않는다. 스키마에 맞지 않거나 너무 큰 응답은 프로토콜 오류(`PlannerProtocolError`)로 기록하고 그 worker를 버린다(스트림을 믿을 수 없다). 행동의 범위 검사는 부모가 환경의 행동 수로 한다.
+- **제한 시간이 적용되는 범위**: `--planner-timeout-sec`는 부모가 요청을 보내기 시작한 때부터 응답 전체를 받아 파싱할 때까지(`planner_roundtrip_ns`)를 묶는다. 요청과 응답은 파이프 버퍼보다 훨씬 작아 전송이 worker를 기다리지 않고, 응답은 크기가 제한된 단일 메시지다. 이 제한에 **포함되지 않는** 것: worker 시작(`--planner-startup-timeout-sec`로 따로 제한)과 실패 뒤 worker 종료·join(최대 약 `2 × grace`). 계획기 코드가 일부러 worker의 파이프에 직접 쓰는 경우는 범위 밖이다.
 - **연속 시간 초과**: 한 에피소드에서 연속 `--max-consecutive-timeouts`(기본 3)번 시간 초과가 나면, 그 에피소드의 남은 스텝은 계획기를 호출하지 않고 `skipped`로 기록한다. 다음 에피소드에서는 다시 시도한다. 0이면 건너뛰지 않는다. 중간에 한 번이라도 답이 오면 연속 횟수는 0으로 돌아간다.
 - `inprocess` 모드는 기존 방식(같은 프로세스, 시간 제한 없음)이다. 계획기가 멈추면 실행도 멈추므로 시간 제한이 필요한 실행에는 쓰지 않는다. `summary.json`의 `planner_isolation.time_limit_enforced`로 어느 방식이었는지 남는다.
 
@@ -60,7 +62,7 @@ python -m research.fair_replacement_eval.shadow \
 
 계획기의 내부 상태(이전 관측)는 worker 안에 있다. 시간 초과·비정상 종료·건너뜀이 생기면 worker가 새로 만들어지거나 일부 관측을 받지 못하므로 그 에피소드의 이후 추천은 과거 관측이 불완전하다. 이를 숨기지 않고 스텝마다 `planner_history_intact`로 표시한다.
 
-- 값의 뜻: 이 호출 *직전까지* 계획기가 이 에피소드의 이전 관측을 전부 순서대로 받았는가. 스텝 0은 항상 참, 시간 초과가 난 그 호출도 참(그 시점까지는 온전했다), 그 뒤부터 해당 에피소드가 끝날 때까지 거짓. 새 에피소드에서는 다시 참으로 시작한다.
+- 값의 뜻: 이 호출 *직전까지* 계획기가 이 에피소드의 이전 관측을 전부 순서대로 받았는가. 스텝 0은 항상 참. 에피소드의 **첫 실패**(시간 초과·worker 사망·프로토콜 오류·시작 실패)가 난 호출은 그 시점까지 온전했다면 참이고, 그 뒤 같은 에피소드의 모든 호출은 거짓이다(두 번째 연속 시간 초과 호출도 이미 거짓). 새 에피소드에서는 다시 참으로 시작한다. 연속 시간 초과로 인한 `skipped`는 다음 에피소드에서 재시도하지만, worker 시작 실패의 `unavailable`은 그 실행 전체에 유지된다.
 - `summary.json`에는 `valid_recommendations_with_incomplete_planner_history`와 이를 뺀 `disagreement_buy_vs_wait_history_intact_only`가 따로 남는다. 불일치율을 해석할 때는 이 값을 같이 봐야 한다.
 - `planner_ops`(`I_ops`)는 현재 관측만으로 추천하므로 추천 값은 이 상태에 영향을 받지 않지만, 표시는 같은 규칙으로 붙는다. `planner_ops_hist`는 재시작 직후 첫 호출에서 소비량 추정을 공칭값으로 대신 쓰게 되어 추천이 달라질 수 있다.
 - 재시작 후 이력을 다시 채워 넣는(replay) 방식은 쓰지 않는다. 계산이 길어져 시간 제한의 목적과 어긋나기 때문이다.
@@ -70,19 +72,20 @@ python -m research.fair_replacement_eval.shadow \
 | 필드(`shadow_steps.csv.gz`) | 의미 |
 |---|---|
 | `planner_ns` | worker 안에서 `planner.select_action`이 실제로 걸린 시간(계산시간). 시간 초과·건너뜀이면 비어 있다 |
-| `planner_roundtrip_ns` | 부모 프로세스가 요청을 보낸 뒤 답을 받을 때까지(또는 기한이 끝날 때까지) 기다린 시간. DQN 루프를 막는 시간이다 |
+| `planner_roundtrip_ns` | 부모가 요청 전송을 시작해 응답 전체를 받아 파싱할 때까지(또는 기한이 끝날 때까지)의 시간. 이 호출 자체가 DQN 루프를 막는 시간이며, 시작·정리 시간은 포함하지 않는다 |
 | `planner_ipc_ns` | `roundtrip − compute`. 직렬화·파이프 전달·스케줄링·worker 루프 오버헤드의 합이며 더 나눌 수 없다 |
-| `planner_startup_ns` | 이 호출이 worker를 새로 시작했다면 그 시작 시간(roundtrip에 포함되지 않음) |
-| `planner_cleanup_ns` | 시간 초과·비정상 종료 뒤 worker를 종료·회수하는 데 걸린 시간 |
+| `planner_startup_ns` | 이 호출이 worker를 새로 시작했다면 프로세스 생성부터 핸드셰이크 결과(성공·실패)까지의 시간(roundtrip에 포함되지 않음) |
+| `planner_cleanup_ns` | 시간 초과·비정상 종료·프로토콜 오류·시작 실패 뒤 worker를 종료·join하는 데 걸린 시간. 시작 실패의 정리 시간은 `planner_startup_ns`가 아니라 여기에 따로 기록된다 |
 
 `summary.json`에는 `latency_planner_compute`(= 기존 `latency_planner`), `latency_planner_roundtrip`, `latency_planner_ipc`, 시작·정리·시간 초과 대기 합계가 따로 있다. 시간 초과 스텝은 계산시간 분포에 넣지 않고 개수(`planner_timeout_steps`)와 대기 합계(`planner_timeout_wait_ms_total`)로 따로 센다.
 
 ### 제한 시간 선택 근거와 한계
 
 - 기본값 1.0초는 **성능 요구사항에서 도출한 값이 아니다.** 이 연구 환경에서 `planner_ops` 계산시간 최대가 수 ms(앞선 공식 체크포인트 shadow 실행 600스텝에서 p99 약 2 ms, 최대 약 2.7 ms; 이번 작업의 별도 측정 145회에서 평균 0.56 ms, 최대 2.1 ms, 통신 오버헤드 평균 0.14 ms·최대 0.37 ms, worker 시작 약 150–200 ms)이므로, 일시적인 스케줄링 지연이나 느린 기계에서 정상 호출이 시간 초과로 오인되지 않을 만큼 넉넉하면서 멈춘 계획기를 스텝당 1초 이내로 묶는 값으로 골랐다. 위 수치는 이 기계·이 환경의 관측이며 다른 환경을 보장하지 않는다. 실행 환경이 느리면 `--planner-timeout-sec`를 늘린다.
-- 최악의 지연: 한 에피소드에서 계획기가 계속 멈추면 연속 초과 한도까지 약 `한도 × (제한 시간 + worker 재시작 시간)`이 추가된다(기본값이면 약 3 × (1 s + 0.2 s)). 한도를 0으로 하면 스텝 수 × (제한 시간 + 재시작 시간)까지 늘 수 있다.
+- 지연의 **이론적 상한**(관측 예시가 아니다): 호출 1건이 DQN 루프를 막는 시간은 `제한 시간 + 정리(최대 약 2 × grace) + (worker를 새로 시작해야 했다면) 시작 시간(최대 --planner-startup-timeout-sec, 기본 60초)`까지 될 수 있다. roundtrip만이 DQN을 막는 전부가 아니다. 한 에피소드에서 계획기가 계속 멈추면 연속 초과 한도 횟수만큼 이 값이 반복된다(한도 0이면 스텝 수만큼). 관측 예시: 기본값에서 정상 시작은 약 0.15–0.2초이므로 에피소드당 약 3 × (1 s + 0.2 s), 이 값은 상한이 아니다. 시작이 실패하면 계획기가 그 실행 동안 unavailable이 되어 더는 반복되지 않는다.
 - 제한은 **벽시계 시간**이다. CPU·메모리 사용량은 제한하지 않는다.
 - 계획기가 자체적으로 하위 프로세스를 만들면 그 하위 프로세스는 회수하지 못한다.
+- worker 종료는 SIGTERM/SIGKILL과 `join`에 의존한다. 커널 상태(예: 해제되지 않는 uninterruptible sleep)로 SIGKILL 뒤에도 남는 극단 경로는 실제 OS 상태로 재현하지 못했고, 가짜 프로세스 객체로 기록·중단 동작만 시험했다.
 - 부모 프로세스가 SIGKILL 등으로 강제 종료되면, 무한 계산 중인 worker는 스스로 끝나지 않을 수 있다. 정상 종료·예외 종료·`KeyboardInterrupt` 때는 `finally`에서 worker를 정리한다.
 - DQN 행동 계산은 이 제한과 무관하며, 시간 초과는 DQN 행동·보상·관측을 바꾸지 않는다. `isolation_check`는 시간 초과가 생긴 실행에서도 shadow를 끈 실행과 스텝별 trace를 비교한다(비교한 seed에 한한 동일성).
 - 이 기능은 계획기를 더 빠르게 하거나 더 좋게 만들지 않는다. 계획기의 비용·안전 성능, 운영 연결과 무관하다.

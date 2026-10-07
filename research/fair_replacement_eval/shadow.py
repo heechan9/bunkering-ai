@@ -58,6 +58,8 @@ from research.fair_replacement_eval.shadow_isolation import (
     DEFAULT_TIMEOUT_SEC,
     SubprocessPlanner,
     build_planner,
+    finite_positive,
+    non_negative_int,
     planner_factory_for,
 )
 
@@ -113,7 +115,7 @@ class ShadowPolicy:
         self.primary = primary
         self.planner = planner
         self.remote = remote  # when set, the planner runs in a time-bounded worker process instead of `planner`
-        self.max_consecutive_timeouts = int(max_consecutive_timeouts)  # 0 = never skip
+        self.max_consecutive_timeouts = non_negative_int("max_consecutive_timeouts", max_consecutive_timeouts)  # 0 = never skip
         self.enabled = bool(enabled and (planner is not None or remote is not None))
         self.name = name or getattr(primary, "name", type(primary).__name__)
         self.records: list[dict[str, Any]] = []
@@ -200,14 +202,14 @@ class ShadowPolicy:
         }
         status, error, action = reply["status"], reply["error"], None
         if status == "ok":
-            action, status, error = self._validate(reply["raw"], n_actions)
+            action, status, error = self._validate(reply["action"], n_actions)  # the worker already normalised it to an int
         if status == "timeout":
             self._consecutive_timeouts += 1
             self._history_intact = False  # worker killed: its history is gone and this observation is missed
         else:
             self._consecutive_timeouts = 0
             if reply["status"] == "error" and reply["compute_ns"] is None:
-                self._history_intact = False  # worker died or was unavailable: this observation was not processed
+                self._history_intact = False  # worker died, protocol error or unavailable: this observation was not processed
         return status, error, action, timing
 
     @staticmethod
@@ -414,6 +416,11 @@ def run_shadow(
     """
     if planner_isolation not in ("inprocess", "subprocess"):
         raise ValueError("planner_isolation must be 'inprocess' or 'subprocess'")
+    max_consecutive_timeouts = non_negative_int("max_consecutive_timeouts", max_consecutive_timeouts)
+    if planner_isolation == "subprocess":  # fail before any process is created
+        timeout_sec = finite_positive("timeout_sec", timeout_sec)
+        startup_timeout_sec = finite_positive("startup_timeout_sec", startup_timeout_sec)
+        grace_sec = finite_positive("grace_sec", grace_sec)
     remote: SubprocessPlanner | None = None
     planner: Any = None
     if planner_isolation == "subprocess":
@@ -434,8 +441,9 @@ def run_shadow(
         "max_consecutive_timeouts": int(max_consecutive_timeouts) if remote is not None else None,
         "workers": None if remote is None else dict(remote.stats),
         "workers_reaped_pids_count": None if remote is None else len(remote.reaped_pids),
-        "note": "timeout_sec is a wall-clock limit on the parent-side wait for one recommendation (roundtrip). "
-                "Worst-case added wall time per episode is about steps x (timeout_sec + worker restart time).",
+        "unreaped_worker_pids": None if remote is None else list(remote.unreaped_pids),
+        "note": "timeout_sec bounds the parent-side send+wait+receive of one recommendation (roundtrip). Worker start "
+                "(startup_timeout_sec) and terminate/join after a failure (about 2 x grace_sec) are additional, bounded separately.",
     }
     return result
 
