@@ -30,6 +30,7 @@ python -m research.fair_replacement_eval.shadow \
   | `planner_ops_hist` | `I_ops_hist` — 현재 관측 + 같은 에피소드의 이전 관측(소비량 추정) | **아니오.** DQN보다 많은 정보를 쓴다 |
 
   미래 가격을 보는 변형은 거부한다. `planner_ops_hist`의 불일치율을 "동일 정보 비교"로 해석하면 안 된다.
+- 체크포인트 경로가 일반 파일이 아닌 특수 파일(named pipe·장치 등)이어도 해시 읽기에서 멈추지 않고 같은 방식으로 기록·종료한다.
 - 체크포인트 파일이 없거나 읽을 수 없으면(해시·로드 실패) 예외로 끝나지 않고 `preflight.json`에 `checkpoint_file`/`checkpoint_format` 실패를 기록한 뒤 에피소드 실행 없이 종료 코드 3으로 끝난다.
 
 ## 격리 방식
