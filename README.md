@@ -58,7 +58,7 @@
 | 평가 사전 검증 보강 | ✅ main 병합(PR #105, `9ddd64b`) | 메타데이터·환경·시드 검사 및 워커 시작 전 차단. 병합 후 main에서 Claude가 직접 실행: 연구 90개 / 전체 373개 통과(23 subtests). [PR #105](https://github.com/heechan9/bunkering-ai/pull/105) |
 | Shadow 추천 비교·격리 | ✅ #107·#109 main 병합 | DQN 행동은 유지하고 계획기 추천을 기록. 시간 초과·worker 실패 처리, 늦은 응답 폐기. soft deadline이며 운영 연결·계획기 성능평가가 아님. [사용법](research/fair_replacement_eval/SHADOW_MODE.md) |
 | 체크포인트 읽기 실패 처리 | ✅ #108·#109 main 병합 | 읽기 실패 및 FIFO·장치 파일은 preflight 실패로 기록하고 실행 전 중단 |
-| Python 자동 회귀검사 | ✅ #110 main 병합 · 실행 성공 | PR·main push에서 Python 3.12 CPU pytest 실행. 필수 체크 강제 설정·자동 병합·배포는 별도. [CI 안내](docs/technical/python_ci.md) |
+| Python 자동 회귀검사 | ✅ #110 main 병합 · 실행 성공 | PR·main push에서 Python 3.12 CPU pytest 실행. main 필수 pytest 체크 활성화. 자동 병합·배포는 별도. [CI 안내](docs/technical/python_ci.md) |
 | 실제 선박 적용 | ⏳ 추가 기록 확보·독립 평가 필요 | 같은 선박·기간의 공급량·ROB·소비·가격 연결 미완료. 실제 비용·연료 절감률은 미입증 |
 
 비공개 원자료·최종 제출 파일은 Google Drive에서 관리합니다. 상세 날짜별 이력은 [진행 기록](docs/PROJECT_STATUS.md)을 확인하세요.

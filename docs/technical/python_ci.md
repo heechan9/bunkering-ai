@@ -28,9 +28,12 @@ failures remain in Actions step logs; there may be no artifact if installation f
 
 A green check only establishes that the collected tests passed in that environment.
 Counterexample review and private-model functional verification remain separate.
-Branch protection / required checks are repository settings and are not changed by
-this workflow. Enable a required check only after its first successful hosted run;
-the job name is `pytest (Python 3.12, CPU)`.
+On 2026-10-07, repository ruleset `main-python-ci` (ID `24645588`) was enabled
+for the default branch (`main`). It requires `pytest (Python 3.12, CPU)` from
+GitHub Actions, with no bypass actors. Requiring the branch to be up to date is
+not enabled. No additional review-count, deployment or automatic merge rule was added.
+The workflow file and this repository setting are separate; renaming the job requires
+updating the required-check setting too. [Follow-up record](../audits/remaining_work_20261007.md).
 
 ## Review and integration
 
