@@ -24,6 +24,10 @@
 ![Data](https://img.shields.io/badge/UPA_public_data-6%2C028_rows-0054A6)
 
 
+## 국내외 자료 후속 검토 (2026-10-08)
+
+DAYTONA·VISBY 국내 LNG 사례와 현재 구간 24h·급유 기항 8h 합성 가정을 대조했습니다. **하역 동시작업 시간은 항차 추가 지연과 같지 않아 기본값 교체를 보류합니다.** MPA·EMSA 기존 원본 재확보와 Rotterdam 신규 PDF 확보를 기록했습니다. DAYTONA 첨부 PDF/HWP·MPA 장기 CSV·EMSA 10월7일 갱신판 다운로드는 미완료입니다. [자료별 확보 범위·시간 가정 검토](docs/audits/domestic_lng_time_review_20261008.md).
+
 ## 지금 어디까지 완료됐나
 
 2026-10-07 main `c01b563` 확인 기준입니다. PR #100–#110의 평가·shadow·CI 병합과 [Sites 36판 운영 검증](docs/audits/ocean_lab_live_verification_20261007.md)을 반영했습니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
