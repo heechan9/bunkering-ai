@@ -4,7 +4,8 @@
   "base_commit": "e0dd59fd912ae8f46eae1f3b5c96b14d98c05e54",
   "amendments": [
     "A1 (before any evaluation run; after a single smoke test on seed 42 showed that ranking reserve margin above stop count yields a degenerate buy-every-step plan): tie-break order changed from (margin, stops) to (stops, margin) and 'prefer waiting' added as final tie-break. No evaluation result existed. Smoke tests (one episode each, planner variants x demand scenarios, output not recorded) used seed 42 (reuse set, never a pass/fail input) and seed 10000000 (the first holdout seed; its single-episode outcome was seen, which cannot influence aggregate criteria but is disclosed).",
-    "A2 (after the synthetic validation recorded in results/synthetic_validation under criteria hash 79269406..., and before any evaluation of the official checkpoint): (1) numeric decision thresholds moved from prose into 'thresholds', read directly by decision.py/evaluate.py, with the same values the first synthetic run used; (2) the first 1000-episode holdout is reclassified as 'development_holdout' (seen during design and in the synthetic run; kept, not used for decisions) and a new unseen 'confirmation' set is designated for all pass/fail criteria; (3) no planner parameter, metric or criterion logic changed. The first synthetic result is preserved and must not be described as an independent confirmation."
+    "A2 (after the synthetic validation recorded in results/synthetic_validation under criteria hash 79269406..., and before any evaluation of the official checkpoint): (1) numeric decision thresholds moved from prose into 'thresholds', read directly by decision.py/evaluate.py, with the same values the first synthetic run used; (2) the first 1000-episode holdout is reclassified as 'development_holdout' (seen during design and in the synthetic run; kept, not used for decisions) and a new unseen 'confirmation' set is designated for all pass/fail criteria; (3) no planner parameter, metric or criterion logic changed. The first synthetic result is preserved and must not be described as an independent confirmation.",
+    "A3 (2026-10-07, before official checkpoint evaluation): record 40000000..40000999 as already used by surrogate confirmation; designate 50000000..50000999 for first official evaluation. Candidate, metrics, thresholds and environment assumptions unchanged. Hash freezes this amended protocol before execution; it does not prove perpetual non-use of a set after execution."
   ],
   "purpose": "Decide whether evidence exists to replace the operational DQN with a same-observation planner. This file is fixed before any evaluation run. Changing it after results exist invalidates the verdict; evaluate.py refuses to run if its sha256 differs from criteria.sha256.",
   "units_note": "All costs are the repository's Synthetic Cost Index (SCI), a normalized-tank synthetic index. Not a currency; no real saving is claimed.",
@@ -44,8 +45,8 @@
       "episodes": 1000
     },
     "confirmation": {
-      "role": "CONFIRMATION set for all pass/fail criteria. Designated after the candidate, parameters and thresholds were fixed; no run, smoke test or diagnostic has used these seeds.",
-      "base_seed": 40000000,
+      "role": "Official pass/fail confirmation set, designated under A3 before this run. No known prior use at designation. After execution record it as used; do not describe it as perpetually unseen.",
+      "base_seed": 50000000,
       "episodes": 1000,
       "disjointness_check": "Seeds must not intersect [train_seed, train_seed + n_episodes) read from checkpoint metadata, the reuse seeds, the development holdout, or any range in seed_ranges_already_used."
     },
@@ -84,6 +85,13 @@
           30002999
         ],
         "use": "diagnostic: planner_ops vs surrogate DQN cost difference"
+      },
+      {
+        "range": [
+          40000000,
+          40000999
+        ],
+        "use": "surrogate confirmation; candidate outcomes already observed"
       }
     ]
   },
