@@ -280,7 +280,11 @@ def test_cli_writes_records_and_states_no_performance_claim(tmp_path):
         header = handle.readline().strip().split(",")
     assert header == shadow.STEP_FIELDS
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
-    assert set(manifest["files_sha256"]) == {"shadow_steps.csv.gz", "dqn_episodes.csv.gz"}
+    assert set(manifest["files_sha256"]) == {
+        "shadow_steps.csv.gz", "dqn_episodes.csv.gz", "dqn_trace_shadow_on.csv.gz", "dqn_trace_shadow_off.csv.gz",
+    }
+    assert summary["isolation_check"]["trace_identical"] is True and summary["isolation_check"]["outcome_identical"] is True
+    assert summary["planner_information"] == {"name": "planner_ops", **shadow.PLANNER_TIERS["planner_ops"]}
     assert common.file_sha256(out / "shadow_steps.csv.gz") == manifest["files_sha256"]["shadow_steps.csv.gz"]
 
 
@@ -323,3 +327,119 @@ def test_shadow_run_does_not_touch_registered_criteria():
     before = (common.CRITERIA_PATH.read_bytes(), common.CRITERIA_HASH_PATH.read_bytes())
     episode(ScriptedDQN(), FixedPlanner(0))
     assert before == (common.CRITERIA_PATH.read_bytes(), common.CRITERIA_HASH_PATH.read_bytes())
+
+
+# ------------------------------------------------- review follow-up (Codex, PR #107)
+
+
+def test_traced_loop_matches_the_unmodified_evaluation_loop(tmp_path):
+    """The trace loop must be the same voyage as common.run_episode (guards against drift)."""
+    from scripts.evaluate import load_dqn_policy
+
+    for primary in (ScriptedDQN(), load_dqn_policy(make_checkpoint(tmp_path / "m.pt", good_meta()), dict(ENV))):
+        for seed in SEEDS:
+            row, _, trace = shadow.run_traced_episode(primary, None, seed, dict(ENV), enabled=False)
+            plain = common.run_episode(primary, seed, dict(ENV), "shadow", timed=False).row()
+            assert shadow.outcome(row) == shadow.outcome(plain)
+            assert [t["step"] for t in trace] == list(range(len(trace))) and trace[-1]["terminated"] | trace[-1]["truncated"]
+
+
+def test_trace_contains_no_timing_fields():
+    assert not any("ns" in f.split("_") or "ms" in f.split("_") for f in shadow.TRACE_FIELDS)
+
+
+def test_first_trace_difference_on_crafted_traces():
+    base = [{"seed": 1, "step": i, "obs_sha256": f"o{i}", "action": 0, "reward": "0.0", "terminated": False,
+             "truncated": False, "next_obs_sha256": f"o{i + 1}"} for i in range(3)]
+    assert shadow.first_trace_difference(base, [dict(t) for t in base]) is None
+    for field, value in (("action", 2), ("reward", "-0.1"), ("terminated", True), ("obs_sha256", "x"), ("next_obs_sha256", "y")):
+        other = [dict(t) for t in base]
+        other[1][field] = value
+        diff = shadow.first_trace_difference(base, other)
+        assert diff["step"] == 1 and diff["field"] == field
+    diff = shadow.first_trace_difference(base, base[:2])
+    assert diff["field"] == "length"
+
+
+def test_trace_check_catches_what_aggregate_check_misses():
+    """Counterexample: refill actions 1 and 2 are the same refill, so every voyage aggregate is equal,
+    but the DQN's action at a step differs between shadow on and off."""
+
+    class Contaminated:
+        calls = 0
+        name = "contaminated"
+
+        def select_action(self, env, observation, step_index):
+            if step_index not in (0, 9, 19):
+                return 0
+            return 2 if Contaminated.calls > 40 else 1
+
+    class Counting:
+        def select_action(self, env, observation, step_index):
+            Contaminated.calls += 1
+            return 0
+
+    Contaminated.calls = 0
+    result = shadow.run_shadow(Contaminated(), Counting, SEEDS, dict(ENV), isolation_check=True)
+    iso = result["isolation_check"]
+    assert iso["outcome_identical"] is True  # an aggregate-only check would have reported "identical"
+    assert iso["trace_identical"] is False and iso["identical"] is False
+    assert iso["trace_mismatching_seeds"] and iso["outcome_mismatching_seeds"] == []
+    assert iso["first_trace_difference"]["field"] == "action"
+    assert iso["first_trace_difference"]["shadow_on"] != iso["first_trace_difference"]["shadow_off"]
+
+
+def test_isolation_trace_is_identical_with_real_checkpoint_and_hashes_are_recorded(tmp_path):
+    from scripts.evaluate import load_dqn_policy
+
+    dqn = load_dqn_policy(make_checkpoint(tmp_path / "m.pt", good_meta()), dict(ENV))
+    result = shadow.run_shadow(dqn, lambda: make_planners([0.0], {})["planner_ops"], SEEDS, dict(ENV))
+    iso = result["isolation_check"]
+    assert iso["trace_identical"] and iso["outcome_identical"] and iso["identical"]
+    assert result["traces_on"] == result["traces_off"] and result["traces_on"]
+    for ep in result["episodes"]:
+        trace = [t for t in result["traces_on"] if t["seed"] == ep["seed"]]
+        assert ep["dqn_trace_sha256"] == shadow.trace_sha256(trace)
+
+
+def test_planner_information_tiers_are_distinguished():
+    assert shadow.PLANNER_TIERS["planner_ops"]["tier"] == "I_ops"
+    assert shadow.PLANNER_TIERS["planner_ops"]["same_information_as_dqn"] is True
+    assert shadow.PLANNER_TIERS["planner_ops_hist"]["tier"] == "I_ops_hist"
+    assert shadow.PLANNER_TIERS["planner_ops_hist"]["same_information_as_dqn"] is False
+    assert set(shadow.ALLOWED_PLANNERS) == set(shadow.PLANNER_TIERS)
+    doc = (Path(shadow.__file__).parent / "SHADOW_MODE.md").read_text(encoding="utf-8")
+    assert "I_ops_hist" in doc and "I_ops" in doc
+    assert "I_ops_hist" in shadow.__doc__
+
+
+def test_cli_summary_marks_the_hist_planner_as_more_informed_than_the_dqn(tmp_path):
+    code, out = run_cli(tmp_path, good_meta(), extra=("--planner", "planner_ops_hist", "--no-isolation-check"))
+    assert code == 0
+    info = json.loads((out / "summary.json").read_text(encoding="utf-8"))["planner_information"]
+    assert info["tier"] == "I_ops_hist" and info["same_information_as_dqn"] is False
+
+
+@pytest.mark.parametrize("kind", ["missing", "directory", "corrupt"])
+def test_cli_unreadable_checkpoint_is_a_preflight_failure_with_exit_3(kind, tmp_path, monkeypatch):
+    """Regression (Codex review): file_sha256 used to run outside the guard -> FileNotFoundError/exit 1."""
+    path = tmp_path / "ckpt.pt"
+    if kind == "directory":
+        path.mkdir()
+    elif kind == "corrupt":
+        path.write_bytes(b"not a checkpoint")
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("shadow run started despite an unreadable checkpoint")
+
+    monkeypatch.setattr(shadow, "run_shadow", forbidden)
+    out = tmp_path / "out"
+    code = shadow.main(["--checkpoint", str(path), "--out", str(out), "--seeds", "1:2"])
+    assert code == 3
+    record = json.loads((out / "preflight.json").read_text(encoding="utf-8"))
+    assert record["overall"] == "fail"
+    by_id = {c["id"]: c for c in record["checks"]}
+    if kind != "corrupt":
+        assert by_id["checkpoint_file"]["status"] == "fail"
+    assert by_id["checkpoint_format"]["status"] == "fail"
+    assert not (out / "summary.json").exists() and not (out / "shadow_steps.csv.gz").exists()

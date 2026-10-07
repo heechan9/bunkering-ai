@@ -11,6 +11,11 @@ step the same observation is also given to ``planner_ops`` (or ``planner_ops_his
 * python/numpy global random states are restored after each planner call;
 * any planner exception or invalid action is recorded and the DQN run continues.
 
+Information tiers (recorded in ``summary.json``): ``planner_ops`` is ``I_ops``, i.e. it sees only
+the current observation, the same single observation the DQN receives. ``planner_ops_hist`` is
+``I_ops_hist``: it also uses the previous observation of the same episode, so it does NOT have
+the same information as the DQN. Variants that look at the true future price are rejected.
+
 What this measures: how often the recommendation differs from the DQN action, how long each
 computation takes, and how often the planner fails. What it does NOT measure: the planner's
 cost or safety. Those require applying the planner's actions, which is done by the fair
@@ -22,6 +27,7 @@ from __future__ import annotations
 import argparse
 import csv
 import gzip
+import hashlib
 import json
 import platform
 import random
@@ -36,7 +42,9 @@ from typing import Any, Callable, Sequence
 import numpy as np
 
 from research.fair_replacement_eval import common, preflight
-from research.fair_replacement_eval.common import PROJECT_ROOT, file_sha256, load_criteria, run_episode
+from envs.bunkering_env import BunkeringEnv
+from evaluation.safety_accounting import VoyageAudit
+from research.fair_replacement_eval.common import Episode, PROJECT_ROOT, file_sha256, load_criteria
 from research.fair_replacement_eval.policies import PlannerPolicy, make_planners
 
 MODE = "shadow_recommendation_comparison"
@@ -44,12 +52,25 @@ CLAIM = (
     "Recommendation comparison only. No cost or safety performance of the planner is measured; "
     "the planner's actions were never applied to the environment."
 )
-ALLOWED_PLANNERS = ("planner_ops", "planner_ops_hist")  # same-observation (I_ops) variants only
+PLANNER_TIERS = {
+    "planner_ops": {
+        "tier": "I_ops",
+        "same_information_as_dqn": True,
+        "note": "current observation only (memoryless): the same single observation the DQN receives",
+    },
+    "planner_ops_hist": {
+        "tier": "I_ops_hist",
+        "same_information_as_dqn": False,
+        "note": "current plus previous observation of the same episode (estimates consumption): more information than the DQN's single observation",
+    },
+}
+ALLOWED_PLANNERS = tuple(PLANNER_TIERS)  # no variant may read the true future price
 STEP_FIELDS = [
     "seed", "step", "dqn_action", "planner_action", "planner_status", "disagree_raw", "disagree_buy",
     "dqn_ns", "planner_ns", "planner_error", "obs",
 ]
-# Deterministic fields compared to prove the DQN voyage is identical with the shadow on and off.
+TRACE_FIELDS = ["seed", "step", "obs_sha256", "action", "reward", "terminated", "truncated", "next_obs_sha256"]
+# Deterministic fields compared to show the DQN voyage is identical with the shadow on and off.
 OUTCOME_FIELDS = [
     "seed", "cost_index", "adjusted_sci", "safe", "arrived", "depleted", "stops", "end_reason",
     "shortage_steps", "reserve_violation_steps", "final_fuel",
@@ -125,6 +146,60 @@ class ShadowPolicy:
         return value, "ok", ""
 
 
+def _digest(observation: Any) -> str:
+    return hashlib.sha256(np.ascontiguousarray(np.asarray(observation, dtype=np.float64)).tobytes()).hexdigest()
+
+
+def run_traced_episode(
+    primary: Any,
+    planner: Any | None,
+    seed: int,
+    env_config: dict[str, Any],
+    *,
+    enabled: bool = True,
+) -> tuple[dict[str, Any], list[dict[str, Any]], list[dict[str, Any]]]:
+    """One voyage. Returns (DQN episode row, per-step shadow records, per-step DQN trace).
+
+    The loop is the same as ``common.run_episode`` (a test asserts equal rows) plus a trace of what
+    the DQN saw and did at every step: observation digest, action, reward, terminated/truncated
+    flags and the digest of the next observation. Timing is deliberately not part of the trace.
+    """
+    shadow = ShadowPolicy(primary, planner, enabled=enabled)
+    shadow.begin_episode(seed)
+    env = BunkeringEnv(**dict(env_config))
+    observation, _ = env.reset(seed=int(seed))
+    audit = VoyageAudit(env._fuel_remaining, env.raw_fuel_price * env._raw_fx_rate, env.min_safe_fuel)
+    stops, step_index = 0, 0
+    trace: list[dict[str, Any]] = []
+    while True:
+        seen = _digest(observation)
+        action = shadow.select_action(env, observation, step_index)
+        audit.observe(env._fuel_remaining, env.fuel_consumption_per_step)
+        observation, reward, terminated, truncated, info = env.step(action)
+        stops += int(info["actual_bunker_amount"] > env._BUNKER_AMOUNT_EPSILON)
+        trace.append({
+            "seed": int(seed), "step": step_index, "obs_sha256": seen, "action": int(action),
+            "reward": repr(float(reward)), "terminated": bool(terminated), "truncated": bool(truncated),
+            "next_obs_sha256": _digest(observation),
+        })
+        step_index += 1
+        if terminated or truncated:
+            break
+    end_reason = info["end_reason"]
+    final = audit.finish(
+        end_reason == "arrived", info["cumulative_cost_index"], env._fuel_remaining, env.raw_fuel_price * env._raw_fx_rate
+    )
+    row = Episode(
+        seed=int(seed), policy=shadow.name, scenario="shadow", cost_index=float(info["cumulative_cost_index"]),
+        adjusted_sci=float(final["inventory_adjusted_sci"]), safe=bool(final["safe_arrival"]),
+        arrived=end_reason == "arrived", depleted=end_reason == "fuel_depleted", stops=stops, end_reason=end_reason,
+        shortage_steps=int(final["pre_refill_shortage_steps"]),
+        reserve_violation_steps=int(final["pre_refill_reserve_violation_steps"]),
+        final_fuel=float(final["final_fuel"]), decision_ns=[], wall_ns=0,
+    ).row()
+    return row, shadow.records, trace
+
+
 def run_shadow_episode(
     primary: Any,
     planner: Any | None,
@@ -133,11 +208,24 @@ def run_shadow_episode(
     *,
     enabled: bool = True,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    """One voyage. Returns the DQN episode row and the per-step shadow records."""
-    shadow = ShadowPolicy(primary, planner, enabled=enabled)
-    shadow.begin_episode(seed)
-    episode = run_episode(shadow, int(seed), env_config, "shadow", timed=False)
-    return episode.row(), shadow.records
+    """Like :func:`run_traced_episode` without the trace."""
+    row, records, _ = run_traced_episode(primary, planner, seed, env_config, enabled=enabled)
+    return row, records
+
+
+def trace_sha256(trace: Sequence[dict[str, Any]]) -> str:
+    return hashlib.sha256(json.dumps(list(trace), sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def first_trace_difference(on: Sequence[dict[str, Any]], off: Sequence[dict[str, Any]]) -> dict[str, Any] | None:
+    """First step/field where two DQN traces differ, or None if identical (same length and content)."""
+    for a, b in zip(on, off):
+        for key in TRACE_FIELDS:
+            if a[key] != b[key]:
+                return {"seed": a["seed"], "step": a["step"], "field": key, "shadow_on": a[key], "shadow_off": b[key]}
+    if len(on) != len(off):
+        return {"seed": (on or off)[0]["seed"], "step": min(len(on), len(off)), "field": "length", "shadow_on": len(on), "shadow_off": len(off)}
+    return None
 
 
 def outcome(row: dict[str, Any]) -> dict[str, Any]:
@@ -194,7 +282,8 @@ def _write_csv_gz(path: Path, rows: Sequence[dict[str, Any]], fields: Sequence[s
         writer.writeheader()
         for row in rows:
             row = dict(row)
-            row["obs"] = json.dumps(row.get("obs", []))
+            if "obs" in fields:
+                row["obs"] = json.dumps(row.get("obs", []))
             writer.writerow(row)
 
 
@@ -206,28 +295,50 @@ def run_shadow(
     *,
     isolation_check: bool = True,
 ) -> dict[str, Any]:
-    """Run all seeds with the shadow on and (optionally) off and compare the DQN voyages."""
+    """Run all seeds with the shadow on and (optionally) off and compare the DQN voyages.
+
+    The comparison covers the voyage aggregates AND a per-step trace (observation digest, action,
+    reward, terminated/truncated, next-observation digest); execution time is excluded.
+    """
     planner = planner_factory()
     steps: list[dict[str, Any]] = []
     episodes: list[dict[str, Any]] = []
+    traces_on: list[dict[str, Any]] = []
+    traces_off: list[dict[str, Any]] = []
+    outcome_bad: list[int] = []
+    trace_bad: list[int] = []
+    first_diff: dict[str, Any] | None = None
     for seed in seeds:
-        row, recs = run_shadow_episode(primary, planner, int(seed), env_config, enabled=True)
-        n_recs = len(recs)
-        row = {**row, "shadow_steps": n_recs}
+        row, recs, trace = run_traced_episode(primary, planner, int(seed), env_config, enabled=True)
+        row = {**row, "shadow_steps": len(recs), "dqn_trace_sha256": trace_sha256(trace)}
         episodes.append(row)
         steps.extend(recs)
-    result: dict[str, Any] = {"steps": steps, "episodes": episodes}
+        traces_on.extend(trace)
+        if isolation_check:
+            off_row, _, off_trace = run_traced_episode(primary, None, int(seed), env_config, enabled=False)
+            traces_off.extend(off_trace)
+            if outcome(off_row) != outcome(row):
+                outcome_bad.append(int(seed))
+            diff = first_trace_difference(trace, off_trace)
+            if diff is not None:
+                trace_bad.append(int(seed))
+                first_diff = first_diff or diff
+    result: dict[str, Any] = {"steps": steps, "episodes": episodes, "traces_on": traces_on}
     if isolation_check:
-        mismatches = []
-        for on in episodes:
-            off, _ = run_shadow_episode(primary, None, int(on["seed"]), env_config, enabled=False)
-            if outcome(off) != outcome(on):
-                mismatches.append(int(on["seed"]))
+        result["traces_off"] = traces_off
         result["isolation_check"] = {
             "compared_episodes": len(episodes),
-            "identical": not mismatches,
-            "mismatching_seeds": mismatches,
+            "identical": not outcome_bad and not trace_bad,
+            "outcome_identical": not outcome_bad,
+            "trace_identical": not trace_bad,
+            "mismatching_seeds": sorted(set(outcome_bad) | set(trace_bad)),
+            "outcome_mismatching_seeds": outcome_bad,
+            "trace_mismatching_seeds": trace_bad,
+            "first_trace_difference": first_diff,
             "fields": OUTCOME_FIELDS,
+            "trace_fields": TRACE_FIELDS,
+            "scope": "Per-step DQN observation digest, action, reward, terminated/truncated and next-observation digest plus voyage aggregates; "
+                     "execution time excluded. Shows equality on the compared seeds only, not a general guarantee.",
         }
     return result
 
@@ -245,7 +356,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--checkpoint", required=True, type=Path)
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--seeds", required=True, type=parse_seed_range, help="inclusive range first:last, e.g. 60000000:60000099")
-    parser.add_argument("--planner", choices=ALLOWED_PLANNERS, default="planner_ops")
+    parser.add_argument("--planner", choices=ALLOWED_PLANNERS, default="planner_ops",
+                        help="planner_ops = I_ops (same single observation as the DQN); planner_ops_hist = I_ops_hist (also uses the previous observation: more information than the DQN)")
     parser.add_argument("--no-isolation-check", action="store_true", help="skip the second, shadow-off run used to prove DQN results are unchanged")
     args = parser.parse_args(argv)
 
@@ -262,14 +374,18 @@ def main(argv: list[str] | None = None) -> int:
     from research.fair_replacement_eval.evaluate import base_env_config, scenario_config
 
     env_config = scenario_config(base_env_config(), crit, "nominal")
-    sha = file_sha256(args.checkpoint)
-    payload, load_error = None, None
-    try:
+    sha, payload, load_error = None, None, None
+    try:  # reading the file for the hash or the payload may fail (missing, unreadable, corrupt): record, do not crash
+        sha = file_sha256(args.checkpoint)
         payload = preflight.load_payload(args.checkpoint)
     except Exception as exc:  # noqa: BLE001
         load_error = f"{type(exc).__name__}: {exc}"
     metadata = None if payload is None else payload.get("metadata")
-    checks = [criteria_check]
+    file_check = preflight._check(
+        "checkpoint_file", preflight.PASS if sha is not None else preflight.FAIL,
+        [] if sha is not None else [f"checkpoint file could not be read for hashing: {load_error}"],
+    )
+    checks = [criteria_check, file_check]
     checks += preflight.check_checkpoint(payload, sha, str(crit["incumbent"]["official_checkpoint_sha256"]), env_config, load_error)
     checks += [preflight.check_env_config(metadata, env_config), preflight.check_training_seed_metadata(metadata)]
     rng, _ = preflight.training_seed_range(metadata)
@@ -297,12 +413,15 @@ def main(argv: list[str] | None = None) -> int:
     def planner_factory() -> PlannerPolicy:
         planner = make_planners(sigma_grid, {})[args.planner]
         if planner.forecast != "persistence":
-            raise ValueError("shadow mode only allows same-observation planners")
+            raise ValueError("shadow mode rejects planners that read the true future price")
         return planner
 
     started = time.time()
     result = run_shadow(primary, planner_factory, args.seeds, env_config, isolation_check=not args.no_isolation_check)
     _write_csv_gz(out / "shadow_steps.csv.gz", result["steps"], STEP_FIELDS)
+    if "traces_off" in result:
+        _write_csv_gz(out / "dqn_trace_shadow_on.csv.gz", result["traces_on"], TRACE_FIELDS)
+        _write_csv_gz(out / "dqn_trace_shadow_off.csv.gz", result["traces_off"], TRACE_FIELDS)
     with gzip.open(out / "dqn_episodes.csv.gz", "wt", encoding="utf-8", newline="") as handle:
         fields = [k for k in result["episodes"][0] if k not in ("decision_ns_mean", "decision_ns_max", "wall_ns")] if result["episodes"] else OUTCOME_FIELDS
         writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
@@ -314,6 +433,7 @@ def main(argv: list[str] | None = None) -> int:
         "mode": MODE,
         "claim": CLAIM,
         "planner": args.planner,
+        "planner_information": {"name": args.planner, **PLANNER_TIERS[args.planner]},
         "checkpoint": {"file": args.checkpoint.name, "sha256": sha, "official": sha == crit["incumbent"]["official_checkpoint_sha256"], "metadata": metadata},
         "preflight": {"overall": pre["overall"], "file": "preflight.json"},
         "seeds": seed_info,
@@ -333,9 +453,10 @@ def main(argv: list[str] | None = None) -> int:
     (out / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False, default=float) + "\n", encoding="utf-8")
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     iso = result.get("isolation_check")
+    print(f"planner={args.planner} information_tier={PLANNER_TIERS[args.planner]['tier']} same_information_as_dqn={PLANNER_TIERS[args.planner]['same_information_as_dqn']}")
     print(f"steps={summary['steps']} disagree_buy={summary['disagreement_buy_vs_wait']['count']} planner_failures={summary['planner_error_steps'] + summary['planner_invalid_action_steps']}")
     if iso is not None:
-        print(f"isolation_check identical={iso['identical']} (episodes={iso['compared_episodes']})")
+        print(f"isolation_check identical={iso['identical']} outcome={iso['outcome_identical']} trace={iso['trace_identical']} (episodes={iso['compared_episodes']})")
     print(f"wrote {out}")
     return 0 if (iso is None or iso["identical"]) else 4
 
