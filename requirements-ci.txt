@@ -1,0 +1,11 @@
+# CPU regression tests only; UI apps and private evaluation assets are not needed.
+# Direct dependencies pinned to the locally verified Python 3.12 test environment.
+numpy==2.5.3
+pandas==2.2.3
+scipy==1.17.0
+gymnasium==1.4.0
+pyyaml==6.0.3
+matplotlib==3.11.2
+tensorboard==2.21.0
+pytest==9.1.1
+# CPU torch is installed separately from download.pytorch.org in the workflow.
