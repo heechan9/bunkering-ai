@@ -18,8 +18,10 @@ def plan(c):
     except (ValueError, TypeError) as e:
         raise ValueError(f'Invalid numeric inputs: {e}') from e
 
+    if any(x.ndim != 1 for x in (d, p, f, v)):
+        raise ValueError('Equal nonempty 1D vectors required')
     n = len(d)
-    if n == 0 or any(x.ndim != 1 or x.shape != (n,) for x in (d, p, f, v)):
+    if n == 0 or any(x.shape != (n,) for x in (p, f, v)):
         raise ValueError('Equal nonempty 1D vectors required')
     if not all(np.isfinite(x).all() for x in (d, p, f, v)) or any((x < 0).any() for x in (d, p, f, v)):
         raise ValueError('Finite nonnegative inputs required')
@@ -41,6 +43,9 @@ def plan(c):
         raise RuntimeError(result.message)
 
     q = np.maximum(0.0, result.x[:n])
+    # Numerical noise cleanup: threshold 1e-8 tank fraction (for a 100,000 MT capacity vessel,
+    # 1e-8 corresponds to 0.001 MT / 1 kg), which is well below the solver's primal feasibility tolerance (1e-7).
+    # Cleaning near-zero floating point artifacts prevents incorrectly incurring fixed port bunkering time f_i.
     q[q < 1e-8] = 0.0
     inv = .5 + np.cumsum(q - d)
     hours = float(sailing + v @ q + f @ (q > 0.0))
