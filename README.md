@@ -15,9 +15,9 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Double_DQN-EE4C2C?logo=pytorch&logoColor=white)
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-BunkeringEnv-2D3748)
-![Tests](https://img.shields.io/badge/tests-288_passed-2EA44F)
+![Tests](https://img.shields.io/badge/tests-327_passed-2EA44F)
 
-검증 배지는 2026-10-07 Windows 재검사 기록의 **288 passed · 23 subtests passed**를 나타냅니다. 검사 기준 `7df50a5`에 UTF-8 명시 수정을 적용한 작업 트리의 결과이며 수정은 `bcd62be`에 반영됐습니다. [검사 조건·공식 400행 재현·근거 감사 8/8](docs/audits/local_verification_20261007.md). 이번 안내 갱신은 새 테스트 실행이 아닙니다.
+검증 배지는 2026-10-07 main `ee817ce`에서 Codex가 직접 실행한 **327 passed · 23 subtests passed** 기록입니다. 연구 코드 검사는 34개 통과했습니다([실행 기록: PR #104](https://github.com/heechan9/bunkering-ai/pull/104)). 이번 README 갱신은 새 테스트 실행이 아닙니다. 이전 Windows **288 passed** 및 공식 400행 재현·근거 감사 8/8은 [기존 검사 기록](docs/audits/local_verification_20261007.md)에 보존합니다.
 이현수의 2026-09-27 독립 검증(245 passed)은 [PR #66](https://github.com/heechan9/bunkering-ai/pull/66)에 보존합니다. 근거 감사 배지는 공식 결과의 주장 8개 검사이며 실선 성능 검증을 뜻하지 않습니다.
 
 ![Evidence Audit](https://img.shields.io/badge/evidence_audit-8%2F8_passed-2EA44F)
@@ -26,7 +26,7 @@
 
 ## 지금 어디까지 완료됐나
 
-2026-10-07 확인 기준입니다. PR #99까지의 기능 변경과 [Sites 36판 운영 검증](docs/audits/ocean_lab_live_verification_20261007.md)을 반영했습니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
+2026-10-07 14:07 KST 상태 확인 기준입니다. PR #100–#103의 연구 코드·평가 보완 병합과 [Sites 36판 운영 검증](docs/audits/ocean_lab_live_verification_20261007.md)을 반영했습니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
 아래 상태는 각 항목의 확인 범위이며 전체 프로젝트의 검증 완료를 뜻하지 않습니다.
 
 | 연구·개발 단계 | 상태 | 확인된 범위와 남은 일 |
@@ -53,6 +53,9 @@
 | UPA 인센티브 | ✅ 가정 비용 실험 완료 | 72조합 중 엄격한 비용 우위 전환 11개. 실제 요율·실제 절감액 평가가 아님. [실험](research/upa_incentive/README.md) |
 | 미국 WSF·싱가포르 MPA | ✅ 집계 원본 검산 완료 | 선대 소비·헤지와 항만 판매량의 집계 참고. 개별 선박 ROB·실구매가와 구분. [WSF](research/wsf_review/README.md) · [MPA](research/public_bunker_review/README.md) |
 | 울산세관 LNG 공급 사례 | ✅ 원문·합계 대조 / ⏳ 날짜 확인 대기 | 전 연료 월 공급 통계 95,604톤(소비·절감 근거 아님)과 그 안의 LNG 1,675톤(세관 기재 선박별 사례 2건)을 구분. ATLANTIC TOPAZ 공급일이 세관·UPA 간 불일치. [대조 결과](research/public_bunker_review/results/ulsan_customs_202608_review.md) |
+| 시간 제약 계획기·공정 비교 하네스 | ✅ main 반영 | #100–#103 병합. 입력·수치 경계 검증, 동일 관측 계획기, 판정 임계값과 평가 집합 이력 정리. [공정 비교](research/fair_replacement_eval/README.md) |
+| 공식 DQN 동일 관측 비교 | ✅ 실행 완료 / 🔎 Draft 검토 중 | 공식 모델·새 1,000건으로 합성 기준 통과. 비용 절감 우위는 미입증, 운영 DQN 유지. [PR #104](https://github.com/heechan9/bunkering-ai/pull/104) |
+| 평가 사전 검증 보강 | 🔎 Draft·통합 검증 보고 | 메타데이터·환경·시드 검사 및 워커 시작 전 차단. Claude 통합 실행 90개 연구 / 전체 373개 통과(23 subtests). main 미반영. [PR #105](https://github.com/heechan9/bunkering-ai/pull/105) |
 | 실제 선박 적용 | ⏳ 추가 기록 확보·독립 평가 필요 | 같은 선박·기간의 공급량·ROB·소비·가격 연결 미완료. 실제 비용·연료 절감률은 미입증 |
 
 비공개 원자료·최종 제출 파일은 Google Drive에서 관리합니다. 상세 날짜별 이력은 [진행 기록](docs/PROJECT_STATUS.md)을 확인하세요.
@@ -180,6 +183,24 @@ pnpm dev
 GitHub 반영과 웹 배포는 별개이며 GitHub push만으로 자동 배포되지 않습니다.
 
 ## 평가 결과
+
+### 공식 모델과 동일 관측 계획기의 후속 비교 — 2026-10-07
+
+[PR #104](https://github.com/heechan9/bunkering-ai/pull/104)의 연구 평가에서 공식 Release 체크포인트를 재학습 없이 사용하고, 같은 관측만 받는 `planner_ops`와 비교했습니다. 대리 평가에 사용한 40M 시드를 이력에 남기고, A3에서 지정한 **50,000,000–50,000,999의 1,000건**으로 실행했습니다. 결과는 Draft 검토 중이며 아래 기존 공식 100항차 결과를 대체하지 않습니다.
+
+| 항목 | 이번 공식 모델 비교 결과 | 해석 |
+|---|---|---|
+| 안전 도착 | 계획기 1,000/1,000 · DQN 999/1,000 | 차이 +0.1%p, 95% 구간 [0, +0.3]%p; 일반적 안전 우월성으로 확대하지 않음 |
+| 재고 보정 SCI | 계획기 상대 차이 −0.0038%, 95% 구간 [−0.0786%, +0.0690%] | 공통 안전 999건; 비용 비열등 기준 충족, 유의한 절감 우위 없음 |
+| 합성 마감 728/736/760h | 계획기 100/100/100% · DQN 0/0.4/68.6% | 24h 항해·8h 정차 가정 및 최소 기항 타이브레이크 영향; DQN은 마감을 관측하지 않음 |
+| 결정당 p99 실행시간 | 계획기 1.5221ms · DQN 0.09943ms | 계획기가 더 느리지만 평가 장비에서 50ms 기준 충족 |
+| 소비량 ±10% | 안전 비열등 기준 충족 | 합성 소비량 민감도이며 실측 변동 검증과 구분 |
+
+자동 판정은 `REPLACEMENT_EVIDENCE_SUFFICIENT`로 G1–G5·R1–R5를 통과했습니다. **정해진 합성 연구 조건의 충족을 뜻하며, 운영 모델 교체·배포 승인이나 실선 비용 절감의 증거가 아닙니다. 운영 DQN은 유지합니다.** 사용이 끝난 50M 집합은 후보 튜닝 후 새 독립 확인 집합으로 재사용하지 않습니다.
+
+[고정된 평가 보고서](https://github.com/heechan9/bunkering-ai/blob/2a73a05e9a7d79fc5e742f99b7c3897059a65b24/research/fair_replacement_eval/OFFICIAL_EVALUATION_20261007.md) · [집계 결과](https://github.com/heechan9/bunkering-ai/blob/2a73a05e9a7d79fc5e742f99b7c3897059a65b24/research/fair_replacement_eval/results/official_20261007_a3/summary.json)
+
+후속 [PR #105](https://github.com/heechan9/bunkering-ai/pull/105)는 학습 메타데이터 누락·환경 불일치·시드 중복을 평가 시작 전에 검사합니다. Claude는 #104 `2a73a05`와 #105 `9667d27`의 임시 통합에서 연구 90개·전체 373개(23 subtests) 통과를 [보고](https://github.com/heechan9/bunkering-ai/pull/105#issuecomment-6030595776)했습니다. 이는 Claude 실행값이며 Codex의 독립 재실행이나 CI 통과를 뜻하지 않습니다. 두 PR은 현재 Draft이며 Jules 후속 감사·정정 검토가 진행 중입니다.
 
 ### 공식 단일 체크포인트 비교
 
@@ -391,6 +412,8 @@ Drive는 `01_원본데이터`, `02_실험결과`, `03_프로젝트논문`,
 | `scripts/` | 기준선·학습·평가·데이터 분석 CLI |
 | `data/public/` | 출처와 해시를 기록한 공공데이터 |
 | `results/evaluation/` | 공식 동일조건 평가 요약과 시각화 |
+| `research/time_constrained_planner/` | 시간 제약 급유 계획기의 별도 연구·경계 검증 |
+| `research/fair_replacement_eval/` | 동일 관측 비교, 사전 판정 기준, 대리 평가 기록; 공식 후속 결과는 #104 검토 중 |
 | `tests/` | 환경·에이전트·평가·데이터 검증 |
 | `web/ocean-lab/` | Ocean Lab 웹 소스 |
 
