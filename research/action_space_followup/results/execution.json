@@ -1,0 +1,13 @@
+{
+  "replay_max_cost_difference": 4.656612873077393e-10,
+  "cases": 3052,
+  "pilot_episodes": 2000,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "torch": "2.14.1+cpu",
+  "numpy": "2.3.5",
+  "source_sha256": "aa751f28705336cbca379b1499021cb17b299709a7563f398ef066aa75c6381f"
+}

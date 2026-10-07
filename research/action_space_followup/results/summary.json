@@ -1,0 +1,88 @@
+{
+  "decomposition": {
+    "cases": 3052,
+    "action_gap_cases": 70,
+    "action_gap_share_of_pooled_cost_gap": 0.0032860831323273548,
+    "maximum_six_vs_lp_abs": 6.984919309616089e-10
+  },
+  "paired_pilot": [
+    {
+      "split": "external",
+      "seed": 42,
+      "n": 892,
+      "common_feasible": 737,
+      "five_success": 0.8262331838565022,
+      "six_success": 0.8262331838565022,
+      "five_safe": 1.0,
+      "six_safe": 1.0,
+      "six_vs_five_common_cost_pct": 0.09721978277230647,
+      "six_vs_lp_common_cost_pct": 0.5159217977428687,
+      "six_vs_five_all_cost_pct": -0.012621979269822337
+    },
+    {
+      "split": "external",
+      "seed": 43,
+      "n": 892,
+      "common_feasible": 737,
+      "five_success": 0.8262331838565022,
+      "six_success": 0.8262331838565022,
+      "five_safe": 1.0,
+      "six_safe": 1.0,
+      "six_vs_five_common_cost_pct": -0.27522028337328974,
+      "six_vs_lp_common_cost_pct": 0.1915984036308327,
+      "six_vs_five_all_cost_pct": -0.23433797713052762
+    },
+    {
+      "split": "external",
+      "seed": 44,
+      "n": 892,
+      "common_feasible": 737,
+      "five_success": 0.8262331838565022,
+      "six_success": 0.8262331838565022,
+      "five_safe": 1.0,
+      "six_safe": 1.0,
+      "six_vs_five_common_cost_pct": -0.7263047361719788,
+      "six_vs_lp_common_cost_pct": 0.05206326112630055,
+      "six_vs_five_all_cost_pct": -0.28528625830962495
+    },
+    {
+      "split": "test",
+      "seed": 42,
+      "n": 2160,
+      "common_feasible": 2094,
+      "five_success": 0.9694444444444444,
+      "six_success": 0.9694444444444444,
+      "five_safe": 1.0,
+      "six_safe": 1.0,
+      "six_vs_five_common_cost_pct": -0.07059215399044527,
+      "six_vs_lp_common_cost_pct": 0.07673877139022789,
+      "six_vs_five_all_cost_pct": -0.09428512922018406
+    },
+    {
+      "split": "test",
+      "seed": 43,
+      "n": 2160,
+      "common_feasible": 2094,
+      "five_success": 0.9694444444444444,
+      "six_success": 0.9694444444444444,
+      "five_safe": 1.0,
+      "six_safe": 1.0,
+      "six_vs_five_common_cost_pct": -0.0831373708054084,
+      "six_vs_lp_common_cost_pct": 0.07840550605422436,
+      "six_vs_five_all_cost_pct": -0.08763967738210088
+    },
+    {
+      "split": "test",
+      "seed": 44,
+      "n": 2160,
+      "common_feasible": 2094,
+      "five_success": 0.9694444444444444,
+      "six_success": 0.9694444444444444,
+      "five_safe": 1.0,
+      "six_safe": 1.0,
+      "six_vs_five_common_cost_pct": -0.11298466204594515,
+      "six_vs_lp_common_cost_pct": 0.012553857813801805,
+      "six_vs_five_all_cost_pct": -0.07951652371426254
+    }
+  ]
+}
