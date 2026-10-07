@@ -123,3 +123,14 @@ python -m pytest research/fair_replacement_eval -q
 ## 7. 파일
 
 `criteria.json`·`criteria.sha256` 사전 등록 기준 · `common.py` 동역학·시간 오버레이·에피소드 러너 · `policies.py` DP 계획기 · `decision.py` 통계·판정 · `evaluate.py` 실행기 · `train_surrogate.py` 대리 학습 · `test_fair_eval.py` · `results/synthetic_validation/`(개발 holdout, 1차) · `results/synthetic_validation_confirmation/`(확인 집합, 2차) 각 `{summary.json,manifest.json}`.
+
+## 평가 사전 검증 (preflight)
+
+`evaluate.py`는 에피소드를 실행하기 전에 `preflight.py`로 한 번에 검사하고 결과를 `<out>/preflight.json`과 `summary.json`의 `preflight`에 남긴다.
+
+- 체크포인트 sha256(참고용 `info`), `format_version`, `state_dim`/`action_dim`.
+- `metadata.env_config`와 평가(nominal) 환경 설정의 필드별 비교. 한쪽에 없는 키는 `BunkeringEnv` 기본값으로 해석한다. 스트레스 시나리오의 소비량 변경은 비교 대상이 아니다.
+- `train_seed`(정수, ≥0)·`n_episodes`(정수, ≥1) 존재·유효성. 누락·잘못된 값은 0으로 처리하지 않고 `undecidable`과 사유를 기록하며, 학습 시드 중복 검사(G2)는 통과하지 않는다.
+- criteria 해시, 확인 시드와 학습 범위·사용 이력·reuse 집합의 교차.
+
+`fail`이면 평가를 시작하지 않고(종료 코드 3), `undecidable`이면 기본적으로 시작하지 않는다. `--continue-undecidable`로 실행하면 게이트 `G0_preflight`/`G2`가 닫혀 판정은 `NOT_DECIDABLE`이다. 기준·계획기·시드는 바꾸지 않았다.
