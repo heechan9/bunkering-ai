@@ -1,0 +1,2783 @@
+{
+  "mode": "full",
+  "verdict": "SYNTHETIC_VALIDATION_ONLY",
+  "verdict_note": "SYNTHETIC_VALIDATION_ONLY means the incumbent was not the official checkpoint: numbers validate the harness only.",
+  "would_pass_all_criteria_if_incumbent_were_official": true,
+  "incumbent": {
+    "checkpoint_file": "surrogate_dqn.pt",
+    "sha256": "f7b01faa5312769925b93707227444fe0c207d35983e1b4f4a4020aa76da643e",
+    "official": false,
+    "metadata": {
+      "train_seed": 5000000,
+      "n_episodes": 3000,
+      "global_steps": 90000,
+      "final_epsilon": 0.14500000000039392,
+      "env_config": {
+        "n_ports": 3,
+        "max_steps": 30,
+        "min_safe_fuel": 0.15
+      }
+    },
+    "holdout_overlaps_training_seeds": false,
+    "reuse_overlaps_training_seeds": false
+  },
+  "gates": {
+    "G1_official_incumbent": false,
+    "G2_holdout_disjoint": true,
+    "G3_criteria_hash": true,
+    "G4_holdout_size": true,
+    "G5_reuse_consistency": true
+  },
+  "criteria": {
+    "R1_safety": {
+      "pass": true,
+      "lower_bound": 0.0,
+      "candidate_depleted": 0
+    },
+    "R2_cost": {
+      "pass": true,
+      "rel_diff": 0.0011335731560700247,
+      "hi": 0.0018753370055627882,
+      "joint_safe_share": 1.0,
+      "label": "non_inferior_only"
+    },
+    "R3_time": {
+      "pass": true,
+      "per_deadline": {
+        "sailing_exceeds": {
+          "class": "sailing_exceeds_deadline",
+          "judged": false
+        },
+        "zero_stop": {
+          "class": "stop_forced_exceeds_deadline",
+          "judged": false
+        },
+        "one_stop": {
+          "class": "attainable",
+          "judged": true,
+          "pass": true,
+          "a": 1.0,
+          "b": 0.0,
+          "diff": 1.0,
+          "lo": 1.0,
+          "hi": 1.0
+        },
+        "two_stop": {
+          "class": "attainable",
+          "judged": true,
+          "pass": true,
+          "a": 1.0,
+          "b": 0.0,
+          "diff": 1.0,
+          "lo": 1.0,
+          "hi": 1.0
+        },
+        "slack": {
+          "class": "attainable",
+          "judged": true,
+          "pass": true,
+          "a": 1.0,
+          "b": 0.737,
+          "diff": 0.263,
+          "lo": 0.236,
+          "hi": 0.29100000000000004
+        }
+      },
+      "time_table": {
+        "min_safe_stops": 1,
+        "deadlines": {
+          "sailing_exceeds": {
+            "deadline_hours": 700.0,
+            "class": "sailing_exceeds_deadline",
+            "sailing_hours": 720.0,
+            "allowed_stops": -1,
+            "policies": {
+              "planner_ops": {
+                "episodes": 1000,
+                "on_time_safe_rate": null,
+                "excluded_from_compliance": true,
+                "safe_but_late_rate": 1.0
+              },
+              "double_dqn": {
+                "episodes": 1000,
+                "on_time_safe_rate": null,
+                "excluded_from_compliance": true,
+                "safe_but_late_rate": 1.0
+              }
+            }
+          },
+          "zero_stop": {
+            "deadline_hours": 720.0,
+            "class": "stop_forced_exceeds_deadline",
+            "sailing_hours": 720.0,
+            "allowed_stops": 0,
+            "policies": {
+              "planner_ops": {
+                "episodes": 1000,
+                "on_time_safe_rate": null,
+                "excluded_from_compliance": true,
+                "safe_but_late_rate": 1.0
+              },
+              "double_dqn": {
+                "episodes": 1000,
+                "on_time_safe_rate": null,
+                "excluded_from_compliance": true,
+                "safe_but_late_rate": 1.0
+              }
+            }
+          },
+          "one_stop": {
+            "deadline_hours": 728.0,
+            "class": "attainable",
+            "sailing_hours": 720.0,
+            "allowed_stops": 1,
+            "policies": {
+              "planner_ops": {
+                "episodes": 1000,
+                "on_time_safe_rate": 1.0,
+                "excluded_from_compliance": false,
+                "safe_but_late_rate": 0.0
+              },
+              "double_dqn": {
+                "episodes": 1000,
+                "on_time_safe_rate": 0.0,
+                "excluded_from_compliance": false,
+                "safe_but_late_rate": 1.0
+              }
+            }
+          },
+          "two_stop": {
+            "deadline_hours": 736.0,
+            "class": "attainable",
+            "sailing_hours": 720.0,
+            "allowed_stops": 2,
+            "policies": {
+              "planner_ops": {
+                "episodes": 1000,
+                "on_time_safe_rate": 1.0,
+                "excluded_from_compliance": false,
+                "safe_but_late_rate": 0.0
+              },
+              "double_dqn": {
+                "episodes": 1000,
+                "on_time_safe_rate": 0.0,
+                "excluded_from_compliance": false,
+                "safe_but_late_rate": 1.0
+              }
+            }
+          },
+          "slack": {
+            "deadline_hours": 760.0,
+            "class": "attainable",
+            "sailing_hours": 720.0,
+            "allowed_stops": 5,
+            "policies": {
+              "planner_ops": {
+                "episodes": 1000,
+                "on_time_safe_rate": 1.0,
+                "excluded_from_compliance": false,
+                "safe_but_late_rate": 0.0
+              },
+              "double_dqn": {
+                "episodes": 1000,
+                "on_time_safe_rate": 0.737,
+                "excluded_from_compliance": false,
+                "safe_but_late_rate": 0.263
+              }
+            }
+          }
+        }
+      }
+    },
+    "R4_runtime": {
+      "pass": true,
+      "candidate_p99_ms": 1.49468918,
+      "incumbent_p99_ms": 0.10596399000000002,
+      "note": "hardware dependent; incumbent ratio informational"
+    },
+    "R5_demand_robustness": {
+      "pass": true,
+      "scenarios": {
+        "demand_minus_10pct": {
+          "required": true,
+          "pass": true,
+          "comparison": {
+            "safety": {
+              "a": 1.0,
+              "b": 1.0,
+              "diff": 0.0,
+              "lo": 0.0,
+              "hi": 0.0
+            },
+            "cost": {
+              "n_joint_safe": 1000,
+              "rel_diff": 0.00098416777449653,
+              "lo": 0.000226677883154705,
+              "hi": 0.0016961915537640464,
+              "joint_safe_share": 1.0
+            },
+            "candidate_depleted": 0
+          },
+          "time_classes": {
+            "min_safe_stops": 1,
+            "deadlines": {
+              "sailing_exceeds": {
+                "deadline_hours": 700.0,
+                "class": "sailing_exceeds_deadline",
+                "sailing_hours": 720.0,
+                "allowed_stops": -1,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "zero_stop": {
+                "deadline_hours": 720.0,
+                "class": "stop_forced_exceeds_deadline",
+                "sailing_hours": 720.0,
+                "allowed_stops": 0,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "one_stop": {
+                "deadline_hours": 728.0,
+                "class": "attainable",
+                "sailing_hours": 720.0,
+                "allowed_stops": 1,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 1.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 0.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "two_stop": {
+                "deadline_hours": 736.0,
+                "class": "attainable",
+                "sailing_hours": 720.0,
+                "allowed_stops": 2,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 1.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 0.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "slack": {
+                "deadline_hours": 760.0,
+                "class": "attainable",
+                "sailing_hours": 720.0,
+                "allowed_stops": 5,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 1.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 0.757,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.243
+                  }
+                }
+              }
+            }
+          }
+        },
+        "demand_plus_10pct": {
+          "required": true,
+          "pass": true,
+          "comparison": {
+            "safety": {
+              "a": 1.0,
+              "b": 1.0,
+              "diff": 0.0,
+              "lo": 0.0,
+              "hi": 0.0
+            },
+            "cost": {
+              "n_joint_safe": 1000,
+              "rel_diff": 0.000667768872759789,
+              "lo": 4.906993360958246e-05,
+              "hi": 0.0013102525468911604,
+              "joint_safe_share": 1.0
+            },
+            "candidate_depleted": 0
+          },
+          "time_classes": {
+            "min_safe_stops": 2,
+            "deadlines": {
+              "sailing_exceeds": {
+                "deadline_hours": 700.0,
+                "class": "sailing_exceeds_deadline",
+                "sailing_hours": 720.0,
+                "allowed_stops": -1,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "zero_stop": {
+                "deadline_hours": 720.0,
+                "class": "stop_forced_exceeds_deadline",
+                "sailing_hours": 720.0,
+                "allowed_stops": 0,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "one_stop": {
+                "deadline_hours": 728.0,
+                "class": "stop_forced_exceeds_deadline",
+                "sailing_hours": 720.0,
+                "allowed_stops": 1,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "two_stop": {
+                "deadline_hours": 736.0,
+                "class": "attainable",
+                "sailing_hours": 720.0,
+                "allowed_stops": 2,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 1.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 0.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "slack": {
+                "deadline_hours": 760.0,
+                "class": "attainable",
+                "sailing_hours": 720.0,
+                "allowed_stops": 5,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 1.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 0.704,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.296
+                  }
+                }
+              }
+            }
+          }
+        },
+        "demand_minus_20pct": {
+          "required": false,
+          "pass": true,
+          "comparison": {
+            "safety": {
+              "a": 1.0,
+              "b": 1.0,
+              "diff": 0.0,
+              "lo": 0.0,
+              "hi": 0.0
+            },
+            "cost": {
+              "n_joint_safe": 1000,
+              "rel_diff": 0.0008788774093771789,
+              "lo": 0.0001736276250578052,
+              "hi": 0.0015342020848367174,
+              "joint_safe_share": 1.0
+            },
+            "candidate_depleted": 0
+          },
+          "time_classes": {
+            "min_safe_stops": 1,
+            "deadlines": {
+              "sailing_exceeds": {
+                "deadline_hours": 700.0,
+                "class": "sailing_exceeds_deadline",
+                "sailing_hours": 720.0,
+                "allowed_stops": -1,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "zero_stop": {
+                "deadline_hours": 720.0,
+                "class": "stop_forced_exceeds_deadline",
+                "sailing_hours": 720.0,
+                "allowed_stops": 0,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "one_stop": {
+                "deadline_hours": 728.0,
+                "class": "attainable",
+                "sailing_hours": 720.0,
+                "allowed_stops": 1,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 1.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 0.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "two_stop": {
+                "deadline_hours": 736.0,
+                "class": "attainable",
+                "sailing_hours": 720.0,
+                "allowed_stops": 2,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 1.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 0.007,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.993
+                  }
+                }
+              },
+              "slack": {
+                "deadline_hours": 760.0,
+                "class": "attainable",
+                "sailing_hours": 720.0,
+                "allowed_stops": 5,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 1.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 0.775,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.225
+                  }
+                }
+              }
+            }
+          }
+        },
+        "demand_plus_20pct": {
+          "required": false,
+          "pass": true,
+          "comparison": {
+            "safety": {
+              "a": 1.0,
+              "b": 1.0,
+              "diff": 0.0,
+              "lo": 0.0,
+              "hi": 0.0
+            },
+            "cost": {
+              "n_joint_safe": 1000,
+              "rel_diff": 0.00016662386895762414,
+              "lo": -0.00035258729780131704,
+              "hi": 0.0007027557423358248,
+              "joint_safe_share": 1.0
+            },
+            "candidate_depleted": 0
+          },
+          "time_classes": {
+            "min_safe_stops": 2,
+            "deadlines": {
+              "sailing_exceeds": {
+                "deadline_hours": 700.0,
+                "class": "sailing_exceeds_deadline",
+                "sailing_hours": 720.0,
+                "allowed_stops": -1,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "zero_stop": {
+                "deadline_hours": 720.0,
+                "class": "stop_forced_exceeds_deadline",
+                "sailing_hours": 720.0,
+                "allowed_stops": 0,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "one_stop": {
+                "deadline_hours": 728.0,
+                "class": "stop_forced_exceeds_deadline",
+                "sailing_hours": 720.0,
+                "allowed_stops": 1,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": null,
+                    "excluded_from_compliance": true,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "two_stop": {
+                "deadline_hours": 736.0,
+                "class": "attainable",
+                "sailing_hours": 720.0,
+                "allowed_stops": 2,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 1.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 0.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 1.0
+                  }
+                }
+              },
+              "slack": {
+                "deadline_hours": 760.0,
+                "class": "attainable",
+                "sailing_hours": 720.0,
+                "allowed_stops": 5,
+                "policies": {
+                  "planner_ops": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 1.0,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.0
+                  },
+                  "double_dqn": {
+                    "episodes": 1000,
+                    "on_time_safe_rate": 0.662,
+                    "excluded_from_compliance": false,
+                    "safe_but_late_rate": 0.338
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "nominal_comparison": {
+    "safety": {
+      "a": 1.0,
+      "b": 1.0,
+      "diff": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+    },
+    "cost": {
+      "n_joint_safe": 1000,
+      "rel_diff": 0.0011335731560700247,
+      "lo": 0.00038559152336030455,
+      "hi": 0.0018753370055627882,
+      "joint_safe_share": 1.0
+    },
+    "candidate_depleted": 0
+  },
+  "forecast_sensitivity": {
+    "vs": "planner_ops",
+    "sigma_star_first_grid_sigma_without_significant_saving": null,
+    "table": {
+      "planner_oracle": {
+        "n_joint_safe": 1000,
+        "rel_diff": -0.019278161856492605,
+        "lo": -0.019913030316973526,
+        "hi": -0.018612040484404225,
+        "mean_stops": 6.607,
+        "safe_rate": 1.0
+      },
+      "planner_fcst_0.005": {
+        "n_joint_safe": 1000,
+        "rel_diff": -0.01820189069970207,
+        "lo": -0.018853525245188716,
+        "hi": -0.017528534584226565,
+        "mean_stops": 6.118,
+        "safe_rate": 1.0
+      },
+      "planner_fcst_0.01": {
+        "n_joint_safe": 1000,
+        "rel_diff": -0.015994512218117773,
+        "lo": -0.01670905586835795,
+        "hi": -0.015322801300338619,
+        "mean_stops": 5.189,
+        "safe_rate": 1.0
+      },
+      "planner_fcst_0.02": {
+        "n_joint_safe": 1000,
+        "rel_diff": -0.011930716570580738,
+        "lo": -0.0126045008328094,
+        "hi": -0.0112314069719619,
+        "mean_stops": 3.83,
+        "safe_rate": 1.0
+      },
+      "planner_fcst_0.05": {
+        "n_joint_safe": 1000,
+        "rel_diff": -0.005661636706224634,
+        "lo": -0.006303746838359385,
+        "hi": -0.005019796059564835,
+        "mean_stops": 2.807,
+        "safe_rate": 1.0
+      },
+      "planner_fcst_0.1": {
+        "n_joint_safe": 1000,
+        "rel_diff": -0.0030908475470283305,
+        "lo": -0.0036947019223220975,
+        "hi": -0.0025109282468021754,
+        "mean_stops": 2.607,
+        "safe_rate": 1.0
+      }
+    }
+  },
+  "holdout_summaries": {
+    "nominal": {
+      "fixed_fueling": {
+        "episodes": 1000,
+        "safe_rate": 0.0,
+        "safe_count": 0,
+        "depleted_count": 1000,
+        "arrived_rate": 0.0,
+        "mean_stops": 0.0,
+        "max_stops": 0,
+        "mean_adjusted_sci_safe": null,
+        "mean_raw_cost_index": 0.0
+      },
+      "price_reactive": {
+        "episodes": 1000,
+        "safe_rate": 0.023,
+        "safe_count": 23,
+        "depleted_count": 950,
+        "arrived_rate": 0.05,
+        "mean_stops": 0.26,
+        "max_stops": 16,
+        "mean_adjusted_sci_safe": 942351.1926270773,
+        "mean_raw_cost_index": 33699.529742916515
+      },
+      "safe_stock": {
+        "episodes": 1000,
+        "safe_rate": 0.0,
+        "safe_count": 0,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": null,
+        "mean_raw_cost_index": 552638.6531627481
+      },
+      "double_dqn": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 5.598,
+        "max_stops": 22,
+        "mean_adjusted_sci_safe": 973474.0192220707,
+        "mean_raw_cost_index": 871779.2214231596
+      },
+      "planner_ops": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": 974577.5232383924,
+        "mean_raw_cost_index": 487505.9637010862
+      },
+      "planner_ops_hist": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": 974577.5232383924,
+        "mean_raw_cost_index": 487505.9637010862
+      },
+      "planner_oracle": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 6.607,
+        "max_stops": 18,
+        "mean_adjusted_sci_safe": 955789.460003703,
+        "mean_raw_cost_index": 831546.4680376694
+      },
+      "planner_fcst_0.005": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 6.118,
+        "max_stops": 17,
+        "mean_adjusted_sci_safe": 956838.3696820209,
+        "mean_raw_cost_index": 833288.1621368516
+      },
+      "planner_fcst_0.01": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 5.189,
+        "max_stops": 14,
+        "mean_adjusted_sci_safe": 958989.631135453,
+        "mean_raw_cost_index": 831752.9583537489
+      },
+      "planner_fcst_0.02": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 3.83,
+        "max_stops": 10,
+        "mean_adjusted_sci_safe": 962950.1150325766,
+        "mean_raw_cost_index": 835663.3376505796
+      },
+      "planner_fcst_0.05": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 2.807,
+        "max_stops": 7,
+        "mean_adjusted_sci_safe": 969059.8193597645,
+        "mean_raw_cost_index": 821819.9095882192
+      },
+      "planner_ops_dl_one_stop": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": 974577.5232383924,
+        "mean_raw_cost_index": 487505.9637010862
+      },
+      "planner_ops_dl_two_stop": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": 974577.5232383924,
+        "mean_raw_cost_index": 487505.9637010862
+      },
+      "planner_fcst_0.1": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 2.607,
+        "max_stops": 6,
+        "mean_adjusted_sci_safe": 971565.2526913021,
+        "mean_raw_cost_index": 820791.2516276515
+      },
+      "planner_ops_dl_slack": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": 974577.5232383924,
+        "mean_raw_cost_index": 487505.9637010862
+      }
+    },
+    "demand_minus_10pct": {
+      "fixed_fueling": {
+        "episodes": 1000,
+        "safe_rate": 0.0,
+        "safe_count": 0,
+        "depleted_count": 1000,
+        "arrived_rate": 0.0,
+        "mean_stops": 0.0,
+        "max_stops": 0,
+        "mean_adjusted_sci_safe": null,
+        "mean_raw_cost_index": 0.0
+      },
+      "price_reactive": {
+        "episodes": 1000,
+        "safe_rate": 0.03,
+        "safe_count": 30,
+        "depleted_count": 934,
+        "arrived_rate": 0.066,
+        "mean_stops": 0.329,
+        "max_stops": 16,
+        "mean_adjusted_sci_safe": 844169.4595230216,
+        "mean_raw_cost_index": 40236.71545014882
+      },
+      "safe_stock": {
+        "episodes": 1000,
+        "safe_rate": 0.0,
+        "safe_count": 0,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": null,
+        "mean_raw_cost_index": 555974.0142096019
+      },
+      "double_dqn": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 5.303,
+        "max_stops": 22,
+        "mean_adjusted_sci_safe": 879311.5941329657,
+        "mean_raw_cost_index": 782349.2320487988
+      },
+      "planner_ops": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": 880176.9842676525,
+        "mean_raw_cost_index": 438755.3673309776
+      },
+      "planner_ops_hist": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": 880176.9842676525,
+        "mean_raw_cost_index": 438755.3673309776
+      }
+    },
+    "demand_plus_10pct": {
+      "fixed_fueling": {
+        "episodes": 1000,
+        "safe_rate": 0.0,
+        "safe_count": 0,
+        "depleted_count": 1000,
+        "arrived_rate": 0.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": null,
+        "mean_raw_cost_index": 3250.53534412638
+      },
+      "price_reactive": {
+        "episodes": 1000,
+        "safe_rate": 0.012,
+        "safe_count": 12,
+        "depleted_count": 962,
+        "arrived_rate": 0.038,
+        "mean_stops": 0.191,
+        "max_stops": 16,
+        "mean_adjusted_sci_safe": 1028089.673217584,
+        "mean_raw_cost_index": 27393.999134348993
+      },
+      "safe_stock": {
+        "episodes": 1000,
+        "safe_rate": 0.0,
+        "safe_count": 0,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": null,
+        "mean_raw_cost_index": 575282.7891180916
+      },
+      "double_dqn": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 5.967,
+        "max_stops": 21,
+        "mean_adjusted_sci_safe": 1070915.2093222593,
+        "mean_raw_cost_index": 970848.6869241387
+      },
+      "planner_ops": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 2.0,
+        "max_stops": 2,
+        "mean_adjusted_sci_safe": 1071630.3331644097,
+        "mean_raw_cost_index": 933454.7635033578
+      },
+      "planner_ops_hist": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 2.0,
+        "max_stops": 2,
+        "mean_adjusted_sci_safe": 1071797.232647982,
+        "mean_raw_cost_index": 682546.9786834571
+      }
+    },
+    "demand_minus_20pct": {
+      "fixed_fueling": {
+        "episodes": 1000,
+        "safe_rate": 0.0,
+        "safe_count": 0,
+        "depleted_count": 1000,
+        "arrived_rate": 0.0,
+        "mean_stops": 0.0,
+        "max_stops": 0,
+        "mean_adjusted_sci_safe": null,
+        "mean_raw_cost_index": 0.0
+      },
+      "price_reactive": {
+        "episodes": 1000,
+        "safe_rate": 0.055,
+        "safe_count": 55,
+        "depleted_count": 923,
+        "arrived_rate": 0.077,
+        "mean_stops": 0.374,
+        "max_stops": 16,
+        "mean_adjusted_sci_safe": 756779.4678807982,
+        "mean_raw_cost_index": 43461.59795104212
+      },
+      "safe_stock": {
+        "episodes": 1000,
+        "safe_rate": 0.0,
+        "safe_count": 0,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": null,
+        "mean_raw_cost_index": 546221.7034382606
+      },
+      "double_dqn": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 4.925,
+        "max_stops": 21,
+        "mean_adjusted_sci_safe": 785019.7686140278,
+        "mean_raw_cost_index": 680484.2003386855
+      },
+      "planner_ops": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": 785709.7047545771,
+        "mean_raw_cost_index": 416023.7119046087
+      },
+      "planner_ops_hist": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": 785776.4452969125,
+        "mean_raw_cost_index": 390004.77096086903
+      }
+    },
+    "demand_plus_20pct": {
+      "fixed_fueling": {
+        "episodes": 1000,
+        "safe_rate": 0.0,
+        "safe_count": 0,
+        "depleted_count": 1000,
+        "arrived_rate": 0.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": null,
+        "mean_raw_cost_index": 6501.07068825276
+      },
+      "price_reactive": {
+        "episodes": 1000,
+        "safe_rate": 0.006,
+        "safe_count": 6,
+        "depleted_count": 978,
+        "arrived_rate": 0.022,
+        "mean_stops": 0.13,
+        "max_stops": 16,
+        "mean_adjusted_sci_safe": 1106711.7825978203,
+        "mean_raw_cost_index": 19180.341646214758
+      },
+      "safe_stock": {
+        "episodes": 1000,
+        "safe_rate": 0.0,
+        "safe_count": 0,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 1.0,
+        "max_stops": 1,
+        "mean_adjusted_sci_safe": null,
+        "mean_raw_cost_index": 585007.1564413031
+      },
+      "double_dqn": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 6.332,
+        "max_stops": 22,
+        "mean_adjusted_sci_safe": 1168835.739877729,
+        "mean_raw_cost_index": 1071217.8240484393
+      },
+      "planner_ops_hist": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 2.0,
+        "max_stops": 2,
+        "mean_adjusted_sci_safe": 1169407.7223493038,
+        "mean_raw_cost_index": 747550.3665271851
+      },
+      "planner_ops": {
+        "episodes": 1000,
+        "safe_rate": 1.0,
+        "safe_count": 1000,
+        "depleted_count": 0,
+        "arrived_rate": 1.0,
+        "mean_stops": 2.0,
+        "max_stops": 2,
+        "mean_adjusted_sci_safe": 1169030.4958108834,
+        "mean_raw_cost_index": 786301.6622178773
+      }
+    }
+  },
+  "holdout_time_nominal": {
+    "min_safe_stops": 1,
+    "deadlines": {
+      "sailing_exceeds": {
+        "deadline_hours": 700.0,
+        "class": "sailing_exceeds_deadline",
+        "sailing_hours": 720.0,
+        "allowed_stops": -1,
+        "policies": {
+          "fixed_fueling": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 0.0
+          },
+          "price_reactive": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 0.023
+          },
+          "safe_stock": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 0.0
+          },
+          "double_dqn": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 1.0
+          },
+          "planner_ops": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 1.0
+          },
+          "planner_ops_hist": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 1.0
+          }
+        }
+      },
+      "zero_stop": {
+        "deadline_hours": 720.0,
+        "class": "stop_forced_exceeds_deadline",
+        "sailing_hours": 720.0,
+        "allowed_stops": 0,
+        "policies": {
+          "fixed_fueling": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 0.0
+          },
+          "price_reactive": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 0.023
+          },
+          "safe_stock": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 0.0
+          },
+          "double_dqn": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 1.0
+          },
+          "planner_ops": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 1.0
+          },
+          "planner_ops_hist": {
+            "episodes": 1000,
+            "on_time_safe_rate": null,
+            "excluded_from_compliance": true,
+            "safe_but_late_rate": 1.0
+          }
+        }
+      },
+      "one_stop": {
+        "deadline_hours": 728.0,
+        "class": "attainable",
+        "sailing_hours": 720.0,
+        "allowed_stops": 1,
+        "policies": {
+          "fixed_fueling": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          },
+          "price_reactive": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.007,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.016
+          },
+          "safe_stock": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          },
+          "double_dqn": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 1.0
+          },
+          "planner_ops": {
+            "episodes": 1000,
+            "on_time_safe_rate": 1.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          },
+          "planner_ops_hist": {
+            "episodes": 1000,
+            "on_time_safe_rate": 1.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          }
+        }
+      },
+      "two_stop": {
+        "deadline_hours": 736.0,
+        "class": "attainable",
+        "sailing_hours": 720.0,
+        "allowed_stops": 2,
+        "policies": {
+          "fixed_fueling": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          },
+          "price_reactive": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.008,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.015
+          },
+          "safe_stock": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          },
+          "double_dqn": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 1.0
+          },
+          "planner_ops": {
+            "episodes": 1000,
+            "on_time_safe_rate": 1.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          },
+          "planner_ops_hist": {
+            "episodes": 1000,
+            "on_time_safe_rate": 1.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          }
+        }
+      },
+      "slack": {
+        "deadline_hours": 760.0,
+        "class": "attainable",
+        "sailing_hours": 720.0,
+        "allowed_stops": 5,
+        "policies": {
+          "fixed_fueling": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          },
+          "price_reactive": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.013,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.01
+          },
+          "safe_stock": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          },
+          "double_dqn": {
+            "episodes": 1000,
+            "on_time_safe_rate": 0.737,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.263
+          },
+          "planner_ops": {
+            "episodes": 1000,
+            "on_time_safe_rate": 1.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          },
+          "planner_ops_hist": {
+            "episodes": 1000,
+            "on_time_safe_rate": 1.0,
+            "excluded_from_compliance": false,
+            "safe_but_late_rate": 0.0
+          }
+        }
+      }
+    }
+  },
+  "holdout_time_by_scenario": {
+    "nominal": {
+      "min_safe_stops": 1,
+      "deadlines": {
+        "sailing_exceeds": {
+          "deadline_hours": 700.0,
+          "class": "sailing_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": -1,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.023
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "zero_stop": {
+          "deadline_hours": 720.0,
+          "class": "stop_forced_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": 0,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.023
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "one_stop": {
+          "deadline_hours": 728.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 1,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.007,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.016
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        },
+        "two_stop": {
+          "deadline_hours": 736.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 2,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.008,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.015
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        },
+        "slack": {
+          "deadline_hours": 760.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 5,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.013,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.01
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.737,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.263
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        }
+      }
+    },
+    "demand_minus_10pct": {
+      "min_safe_stops": 1,
+      "deadlines": {
+        "sailing_exceeds": {
+          "deadline_hours": 700.0,
+          "class": "sailing_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": -1,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.03
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "zero_stop": {
+          "deadline_hours": 720.0,
+          "class": "stop_forced_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": 0,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.03
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "one_stop": {
+          "deadline_hours": 728.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 1,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.008,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.022
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        },
+        "two_stop": {
+          "deadline_hours": 736.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 2,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.011,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.019
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        },
+        "slack": {
+          "deadline_hours": 760.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 5,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.017,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.013
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.757,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.243
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        }
+      }
+    },
+    "demand_plus_10pct": {
+      "min_safe_stops": 2,
+      "deadlines": {
+        "sailing_exceeds": {
+          "deadline_hours": 700.0,
+          "class": "sailing_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": -1,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.012
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "zero_stop": {
+          "deadline_hours": 720.0,
+          "class": "stop_forced_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": 0,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.012
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "one_stop": {
+          "deadline_hours": 728.0,
+          "class": "stop_forced_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": 1,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.012
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "two_stop": {
+          "deadline_hours": 736.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 2,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.012
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        },
+        "slack": {
+          "deadline_hours": 760.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 5,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.003,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.009
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.704,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.296
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        }
+      }
+    },
+    "demand_minus_20pct": {
+      "min_safe_stops": 1,
+      "deadlines": {
+        "sailing_exceeds": {
+          "deadline_hours": 700.0,
+          "class": "sailing_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": -1,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.055
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "zero_stop": {
+          "deadline_hours": 720.0,
+          "class": "stop_forced_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": 0,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.055
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "one_stop": {
+          "deadline_hours": 728.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 1,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.013,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.042
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        },
+        "two_stop": {
+          "deadline_hours": 736.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 2,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.023,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.032
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.007,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.993
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        },
+        "slack": {
+          "deadline_hours": 760.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 5,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.033,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.022
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.775,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.225
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        }
+      }
+    },
+    "demand_plus_20pct": {
+      "min_safe_stops": 2,
+      "deadlines": {
+        "sailing_exceeds": {
+          "deadline_hours": 700.0,
+          "class": "sailing_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": -1,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.006
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "zero_stop": {
+          "deadline_hours": 720.0,
+          "class": "stop_forced_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": 0,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.006
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "one_stop": {
+          "deadline_hours": 728.0,
+          "class": "stop_forced_exceeds_deadline",
+          "sailing_hours": 720.0,
+          "allowed_stops": 1,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.006
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": null,
+              "excluded_from_compliance": true,
+              "safe_but_late_rate": 1.0
+            }
+          }
+        },
+        "two_stop": {
+          "deadline_hours": 736.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 2,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.006
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 1.0
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        },
+        "slack": {
+          "deadline_hours": 760.0,
+          "class": "attainable",
+          "sailing_hours": 720.0,
+          "allowed_stops": 5,
+          "policies": {
+            "fixed_fueling": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "price_reactive": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.001,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.005
+            },
+            "safe_stock": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "double_dqn": {
+              "episodes": 1000,
+              "on_time_safe_rate": 0.662,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.338
+            },
+            "planner_ops_hist": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            },
+            "planner_ops": {
+              "episodes": 1000,
+              "on_time_safe_rate": 1.0,
+              "excluded_from_compliance": false,
+              "safe_but_late_rate": 0.0
+            }
+          }
+        }
+      }
+    }
+  },
+  "deadline_aware_extension_nominal": {
+    "one_stop": {
+      "deadline_hours": 728.0,
+      "episodes": 1000,
+      "safe_rate": 1.0,
+      "safe_count": 1000,
+      "depleted_count": 0,
+      "arrived_rate": 1.0,
+      "mean_stops": 1.0,
+      "max_stops": 1,
+      "mean_adjusted_sci_safe": 974577.5232383924,
+      "mean_raw_cost_index": 487505.9637010862
+    },
+    "two_stop": {
+      "deadline_hours": 736.0,
+      "episodes": 1000,
+      "safe_rate": 1.0,
+      "safe_count": 1000,
+      "depleted_count": 0,
+      "arrived_rate": 1.0,
+      "mean_stops": 1.0,
+      "max_stops": 1,
+      "mean_adjusted_sci_safe": 974577.5232383924,
+      "mean_raw_cost_index": 487505.9637010862
+    },
+    "slack": {
+      "deadline_hours": 760.0,
+      "episodes": 1000,
+      "safe_rate": 1.0,
+      "safe_count": 1000,
+      "depleted_count": 0,
+      "arrived_rate": 1.0,
+      "mean_stops": 1.0,
+      "max_stops": 1,
+      "mean_adjusted_sci_safe": 974577.5232383924,
+      "mean_raw_cost_index": 487505.9637010862
+    }
+  },
+  "reuse_summaries": {
+    "price_reactive": {
+      "episodes": 100,
+      "safe_rate": 0.02,
+      "safe_count": 2,
+      "depleted_count": 97,
+      "arrived_rate": 0.03,
+      "mean_stops": 0.08,
+      "max_stops": 4,
+      "mean_adjusted_sci_safe": 946348.6164766472,
+      "mean_raw_cost_index": 17369.51761907307
+    },
+    "safe_stock": {
+      "episodes": 100,
+      "safe_rate": 0.0,
+      "safe_count": 0,
+      "depleted_count": 0,
+      "arrived_rate": 1.0,
+      "mean_stops": 1.0,
+      "max_stops": 1,
+      "mean_adjusted_sci_safe": null,
+      "mean_raw_cost_index": 545392.7239052437
+    },
+    "fixed_fueling": {
+      "episodes": 100,
+      "safe_rate": 0.0,
+      "safe_count": 0,
+      "depleted_count": 100,
+      "arrived_rate": 0.0,
+      "mean_stops": 0.0,
+      "max_stops": 0,
+      "mean_adjusted_sci_safe": null,
+      "mean_raw_cost_index": 0.0
+    },
+    "double_dqn": {
+      "episodes": 100,
+      "safe_rate": 1.0,
+      "safe_count": 100,
+      "depleted_count": 0,
+      "arrived_rate": 1.0,
+      "mean_stops": 5.31,
+      "max_stops": 17,
+      "mean_adjusted_sci_safe": 956540.6741884672,
+      "mean_raw_cost_index": 856881.7028596557
+    },
+    "planner_ops": {
+      "episodes": 100,
+      "safe_rate": 1.0,
+      "safe_count": 100,
+      "depleted_count": 0,
+      "arrived_rate": 1.0,
+      "mean_stops": 1.0,
+      "max_stops": 1,
+      "mean_adjusted_sci_safe": 957272.2390166882,
+      "mean_raw_cost_index": 480279.3754513387
+    },
+    "planner_ops_hist": {
+      "episodes": 100,
+      "safe_rate": 1.0,
+      "safe_count": 100,
+      "depleted_count": 0,
+      "arrived_rate": 1.0,
+      "mean_stops": 1.0,
+      "max_stops": 1,
+      "mean_adjusted_sci_safe": 957272.2390166882,
+      "mean_raw_cost_index": 480279.3754513387
+    }
+  },
+  "reuse_consistency": {
+    "pass": true,
+    "detail": {
+      "fixed_fueling": {
+        "episodes": 100,
+        "mismatches_vs_scripts_evaluate": 0
+      },
+      "price_reactive": {
+        "episodes": 100,
+        "mismatches_vs_scripts_evaluate": 0
+      },
+      "safe_stock": {
+        "episodes": 100,
+        "mismatches_vs_scripts_evaluate": 0
+      },
+      "double_dqn": {
+        "episodes": 100,
+        "mismatches_vs_scripts_evaluate": 0
+      }
+    },
+    "repo_csv": {
+      "path": "results/evaluation_results.csv",
+      "compared": true,
+      "fixed_fueling": {
+        "missing_or_different": 0,
+        "rows_in_repo_csv": 100
+      },
+      "price_reactive": {
+        "missing_or_different": 0,
+        "rows_in_repo_csv": 100
+      },
+      "safe_stock": {
+        "missing_or_different": 0,
+        "rows_in_repo_csv": 100
+      }
+    }
+  },
+  "runtime": {
+    "fixed_fueling": {
+      "decisions": 4000,
+      "mean_ms": 0.00027011375,
+      "p50_ms": 0.000242,
+      "p99_ms": 0.0004640099999999998,
+      "max_ms": 0.071848,
+      "episode_wall_mean_ms": 0.5470507299999999
+    },
+    "price_reactive": {
+      "decisions": 4120,
+      "mean_ms": 0.004610176456310679,
+      "p50_ms": 0.004232,
+      "p99_ms": 0.012015039999999996,
+      "max_ms": 0.05824,
+      "episode_wall_mean_ms": 0.635995695
+    },
+    "safe_stock": {
+      "decisions": 6000,
+      "mean_ms": 0.0008765064999999999,
+      "p50_ms": 0.000777,
+      "p99_ms": 0.001771,
+      "max_ms": 0.059205,
+      "episode_wall_mean_ms": 0.8482320250000001
+    },
+    "double_dqn": {
+      "decisions": 6000,
+      "mean_ms": 0.04493491483333334,
+      "p50_ms": 0.039142,
+      "p99_ms": 0.10596399000000002,
+      "max_ms": 0.252808,
+      "episode_wall_mean_ms": 2.6106971299999997
+    },
+    "planner_ops": {
+      "decisions": 6000,
+      "mean_ms": 0.48209261366666667,
+      "p50_ms": 0.3821645,
+      "p99_ms": 1.49468918,
+      "max_ms": 2.143244,
+      "episode_wall_mean_ms": 15.884324995
+    },
+    "planner_ops_hist": {
+      "decisions": 6000,
+      "mean_ms": 0.474475232,
+      "p50_ms": 0.37194099999999997,
+      "p99_ms": 1.48383618,
+      "max_ms": 1.944066,
+      "episode_wall_mean_ms": 15.525289465
+    },
+    "planner_oracle": {
+      "decisions": 6000,
+      "mean_ms": 1.0135156126666667,
+      "p50_ms": 0.9326145,
+      "p99_ms": 2.4361345400000003,
+      "max_ms": 3.345504,
+      "episode_wall_mean_ms": 31.756087100000002
+    }
+  },
+  "seeds": {
+    "reuse": [
+      42,
+      141
+    ],
+    "holdout": [
+      10000000,
+      10000999
+    ]
+  }
+}
