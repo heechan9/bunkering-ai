@@ -1,4 +1,33 @@
-# 2026-10-07 오후 진행 상태 — 공식 모델 후속 평가
+# 2026-10-07 최신 상태 — shadow·CI 병합 완료
+
+기준 main `c01b5631a4fff513548817d76210f497091180ef`. 아래 날짜별 기록은 당시의 테스트·검토·배포 상태이며, 현재 상태는 이 절을 우선한다.
+
+| 작업 | 상태 | 근거·범위 |
+|---|---|---|
+| #104·#105·#106 | 병합 완료 | 공식 A3 비교, 사전 검증, 진행 문서 |
+| #107·#108 | 병합 완료 | shadow 추천 비교와 체크포인트 읽기 실패 처리 |
+| #109 | 병합 완료 `c01b563` | 계획기 subprocess 격리, soft deadline, 늦은 응답 폐기, 특수 파일 차단 |
+| #110 | 병합 완료 `5db07db` | PR·main push Python 3.12 CPU 회귀 CI; 필수 체크 설정·자동 병합·배포는 미설정 |
+| 운영 모델·웹 | 기존 DQN 유지 | 이번 변경은 연구 CLI·CI이며 새 학습·웹 배포 없음 |
+
+## 최신 검증 근거
+
+- Codex: #109 head `544dcd3`에서 전체 **514 passed +23 subtests**(47.42초). 최신 main과의 임시 통합 `314d9df`에서도 **514 passed +23 subtests**(48.83초). 실제 병합 tree `c66987c`와 통합 검사 tree 일치. [병합 기록](https://github.com/heechan9/bunkering-ai/pull/109#issuecomment-6033647098).
+- GitHub Actions: `544dcd3`와 병합 main `c01b563`의 `pytest (Python 3.12, CPU)` 성공을 확인했다. [실행 이력](https://github.com/heechan9/bunkering-ai/actions/workflows/python-tests.yml).
+- Codex 독립 반례: 늦은 응답 timeout 처리, 스키마·크기 위반 오류, worker 회수 확인. 엄격한 벽시계 상한을 보증하지 않는다. [재검토](https://github.com/heechan9/bunkering-ai/pull/109#issuecomment-6033560611).
+- 공식 모델 shadow 기능 검증은 이전 head `99cfaee`: 재사용 seed 60,000,000–60,000,019, 600스텝, 추천 불일치 143, timeout/skipped/실패 0, DQN trace 동일. `544dcd3`에서 공식 모델 재실행은 하지 않았다. 기능 격리 확인이며 계획기 성능평가가 아니다.
+- Claude와 Jules의 과거 실행·감사 기록은 아래에 보존하며 위 Codex 직접 실행 및 GitHub CI와 구분한다.
+
+## 남은 작업
+
+- 실제 시간·수요·동일 선박의 공급량/ROB/소비/구매가격 자료 확보와 독립 실선 평가. 현재 비용 절감 우위 및 실선 절감 효과는 미입증이다.
+- 운영 연결은 별도 설계·검증 대상. 연구 shadow는 DQN 행동을 유지하며 추천만 비교한다. 하위 프로세스·악성 코드 격리, 실제 OS 회수 불가 상태, 운영 부하는 검증 범위 밖이다.
+- 실제 휴대폰·iOS Safari 및 초기 로딩 넘침 확인. Sites 36판 검사는 과거 관측이며 이번 정리에서 사이트를 다시 확인하거나 배포하지 않았다.
+- 재현 자료는 [찾아보기](technical/reproduction_materials_guide.md), CI·검수 절차는 [안내](technical/python_ci.md)를 따른다. 원자료·모델은 비공개 Drive에서 관리한다.
+
+---
+
+# 과거 기록: 2026-10-07 공식 모델 후속 평가
 
 기준 main `9ddd64b`(#104·#105 병합 후). 직전 기준은 `740dfdb`였고, 아래 날짜별 과거 기록은 보존한다. 이 문서는 아래 날짜별 과거 기록을 보존한다.
 
