@@ -15,9 +15,9 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Double_DQN-EE4C2C?logo=pytorch&logoColor=white)
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-BunkeringEnv-2D3748)
-![Tests](https://img.shields.io/badge/tests-327_passed-2EA44F)
+![Tests](https://img.shields.io/badge/tests-514_passed-2EA44F)
 
-검증 배지는 2026-10-07 main `ee817ce`에서 Codex가 직접 실행한 **327 passed · 23 subtests passed** 기록입니다. 연구 코드 검사는 34개 통과했습니다([실행 기록: PR #104](https://github.com/heechan9/bunkering-ai/pull/104)). 이번 README 갱신은 새 테스트 실행이 아닙니다. 이전 Windows **288 passed** 및 공식 400행 재현·근거 감사 8/8은 [기존 검사 기록](docs/audits/local_verification_20261007.md)에 보존합니다.
+검증 배지는 2026-10-07 #109와 최신 main의 통합 코드에서 Codex가 직접 실행한 **514 passed · 23 subtests passed** 기록입니다. 병합 main `c01b563`의 파일 트리가 검사한 코드와 같으며 병합 후 GitHub Python CI도 성공했습니다([검토·병합 기록](https://github.com/heechan9/bunkering-ai/pull/109#issuecomment-6033647098)). [Python CI 실행·재현 안내](docs/technical/python_ci.md). 이전 Windows **288 passed** 및 공식 400행 재현·근거 감사 8/8은 [기존 검사 기록](docs/audits/local_verification_20261007.md)에 보존합니다.
 이현수의 2026-09-27 독립 검증(245 passed)은 [PR #66](https://github.com/heechan9/bunkering-ai/pull/66)에 보존합니다. 근거 감사 배지는 공식 결과의 주장 8개 검사이며 실선 성능 검증을 뜻하지 않습니다.
 
 ![Evidence Audit](https://img.shields.io/badge/evidence_audit-8%2F8_passed-2EA44F)
@@ -26,7 +26,7 @@
 
 ## 지금 어디까지 완료됐나
 
-2026-10-07 14:07 KST 상태 확인 기준입니다. PR #100–#103의 연구 코드·평가 보완 병합과 [Sites 36판 운영 검증](docs/audits/ocean_lab_live_verification_20261007.md)을 반영했습니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
+2026-10-07 main `c01b563` 확인 기준입니다. PR #100–#110의 평가·shadow·CI 병합과 [Sites 36판 운영 검증](docs/audits/ocean_lab_live_verification_20261007.md)을 반영했습니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
 아래 상태는 각 항목의 확인 범위이며 전체 프로젝트의 검증 완료를 뜻하지 않습니다.
 
 | 연구·개발 단계 | 상태 | 확인된 범위와 남은 일 |
@@ -56,6 +56,9 @@
 | 시간 제약 계획기·공정 비교 하네스 | ✅ main 반영 | #100–#103 병합. 입력·수치 경계 검증, 동일 관측 계획기, 판정 임계값과 평가 집합 이력 정리. [공정 비교](research/fair_replacement_eval/README.md) |
 | 공식 DQN 동일 관측 비교 | ✅ 실행 완료 · main 병합(PR #104, `aec66ba`) | 공식 모델·새 1,000건으로 합성 기준 통과. 비용 절감 우위는 미입증, 운영 DQN 유지. [PR #104](https://github.com/heechan9/bunkering-ai/pull/104) |
 | 평가 사전 검증 보강 | ✅ main 병합(PR #105, `9ddd64b`) | 메타데이터·환경·시드 검사 및 워커 시작 전 차단. 병합 후 main에서 Claude가 직접 실행: 연구 90개 / 전체 373개 통과(23 subtests). [PR #105](https://github.com/heechan9/bunkering-ai/pull/105) |
+| Shadow 추천 비교·격리 | ✅ #107·#109 main 병합 | DQN 행동은 유지하고 계획기 추천을 기록. 시간 초과·worker 실패 처리, 늦은 응답 폐기. soft deadline이며 운영 연결·계획기 성능평가가 아님. [사용법](research/fair_replacement_eval/SHADOW_MODE.md) |
+| 체크포인트 읽기 실패 처리 | ✅ #108·#109 main 병합 | 읽기 실패 및 FIFO·장치 파일은 preflight 실패로 기록하고 실행 전 중단 |
+| Python 자동 회귀검사 | ✅ #110 main 병합 · 실행 성공 | PR·main push에서 Python 3.12 CPU pytest 실행. 필수 체크 강제 설정·자동 병합·배포는 별도. [CI 안내](docs/technical/python_ci.md) |
 | 실제 선박 적용 | ⏳ 추가 기록 확보·독립 평가 필요 | 같은 선박·기간의 공급량·ROB·소비·가격 연결 미완료. 실제 비용·연료 절감률은 미입증 |
 
 비공개 원자료·최종 제출 파일은 Google Drive에서 관리합니다. 상세 날짜별 이력은 [진행 기록](docs/PROJECT_STATUS.md)을 확인하세요.

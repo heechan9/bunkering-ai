@@ -31,3 +31,16 @@ Counterexample review and private-model functional verification remain separate.
 Branch protection / required checks are repository settings and are not changed by
 this workflow. Enable a required check only after its first successful hosted run;
 the job name is `pytest (Python 3.12, CPU)`.
+
+## Review and integration
+
+Record the exact base/head SHA, reviewed diff, executed commands and unverified scope.
+Separate author-reported results, independent reviewer execution and hosted CI.
+A reviewer should receive the diff and acceptance criteria in a fresh context and
+report reproducible defects without treating the author's passing tests as approval.
+After fixes, recheck the new head. Before merging, verify the reviewed SHA, current
+main integration and CI; merge only within the user's authorization. Never publish
+private checkpoints, raw evaluation data or private storage links in review comments.
+
+This workflow supplies machine checks. Claude/Jules review and Codex independent
+validation are separate tasks; automatic AI review is not configured by this workflow.
