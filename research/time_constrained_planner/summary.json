@@ -1,0 +1,141 @@
+{
+  "infeasibility": {
+    "test": {
+      "planner_infeasible": 66,
+      "sailing_alone_over_limit": 54
+    },
+    "external": {
+      "planner_infeasible": 155,
+      "sailing_alone_over_limit": 155
+    }
+  },
+  "source_sha256": "aa751f28705336cbca379b1499021cb17b299709a7563f398ef066aa75c6381f",
+  "comparisons": [
+    {
+      "split": "test",
+      "policy": "cheaper_port",
+      "n": 2160,
+      "baseline_feasible": 2094,
+      "planner_feasible": 2094,
+      "rescued": 0,
+      "common_n": 2094,
+      "planner_cost_change_pct": 0.0
+    },
+    {
+      "split": "test",
+      "policy": "dqn_42",
+      "n": 2160,
+      "baseline_feasible": 2094,
+      "planner_feasible": 2094,
+      "rescued": 0,
+      "common_n": 2094,
+      "planner_cost_change_pct": -0.06511786242423545
+    },
+    {
+      "split": "test",
+      "policy": "dqn_43",
+      "n": 2160,
+      "baseline_feasible": 2094,
+      "planner_feasible": 2094,
+      "rescued": 0,
+      "common_n": 2094,
+      "planner_cost_change_pct": -0.07312403204970952
+    },
+    {
+      "split": "test",
+      "policy": "dqn_44",
+      "n": 2160,
+      "baseline_feasible": 2094,
+      "planner_feasible": 2094,
+      "rescued": 0,
+      "common_n": 2094,
+      "planner_cost_change_pct": -0.04212569140048528
+    },
+    {
+      "split": "test",
+      "policy": "lp",
+      "n": 2160,
+      "baseline_feasible": 2094,
+      "planner_feasible": 2094,
+      "rescued": 0,
+      "common_n": 2094,
+      "planner_cost_change_pct": 0.0
+    },
+    {
+      "split": "test",
+      "policy": "minimum",
+      "n": 2160,
+      "baseline_feasible": 2094,
+      "planner_feasible": 2094,
+      "rescued": 0,
+      "common_n": 2094,
+      "planner_cost_change_pct": -0.27970893501283456
+    },
+    {
+      "split": "external",
+      "policy": "cheaper_port",
+      "n": 892,
+      "baseline_feasible": 737,
+      "planner_feasible": 737,
+      "rescued": 0,
+      "common_n": 737,
+      "planner_cost_change_pct": 0.0
+    },
+    {
+      "split": "external",
+      "policy": "dqn_42",
+      "n": 892,
+      "baseline_feasible": 737,
+      "planner_feasible": 737,
+      "rescued": 0,
+      "common_n": 737,
+      "planner_cost_change_pct": -0.2242686305752306
+    },
+    {
+      "split": "external",
+      "policy": "dqn_43",
+      "n": 892,
+      "baseline_feasible": 737,
+      "planner_feasible": 737,
+      "rescued": 0,
+      "common_n": 737,
+      "planner_cost_change_pct": -0.26845857355746183
+    },
+    {
+      "split": "external",
+      "policy": "dqn_44",
+      "n": 892,
+      "baseline_feasible": 737,
+      "planner_feasible": 737,
+      "rescued": 0,
+      "common_n": 737,
+      "planner_cost_change_pct": -0.15812430956766432
+    },
+    {
+      "split": "external",
+      "policy": "lp",
+      "n": 892,
+      "baseline_feasible": 737,
+      "planner_feasible": 737,
+      "rescued": 0,
+      "common_n": 737,
+      "planner_cost_change_pct": 0.0
+    },
+    {
+      "split": "external",
+      "policy": "minimum",
+      "n": 892,
+      "baseline_feasible": 737,
+      "planner_feasible": 737,
+      "rescued": 0,
+      "common_n": 737,
+      "planner_cost_change_pct": -1.5530311897869575
+    }
+  ],
+  "runtime_seconds": {
+    "median": 0.0009274629992432892,
+    "p95": 0.0011814235469501,
+    "max": 0.004479337003431283
+  },
+  "scope": "Existing reused synthetic NTNU routes; not independent holdout or production evaluation"
+}
