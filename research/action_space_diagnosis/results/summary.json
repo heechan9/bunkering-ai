@@ -1,0 +1,21 @@
+{
+  "seed": 20261007,
+  "cases": 120,
+  "old_sequences_per_case": 625,
+  "new_sequences_per_case": 1296,
+  "five_action_strict_gap_cases": 42,
+  "five_action_total_gap_pct": 0.11696415814397287,
+  "max_gap_pct": 1.4022016710026897,
+  "six_action_max_abs_gap": 4.440892098500626e-16,
+  "source_sha256": {
+    "research/ntnu_bunkering/retrain.py": "3e6cd9966dfcbd88c71cd05a7ceb987b398b4f0b18fe2a8f21669f51830cf373",
+    "research/ntnu_bunkering/experiment.py": "50bd9f8f04ed0c283c765cceb4f0bdb803e6c709bd5033a4af4c7a3ed8350383"
+  },
+  "limitations": [
+    "Synthetic four-leg cases, not NTNU original-case replay.",
+    "Exhaustive oracle, not DQN training or achieved learned performance.",
+    "Static known prices, all ports available, no stop-time constraint.",
+    "No attribution of historical DQN errors without checkpoint replay.",
+    "Sixth action is a rule candidate; gains are not learned gains."
+  ]
+}
