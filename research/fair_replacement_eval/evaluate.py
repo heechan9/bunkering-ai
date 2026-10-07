@@ -27,6 +27,7 @@ import numpy as np
 
 from research.fair_replacement_eval import common
 from research.fair_replacement_eval.common import PROJECT_ROOT, file_sha256, load_criteria, run_episode
+from research.fair_replacement_eval import preflight
 from research.fair_replacement_eval.decision import evaluate_criteria, forecast_sensitivity, policy_summary, time_table
 from research.fair_replacement_eval.policies import PlannerPolicy, make_planners
 
@@ -35,13 +36,7 @@ BASELINES = ("fixed_fueling", "price_reactive", "safe_stock")
 
 def _hits_used_ranges(seeds: list[int], crit: dict[str, Any]) -> bool:
     """True if any seed lies in a range already used (reuse, development, diagnostics, surrogate)."""
-    sets = crit["evaluation_sets"]
-    ranges = [tuple(r["range"]) for r in sets["seed_ranges_already_used"]]
-    for key in ("reuse", "development_holdout"):
-        cfg = sets[key]
-        ranges.append((int(cfg["base_seed"]), int(cfg["base_seed"]) + int(cfg["episodes"]) - 1))
-    lo, hi = min(seeds), max(seeds)
-    return any(not (hi < a or lo > b) for a, b in ranges)
+    return preflight.hits_used_ranges(seeds, crit)
 
 
 def base_env_config() -> dict[str, Any]:
@@ -180,9 +175,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--smoke", action="store_true", help="tiny run: harness check only; fails gate G4")
+    parser.add_argument(
+        "--continue-undecidable",
+        action="store_true",
+        help="run even if pre-flight is undecidable (e.g. training-seed metadata missing); the verdict stays NOT_DECIDABLE",
+    )
     args = parser.parse_args(argv)
 
-    crit = load_criteria()  # raises if criteria.json differs from criteria.sha256
+    criteria_check, crit = preflight.check_criteria_hash(load_criteria)  # hash must equal criteria.sha256
+    if crit is None:
+        print("pre-flight failed: " + "; ".join(criteria_check["reasons"]), file=sys.stderr)
+        return 3
     out: Path = args.out
     if out.exists() and any(out.iterdir()):
         print(f"refusing to overwrite non-empty {out}", file=sys.stderr)
@@ -202,17 +205,32 @@ def main(argv: list[str] | None = None) -> int:
 
     ckpt = str(args.checkpoint)
     sha = file_sha256(args.checkpoint)
+    # One pre-flight before any episode: checkpoint hash/format/dimensions, env_config, training-seed
+    # metadata, criteria hash, seed ranges. A missing n_episodes is never treated as 0.
+    pre = preflight.run_preflight(
+        args.checkpoint,
+        crit,
+        scenario_config(base, crit, "nominal"),
+        conf_seeds,
+        reuse_seeds,
+        sha256=sha,
+        criteria_check=criteria_check,
+    )
+    pre["criteria_sha256"] = file_sha256(common.CRITERIA_PATH)
+    (out / "preflight.json").write_text(json.dumps(pre, indent=2, ensure_ascii=False, default=float) + "\n", encoding="utf-8")
+    for c in pre["checks"]:
+        print(f"preflight {c['status']:<11} {c['id']}" + ("".join(f"\n    - {r}" for r in c["reasons"])), flush=True)
+    if pre["overall"] == preflight.FAIL or (pre["overall"] == preflight.UNDECIDABLE and not args.continue_undecidable):
+        print(f"pre-flight {pre['overall']}: evaluation not started (record: {out / 'preflight.json'})", file=sys.stderr)
+        return 3
+
     from agents.dqn import DQNAgent
 
     meta = DQNAgent.load_checkpoint(args.checkpoint).checkpoint_metadata
     official = sha == crit["incumbent"]["official_checkpoint_sha256"]
-    train_lo = meta.get("train_seed")
-    train_hi = None if train_lo is None else int(train_lo) + int(meta.get("n_episodes", 0))
-    def overlaps(seeds: list[int]) -> bool | None:
-        if train_lo is None:
-            return None
-        return any(int(train_lo) <= s < train_hi for s in seeds)
-    conf_overlap, reuse_overlap = overlaps(conf_seeds), overlaps(reuse_seeds)
+    seed_check = next(c for c in pre["checks"] if c["id"] == "seed_ranges")
+    conf_overlap = seed_check["confirmation_overlaps_training_seeds"]
+    reuse_overlap = seed_check["reuse_overlaps_training_seeds"]
 
     planner_names = ["planner_ops", "planner_ops_hist"]
     voi_names = ["planner_oracle" if s == 0 else f"planner_fcst_{s:g}" for s in sigma_grid]
@@ -249,10 +267,12 @@ def main(argv: list[str] | None = None) -> int:
     print("consistency vs scripts.evaluate ...", flush=True)
     consistency = reuse_consistency(ckpt, scenario_config(base, crit, "nominal"), reuse_seeds, {(n, "nominal"): r for n, r in reuse_rows.items()}, crit)
 
+    pre_gates = preflight.gate_values(pre)
     gates = {
+        "G0_preflight": pre_gates["G0_preflight"],
         "G1_official_incumbent": bool(official),
-        "G2_holdout_disjoint": bool(conf_overlap is False and not _hits_used_ranges(conf_seeds, crit)),
-        "G3_criteria_hash": True,
+        "G2_holdout_disjoint": pre_gates["G2_holdout_disjoint"],
+        "G3_criteria_hash": pre_gates["G3_criteria_hash"],
         "G4_holdout_size": n_conf >= int(th["min_confirmation_episodes"]),
         "G5_reuse_consistency": bool(consistency["pass"]),
     }
@@ -286,6 +306,7 @@ def main(argv: list[str] | None = None) -> int:
         "incumbent": {"checkpoint_file": args.checkpoint.name, "sha256": sha, "official": official, "metadata": meta,
                       "confirmation_overlaps_training_seeds": conf_overlap, "reuse_overlaps_training_seeds": reuse_overlap},
         "gates": gates,
+        "preflight": {"overall": pre["overall"], "file": "preflight.json", "statuses": {c["id"]: c["status"] for c in pre["checks"]}},
         "criteria": decision["criteria"],
         "nominal_comparison": decision["nominal_comparison"],
         "forecast_sensitivity": voi,
