@@ -7,7 +7,7 @@
 | #104·#105·#106 | 병합 완료 | 공식 A3 비교, 사전 검증, 진행 문서 |
 | #107·#108 | 병합 완료 | shadow 추천 비교와 체크포인트 읽기 실패 처리 |
 | #109 | 병합 완료 `c01b563` | 계획기 subprocess 격리, soft deadline, 늦은 응답 폐기, 특수 파일 차단 |
-| #110 | 병합 완료 `5db07db` | PR·main push Python 3.12 CPU 회귀 CI; 필수 체크 설정·자동 병합·배포는 미설정 |
+| #110 | 병합 완료 `5db07db` | PR·main push Python 3.12 CPU 회귀 CI; main 필수 pytest 체크 활성화(규칙 24645588); 자동 병합·배포 미설정 |
 | 운영 모델·웹 | 기존 DQN 유지 | 이번 변경은 연구 CLI·CI이며 새 학습·웹 배포 없음 |
 
 ## 최신 검증 근거
@@ -17,6 +17,10 @@
 - Codex 독립 반례: 늦은 응답 timeout 처리, 스키마·크기 위반 오류, worker 회수 확인. 엄격한 벽시계 상한을 보증하지 않는다. [재검토](https://github.com/heechan9/bunkering-ai/pull/109#issuecomment-6033560611).
 - 공식 모델 shadow 기능 검증은 이전 head `99cfaee`: 재사용 seed 60,000,000–60,000,019, 600스텝, 추천 불일치 143, timeout/skipped/실패 0, DQN trace 동일. `544dcd3`에서 공식 모델 재실행은 하지 않았다. 기능 격리 확인이며 계획기 성능평가가 아니다.
 - Claude와 Jules의 과거 실행·감사 기록은 아래에 보존하며 위 Codex 직접 실행 및 GitHub CI와 구분한다.
+
+## 2026-10-07 저녁 후속 확인
+
+main 필수 pytest 규칙을 활성화했다. UPA 관련 Gmail 검색에서는 발송분만 발견했고, 실제 휴대폰·iOS Safari 및 초기 모바일 넘침은 여전히 미검증이다. [확인 범위와 남은 조건](audits/remaining_work_20261007.md).
 
 ## 남은 작업
 
