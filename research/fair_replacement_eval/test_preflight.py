@@ -298,3 +298,29 @@ def test_main_stops_before_any_episode_on_env_mismatch(tmp_path):
     assert code == 3
     assert not (out / "episodes").exists()
     assert json.loads((out / "preflight.json").read_text(encoding="utf-8"))["overall"] == preflight.FAIL
+
+
+@pytest.mark.parametrize(
+    "case",
+    ["missing_train_seed", "missing_n_episodes", "invalid_n_episodes", "missing_env_config", "env_mismatch", "train_eval_seed_overlap"],
+)
+def test_main_never_starts_workers_for_blocked_input(case, tmp_path, monkeypatch, crit):
+    """Entry-path check: evaluate.main must stop before run_jobs (where worker processes start)."""
+    conf0 = int(crit["evaluation_sets"]["confirmation"]["base_seed"])
+    metas = {
+        "missing_train_seed": good_meta(train_seed=Ellipsis),
+        "missing_n_episodes": good_meta(n_episodes=Ellipsis),
+        "invalid_n_episodes": good_meta(n_episodes=-5),
+        "missing_env_config": good_meta(env_config=Ellipsis),
+        "env_mismatch": good_meta(env_config={**ENV, "min_safe_fuel": 0.3}),
+        "train_eval_seed_overlap": good_meta(train_seed=conf0 - 5, n_episodes=100),
+    }
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("run_jobs (worker start) reached despite failed pre-flight")
+
+    monkeypatch.setattr(evaluate, "run_jobs", forbidden)
+    code, out = _main(tmp_path, metas[case])
+    assert code == 3
+    assert not (out / "episodes").exists() and not (out / "summary.json").exists()
+    assert (out / "preflight.json").is_file()
