@@ -14,3 +14,6 @@ runs/
 *.pt
 *.pth
 handoff_notes/
+
+# Real (non-public) port-call timing inputs/results stay local; see research/port_call_time/INTAKE.md
+research/port_call_time/private/

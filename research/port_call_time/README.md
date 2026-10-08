@@ -72,3 +72,22 @@ the dependency path installed via .pth. GitHub CI is separate evidence.
 Domestic source inventory: [PR #113](https://github.com/heechan9/bunkering-ai/pull/113).
 Module review: [PR #114](https://github.com/heechan9/bunkering-ai/pull/114).
 Independent reviewer baseline remains `f5e50b0`; no code change in this follow-up.
+
+## Data intake and validation (separate tool)
+
+`intake.py` checks timing records before they reach this model: explicit UNKNOWN (never 0), units, time zones,
+time order, provenance per value (`observed` / `stakeholder_statement` / `estimate` / `synthetic_assumption`) and
+disclosure scope. It calls `existing_call` / `dedicated_call` only when the inputs are complete and the
+double-counting confirmations are given; otherwise it prints the missing fields. It does not change this model's rules
+and does not read a reported work duration as extra delay. Details, field meanings and hand-calculated examples:
+[INTAKE.md](INTAKE.md).
+
+```sh
+python -m research.port_call_time.intake template --call-type existing_cargo_call > my_case.json  # 1) blank form
+python -m research.port_call_time.intake validate my_case.json                                    # 2) validate only
+python -m research.port_call_time.intake compute my_case.json                                     # 3) validate + compute
+python -m research.port_call_time.intake compute research/port_call_time/examples/*.json          # synthetic examples
+python -m pytest research/port_call_time -q
+```
+
+Real or non-public inputs belong under `research/port_call_time/private/` (git-ignored). Examples are synthetic only.
