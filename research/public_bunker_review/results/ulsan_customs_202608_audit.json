@@ -22,8 +22,8 @@
       "supplied_tonnes": 850,
       "customs_reported_date": "2026-08-06",
       "upa_reported_date": "2026-08-08",
-      "date": null,
-      "date_status": "conflicting_official_sources",
+      "date": "2026-08-08",
+      "date_status": "confirmed_by_upa_staff_reply_2026-10-08; customs_original_aug6_retained_unchanged",
       "imo_candidate": "1020942",
       "imo_status": "secondary AIS corroboration; primary PDF retrieval blocked",
       "upa_supply_details": {
@@ -33,7 +33,32 @@
         "duration_hours_approx": 10,
         "quantity_tonnes_approx": 850
       },
-      "event_identity_linkage": "vessel_name_only; IMO not present in event source"
+      "event_identity_linkage": "vessel_name_only; IMO not present in event source",
+      "date_basis": "upa_staff_email_reply",
+      "date_confirmation": {
+        "confirmed_date": "2026-08-08",
+        "confirmed_on": "2026-10-08",
+        "evidence_kind": "email reply from a UPA staff member (original email not published)",
+        "what_was_confirmed": "actual LNG bunkering work date equals the date in the UPA press release (Aug 8)",
+        "customs_reported_date_preserved": "2026-08-06",
+        "customs_source_corrected": false,
+        "reply_explains_customs_date": false,
+        "limits": "one staff reply; says nothing about work duration, extra voyage delay, quantity, ROB, consumption or price"
+      },
+      "date_status_history": [
+        {
+          "as_of": "2026-10-05",
+          "date": null,
+          "date_status": "conflicting_official_sources",
+          "note": "Customs Aug6 vs UPA Aug8; no canonical date assigned at that time."
+        },
+        {
+          "as_of": "2026-10-08",
+          "date": "2026-08-08",
+          "date_status": "upa_staff_reply_confirms_aug8; customs_original_aug6_retained",
+          "note": "Customs PDF still reads 08.06; not stated as corrected."
+        }
+      ]
     },
     {
       "date": "2026-08-28",
@@ -57,7 +82,8 @@
     "Narrative continued increase conflicts with reported month-on-month decline; use tables.",
     "Publication date in PDF Sept10 differs from website posting Sept17.",
     "ATLANTIC TOPAZ date conflict: Customs Aug6 vs UPA Aug8; do not assign a canonical event date.",
-    "Page 5 other-vessel count ratio prints 67% for 2 -> 3 vessels; 3/2*100 = 150%. Counts and monthly total retained; reported ratio not used."
+    "Page 5 other-vessel count ratio prints 67% for 2 -> 3 vessels; 3/2*100 = 150%. Counts and monthly total retained; reported ratio not used.",
+    "Update 2026-10-08: ATLANTIC TOPAZ date confirmed as Aug 8 by a UPA staff email reply (see events[0].date_confirmation); the customs PDF value Aug6 is unchanged and not described as corrected. The 2026-10-05 entry above is the earlier state and is kept as history."
   ],
   "emsa_name_imo_search": {
     "2024-v246.xlsx": 0,
@@ -139,5 +165,17 @@
       "recalculated_growth_pct": 50,
       "status": "source_internal_arithmetic_inconsistency; original values preserved; no source correction inferred"
     }
+  },
+  "upa_reply_2026_10_08": {
+    "received_on": "2026-10-08",
+    "channel": "email reply to the 2026-10-05 inquiry; sender, cc list and contact details deliberately not recorded here",
+    "confirmed": [
+      "ATLANTIC TOPAZ actual LNG bunkering work date is Aug 8, same as the UPA press release"
+    ],
+    "restricted": "remaining inquiry items touch the shipping company's trade secrets; UPA says its own answers are limited",
+    "shipowner_side": "the vessel's owner-side supervisor agreed to support within what is possible; a contact was provided (not recorded here)",
+    "ship_data_received": false,
+    "disclosure_permission_received": false,
+    "next_step": "additional-data inquiry to the shipowner-side contact is planned; not sent as of this record"
   }
 }
