@@ -647,4 +647,15 @@ def test_calculation_error_message_is_neutral_unless_overflow_is_confirmed(tmp_p
 def test_overflow_message_names_the_overflow(tmp_path):
     path = tmp_path / "in.json"
     path.write_text(json.dumps({"schema_version": 1, "cases": [existing(case_id="HUGE", values={"preparation": val(1e308), "transfer": val(1e308)})]}))
-    assert "overflow" in intake.process([str(path)], True)["results"][0]["errors"][0]["message"]
+    assert "too large for the arithmetic" in intake.process([str(path)], True)["results"][0]["errors"][0]["message"]
+
+
+def test_a_message_that_merely_contains_the_word_overflow_is_not_classified_as_overflow(tmp_path, monkeypatch):
+    path = tmp_path / "in.json"
+    path.write_text(json.dumps({"schema_version": 1, "cases": [existing(case_id="A")]}))
+
+    def boom(norm):
+        raise ValueError("overflow check configuration missing")
+    monkeypatch.setattr(intake, "evaluate", boom)
+    message = intake.process([str(path)], True)["results"][0]["errors"][0]["message"]
+    assert "overflow check configuration missing" in message and "too large" not in message

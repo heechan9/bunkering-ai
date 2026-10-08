@@ -53,6 +53,7 @@ VALUE_KEYS = {"value", "at", "basis", "unit", "note"}
 DELAY_LIKE = {"extra_delay", "extra_delay_hours", "delay", "delay_hours", "departure_delay", "reported_duration",
               "reported_work_hours", "work_hours", "total_work_hours", "duration", "total_hours"}
 LARGE_DURATION_HOURS = 72.0
+KNOWN_OVERFLOW_MESSAGE = "time arithmetic overflow"  # raised by the #114 model for astronomically large values
 CODE_VERIFIED_CHECKS = (
     "every used number is finite and >= 0 (no bool or text)",
     "one declared unit per case, no mixed units",
@@ -398,7 +399,7 @@ def process(paths, compute):
                                 "errors": [_err("calculation_error", norm["case_id"],
                                                 f"the calculation failed ({type(exc).__name__}: {exc}); check the cause" + (
                                                     "; the values are too large for the arithmetic (overflow)"
-                                                    if isinstance(exc, OverflowError) or "overflow" in str(exc).lower() else ""))]})
+                                                    if isinstance(exc, OverflowError) or str(exc) == KNOWN_OVERFLOW_MESSAGE else ""))]})
                 continue
             if not compute:
                 result["missing_fields"] = [n for n in norm["required"] if norm["hours"].get(n) is None]
