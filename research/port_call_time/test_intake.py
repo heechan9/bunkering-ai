@@ -611,3 +611,19 @@ def test_malformed_input_is_invalid_and_the_next_case_is_still_checked(name, pat
     by_id = {r["case_id"]: r for r in report["results"]}
     assert by_id["BAD"]["status"] == "INVALID" and by_id["BAD"]["errors"]
     assert by_id["GOOD"]["status"] == "COMPUTED"
+
+
+def test_calculation_overflow_invalidates_only_that_case(tmp_path):
+    bad = existing(case_id="HUGE", values={"preparation": val(1e308), "transfer": val(1e308)})
+    good = existing(case_id="GOOD")
+    path = tmp_path / "in.json"
+    path.write_text(json.dumps({"schema_version": 1, "cases": [bad, good]}))
+    by_id = {r["case_id"]: r for r in intake.process([str(path)], True)["results"]}
+    assert by_id["HUGE"]["status"] == "INVALID" and by_id["HUGE"]["errors"][0]["code"] == "calculation_error"
+    assert by_id["GOOD"]["status"] == "COMPUTED"
+
+
+@pytest.mark.parametrize("bad", [[], "yes", 0, False])
+def test_wrong_typed_confirmations_are_invalid_not_missing(bad):
+    errors, _ = intake.validate_case(existing(confirmations=bad))
+    assert "bad_confirmations" in codes(errors)

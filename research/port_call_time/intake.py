@@ -251,7 +251,9 @@ def validate_case(case, index=0):
                 errors.append(_err("no_permission_basis", f"{label}.disclosure", "scope public_ok needs a permission_basis text"))
     _check_text(errors, f"{label}.notes", case.get("notes"))
 
-    confirmations = case.get("confirmations") or {}
+    confirmations = case.get("confirmations")
+    if confirmations is None:
+        confirmations = {}
     required_conf = CONFIRMATIONS.get(call_type, ()) if _member(call_type, CONFIRMATIONS) else ()
     if not isinstance(confirmations, dict) or set(confirmations) - set(required_conf) or any(not isinstance(v, bool) for v in confirmations.values()):
         errors.append(_err("bad_confirmations", f"{label}.confirmations", f"only these true/false keys are allowed: {list(required_conf)}"))
@@ -387,7 +389,15 @@ def process(paths, compute):
                                 "status": "INVALID", "errors": errors})
                 continue
             seen.add(norm["case_id"])
-            result = evaluate(norm) if compute else {"case_id": norm["case_id"], "status": "VALID"}
+            try:
+                result = evaluate(norm) if compute else {"case_id": norm["case_id"], "status": "VALID"}
+                if compute and result.get("extra_delay_hours") is not None and not math.isfinite(result["extra_delay_hours"]):
+                    raise OverflowError("non-finite result")
+            except (ArithmeticError, ValueError) as exc:  # e.g. individually valid but astronomically large values
+                results.append({"case_id": norm["case_id"], "source_file": Path(path).name, "status": "INVALID",
+                                "errors": [_err("calculation_error", norm["case_id"],
+                                                f"the calculation failed ({type(exc).__name__}: {exc}); the values are too large to be plausible")]})
+                continue
             if not compute:
                 result["missing_fields"] = [n for n in norm["required"] if norm["hours"].get(n) is None]
             result["source_file"] = Path(path).name
