@@ -284,10 +284,8 @@ def test_time_mode_and_value_keys_must_agree():
 # Each case lists two events whose order is physically impossible (the "late" one is earlier than the "early" one).
 WRONG_ORDER = [
     ("berth_arrival", 5, "cargo_start", 3),
-    ("berth_arrival", 5, "baseline_departure", 3),
     ("berth_arrival", 5, "cargo_end_with_bunkering", 3),
     ("cargo_start", 5, "cargo_end_with_bunkering", 3),
-    ("cargo_start", 5, "baseline_departure", 3),
 ]
 
 
@@ -567,3 +565,49 @@ def test_case_input_is_not_mutated_by_validation():
     before = copy.deepcopy(case)
     intake.validate_case(case)
     assert case == before
+
+
+def test_counterfactual_baseline_is_not_ordered_against_the_actual_events():
+    # baseline 12 (no bunkering); bunkering delayed the actual berthing/cargo: berth 18, cargo 19-22, fuel end 8+1+8+1 = 18.
+    # hand calculation: max(12, 22, 18) - 12 = 10
+    case = existing({"berth_arrival": val(18), "cargo_start": val(19), "cargo_end_with_bunkering": val(22), "bunker_ready": val(8)})
+    errors, norm = intake.validate_case(case)
+    assert errors == []
+    assert intake.evaluate(norm)["extra_delay_hours"] == 10.0
+
+
+def test_code_verified_checks_reflect_what_was_actually_checked():
+    blank = {"schema_version": 1, "cases": [existing({"transfer": None})]}
+    _, norm = intake.validate_case(blank["cases"][0])
+    incomplete = intake.evaluate(norm)
+    assert incomplete["status"] == "NOT_COMPUTED"
+    assert not any("all required inputs" in c for c in incomplete["code_verified_checks"])
+    _, norm = intake.validate_case(existing())
+    assert any("all required inputs" in c for c in intake.evaluate(norm)["code_verified_checks"])
+
+
+MALFORMED = [
+    ("unit_list", {"unit": []}), ("unit_object", {"unit": {}}), ("call_type_list", {"call_type": []}),
+    ("time_mode_list", {"time_mode": []}), ("scope_list", {"disclosure": {"scope": []}}),
+    ("basis_list", {"values": {"transfer": {"value": 1, "basis": []}}}),
+    ("huge_int", {"values": {"transfer": {"value": 10 ** 400, "basis": "synthetic_assumption"}}}),
+    ("float_literal_1e400_is_infinity", {"values": {"transfer": {"value": float("inf"), "basis": "synthetic_assumption"}}}),
+    ("negative_huge_int", {"values": {"transfer": {"value": -10 ** 400, "basis": "synthetic_assumption"}}}),
+]
+
+
+@pytest.mark.parametrize("name,patch", MALFORMED, ids=[m[0] for m in MALFORMED])
+def test_malformed_input_is_invalid_and_the_next_case_is_still_checked(name, patch, tmp_path):
+    bad = existing(case_id="BAD")
+    for k, v in patch.items():
+        if k == "values":
+            bad["values"] = {**bad["values"], **v}
+        else:
+            bad[k] = v
+    good = existing(case_id="GOOD")
+    path = tmp_path / "in.json"
+    path.write_text(json.dumps({"schema_version": 1, "cases": [bad, good]}).replace("Infinity", "1e400"))
+    report = intake.process([str(path)], True)
+    by_id = {r["case_id"]: r for r in report["results"]}
+    assert by_id["BAD"]["status"] == "INVALID" and by_id["BAD"]["errors"]
+    assert by_id["GOOD"]["status"] == "COMPUTED"

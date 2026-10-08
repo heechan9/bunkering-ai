@@ -57,13 +57,17 @@ CODE_VERIFIED_CHECKS = (
     "every used number is finite and >= 0 (no bool or text)",
     "one declared unit per case, no mixed units",
     "every provided value has a declared basis",
-    "all required inputs are present (UNKNOWN is never replaced by 0)",
-    "order of the cargo/berth events that were provided (berth_arrival <= cargo_start <= cargo end; cargo_start <= departure)",
+    "order of the actual berth/cargo events that were provided (berth_arrival <= cargo_start <= cargo_end_with_bunkering)",
 )
 PRIVACY_NOTICE = ("The personal-data check is an auxiliary warning, not complete detection, and the disclosure fields are the "
                   "submitter's own statement. A private/ directory and .gitignore do not protect files that are already tracked "
                   "by git or that are added with 'git add -f'. Review 'git status' and the diff before every commit and keep real "
                   "data outside the repository when in doubt.")
+
+def _member(item, collection):
+    """Membership test that never raises on unhashable JSON values (lists, objects)."""
+    return isinstance(item, str) and item in collection
+
 
 _ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}")
 _EMAIL = re.compile(r"[\w.+-]+@[\w-]+(\.[\w-]+)+")
@@ -169,8 +173,8 @@ def _read_value(spec, field, case_unit, factor, is_event, mode, reference, error
     raw = spec.get(key)
     basis = spec.get("basis")
     if raw is None or (isinstance(raw, str) and raw.strip().upper() == "UNKNOWN"):
-        return None, basis if basis in BASES else None
-    if basis not in BASES:
+        return None, basis if _member(basis, BASES) else None
+    if not _member(basis, BASES):
         errors.append(_err("bad_basis", field, f"basis must be one of {list(BASES)}"))
         return None, None
     if use_at:
@@ -188,10 +192,14 @@ def _read_value(spec, field, case_unit, factor, is_event, mode, reference, error
     if isinstance(raw, bool) or not isinstance(raw, (int, float)):
         errors.append(_err("bad_number", field, "expected a number; use null or \"UNKNOWN\" for a missing value, never blank text"))
         return None, basis
-    if not math.isfinite(raw) or raw < 0:
-        errors.append(_err("bad_number", field, "must be a finite number >= 0"))
+    try:
+        number = float(raw) * factor
+    except OverflowError:
+        number = math.inf
+    if not math.isfinite(number) or raw < 0:
+        errors.append(_err("bad_number", field, "must be a finite number >= 0 (too large values are rejected)"))
         return None, basis
-    return float(raw) * factor, basis
+    return number, basis
 
 
 def validate_case(case, index=0):
@@ -209,12 +217,12 @@ def validate_case(case, index=0):
         case_id = None
     label = case_id or where
     call_type = case.get("call_type")
-    if call_type not in CALL_TYPES:
+    if not _member(call_type, CALL_TYPES):
         errors.append(_err("bad_call_type", f"{label}.call_type", f"must be one of {list(CALL_TYPES)}"))
     unit = case.get("unit")
-    if unit not in UNITS:
+    if not _member(unit, UNITS):
         errors.append(_err("bad_unit", f"{label}.unit", f"must be one of {list(UNITS)}; units are never mixed inside a case"))
-    factor = UNITS.get(unit, 1.0)
+    factor = UNITS[unit] if _member(unit, UNITS) else 1.0
 
     source = case.get("source")
     if not isinstance(source, dict) or not isinstance(source.get("kind"), str) or not source.get("kind"):
@@ -234,7 +242,7 @@ def validate_case(case, index=0):
     disclosure = case.get("disclosure")
     scope, permission = "unknown", None
     if disclosure is not None:
-        if not isinstance(disclosure, dict) or disclosure.get("scope") not in SCOPES:
+        if not isinstance(disclosure, dict) or not _member(disclosure.get("scope"), SCOPES):
             errors.append(_err("bad_disclosure", f"{label}.disclosure", f"disclosure.scope must be one of {list(SCOPES)}"))
         else:
             scope = disclosure["scope"]
@@ -244,7 +252,7 @@ def validate_case(case, index=0):
     _check_text(errors, f"{label}.notes", case.get("notes"))
 
     confirmations = case.get("confirmations") or {}
-    required_conf = CONFIRMATIONS.get(call_type, ())
+    required_conf = CONFIRMATIONS.get(call_type, ()) if _member(call_type, CONFIRMATIONS) else ()
     if not isinstance(confirmations, dict) or set(confirmations) - set(required_conf) or any(not isinstance(v, bool) for v in confirmations.values()):
         errors.append(_err("bad_confirmations", f"{label}.confirmations", f"only these true/false keys are allowed: {list(required_conf)}"))
         confirmations = {}
@@ -267,7 +275,7 @@ def validate_case(case, index=0):
     mode, reference = None, None
     if existing:
         mode = case.get("time_mode")
-        if mode not in TIME_MODES:
+        if not _member(mode, TIME_MODES):
             errors.append(_err("bad_time_mode", f"{label}.time_mode", f"must be one of {list(TIME_MODES)}"))
         if mode == "absolute":
             if case.get("reference_time") not in (None, ""):
@@ -286,8 +294,10 @@ def validate_case(case, index=0):
     if existing:  # physical time order, checked only for values that were given
         # Only the cargo/berth timeline is ordered. Bunkering may overlap cargo work, start before or after it, start
         # before berthing (anchorage / STS) or after cargo has finished, so bunker_ready is deliberately not ordered here.
-        order = (("berth_arrival", "cargo_start"), ("cargo_start", "cargo_end_with_bunkering"), ("cargo_start", "baseline_departure"),
-                 ("berth_arrival", "baseline_departure"), ("berth_arrival", "cargo_end_with_bunkering"))
+        # baseline_departure is a counterfactual (departure without bunkering) while the other events are the actual,
+        # bunkering-affected ones, so it is deliberately not ordered against them either.
+        order = (("berth_arrival", "cargo_start"), ("cargo_start", "cargo_end_with_bunkering"),
+                 ("berth_arrival", "cargo_end_with_bunkering"))
         for early, late in order:
             if hours.get(early) is not None and hours.get(late) is not None and hours[early] > hours[late]:
                 errors.append(_err("time_order", f"{label}.values", f"{early} must not be later than {late}"))
@@ -311,13 +321,15 @@ def evaluate(norm):
               "interpretation": "extra_delay_hours is the delay of departure relative to the stated no-bunkering baseline; "
                                 "a reported work duration is not used as delay"}
     result["confirmations"] = {"kind": "user_attested", "verified_by_code": False, "items": dict(norm["confirmations"])}
-    result["code_verified_checks"] = list(CODE_VERIFIED_CHECKS) + (["timestamps carry explicit UTC offsets"] if norm["time_mode"] == "absolute" else [])
     result["not_verified_by_code"] = ("the meaning of every confirmation (counterfactual departure, interruption included, no phase counted twice, ...) "
                                       "and whether the values are true; evidence_level only reflects the declared basis")
     hours = norm["hours"]
     required = norm["required"]
     missing = [name for name in required if hours.get(name) is None]
     unconfirmed = [k for k, v in norm["confirmations"].items() if not v]
+    result["code_verified_checks"] = (list(CODE_VERIFIED_CHECKS)
+                                      + (["timestamps carry explicit UTC offsets"] if norm["time_mode"] == "absolute" else [])
+                                      + ([] if missing else ["all required inputs are present (UNKNOWN is never replaced by 0)"]))
     if missing:
         result["missing_fields"] = missing
         result["reasons"].append("missing required inputs: " + ", ".join(missing) + " (UNKNOWN is never replaced by 0)")
@@ -363,7 +375,10 @@ def process(paths, compute):
     for path in paths:
         data = load_file(path)
         for i, case in enumerate(data["cases"]):
-            errors, norm = validate_case(case, i)
+            try:
+                errors, norm = validate_case(case, i)
+            except Exception as exc:  # safety net: one malformed case must not stop the run
+                errors, norm = [_err("internal_error", f"cases[{i}]", f"could not be validated ({type(exc).__name__}); fix the input shape")], None
             case_id = case.get("case_id") if isinstance(case, dict) else None
             if norm is not None and norm["case_id"] in seen:
                 errors, norm = [_err("duplicate_case_id", norm["case_id"], "case_id appears more than once in this run")], None
@@ -442,7 +457,8 @@ def main(argv=None):
     if out:
         if not _writable(out, report):
             print("error: some cases are not cleared for publication; non-public results may only be written under a "
-                  "directory named 'private/' (git-ignored, which does not protect already-tracked files). Writing nothing.", file=sys.stderr)
+                  "directory named 'private/'. Only research/port_call_time/private/ is git-ignored, any other 'private/' folder is not, "
+                  "and git-ignore never protects already-tracked files. Writing nothing.", file=sys.stderr)
             return 2
         Path(out).parent.mkdir(parents=True, exist_ok=True)
         Path(out).write_text(text + "\n", encoding="utf-8")
