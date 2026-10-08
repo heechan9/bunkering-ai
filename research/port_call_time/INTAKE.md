@@ -85,6 +85,7 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 - `absolute`: 시각을 `{"at": "2030-03-02T00:30:00+09:00"}`처럼 쓴다. **UTC 오프셋(또는 `Z`)이 없으면 거부**한다. `reference_time`도 같은 형식이며 모든 시각은 그보다 늦거나 같아야 한다. 서로 다른 시간대를 섞어 써도 되고, 자정을 넘겨도 정확히 계산한다. 시간 길이(`preparation` 등)는 항상 `value`로 쓴다.
 - 시각 순서(입력된 것만 검사, 물리적으로 필요한 선후만): `berth_arrival` ≤ `cargo_start` ≤ `cargo_end_with_bunkering`, `cargo_start` ≤ `baseline_departure`, `berth_arrival` ≤ `baseline_departure`, `berth_arrival` ≤ `cargo_end_with_bunkering`.
 - **급유와 하역은 겹칠 수 있다.** `bunker_ready`는 하역 시각들과 순서를 검사하지 않는다. 하역 시작 전·중·후, 접안 전(묘박지·STS), 하역 종료 후 시작이 모두 유효하며 지연은 계산식이 정한다(예: 하역 종료 뒤 시작하면 양수). 반례는 `test_intake.py`의 `OVERLAP`.
+- **급유가 접안·하역을 늦춘 영향은 입력자가 반영해야 한다.** 접안 전(묘박지·STS) 급유 등으로 `berth_arrival`, `cargo_start`, `cargo_end_with_bunkering`이 늦어졌다면 그 값을 늦어진 시각으로 직접 넣는다. 코드는 급유가 접안·하역에 준 영향을 자동으로 추정하거나 보정하지 않으며, 입력된 시각을 그대로 계산한다. 반영 여부도 코드가 검증하지 못한다(`cargo_end_includes_bunkering_interruption` 확인은 사용자 확인).
 - `minutes`로 입력하면 시간으로 환산해 계산하며 결과 단위는 항상 hours다. 값 하나에 다른 단위를 붙이면 `mixed_units` 오류다. 72시간을 넘는 길이는 단위 확인 경고를 낸다.
 
 ## 결과
