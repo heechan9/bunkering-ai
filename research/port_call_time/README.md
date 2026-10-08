@@ -64,4 +64,11 @@ scenario/deadline sets. This module does not yet provide that integration.
 Validation (Codex, 2026-10-08): 19 targeted pytest cases passed. Includes overlap,
 late start, cargo interruption, dedicated phases, missing values, invalid numbers,
 overflow, inclusive deadlines, multiple calls, and monotonicity over the63 cases.
-Full repository suite was not rerun locally; GitHub CI is separate evidence.
+Full repository suite on main `54b0ad1` plus this module: 533 passed + 23 subtests
+(Codex, 2026-10-08, 43.85s). Initial local run failed four subprocess imports
+because the dependency path was not inherited; rerun used an isolated venv with
+the dependency path installed via .pth. GitHub CI is separate evidence.
+
+Domestic source inventory: [PR #113](https://github.com/heechan9/bunkering-ai/pull/113).
+Module review: [PR #114](https://github.com/heechan9/bunkering-ai/pull/114).
+Independent reviewer baseline remains `f5e50b0`; no code change in this follow-up.
