@@ -91,3 +91,8 @@ python -m pytest research/port_call_time -q
 ```
 
 Real or non-public inputs belong under `research/port_call_time/private/` (git-ignored). Examples are synthetic only.
+
+Limits: the personal-data check is an auxiliary warning, 완전한 탐지가 아니다. `private/` + `.gitignore` do not protect
+files that are 이미 추적 중이거나 `git add -f`로 추가된 경우; review `git status` and the diff before committing. The
+confirmations are 사용자 확인 (self-attestation) that 코드가 검증하지 않는다. Bunkering may 겹칠 수 있다 with cargo work and
+start before berthing (묘박지/STS), so no order is enforced between `bunker_ready` and the cargo events.

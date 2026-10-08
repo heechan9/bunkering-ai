@@ -284,7 +284,6 @@ def test_time_mode_and_value_keys_must_agree():
 # Each case lists two events whose order is physically impossible (the "late" one is earlier than the "early" one).
 WRONG_ORDER = [
     ("berth_arrival", 5, "cargo_start", 3),
-    ("berth_arrival", 5, "bunker_ready", 3),
     ("berth_arrival", 5, "baseline_departure", 3),
     ("berth_arrival", 5, "cargo_end_with_bunkering", 3),
     ("cargo_start", 5, "cargo_end_with_bunkering", 3),
@@ -299,6 +298,35 @@ def test_wrong_time_order_is_rejected(early, early_at, late, late_at):
     # the same two events in the right order are accepted
     errors, _ = intake.validate_case(existing({early: val(0), late: val(late_at)}))
     assert "time_order" not in codes(errors)
+
+
+# Cargo and bunkering may overlap or start in either order. Hand calculation for every row below (hours):
+#  fuel end = bunker_ready + preparation + transfer + cleanup; extra = max(baseline_departure, cargo_end, fuel end) - baseline_departure
+OVERLAP = [
+    # name, values, hand-calculated extra delay
+    ("fuel starts before cargo start", {"cargo_start": val(5), "bunker_ready": val(1), "preparation": val(1), "transfer": val(2), "cleanup": val(1)}, 0.0),   # fuel end 5 <= 12
+    ("fuel finishes before cargo even starts", {"cargo_start": val(5), "bunker_ready": val(0), "preparation": val(1), "transfer": val(2), "cleanup": val(0)}, 0.0),  # fuel end 3
+    ("fuel starts before berthing (anchorage / STS)", {"berth_arrival": val(4), "cargo_start": val(5), "bunker_ready": val(1), "preparation": val(1), "transfer": val(2), "cleanup": val(1)}, 0.0),  # fuel end 5
+    ("fuel starts during cargo", {"cargo_start": val(2), "bunker_ready": val(6), "preparation": val(1), "transfer": val(2), "cleanup": val(1)}, 0.0),  # fuel end 10 <= 12
+    ("fuel runs past cargo end", {"cargo_start": val(2), "bunker_ready": val(6), "preparation": val(1), "transfer": val(8), "cleanup": val(1)}, 4.0),  # fuel end 16 -> 16 - 12
+    ("fuel starts after cargo has ended", {"cargo_start": val(2), "bunker_ready": val(14), "preparation": val(1), "transfer": val(3), "cleanup": val(1)}, 7.0),  # fuel end 19 -> 19 - 12
+    ("fuel starts after the no-bunkering departure time", {"cargo_start": val(2), "bunker_ready": val(13), "preparation": val(0), "transfer": val(1), "cleanup": val(0)}, 2.0),  # fuel end 14 -> 14 - 12
+]
+
+
+@pytest.mark.parametrize("name,values,expected", OVERLAP, ids=[o[0] for o in OVERLAP])
+def test_cargo_and_bunkering_may_overlap_or_start_in_any_order(name, values, expected):
+    errors, result = run_case(existing(values))
+    assert not errors, errors
+    assert result["status"] == "COMPUTED" and result["extra_delay_hours"] == expected
+
+
+def test_no_order_is_enforced_between_bunker_ready_and_the_cargo_events():
+    from itertools import product
+    for ready, start in product((0, 3, 6, 20), (0, 3, 6, 20)):
+        errors, _ = intake.validate_case(existing({"cargo_start": val(start), "bunker_ready": val(ready),
+                                                   "cargo_end_with_bunkering": val(max(start, 12)), "baseline_departure": val(max(start, 12))}))
+        assert not errors, (ready, start)
 
 
 def test_wrong_order_in_absolute_mode_is_rejected_after_zone_conversion():
@@ -375,6 +403,40 @@ def test_source_date_must_be_a_calendar_date():
 
 
 # ------------------------------------------------------------ evidence level and disclosure
+def test_confirmations_are_reported_as_user_attested_and_not_verified_by_code():
+    _, result = run_case(existing())
+    assert result["confirmations"]["kind"] == "user_attested" and result["confirmations"]["verified_by_code"] is False
+    assert set(result["confirmations"]["items"]) == set(intake.CONFIRMATIONS["existing_cargo_call"])
+    assert all(result["confirmations"]["items"].values())
+    checks = " ".join(result["code_verified_checks"])
+    assert "finite" in checks and "unit" in checks and "order" in checks and "UTC offsets" not in checks
+    assert "meaning of every confirmation" in result["not_verified_by_code"]
+    _, abs_result = run_case(absolute({"baseline_departure": at("2030-03-02T08:00:00+09:00"),
+                                       "cargo_end_with_bunkering": at("2030-03-02T08:00:00+09:00"), "bunker_ready": at("2030-03-02T00:30:00+09:00")}))
+    assert any("UTC offsets" in c for c in abs_result["code_verified_checks"])
+    # also visible for NOT_COMPUTED, where an unchecked box is reported as false
+    case = existing({"transfer": None})
+    case["confirmations"]["no_such"] = True
+    errors, _ = intake.validate_case(case)
+    assert "bad_confirmations" in codes(errors)
+    case = existing({"transfer": None})
+    case["confirmations"]["cleanup_includes_all_remaining_bunker_work"] = False
+    _, partial = run_case(case)
+    assert partial["status"] == "NOT_COMPUTED" and partial["confirmations"]["items"]["cleanup_includes_all_remaining_bunker_work"] is False
+
+
+def test_the_report_states_the_limits_of_the_privacy_checks(tmp_path):
+    report = intake.process([write(tmp_path, [existing()])], compute=True)
+    notice = report["notice"]
+    assert "not complete detection" in notice and "already tracked" in notice and "git add -f" in notice
+
+
+def test_documentation_states_the_limits_and_the_checked_rules():
+    text = (HERE / "INTAKE.md").read_text(encoding="utf-8") + (HERE / "README.md").read_text(encoding="utf-8")
+    for needle in ("완전한 탐지가 아니", "이미 추적", "git add -f", "사용자 확인", "코드가 검증하지", "겹칠 수", "묘박지"):
+        assert needle in text, needle
+
+
 def test_estimated_baseline_is_flagged_in_the_result():
     case = existing({"baseline_departure": {"value": 12, "basis": "estimate"}})
     _, result = run_case(case)

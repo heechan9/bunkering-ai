@@ -74,7 +74,7 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 
 ### 입력자 확인 항목 (`confirmations`)
 
-중복 계산을 막기 위해 입력자가 직접 true로 바꾼다. 하나라도 false이거나 없으면 `NOT_COMPUTED`다.
+중복 계산을 막기 위해 입력자가 직접 true로 바꾼다. 하나라도 false이거나 없으면 `NOT_COMPUTED`다. 이 항목은 **사용자 확인(자기 신고)**이며 코드가 검증하지 않는다. 코드는 true/false 여부만 본다. 결과의 `confirmations.kind`는 `user_attested`, `verified_by_code`는 `false`이고, 코드가 실제로 검사한 것은 `code_verified_checks`, 검사하지 못한 것은 `not_verified_by_code`에 나뉘어 나온다.
 
 - 기존 기항: `baseline_departure_is_departure_without_bunkering`, `cargo_end_includes_bunkering_interruption`, `bunker_ready_includes_waiting_and_access_restrictions`, `cleanup_includes_all_remaining_bunker_work`
 - 전용 기항: `baseline_is_route_without_this_call`, `detour_excludes_port_transit`, `waiting_excludes_work_phases`, `no_phase_counted_twice`
@@ -83,7 +83,8 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 
 - `offset`: 기준점(예: 접안 시각)을 0으로 하는 시간. 모든 시각이 같은 기준점을 쓴다.
 - `absolute`: 시각을 `{"at": "2030-03-02T00:30:00+09:00"}`처럼 쓴다. **UTC 오프셋(또는 `Z`)이 없으면 거부**한다. `reference_time`도 같은 형식이며 모든 시각은 그보다 늦거나 같아야 한다. 서로 다른 시간대를 섞어 써도 되고, 자정을 넘겨도 정확히 계산한다. 시간 길이(`preparation` 등)는 항상 `value`로 쓴다.
-- 시각 순서(입력된 것만 검사): `berth_arrival` ≤ `cargo_start` ≤ `cargo_end_with_bunkering`, `cargo_start` ≤ `baseline_departure`, `berth_arrival` ≤ `bunker_ready`·`baseline_departure`·`cargo_end_with_bunkering`.
+- 시각 순서(입력된 것만 검사, 물리적으로 필요한 선후만): `berth_arrival` ≤ `cargo_start` ≤ `cargo_end_with_bunkering`, `cargo_start` ≤ `baseline_departure`, `berth_arrival` ≤ `baseline_departure`, `berth_arrival` ≤ `cargo_end_with_bunkering`.
+- **급유와 하역은 겹칠 수 있다.** `bunker_ready`는 하역 시각들과 순서를 검사하지 않는다. 하역 시작 전·중·후, 접안 전(묘박지·STS), 하역 종료 후 시작이 모두 유효하며 지연은 계산식이 정한다(예: 하역 종료 뒤 시작하면 양수). 반례는 `test_intake.py`의 `OVERLAP`.
 - `minutes`로 입력하면 시간으로 환산해 계산하며 결과 단위는 항상 hours다. 값 하나에 다른 단위를 붙이면 `mixed_units` 오류다. 72시간을 넘는 길이는 단위 확인 경고를 낸다.
 
 ## 결과
@@ -101,6 +102,7 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 - 도구는 업로드·전송을 하지 않는다(네트워크 코드 없음). 결과는 표준출력에 나오고, `--out`을 줄 때만 파일로 쓴다.
 - `disclosure.scope`가 `public_ok`(+허락 근거)가 아니면 결과의 `publication_allowed`는 `false`이고, 비공개 자료는 공개 저장소에 넣지 않는다는 경고가 붙는다.
 - 그런 결과는 `private/`라는 이름의 폴더 아래에만 `--out`으로 쓸 수 있다. `research/port_call_time/private/`는 `.gitignore`에 들어 있다.
+- **한계:** 아래 개인정보 검사는 보조 경고이며 완전한 탐지가 아니다. 이름·주소·선명 등은 잡지 못한다. `disclosure`도 입력자의 자기 신고다. `private/`와 `.gitignore`는 **이미 추적 중인 파일을 보호하지 못하고** `git add -f`로 올린 파일도 막지 못한다. 커밋 전에 `git status`와 diff를 직접 확인한다. 결과 JSON의 `notice`에도 같은 문구가 들어간다.
 - 자유 서술 칸(`notes`, `source`, `permission_basis`, 값의 `note`)에 이메일 주소·전화번호처럼 보이는 문자열이 있으면 거부한다(보수적 검사이며 ISO 날짜는 제외). 실제 메일 본문·연락처·비공개 자료는 입력 파일에 넣지 않는다.
 
 ## 합성 예시와 손계산

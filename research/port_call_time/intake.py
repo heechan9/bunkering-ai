@@ -53,6 +53,17 @@ VALUE_KEYS = {"value", "at", "basis", "unit", "note"}
 DELAY_LIKE = {"extra_delay", "extra_delay_hours", "delay", "delay_hours", "departure_delay", "reported_duration",
               "reported_work_hours", "work_hours", "total_work_hours", "duration", "total_hours"}
 LARGE_DURATION_HOURS = 72.0
+CODE_VERIFIED_CHECKS = (
+    "every used number is finite and >= 0 (no bool or text)",
+    "one declared unit per case, no mixed units",
+    "every provided value has a declared basis",
+    "all required inputs are present (UNKNOWN is never replaced by 0)",
+    "order of the cargo/berth events that were provided (berth_arrival <= cargo_start <= cargo end; cargo_start <= departure)",
+)
+PRIVACY_NOTICE = ("The personal-data check is an auxiliary warning, not complete detection, and the disclosure fields are the "
+                  "submitter's own statement. A private/ directory and .gitignore do not protect files that are already tracked "
+                  "by git or that are added with 'git add -f'. Review 'git status' and the diff before every commit and keep real "
+                  "data outside the repository when in doubt.")
 
 _ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}")
 _EMAIL = re.compile(r"[\w.+-]+@[\w-]+(\.[\w-]+)+")
@@ -117,7 +128,7 @@ def _check_text(errors, field, value, required=False):
         errors.append(_err("bad_text", field, "expected text"))
         return None
     if _personal_data(value):
-        errors.append(_err("personal_data", field, "contains an email address or phone number; remove personal contact details"))
+        errors.append(_err("personal_data", field, "looks like an email address or phone number (heuristic warning); remove personal contact details"))
     return value
 
 
@@ -273,8 +284,10 @@ def validate_case(case, index=0):
         hours[name], basis[name] = _read_value(values.get(name), f"{label}.values.{name}", unit, factor, True, mode, reference, errors)
 
     if existing:  # physical time order, checked only for values that were given
+        # Only the cargo/berth timeline is ordered. Bunkering may overlap cargo work, start before or after it, start
+        # before berthing (anchorage / STS) or after cargo has finished, so bunker_ready is deliberately not ordered here.
         order = (("berth_arrival", "cargo_start"), ("cargo_start", "cargo_end_with_bunkering"), ("cargo_start", "baseline_departure"),
-                 ("berth_arrival", "bunker_ready"), ("berth_arrival", "baseline_departure"), ("berth_arrival", "cargo_end_with_bunkering"))
+                 ("berth_arrival", "baseline_departure"), ("berth_arrival", "cargo_end_with_bunkering"))
         for early, late in order:
             if hours.get(early) is not None and hours.get(late) is not None and hours[early] > hours[late]:
                 errors.append(_err("time_order", f"{label}.values", f"{early} must not be later than {late}"))
@@ -297,6 +310,10 @@ def evaluate(norm):
               "publication_allowed": norm["scope"] == "public_ok" and bool(norm["permission_basis"]),
               "interpretation": "extra_delay_hours is the delay of departure relative to the stated no-bunkering baseline; "
                                 "a reported work duration is not used as delay"}
+    result["confirmations"] = {"kind": "user_attested", "verified_by_code": False, "items": dict(norm["confirmations"])}
+    result["code_verified_checks"] = list(CODE_VERIFIED_CHECKS) + (["timestamps carry explicit UTC offsets"] if norm["time_mode"] == "absolute" else [])
+    result["not_verified_by_code"] = ("the meaning of every confirmation (counterfactual departure, interruption included, no phase counted twice, ...) "
+                                      "and whether the values are true; evidence_level only reflects the declared basis")
     hours = norm["hours"]
     required = norm["required"]
     missing = [name for name in required if hours.get(name) is None]
@@ -363,7 +380,7 @@ def process(paths, compute):
     counts = {}
     for r in results:
         counts[r["status"]] = counts.get(r["status"], 0) + 1
-    return {"schema_version": SCHEMA_VERSION, "summary": counts,
+    return {"schema_version": SCHEMA_VERSION, "summary": counts, "notice": PRIVACY_NOTICE,
             "publication_allowed": bool(results) and all(r.get("publication_allowed") for r in results),
             "results": results}
 
@@ -425,7 +442,7 @@ def main(argv=None):
     if out:
         if not _writable(out, report):
             print("error: some cases are not cleared for publication; non-public results may only be written under a "
-                  "directory named 'private/' (git-ignored). Printing nothing to disk.", file=sys.stderr)
+                  "directory named 'private/' (git-ignored, which does not protect already-tracked files). Writing nothing.", file=sys.stderr)
             return 2
         Path(out).parent.mkdir(parents=True, exist_ok=True)
         Path(out).write_text(text + "\n", encoding="utf-8")
