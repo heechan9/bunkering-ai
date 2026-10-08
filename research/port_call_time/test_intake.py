@@ -627,3 +627,24 @@ def test_calculation_overflow_invalidates_only_that_case(tmp_path):
 def test_wrong_typed_confirmations_are_invalid_not_missing(bad):
     errors, _ = intake.validate_case(existing(confirmations=bad))
     assert "bad_confirmations" in codes(errors)
+
+
+def test_calculation_error_message_is_neutral_unless_overflow_is_confirmed(tmp_path, monkeypatch):
+    path = tmp_path / "in.json"
+    path.write_text(json.dumps({"schema_version": 1, "cases": [existing(case_id="A"), existing(case_id="B")]}))
+
+    def boom(norm):
+        raise ValueError("injected implementation defect")
+    monkeypatch.setattr(intake, "evaluate", boom)
+    result = intake.process([str(path)], True)["results"][0]
+    message = result["errors"][0]["message"]
+    assert result["status"] == "INVALID" and "injected implementation defect" in message
+    assert "overflow" not in message and "too large" not in message
+    # both cases are still reported, none is dropped
+    assert len(intake.process([str(path)], True)["results"]) == 2
+
+
+def test_overflow_message_names_the_overflow(tmp_path):
+    path = tmp_path / "in.json"
+    path.write_text(json.dumps({"schema_version": 1, "cases": [existing(case_id="HUGE", values={"preparation": val(1e308), "transfer": val(1e308)})]}))
+    assert "overflow" in intake.process([str(path)], True)["results"][0]["errors"][0]["message"]

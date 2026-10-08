@@ -396,7 +396,9 @@ def process(paths, compute):
             except (ArithmeticError, ValueError) as exc:  # e.g. individually valid but astronomically large values
                 results.append({"case_id": norm["case_id"], "source_file": Path(path).name, "status": "INVALID",
                                 "errors": [_err("calculation_error", norm["case_id"],
-                                                f"the calculation failed ({type(exc).__name__}: {exc}); the values are too large to be plausible")]})
+                                                f"the calculation failed ({type(exc).__name__}: {exc}); check the cause" + (
+                                                    "; the values are too large for the arithmetic (overflow)"
+                                                    if isinstance(exc, OverflowError) or "overflow" in str(exc).lower() else ""))]})
                 continue
             if not compute:
                 result["missing_fields"] = [n for n in norm["required"] if norm["hours"].get(n) is None]
