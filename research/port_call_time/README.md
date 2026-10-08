@@ -72,3 +72,27 @@ the dependency path installed via .pth. GitHub CI is separate evidence.
 Domestic source inventory: [PR #113](https://github.com/heechan9/bunkering-ai/pull/113).
 Module review: [PR #114](https://github.com/heechan9/bunkering-ai/pull/114).
 Independent reviewer baseline remains `f5e50b0`; no code change in this follow-up.
+
+## Data intake and validation (separate tool)
+
+`intake.py` checks timing records before they reach this model: explicit UNKNOWN (never 0), units, time zones,
+time order, provenance per value (`observed` / `stakeholder_statement` / `estimate` / `synthetic_assumption`) and
+disclosure scope. It calls `existing_call` / `dedicated_call` only when the inputs are complete and the
+double-counting confirmations are given; otherwise it prints the missing fields. It does not change this model's rules
+and does not read a reported work duration as extra delay. Details, field meanings and hand-calculated examples:
+[INTAKE.md](INTAKE.md).
+
+```sh
+python -m research.port_call_time.intake template --call-type existing_cargo_call > my_case.json  # 1) blank form
+python -m research.port_call_time.intake validate my_case.json                                    # 2) validate only
+python -m research.port_call_time.intake compute my_case.json                                     # 3) validate + compute
+python -m research.port_call_time.intake compute research/port_call_time/examples/*.json          # synthetic examples
+python -m pytest research/port_call_time -q
+```
+
+Real or non-public inputs belong under `research/port_call_time/private/` (git-ignored). Examples are synthetic only.
+
+Limits: the personal-data check is an auxiliary warning, 완전한 탐지가 아니다. `private/` + `.gitignore` do not protect
+files that are 이미 추적 중이거나 `git add -f`로 추가된 경우; review `git status` and the diff before committing. The
+confirmations are 사용자 확인 (self-attestation) that 코드가 검증하지 않는다. Bunkering may 겹칠 수 있다 with cargo work and
+start before berthing (묘박지/STS), so no order is enforced between `bunker_ready` and the cargo events, nor between the counterfactual `baseline_departure` and the actual berth/cargo events. Only `research/port_call_time/private/` is git-ignored; the `--out` guard accepts any folder named `private`. Delays that bunkering causes to berthing or cargo work must be entered by the submitter in the berth/cargo times; the code does not estimate or adjust for them automatically (see INTAKE.md).

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "case_id": "SYN-05-INSUFFICIENT",
+      "call_type": "existing_cargo_call",
+      "unit": "hours",
+      "time_mode": "offset",
+      "source": {
+        "kind": "synthetic",
+        "reference": "hand-calculated example in research/port_call_time/INTAKE.md",
+        "obtained_on": "2026-10-08"
+      },
+      "disclosure": {
+        "scope": "public_ok",
+        "permission_basis": "synthetic numbers written for this repository; no real vessel, port or person"
+      },
+      "confirmations": {
+        "baseline_departure_is_departure_without_bunkering": true,
+        "cargo_end_includes_bunkering_interruption": true,
+        "bunker_ready_includes_waiting_and_access_restrictions": true,
+        "cleanup_includes_all_remaining_bunker_work": true
+      },
+      "values": {
+        "baseline_departure": {
+          "value": 12,
+          "basis": "synthetic_assumption"
+        },
+        "cargo_end_with_bunkering": {
+          "value": 12,
+          "basis": "synthetic_assumption"
+        },
+        "bunker_ready": {
+          "value": 0,
+          "basis": "synthetic_assumption"
+        },
+        "preparation": {
+          "value": 1,
+          "basis": "synthetic_assumption"
+        },
+        "transfer": {
+          "value": null,
+          "basis": null
+        },
+        "cleanup": "UNKNOWN"
+      },
+      "notes": "transfer and cleanup unknown; nothing is computed and nothing is replaced by 0."
+    }
+  ]
+}
