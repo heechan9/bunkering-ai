@@ -13,7 +13,7 @@ Zero must be supplied explicitly. Arithmetic overflow raises ValueError.
 is the counterfactual baseline. The cargo completion time WITH bunkering must
 include any interruption caused by bunkering. The bunker-ready offset includes
 waiting and access restrictions before sequential preparation, transfer and
-cleanup. Cleanup includes all bunker-related remaining work before departure.
+cleanup. Cleanup includes all bunker-related remaining work before the departure readiness below.
 Departure readiness (`departure_readiness`, hours): a fixed time that can only START
 after ALL cargo and bunker work has finished and cannot overlap that work (for example
 final inspection or cast-off steps that need the completed work). Extra delay =
