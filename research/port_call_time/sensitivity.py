@@ -11,7 +11,8 @@ def scenarios():
                 for deadline in (728, 736, 760):
                     call = existing_call(baseline_departure=cargo,
                         cargo_end_with_bunkering=cargo, bunker_ready=ready,
-                        preparation=1, transfer=work-2, cleanup=1)
+                        preparation=1, transfer=work-2, cleanup=1,
+                        departure_readiness=0)  # synthetic grid: no post-work readiness
                     # Baseline includes existing cargo call, unlike legacy 720h.
                     result = arrival(baseline_hours=720+cargo, calls=[call], deadline_hours=deadline)
                     yield dict(kind='existing',cargo_hours=cargo,ready_hours=ready,
