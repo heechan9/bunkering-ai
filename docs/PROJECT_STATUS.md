@@ -34,11 +34,20 @@ main 필수 pytest 규칙을 활성화했다. UPA 관련 Gmail 검색에서는 �
 
 ## 2026-10-08 추가시간 연구 후속 (작성 시점의 PR 상태; 병합 여부는 PR에서 확인)
 
-- [PR #113](https://github.com/heechan9/bunkering-ai/pull/113): 국내 LNG 사례·자료 확보 상태 문서, 병합 전.
-- [PR #114](https://github.com/heechan9/bunkering-ai/pull/114): [추가시간 계산](../research/port_call_time/README.md), Draft 검토 단계. 구현 및 합성 63조건 계산 완료; 실측 보정·정책 비교는 미실행.
-- 현수 검토 기준은 `f5e50b0`. 후속 문서 갱신은 해당 코드 기준을 바꾸지 않는다. 독립 검토 결과 대기.
-- 사용자 전달 현수 검산(PR #95 병합 `15bbba3` 기준): 울산세관 합계와 원문 전사 일치. 기타선 67% 원문 내부 불일치 및 ATLANTIC TOPAZ 날짜 출처 충돌은 보존. 이 항목은 Codex 독립 PDF 재검증 결과가 아니다.
+- [PR #113](https://github.com/heechan9/bunkering-ai/pull/113): 국내 LNG 사례·자료 확보 상태 문서, 병합 전(2026-10-08 당시 기록; 병합 완료는 아래 2026-10-12 절).
+- [PR #114](https://github.com/heechan9/bunkering-ai/pull/114): [추가시간 계산](../research/port_call_time/README.md), Draft 검토 단계(2026-10-08 당시 기록; 병합 완료는 아래 2026-10-12 절). 구현 및 합성 63조건 계산 완료; 실측 보정·정책 비교는 미실행.
+- 현수 검토 기준은 `f5e50b0`. 후속 문서 갱신은 해당 코드 기준을 바꾸지 않는다. 독립 검토 결과 대기(2026-10-08 당시 기록; 이후 경과는 아래 2026-10-12 절).
+- 사용자 전달 현수 검산(PR #95 병합 `15bbba3` 기준): 울산세관 합계와 원문 전사 일치. 기타선 67% 원문 내부 불일치 및 ATLANTIC TOPAZ 날짜 출처 충돌은 보존(당시 기록; 현재는 UPA 회신으로 8/8 확인, 세관 원문 8/6 보존). 이 항목은 Codex 독립 PDF 재검증 결과가 아니다.
 - 공식 기준·정책·모델·기존 평가 결과 변경 없음.
+
+## 2026-10-12 #113–#116 병합 후 정리
+
+- 병합 완료(희찬 승인, Codex가 병합 실행): [#113](https://github.com/heechan9/bunkering-ai/pull/113) `715f16d`, [#114](https://github.com/heechan9/bunkering-ai/pull/114) `6d713a7`, [#115](https://github.com/heechan9/bunkering-ai/pull/115) `73f959c`, [#116](https://github.com/heechan9/bunkering-ai/pull/116) `a405b1f`. 확인한 main은 `a405b1f`이며, 이 커밋의 GitHub Python CI(`pytest (Python 3.12, CPU)`)는 success다. [실행 링크](https://github.com/heechan9/bunkering-ai/actions/runs/38199101816)(main push, 대상 SHA `a405b1f`)를 **Claude가 직접 확인**했으며 Codex는 이 main CI를 독립 확인하지 못했다. CI 테스트 개수는 별도 확인하지 않았다.
+- 현수 검토 흐름: 현수가 기존 계산에서 **모든 하역·급유 작업이 끝난 뒤 필요한 출항 준비 시간의 누락**을 발견했다(검토 기준 `f5e50b0`). 이에 [#114](../research/port_call_time/README.md)에 `departure_readiness` 입력을 추가하고(`087bab4`), #116 입력 도구에 필수 항목·자기 신고 확인으로 연동했다(`924350d`). Codex가 연동 head `924350d`와 문구 정정 head `fb29bee`를 재검토해 검토 범위에서 병합 차단 결함을 찾지 못했다. **현수가 수정된 코드까지 재검토했는지는 확인된 바 없다**(수정 코드에 대한 현수 재검토는 미확인).
+- 검증 기록(Codex 직접): 병합 전 통합 트리에서 추가시간 영역 185 passed, 논문 감사 + 웹 근거 51 passed·7 subtests passed. 병합 후 main과 검증한 통합 트리의 내용이 일치함을 확인했다. 전체 pytest는 Codex가 이번에 재실행하지 않았다.
+- 구현·합성 검증은 완료됐지만 **실자료 검증은 하지 않았다**. 출항 준비 시간·지연 입력은 합성 가정이며 실측 보정, 정책 성능 비교, 비용 절감·DQN 우위·실선 효과 주장은 근거가 없다.
+- ATLANTIC TOPAZ 공급일: 현재 상태는 2026-10-08 UPA 담당자 회신으로 작업일 **8/8 확인**이다. 세관 원문 8/6과 과거의 날짜 충돌 이력은 보존하며 세관이 정정했다는 뜻이 아니다. 기타선 67% 원문 불일치는 이 회신으로 해결되지 않았고 별도 미해결이다.
+- 공식 24h/8h 가정, 공식 평가 결과, 운영 모델은 그대로다.
 
 ## 남은 작업
 
