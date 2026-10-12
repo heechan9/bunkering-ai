@@ -42,7 +42,7 @@ main 필수 pytest 규칙을 활성화했다. UPA 관련 Gmail 검색에서는 �
 
 ## 2026-10-12 #113–#116 병합 후 정리
 
-- 병합 완료(희찬 승인, Codex가 병합 실행): [#113](https://github.com/heechan9/bunkering-ai/pull/113) `715f16d`, [#114](https://github.com/heechan9/bunkering-ai/pull/114) `6d713a7`, [#115](https://github.com/heechan9/bunkering-ai/pull/115) `73f959c`, [#116](https://github.com/heechan9/bunkering-ai/pull/116) `a405b1f`. 확인한 main은 `a405b1f`이며, 이 커밋의 GitHub Python CI(`pytest (Python 3.12, CPU)`)는 success다(CI 테스트 개수는 별도 확인하지 않음).
+- 병합 완료(희찬 승인, Codex가 병합 실행): [#113](https://github.com/heechan9/bunkering-ai/pull/113) `715f16d`, [#114](https://github.com/heechan9/bunkering-ai/pull/114) `6d713a7`, [#115](https://github.com/heechan9/bunkering-ai/pull/115) `73f959c`, [#116](https://github.com/heechan9/bunkering-ai/pull/116) `a405b1f`. 확인한 main은 `a405b1f`이며, 이 커밋의 GitHub Python CI(`pytest (Python 3.12, CPU)`)는 success다. [실행 링크](https://github.com/heechan9/bunkering-ai/actions/runs/38199101816)(main push, 대상 SHA `a405b1f`)를 **Claude가 직접 확인**했으며 Codex는 이 main CI를 독립 확인하지 못했다. CI 테스트 개수는 별도 확인하지 않았다.
 - 현수 검토 흐름: 현수가 기존 계산에서 **모든 하역·급유 작업이 끝난 뒤 필요한 출항 준비 시간의 누락**을 발견했다(검토 기준 `f5e50b0`). 이에 [#114](../research/port_call_time/README.md)에 `departure_readiness` 입력을 추가하고(`087bab4`), #116 입력 도구에 필수 항목·자기 신고 확인으로 연동했다(`924350d`). Codex가 연동 head `924350d`와 문구 정정 head `fb29bee`를 재검토해 검토 범위에서 병합 차단 결함을 찾지 못했다. **현수가 수정된 코드까지 재검토했는지는 확인된 바 없다**(수정 코드에 대한 현수 재검토는 미확인).
 - 검증 기록(Codex 직접): 병합 전 통합 트리에서 추가시간 영역 185 passed, 논문 감사 + 웹 근거 51 passed·7 subtests passed. 병합 후 main과 검증한 통합 트리의 내용이 일치함을 확인했다. 전체 pytest는 Codex가 이번에 재실행하지 않았다.
 - 구현·합성 검증은 완료됐지만 **실자료 검증은 하지 않았다**. 출항 준비 시간·지연 입력은 합성 가정이며 실측 보정, 정책 성능 비교, 비용 절감·DQN 우위·실선 효과 주장은 근거가 없다.
