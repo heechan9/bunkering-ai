@@ -30,7 +30,7 @@ CALL_TYPES = ("existing_cargo_call", "dedicated_bunker_call")
 TIME_MODES = ("offset", "absolute")
 
 EXISTING_EVENTS = ("baseline_departure", "cargo_end_with_bunkering", "bunker_ready")
-EXISTING_DURATIONS = ("preparation", "transfer", "cleanup")
+EXISTING_DURATIONS = ("preparation", "transfer", "cleanup", "departure_readiness")
 EXISTING_OPTIONAL_EVENTS = ("berth_arrival", "cargo_start")  # only used for time-order checks
 DEDICATED_DURATIONS = ("detour", "port_transit", "waiting", "preparation", "transfer", "cleanup")
 CONFIRMATIONS = {
@@ -39,6 +39,7 @@ CONFIRMATIONS = {
         "cargo_end_includes_bunkering_interruption",
         "bunker_ready_includes_waiting_and_access_restrictions",
         "cleanup_includes_all_remaining_bunker_work",
+        "departure_readiness_follows_all_work_and_is_not_in_cleanup",
     ),
     "dedicated_bunker_call": (
         "baseline_is_route_without_this_call",
@@ -358,10 +359,12 @@ def evaluate(norm):
     if norm["call_type"] == "existing_cargo_call":
         delay = model.existing_call(**{n: hours[n] for n in model_inputs("existing_cargo_call")})
         ready_end = hours["bunker_ready"] + hours["preparation"] + hours["transfer"] + hours["cleanup"]
-        parts = {"baseline_departure": hours["baseline_departure"], "cargo_end_with_bunkering": hours["cargo_end_with_bunkering"],
-                 "bunker_completion": ready_end}
-        result["breakdown_hours"] = parts
-        result["binding_constraint"] = max(parts, key=parts.get) if delay.extra_hours else "baseline_departure"
+        work = {"cargo_end_with_bunkering": hours["cargo_end_with_bunkering"], "bunker_completion": ready_end}
+        result["breakdown_hours"] = {"baseline_departure": hours["baseline_departure"], **work,
+                                     "departure_readiness": hours["departure_readiness"],
+                                     "departure_with_bunkering": hours["baseline_departure"] + delay.extra_hours}
+        # the later of cargo end / bunker completion starts the readiness; with no delay the baseline departure binds
+        result["binding_constraint"] = max(work, key=work.get) if delay.extra_hours else "baseline_departure"
     else:
         delay = model.dedicated_call(**{n: hours[n] for n in model_inputs("dedicated_bunker_call")})
     result["status"] = "COMPUTED"

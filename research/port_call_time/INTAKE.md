@@ -63,10 +63,11 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 | `baseline_departure` | 급유가 **없었을 때** 출항 시각 |
 | `cargo_end_with_bunkering` | 급유 영향(중단 포함)을 반영한 하역 종료 시각 |
 | `bunker_ready` | 급유 준비를 시작할 수 있는 시각. 접안 후 대기·접근 제한을 포함 |
-| `preparation`, `transfer`, `cleanup` | 준비·이송·마무리 시간(순차). 마무리는 출항 전 남은 급유 관련 작업 전부 |
+| `preparation`, `transfer`, `cleanup` | 준비·이송·마무리 시간(순차). 마무리는 출항 준비 전에 남은 급유 관련 작업 전부 |
+| `departure_readiness` | **필수.** 하역·급유가 **모두 끝난 뒤에만** 시작할 수 있고 그 작업과 겹칠 수 없는 출항 준비 시간(예: 완료 후 점검·출항 절차). 병행 가능한 서류 작업, 이미 `cleanup`에 넣은 시간은 넣지 않는다 |
 | `berth_arrival`, `cargo_start` | 선택. **시간 순서 검사에만** 사용한다 |
 
-추가 지연 = max(급유 없는 출항, 급유 반영 하역 종료, 급유 작업 종료) − 급유 없는 출항. 작업 시간이 하역 시간 안에 들어가면 0이다. 따라서 **보도된 급유 작업시간(예: 10시간)을 추가 지연으로 입력하지 않는다.** `work_hours`, `extra_delay_hours` 같은 필드는 거부한다.
+추가 지연 = max(급유 없는 출항, max(급유 반영 하역 종료, 급유 작업 종료) + 출항 준비) − 급유 없는 출항. 작업 시간이 하역 시간 안에 들어가고 준비까지 기준 출항 안에 끝나면 0이다. `baseline_departure`는 급유가 없을 때의 출항이므로 **같은 출항 준비를 이미 포함**해야 한다(예: 원래 하역 종료 10 + 준비 2 = 12). 따라서 **보도된 급유 작업시간(예: 10시간)을 추가 지연으로 입력하지 않는다.** `work_hours`, `extra_delay_hours` 같은 필드는 거부한다.
 
 ### 급유 전용 기항 (`dedicated_bunker_call`)
 
@@ -76,7 +77,7 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 
 중복 계산을 막기 위해 입력자가 직접 true로 바꾼다. 하나라도 false이거나 없으면 `NOT_COMPUTED`다. 이 항목은 **사용자 확인(자기 신고)**이며 코드가 검증하지 않는다. 코드는 true/false 여부만 본다. 결과의 `confirmations.kind`는 `user_attested`, `verified_by_code`는 `false`이고, 코드가 실제로 검사한 것은 `code_verified_checks`, 검사하지 못한 것은 `not_verified_by_code`에 나뉘어 나온다.
 
-- 기존 기항: `baseline_departure_is_departure_without_bunkering`, `cargo_end_includes_bunkering_interruption`, `bunker_ready_includes_waiting_and_access_restrictions`, `cleanup_includes_all_remaining_bunker_work`
+- 기존 기항: `baseline_departure_is_departure_without_bunkering`, `cargo_end_includes_bunkering_interruption`, `bunker_ready_includes_waiting_and_access_restrictions`, `cleanup_includes_all_remaining_bunker_work`, `departure_readiness_follows_all_work_and_is_not_in_cleanup`
 - 전용 기항: `baseline_is_route_without_this_call`, `detour_excludes_port_transit`, `waiting_excludes_work_phases`, `no_phase_counted_twice`
 
 ## 시간
@@ -92,7 +93,7 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 
 사례마다 `status`는 `COMPUTED`, `NOT_COMPUTED`, `INVALID` 중 하나다.
 
-- `COMPUTED`: `extra_delay_hours`(hours), `evidence_level`, `input_basis`, `warnings`. 기존 기항은 `breakdown_hours`와 어떤 제약이 결정했는지(`binding_constraint`)도 준다.
+- `COMPUTED`: `extra_delay_hours`(hours), `evidence_level`, `input_basis`, `warnings`. 기존 기항은 `breakdown_hours`(기준 출항, 하역 종료, 급유 종료, 출항 준비, 급유 반영 출항)와 어떤 제약이 결정했는지(`binding_constraint`)도 준다.
 - `NOT_COMPUTED`: `missing_fields`와 `reasons`(누락 필드, 미확인 항목). `extra_delay_hours`는 `null`이다.
 - `INVALID`: `errors`(코드·필드·설명). 다른 사례는 계속 처리한다.
 
@@ -108,7 +109,7 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 
 ## 합성 예시와 손계산
 
-[`examples/`](examples/)의 6개 파일은 모두 합성 값이다(`synthetic_assumption`, `public_ok`). 기대값은 `model.py`로 다시 계산하지 않고 아래처럼 손으로 구해 [`test_intake.py`](test_intake.py)에 상수로 넣었다(시간 단위, 기준점 = 접안).
+[`examples/`](examples/)의 9개 파일은 모두 합성 값이다(`synthetic_assumption`, `public_ok`). 기대값은 `model.py`로 다시 계산하지 않고 아래처럼 손으로 구해 [`test_intake.py`](test_intake.py)에 상수로 넣었다(시간 단위, 기준점 = 접안).
 
 | 예시 | 설명 | 손계산 | 추가 지연 |
 |---|---|---|---|
@@ -117,7 +118,18 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 | `03_cargo_interrupted` | 하역 중단 | 하역 종료 15, 급유 종료 0 + 1 + 6 + 1 = 8 → max(12, 15, 8) − 12 | **3 h** |
 | `04_dedicated` | 전용 기항 | 2 + 1 + 1 + 1 + 8 + 1 | **14 h** |
 | `05_insufficient` | 정보 부족 | `transfer`·`cleanup` UNKNOWN | 계산 안 함 |
+| `07_readiness_late_cargo_end` | 출항 준비·하역이 늦게 끝남 | 하역 종료 13, 급유 종료 10, 준비 2 → max(12, 13 + 2) − 12 | **3 h** (준비 입력 없이는 1 h) |
+| `08_readiness_late_fuel_end` | 출항 준비·급유가 늦게 끝남 | 하역 종료 10, 급유 종료 14, 준비 2 → max(12, 14 + 2) − 12 | **4 h** (준비 없이는 2 h) |
+| `09_readiness_interrupted_late_fuel` | 하역 중단 + 늦은 급유 + 준비 | 하역 종료 15, 급유 종료 8 + 1 + 6 + 1 = 16, 준비 2 → max(12, 16 + 2) − 12 | **6 h** (준비 없이는 4 h) |
 | `06_absolute_midnight` | 절대시각·자정·혼합 시간대 | 기준 20:00+09:00. 급유 가능 15:30Z = 다음 날 00:30+09:00 = 기준 후 4.5 h. 출항·하역 종료 08:00+09:00 = 12 h. 급유 종료 4.5 + 1 + 8 + 1 = 14.5 → 14.5 − 12 | **2.5 h** |
+
+## 출항 준비 시간 (`departure_readiness`)과 지원하지 않는 출항 제약
+
+- 01–06번 예시는 합성 가정으로 `departure_readiness`를 명시적으로 0(`synthetic_assumption`)으로 둔 것이다. 실자료의 준비 시간을 모르면 **0이 아니라 UNKNOWN**으로 두며, 이때 결과는 `NOT_COMPUTED`(누락 필드 `departure_readiness`)다.
+- 이 필드는 이전 계약(필드 없음)과 달리 기존 기항에서 필수다. 이전 형식의 파일은 `NOT_COMPUTED`가 되며, 임의로 0을 채워 계산하지 않는다.
+- 지원하는 것: 마지막 하역·급유 활동이 끝난 뒤 시작하는 고정 길이의 준비 하나.
+- 지원하지 않는 것(입력에 직접 반영하거나 결과를 쓰지 않는다): 작업과 겹치는 준비, 조석·갑문 창, 도선사·예선·선석 배정, 시각 기준 당국 승인 대기, 승무원 휴식 규정, 어떤 작업이 마지막에 끝나느냐에 따라 달라지는 준비 시간. `confirmations`의 준비 시간 항목도 사용자 확인이며 코드가 검증하지 않는다.
+- 낮은 우선순위 한계: `UNKNOWN`은 어떤 입력이 비었는지만 알려 주고 왜 비었는지(사유)는 기록하지 않는다.
 
 ## 하지 않는 것
 

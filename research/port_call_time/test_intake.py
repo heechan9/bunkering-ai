@@ -30,7 +30,7 @@ def existing(values=None, **overrides):
         "disclosure": {"scope": "public_ok", "permission_basis": "synthetic"},
         "confirmations": {k: True for k in intake.CONFIRMATIONS["existing_cargo_call"]},
         "values": {"baseline_departure": val(12), "cargo_end_with_bunkering": val(12), "bunker_ready": val(0),
-                   "preparation": val(1), "transfer": val(8), "cleanup": val(1)},
+                   "preparation": val(1), "transfer": val(8), "cleanup": val(1), "departure_readiness": val(0)},
     }
     if values:
         case["values"].update(values)
@@ -74,6 +74,9 @@ def write(tmp_path, cases, name="in.json", raw=None):
 #  03 interrupted  : cargo end 15, fuel end 0+1+6+1 = 8        -> max(12, 15, 8) - 12 = 3
 #  04 dedicated    : 2 + 1 + 1 + 1 + 8 + 1                     = 14
 #  05 insufficient : transfer, cleanup unknown                 -> not computed
+#  07 readiness    : cargo end 13, fuel end 10, readiness 2     -> max(12, 13 + 2) - 12 = 3
+#  08 readiness    : cargo end 10, fuel end 14, readiness 2     -> max(12, 14 + 2) - 12 = 4
+#  09 readiness    : cargo end 15, fuel end 8+1+6+1 = 16, rd 2  -> max(12, 16 + 2) - 12 = 6
 #  06 absolute     : ref 20:00+09:00; ready 2030-03-01T15:30Z = 00:30+09:00 next day = 4.5 h after ref;
 #                    departure/cargo end 08:00+09:00 = 12 h after ref; fuel end 4.5+1+8+1 = 14.5 -> 14.5 - 12 = 2.5
 HAND = {
@@ -83,6 +86,9 @@ HAND = {
     "SYN-04-DEDICATED": ("COMPUTED", 14.0, None),
     "SYN-05-INSUFFICIENT": ("NOT_COMPUTED", None, None),
     "SYN-06-ABSOLUTE-MIDNIGHT": ("COMPUTED", 2.5, "bunker_completion"),
+    "SYN-07-READINESS-LATE-CARGO": ("COMPUTED", 3.0, "cargo_end_with_bunkering"),
+    "SYN-08-READINESS-LATE-FUEL": ("COMPUTED", 4.0, "bunker_completion"),
+    "SYN-09-READINESS-INTERRUPTED-LATE": ("COMPUTED", 6.0, "bunker_completion"),
 }
 
 
@@ -95,8 +101,8 @@ def test_every_example_matches_the_hand_calculation():
         assert r["status"] == status, case_id
         assert r["extra_delay_hours"] == extra, case_id
         assert r.get("binding_constraint") == binding, case_id
-    assert got["SYN-05-INSUFFICIENT"]["missing_fields"] == ["transfer", "cleanup"]
-    assert report["summary"] == {"COMPUTED": 5, "NOT_COMPUTED": 1}
+    assert got["SYN-05-INSUFFICIENT"]["missing_fields"] == ["transfer", "cleanup", "departure_readiness"]
+    assert report["summary"] == {"COMPUTED": 8, "NOT_COMPUTED": 1}
 
 
 def test_reported_work_duration_is_not_the_delay():
@@ -228,7 +234,7 @@ def test_a_very_long_duration_triggers_a_unit_check_warning():
 # ------------------------------------------------------------ absolute times, zones, midnight, order
 def absolute(values, **overrides):
     case = existing(time_mode="absolute", reference_time="2030-03-01T20:00:00+09:00")
-    case["values"] = {"preparation": val(1), "transfer": val(8), "cleanup": val(1)}
+    case["values"] = {"preparation": val(1), "transfer": val(8), "cleanup": val(1), "departure_readiness": val(0)}
     case["values"].update(values)
     case.update(overrides)
     return case
@@ -253,7 +259,8 @@ def test_midnight_crossing_and_mixed_time_zones_are_exact():
             "bunker_ready": at("2030-03-02T00:30:00+09:00")}
     errors, result = run_case(absolute(vals))
     assert not errors
-    assert result["breakdown_hours"] == {"baseline_departure": 12.0, "cargo_end_with_bunkering": 12.0, "bunker_completion": 14.5}
+    assert result["breakdown_hours"] == {"baseline_departure": 12.0, "cargo_end_with_bunkering": 12.0, "bunker_completion": 14.5,
+                                         "departure_readiness": 0.0, "departure_with_bunkering": 14.5}
     assert result["extra_delay_hours"] == 2.5
 
 
@@ -446,7 +453,7 @@ def test_estimated_baseline_is_flagged_in_the_result():
 
 def test_evidence_level_is_the_weakest_basis_and_observed_baseline_has_no_warning():
     values = {k: {"value": v, "basis": "observed"} for k, v in
-              dict(baseline_departure=12, cargo_end_with_bunkering=12, bunker_ready=0, preparation=1, transfer=8, cleanup=1).items()}
+              dict(baseline_departure=12, cargo_end_with_bunkering=12, bunker_ready=0, preparation=1, transfer=8, cleanup=1, departure_readiness=0).items()}
     _, result = run_case(existing(values))
     assert result["evidence_level"] == "observed" and not result["warnings"]
     values["transfer"] = {"value": 8, "basis": "stakeholder_statement"}
@@ -659,3 +666,85 @@ def test_a_message_that_merely_contains_the_word_overflow_is_not_classified_as_o
     monkeypatch.setattr(intake, "evaluate", boom)
     message = intake.process([str(path)], True)["results"][0]["errors"][0]["message"]
     assert "overflow check configuration missing" in message and "too large" not in message
+
+
+# ------------------------------------------------------------ departure readiness (hand calculated, hours)
+# extra = max(baseline, max(cargo end, bunker end) + readiness) - baseline
+def _readiness(rd, **values):
+    values = {"departure_readiness": val(rd), **values}
+    return run_case(existing(values))
+
+
+@pytest.mark.parametrize("name,values,rd,expected", [
+    ("late cargo end", dict(baseline_departure=val(12), cargo_end_with_bunkering=val(13), bunker_ready=val(0), preparation=val(0), transfer=val(10), cleanup=val(0)), 2, 3.0),   # 13+2-12
+    ("late fuel end", dict(baseline_departure=val(12), cargo_end_with_bunkering=val(10), bunker_ready=val(14), preparation=val(0), transfer=val(0), cleanup=val(0)), 2, 4.0),    # 14+2-12
+    ("interrupted + late fuel", dict(baseline_departure=val(12), cargo_end_with_bunkering=val(15), bunker_ready=val(8), preparation=val(1), transfer=val(6), cleanup=val(1)), 2, 6.0),  # 16+2-12
+    ("readiness absorbed by baseline slack", dict(baseline_departure=val(12), cargo_end_with_bunkering=val(10), bunker_ready=val(0), preparation=val(1), transfer=val(7), cleanup=val(1)), 2, 0.0),  # 10+2 <= 12
+    ("zero readiness equals the previous contract", dict(baseline_departure=val(12), cargo_end_with_bunkering=val(13), bunker_ready=val(4), preparation=val(1), transfer=val(8), cleanup=val(1)), 0, 2.0),  # 14-12
+])
+def test_departure_readiness_matches_hand_calculation(name, values, rd, expected):
+    errors, result = _readiness(rd, **values)
+    assert not errors and result["status"] == "COMPUTED"
+    assert result["extra_delay_hours"] == expected, name
+
+
+def test_unknown_departure_readiness_is_not_computed_and_never_zero():
+    errors, result = run_case(existing({"departure_readiness": None}))
+    assert not errors and result["status"] == "NOT_COMPUTED" and result["extra_delay_hours"] is None
+    assert result["missing_fields"] == ["departure_readiness"]
+    errors, result = run_case(existing({"departure_readiness": {"value": None, "basis": S}}))
+    assert result["status"] == "NOT_COMPUTED"
+    case = existing()
+    del case["values"]["departure_readiness"]
+    _, result = run_case(case)
+    assert result["status"] == "NOT_COMPUTED" and result["missing_fields"] == ["departure_readiness"]
+
+
+def test_explicit_zero_readiness_is_computed_and_needs_a_basis():
+    _, result = run_case(existing({"departure_readiness": val(0)}))
+    assert result["status"] == "COMPUTED"
+    errors, _ = intake.validate_case(existing({"departure_readiness": 0}))
+    assert "bare_value" in codes(errors)
+
+
+def test_readiness_confirmation_is_required_and_user_attested():
+    case = existing()
+    case["confirmations"]["departure_readiness_follows_all_work_and_is_not_in_cleanup"] = False
+    _, result = run_case(case)
+    assert result["status"] == "NOT_COMPUTED"
+    assert "departure_readiness_follows_all_work_and_is_not_in_cleanup" in " ".join(result["reasons"])
+    _, result = run_case(existing())
+    assert result["confirmations"]["kind"] == "user_attested" and result["confirmations"]["verified_by_code"] is False
+    assert "departure_readiness_follows_all_work_and_is_not_in_cleanup" in result["confirmations"]["items"]
+
+
+@pytest.mark.parametrize("bad", [-1, float("inf"), True, "2", [], 10 ** 400])
+def test_invalid_departure_readiness_is_invalid(bad):
+    errors, norm = intake.validate_case(existing({"departure_readiness": {"value": bad, "basis": S}}))
+    assert norm is None and errors
+
+
+def test_readiness_overflow_invalidates_only_that_case(tmp_path):
+    huge = existing(case_id="HUGE", values={"transfer": val(1e308), "departure_readiness": val(1e308)})
+    good = existing(case_id="GOOD")
+    path = tmp_path / "in.json"
+    path.write_text(json.dumps({"schema_version": 1, "cases": [huge, good]}))
+    by_id = {r["case_id"]: r for r in intake.process([str(path)], True)["results"]}
+    assert by_id["HUGE"]["status"] == "INVALID" and by_id["HUGE"]["errors"][0]["code"] == "calculation_error"
+    assert by_id["GOOD"]["status"] == "COMPUTED"
+
+
+def test_readiness_in_minutes_and_breakdown():
+    case = existing({"baseline_departure": val(720), "cargo_end_with_bunkering": val(780), "bunker_ready": val(0),
+                     "preparation": val(0), "transfer": val(600), "cleanup": val(0), "departure_readiness": val(120)}, unit="minutes")
+    _, result = run_case(case)
+    # 12 h baseline, cargo 13 h, fuel 10 h, readiness 2 h -> 15 h -> 3 h
+    assert result["extra_delay_hours"] == 3.0
+    assert result["breakdown_hours"]["departure_readiness"] == 2.0 and result["breakdown_hours"]["departure_with_bunkering"] == 15.0
+
+
+def test_template_contains_the_readiness_field_and_confirmation():
+    tpl = intake.template("existing_cargo_call")["cases"][0]
+    assert tpl["values"]["departure_readiness"] == {"value": None, "basis": None}
+    assert tpl["confirmations"]["departure_readiness_follows_all_work_and_is_not_in_cleanup"] is False
+    assert "departure_readiness" not in intake.template("dedicated_bunker_call")["cases"][0]["values"]

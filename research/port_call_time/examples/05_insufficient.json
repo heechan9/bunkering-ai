@@ -19,7 +19,8 @@
         "baseline_departure_is_departure_without_bunkering": true,
         "cargo_end_includes_bunkering_interruption": true,
         "bunker_ready_includes_waiting_and_access_restrictions": true,
-        "cleanup_includes_all_remaining_bunker_work": true
+        "cleanup_includes_all_remaining_bunker_work": true,
+        "departure_readiness_follows_all_work_and_is_not_in_cleanup": false
       },
       "values": {
         "baseline_departure": {
@@ -42,7 +43,11 @@
           "value": null,
           "basis": null
         },
-        "cleanup": "UNKNOWN"
+        "cleanup": "UNKNOWN",
+        "departure_readiness": {
+          "value": null,
+          "basis": null
+        }
       },
       "notes": "transfer and cleanup unknown; nothing is computed and nothing is replaced by 0."
     }

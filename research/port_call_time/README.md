@@ -103,7 +103,7 @@ Independent reviewer baseline remains `f5e50b0`. Follow-up (2026-10-12): the rev
 
 `intake.py` checks timing records before they reach this model: explicit UNKNOWN (never 0), units, time zones,
 time order, provenance per value (`observed` / `stakeholder_statement` / `estimate` / `synthetic_assumption`) and
-disclosure scope. It calls `existing_call` / `dedicated_call` only when the inputs are complete and the
+disclosure scope. For existing calls it also requires the explicit `departure_readiness` input (UNKNOWN is NOT_COMPUTED, never 0; its confirmation is a user attestation the code does not verify). It calls `existing_call` / `dedicated_call` only when the inputs are complete and the
 double-counting confirmations are given; otherwise it prints the missing fields. It does not change this model's rules
 and does not read a reported work duration as extra delay. Details, field meanings and hand-calculated examples:
 [INTAKE.md](INTAKE.md).
