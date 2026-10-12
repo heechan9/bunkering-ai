@@ -117,7 +117,7 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 | `02_late_start` | 늦게 시작 | 준비 가능 6 + 1 + 8 + 1 = 16 → max(12, 12, 16) − 12 | **4 h** |
 | `03_cargo_interrupted` | 하역 중단 | 하역 종료 15, 급유 종료 0 + 1 + 6 + 1 = 8 → max(12, 15, 8) − 12 | **3 h** |
 | `04_dedicated` | 전용 기항 | 2 + 1 + 1 + 1 + 8 + 1 | **14 h** |
-| `05_insufficient` | 정보 부족 | `transfer`·`cleanup` UNKNOWN | 계산 안 함 |
+| `05_insufficient` | 정보 부족 | `transfer`·`cleanup`·`departure_readiness` UNKNOWN | 계산 안 함 |
 | `07_readiness_late_cargo_end` | 출항 준비·하역이 늦게 끝남 | 하역 종료 13, 급유 종료 10, 준비 2 → max(12, 13 + 2) − 12 | **3 h** (준비 입력 없이는 1 h) |
 | `08_readiness_late_fuel_end` | 출항 준비·급유가 늦게 끝남 | 하역 종료 10, 급유 종료 14, 준비 2 → max(12, 14 + 2) − 12 | **4 h** (준비 없이는 2 h) |
 | `09_readiness_interrupted_late_fuel` | 하역 중단 + 늦은 급유 + 준비 | 하역 종료 15, 급유 종료 8 + 1 + 6 + 1 = 16, 준비 2 → max(12, 16 + 2) − 12 | **6 h** (준비 없이는 4 h) |
@@ -125,7 +125,7 @@ python -m research.port_call_time.intake compute research/port_call_time/example
 
 ## 출항 준비 시간 (`departure_readiness`)과 지원하지 않는 출항 제약
 
-- 01–06번 예시는 합성 가정으로 `departure_readiness`를 명시적으로 0(`synthetic_assumption`)으로 둔 것이다. 실자료의 준비 시간을 모르면 **0이 아니라 UNKNOWN**으로 두며, 이때 결과는 `NOT_COMPUTED`(누락 필드 `departure_readiness`)다.
+- 예시 01·02·03·06은 합성 가정으로 `departure_readiness`를 명시적으로 0(`synthetic_assumption`)으로 둔 것이고, 05는 UNKNOWN(null)이며, 04는 전용 기항이라 이 필드가 적용되지 않는다. 실자료의 준비 시간을 모르면 **0이 아니라 UNKNOWN**으로 두며, 이때 결과는 `NOT_COMPUTED`(누락 필드 `departure_readiness`)다.
 - 이 필드는 이전 계약(필드 없음)과 달리 기존 기항에서 필수다. 이전 형식의 파일은 `NOT_COMPUTED`가 되며, 임의로 0을 채워 계산하지 않는다.
 - 지원하는 것: 마지막 하역·급유 활동이 끝난 뒤 시작하는 고정 길이의 준비 하나.
 - 지원하지 않는 것(입력에 직접 반영하거나 결과를 쓰지 않는다): 작업과 겹치는 준비, 조석·갑문 창, 도선사·예선·선석 배정, 시각 기준 당국 승인 대기, 승무원 휴식 규정, 어떤 작업이 마지막에 끝나느냐에 따라 달라지는 준비 시간. `confirmations`의 준비 시간 항목도 사용자 확인이며 코드가 검증하지 않는다.
