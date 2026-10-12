@@ -15,9 +15,9 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Double_DQN-EE4C2C?logo=pytorch&logoColor=white)
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-BunkeringEnv-2D3748)
-![Tests](https://img.shields.io/badge/tests-514_passed-2EA44F)
+[![Python CI](https://github.com/heechan9/bunkering-ai/actions/workflows/python-tests.yml/badge.svg?branch=main)](https://github.com/heechan9/bunkering-ai/actions/workflows/python-tests.yml)
 
-검증 배지는 2026-10-07 #109와 최신 main의 통합 코드에서 Codex가 직접 실행한 **514 passed · 23 subtests passed** 기록입니다. 병합 main `c01b563`의 파일 트리가 검사한 코드와 같으며 병합 후 GitHub Python CI도 성공했습니다([검토·병합 기록](https://github.com/heechan9/bunkering-ai/pull/109#issuecomment-6033647098)). [Python CI 실행·재현 안내](docs/technical/python_ci.md). 이전 Windows **288 passed** 및 공식 400행 재현·근거 감사 8/8은 [기존 검사 기록](docs/audits/local_verification_20261007.md)에 보존합니다.
+위 배지는 main의 Python CI 상태를 표시합니다. 과거 전체 검사 기록은 2026-10-07 #109와 당시 main의 통합 코드에서 Codex가 직접 실행한 **514 passed · 23 subtests passed** 기록입니다. 병합 main `c01b563`의 파일 트리가 검사한 코드와 같으며 병합 후 GitHub Python CI도 성공했습니다([검토·병합 기록](https://github.com/heechan9/bunkering-ai/pull/109#issuecomment-6033647098)). [Python CI 실행·재현 안내](docs/technical/python_ci.md). 이전 Windows **288 passed** 및 공식 400행 재현·근거 감사 8/8은 [기존 검사 기록](docs/audits/local_verification_20261007.md)에 보존합니다.
 이현수의 2026-09-27 독립 검증(245 passed)은 [PR #66](https://github.com/heechan9/bunkering-ai/pull/66)에 보존합니다. 근거 감사 배지는 공식 결과의 주장 8개 검사이며 실선 성능 검증을 뜻하지 않습니다.
 
 ![Evidence Audit](https://img.shields.io/badge/evidence_audit-8%2F8_passed-2EA44F)
@@ -30,11 +30,12 @@ DAYTONA·VISBY 국내 LNG 사례와 현재 구간 24h·급유 기항 8h 합성 �
 
 ## 지금 어디까지 완료됐나
 
-2026-10-07 main `c01b563` 확인 기준입니다. PR #100–#110의 평가·shadow·CI 병합과 [Sites 36판 운영 검증](docs/audits/ocean_lab_live_verification_20261007.md)을 반영했습니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
+2026-10-13 확인 기준 main은 `2e00985`이며, PR #113–#117까지 병합됐습니다. 추가시간 계산·출항 준비 시간·자료 입력 검증 도구는 구현 및 합성 검증을 마쳤습니다. 실자료 검증과 운영 의사결정 연결은 아직 남아 있습니다. [Sites 36판 운영 검증](docs/audits/ocean_lab_live_verification_20261007.md)은 10월 7일의 기록이며 이번에 웹을 재검증하거나 배포하지 않았습니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
 아래 상태는 각 항목의 확인 범위이며 전체 프로젝트의 검증 완료를 뜻하지 않습니다.
 
 | 연구·개발 단계 | 상태 | 확인된 범위와 남은 일 |
 |---|---|---|
+| 추가시간 계산·자료 입력 검증 | ✅ main 반영 (#114·#116) | 동시 급유·전용 기항, 출항 준비 시간, UNKNOWN·단위·시간 순서 검사. 별도 연구 도구이며 DQN 결정에 연결하지 않음. [사용법](research/port_call_time/INTAKE.md) |
 | 논문 제출 | ✅ 제출 확인 | 사용자가 10월 1일 제출 확인. 채택·심사 통과와 구분. [제출 기록](docs/submission/submission_status.md) |
 | 규칙 3종·Double DQN 비교 | ✅ 합성 환경 평가 완료 | 동일 조건 비교 및 공식 결과 보관. 실선 성능 검증은 아님. [평가계약](docs/technical/evaluation_contract.md) |
 | 4시드 재현·연료수지 진단 | ✅ 기록 대조 완료 | 구매·소비·최종잔량·보상 대조. DQN의 높은 보상을 비용 절감으로 해석하지 않음. [독립 대조](docs/technical/reward_diagnostics_results_4seed.md) |
