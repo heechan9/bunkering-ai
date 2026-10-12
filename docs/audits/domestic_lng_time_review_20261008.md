@@ -44,7 +44,7 @@
 
 [MPA 공식 통계](https://www.mpa.gov.sg/port-marine-ops/marine-services/bunkering/bunkering-statistics), [MPA 장기 CSV 목록](https://data.gov.sg/datasets/d_4f5abbf4486bf8e52bbed3be56dde562/view), [Rotterdam 원본](https://www.portofrotterdam.com/sites/default/files/2026-08/bunker-sales-2024-2026.pdf), [EMSA 공개 자료](https://mrv.emsa.europa.eu/).
 
-원본 묶음과 해시는 프로젝트 비공개 Drive에 보관한다. 공개 GitHub에는 비공개 링크·모델·원자료를 추가하지 않는다. MPA/Rotterdam은 항만 집계, EMSA는 연간 보고 자료이며 항차별 급유 정책 검증을 대체하지 않는다. EMSA Full/Partial 보고를 단순 중복 합산하지 않는다. 울산세관 날짜·비율 불일치는 별도 미해결이다.
+원본 묶음과 해시는 프로젝트 비공개 Drive에 보관한다. 공개 GitHub에는 비공개 링크·모델·원자료를 추가하지 않는다. MPA/Rotterdam은 항만 집계, EMSA는 연간 보고 자료이며 항차별 급유 정책 검증을 대체하지 않는다. EMSA Full/Partial 보고를 단순 중복 합산하지 않는다. 울산세관 ATLANTIC TOPAZ 날짜 불일치는 이 문서 작성 당시 미해결이었으나, 2026-10-08 UPA 회신으로 8/8이 확인됐다(세관 원문 8/6은 보존). 기타선 67% 원문 불일치는 별도 미해결이다.
 
 ## 검증 범위
 

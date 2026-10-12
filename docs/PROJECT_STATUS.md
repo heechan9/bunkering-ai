@@ -37,7 +37,7 @@ main 필수 pytest 규칙을 활성화했다. UPA 관련 Gmail 검색에서는 �
 - [PR #113](https://github.com/heechan9/bunkering-ai/pull/113): 국내 LNG 사례·자료 확보 상태 문서, 병합 전.
 - [PR #114](https://github.com/heechan9/bunkering-ai/pull/114): [추가시간 계산](../research/port_call_time/README.md), Draft 검토 단계. 구현 및 합성 63조건 계산 완료; 실측 보정·정책 비교는 미실행.
 - 현수 검토 기준은 `f5e50b0`. 후속 문서 갱신은 해당 코드 기준을 바꾸지 않는다. 독립 검토 결과 대기.
-- 사용자 전달 현수 검산(PR #95 병합 `15bbba3` 기준): 울산세관 합계와 원문 전사 일치. 기타선 67% 원문 내부 불일치 및 ATLANTIC TOPAZ 날짜 출처 충돌은 보존. 이 항목은 Codex 독립 PDF 재검증 결과가 아니다.
+- 사용자 전달 현수 검산(PR #95 병합 `15bbba3` 기준): 울산세관 합계와 원문 전사 일치. 기타선 67% 원문 내부 불일치 및 ATLANTIC TOPAZ 날짜 출처 충돌은 보존(당시 기록; 현재는 UPA 회신으로 8/8 확인, 세관 원문 8/6 보존). 이 항목은 Codex 독립 PDF 재검증 결과가 아니다.
 - 공식 기준·정책·모델·기존 평가 결과 변경 없음.
 
 ## 남은 작업
