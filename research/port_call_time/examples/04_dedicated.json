@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "case_id": "SYN-04-DEDICATED",
+      "call_type": "dedicated_bunker_call",
+      "unit": "hours",
+      "source": {
+        "kind": "synthetic",
+        "reference": "hand-calculated example in research/port_call_time/INTAKE.md",
+        "obtained_on": "2026-10-08"
+      },
+      "disclosure": {
+        "scope": "public_ok",
+        "permission_basis": "synthetic numbers written for this repository; no real vessel, port or person"
+      },
+      "confirmations": {
+        "baseline_is_route_without_this_call": true,
+        "detour_excludes_port_transit": true,
+        "waiting_excludes_work_phases": true,
+        "no_phase_counted_twice": true
+      },
+      "values": {
+        "detour": {
+          "value": 2,
+          "basis": "synthetic_assumption"
+        },
+        "port_transit": {
+          "value": 1,
+          "basis": "synthetic_assumption"
+        },
+        "waiting": {
+          "value": 1,
+          "basis": "synthetic_assumption"
+        },
+        "preparation": {
+          "value": 1,
+          "basis": "synthetic_assumption"
+        },
+        "transfer": {
+          "value": 8,
+          "basis": "synthetic_assumption"
+        },
+        "cleanup": {
+          "value": 1,
+          "basis": "synthetic_assumption"
+        }
+      },
+      "notes": "Disjoint phases against the route without this call; expected extra delay 14 h."
+    }
+  ]
+}
