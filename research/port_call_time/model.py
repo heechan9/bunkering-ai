@@ -1,5 +1,5 @@
 """Research-only incremental port-call time; hours on one local timeline."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import math
 from numbers import Real
 
@@ -18,31 +18,61 @@ def hours(value, name):
     return value
 
 
+class _NotModeled:
+    """Marks a departure-readiness input that the caller did not supply at all."""
+    def __repr__(self):
+        return 'NOT_MODELED'
+
+
+NOT_MODELED = _NotModeled()
+
+
 @dataclass(frozen=True)
 class Delay:
     status: str
     extra_hours: float | None
     missing: tuple[str, ...] = ()
+    # False only for legacy calls that omitted departure_readiness (no post-work readiness was modeled).
+    # Not part of equality so the result of an explicit 0 equals the legacy result.
+    readiness_modeled: bool = field(default=True, compare=False)
 
 
 def existing_call(*, baseline_departure=None, cargo_end_with_bunkering=None,
-                  bunker_ready=None, preparation=None, transfer=None, cleanup=None):
+                  bunker_ready=None, preparation=None, transfer=None, cleanup=None,
+                  departure_readiness=NOT_MODELED):
     """All event offsets use the same origin; durations are sequential.
 
-    baseline_departure is the counterfactual departure without bunkering.
+    baseline_departure is the counterfactual departure without bunkering (it already
+    contains the same departure readiness after the original cargo end).
     cargo_end_with_bunkering includes any interruption imposed by bunkering.
     bunker_ready includes waits/access restrictions before preparation starts.
     cleanup includes all remaining bunker-related work before departure.
+
+    departure_readiness is a fixed time that can only START after ALL cargo and bunker
+    work has finished and cannot overlap that work (e.g. final inspection, lines
+    cast-off, documents that need the completed work). Work that can run in parallel
+    with cargo or bunkering, and anything already counted in cleanup, must NOT be
+    included. None = UNKNOWN (never zero). Omitting the argument keeps the legacy
+    contract (no post-work readiness modeled, equal to an explicit 0) and marks the
+    result readiness_modeled=False; real data must pass it explicitly.
     """
-    values = {k: hours(v, k) for k, v in locals().items()}
+    modeled = departure_readiness is not NOT_MODELED
+    raw = dict(baseline_departure=baseline_departure, cargo_end_with_bunkering=cargo_end_with_bunkering,
+               bunker_ready=bunker_ready, preparation=preparation, transfer=transfer, cleanup=cleanup)
+    if modeled:
+        raw['departure_readiness'] = departure_readiness
+    values = {k: hours(v, k) for k, v in raw.items()}
     missing = tuple(k for k, v in values.items() if v is None)
     if missing:
-        return Delay('UNKNOWN', None, missing)
+        return Delay('UNKNOWN', None, missing, modeled)
+    readiness = values.get('departure_readiness', 0.0)
     end = values['bunker_ready'] + values['preparation'] + values['transfer'] + values['cleanup']
-    extra = max(values['baseline_departure'], values['cargo_end_with_bunkering'], end) - values['baseline_departure']
-    if not math.isfinite(end) or not math.isfinite(extra):
+    work_end = max(values['cargo_end_with_bunkering'], end)
+    departure = max(values['baseline_departure'], work_end + readiness)
+    extra = departure - values['baseline_departure']
+    if not (math.isfinite(end) and math.isfinite(departure) and math.isfinite(extra)):
         raise ValueError('time arithmetic overflow')
-    return Delay('KNOWN', extra)
+    return Delay('KNOWN', extra, (), modeled)
 
 
 def dedicated_call(*, detour=None, port_transit=None, waiting=None,

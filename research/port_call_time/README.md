@@ -13,11 +13,37 @@ Zero must be supplied explicitly. Arithmetic overflow raises ValueError.
 is the counterfactual baseline. The cargo completion time WITH bunkering must
 include any interruption caused by bunkering. The bunker-ready offset includes
 waiting and access restrictions before sequential preparation, transfer and
-cleanup. Cleanup includes all bunker-related remaining work before departure.
-Extra delay = max(baseline departure, cargo end with bunkering, bunker completion)
-minus baseline departure. This prevents negative delay and avoids adding overlapping
-cargo and fuel work twice. It assumes any other departure constraints are captured
-in these inputs; it is not a full berth or resource scheduler.
+cleanup. Cleanup includes all bunker-related remaining work before the departure readiness below.
+Departure readiness (`departure_readiness`, hours): a fixed time that can only START
+after ALL cargo and bunker work has finished and cannot overlap that work (for example
+final inspection or cast-off steps that need the completed work). Extra delay =
+max(baseline departure, max(cargo end with bunkering, bunker completion) + departure
+readiness) minus baseline departure. This prevents negative delay and avoids adding
+overlapping cargo and fuel work twice. The baseline departure must already contain the
+same readiness after the original cargo end (it is the departure without bunkering).
+
+Definition rules against double counting: put work that can run in parallel with cargo
+or bunkering (paperwork, crew tasks) NOWHERE in this input; do not also include it in
+cleanup, and do not put the readiness into cleanup (cleanup is bunker work that can be
+absorbed by cargo work, readiness cannot). Counterexamples fixed by this input (hours):
+cargo end 10, baseline departure 12 (readiness 2). Cargo now ends 13, fuel ends 10:
+departure max(12, 13+2) = 15, delay 3 (previous contract: 1). Cargo ends 10, fuel ends
+14: max(12, 14+2) = 16, delay 4 (previous: 2).
+
+Compatibility and UNKNOWN: `departure_readiness=None` is UNKNOWN (never zero); an
+invalid value raises like the other inputs. Omitting the argument keeps the previous
+contract (equal to an explicit 0) and marks the result `readiness_modeled=False`; real
+data must pass the value explicitly, and a missing measurement must be passed as None,
+not 0. The 63 synthetic cases in `sensitivity.csv` use readiness 0 explicitly and are
+regenerated identically (checked by a test).
+
+Supported: one fixed readiness duration after the last cargo or bunker activity, one
+local time origin. NOT supported (the caller must fold them into the inputs or treat
+the result as invalid): readiness that overlaps work, tide or lock windows, pilot, tug or
+berth slots, authority clearance that waits on a clock time, crew rest rules, readiness
+that differs depending on which activity finishes last, and any other departure
+constraint. It is not a full berth or resource scheduler. Limitation (low priority):
+an UNKNOWN result lists the missing inputs but not why they are unknown.
 
 `dedicated_call`: sum disjoint incremental detour, port transit, waiting,
 preparation, transfer, cleanup. Detour excludes port transit. No implicit phases.
@@ -71,7 +97,7 @@ the dependency path installed via .pth. GitHub CI is separate evidence.
 
 Domestic source inventory: [PR #113](https://github.com/heechan9/bunkering-ai/pull/113).
 Module review: [PR #114](https://github.com/heechan9/bunkering-ai/pull/114).
-Independent reviewer baseline remains `f5e50b0`; no code change in this follow-up.
+Independent reviewer baseline remains `f5e50b0`. Follow-up (2026-10-12): the reviewer's departure-readiness counterexamples were reproduced on `5c54e41` (1 h and 2 h instead of 3 h and 4 h) and handled by the `departure_readiness` input above; this changes the existing-call contract, not the official 24h/8h assumptions, evaluation results or any model.
 
 ## Data intake and validation (separate tool)
 
