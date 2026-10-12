@@ -452,6 +452,6 @@ Drive는 `01_원본데이터`, `02_실험결과`, `03_프로젝트논문`,
 
 ## 급유 추가시간 연구 모듈 (2026-10-08)
 
-[별도 시간 계산 모듈](research/port_call_time/README.md)은 기존 화물 기항의 동시 급유와 급유 전용 기항을 구분합니다. 누락 시간은 `UNKNOWN`으로 유지합니다. 구현과 합성 63조건 검사는 완료했으며, 실측 보정·정책 성능 비교·현수 독립 검토는 완료 전입니다. 기존 공식 평가의 24h/8h 가정과 결과는 보존합니다.
+[별도 시간 계산 모듈](research/port_call_time/README.md)은 기존 화물 기항의 동시 급유와 급유 전용 기항을 구분합니다. 누락 시간은 `UNKNOWN`으로 유지합니다. 구현과 합성 검사는 완료했고 [#113–#116](https://github.com/heechan9/bunkering-ai/pull/116)은 2026-10-12 main(`a405b1f`)에 병합됐습니다. 현수가 발견한 출항 준비 시간 누락은 `departure_readiness` 입력으로 반영했고 Codex가 연동 head를 재검토했으나, 현수가 수정된 코드까지 재검토했는지는 확인되지 않았습니다. 실자료 검증, 실측 보정, 정책 성능 비교는 완료 전입니다. 기존 공식 평가의 24h/8h 가정과 결과는 보존합니다.
 
-국내 DAYTONA·VISBY 사례의 공급 작업시간은 추가 항해 지연을 뜻하지 않습니다. 출처와 확보 범위는 [국내 사례 검토 PR #113](https://github.com/heechan9/bunkering-ai/pull/113), 코드 검토는 [PR #114](https://github.com/heechan9/bunkering-ai/pull/114)를 참조하세요. PR 링크는 병합 완료를 의미하지 않습니다.
+국내 DAYTONA·VISBY 사례의 공급 작업시간은 추가 항해 지연을 뜻하지 않습니다. 출처와 확보 범위는 [국내 사례 검토 PR #113](https://github.com/heechan9/bunkering-ai/pull/113), 코드 검토는 [PR #114](https://github.com/heechan9/bunkering-ai/pull/114)를 참조하세요. 두 PR 모두 2026-10-12 병합됐으며, 병합은 실자료 검증이나 실선 효과를 뜻하지 않습니다.
