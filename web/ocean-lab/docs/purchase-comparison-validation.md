@@ -1,3 +1,5 @@
+> Historical record: this describes the earlier fuel-only comparison. The current fixed synthetic review adds work/departure checks and inventory-adjusted SCI. See [the current guide](../../../docs/technical/fixed_scenario_review.md). The checks below remain evidence only for their original version.
+
 # Purchase comparison validation — 2026-09-24
 
 Scope: explanatory purchase choices and input provenance. No DQN/model changes, learned history, MCTS, new paper results or savings claims. Existing paper files and baseline replay/summary JSON are unchanged.
