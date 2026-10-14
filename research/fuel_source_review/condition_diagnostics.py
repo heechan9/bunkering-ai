@@ -91,14 +91,7 @@ def main():
     for date in np.unique(dates):daily.append({'ship':ship,'mode':mode,'seed':seed,'date':str(date),**metrics(truth,yp,baseline,dates==date)})
  result={'status':'posthoc_diagnostic_not_operating_gate','rules':'Training quartiles for condition bins; training min/max plus5-NN distance95th percentile on every-sixth eligible training reference; validation supported n>=30 and MAE better than cubic required. No test thresholds tuned.','data_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'model_sha256':hashes,'models':output,'raw_feature_availability':availability,'limitations':['Both ships wind speed/direction are all zero; this does not establish true calm weather. Ship3 draught is constant. Weather response and ship3 draught response cannot be validated.', 'Same previously examined holdout: exploratory post-hoc audit, not new independent validation.','Autocorrelated10min blocks and few voyage days; no confidence or safety guarantee.','Validation90% absolute-error interval is heuristic, not guaranteed conformal coverage under drift.','Consumption candidate retains original arithmetic mean wind angle; diagnostic does not repair it.','Power wind bins use magnitude of mean wind components; fuel bins use mean wind speed, so bins are not interchangeable.','Nearest-neighbour support thresholds are research heuristics, not a deployment authorization.']}
  if args.hanbada:
-  import openpyxl
-  assert hashlib.sha256(args.hanbada.read_bytes()).hexdigest()=='eaf7945109e2675ba8dbd6716d357f4babe737c6f36195f3a8f4da8c21af6665'
-  s=openpyxl.load_workbook(args.hanbada,data_only=True)['B FOAM'];rows=[]
-  for row in range(8,69,2):
-   day,h,v,me=[s.cell(row,c).value for c in [1,8,10,20]]
-   if all(isinstance(x,(int,float)) for x in [day,h,v,me]) and h==24 and v>0 and me>0 and day!=31:rows.append((day,v,me*1000/h))
-  z=np.array(rows);train=z[:4];test=z[4:];low,high=train[:,1].min(),train[:,1].max();inside=(test[:,1]>=low)&(test[:,1]<=high)
-  result['hanbada']={'selected_days':len(rows),'train_n':4,'test_n':3,'train_speed_range':[float(low),float(high)],'test_speed_supported_n':int(inside.sum()),'test_speed_outside_n':int((~inside).sum()),'full_feature_gate':'not_evaluable_without_aligned_wind_draught_STW','decision':'seven_daily_rows_insufficient_for_validated_rejection_rule'}
+  raise SystemExit("Private vessel analysis is unavailable in the public workspace.")
  out=HERE/'results/condition_diagnostics';out.mkdir(exist_ok=True)
  for r in output:
   for field in ['Ship_SpeedLOG','condition_draft','condition_wind']:

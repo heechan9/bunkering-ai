@@ -341,8 +341,8 @@ V1.5에서는 같은 네 frozen 체크포인트에 정규화 소비량 충격과
 | 코드·실행 방법 | 이 저장소와 [웹 README](web/README.md) | 현재 구현은 main, 재현 시에는 사용한 커밋을 함께 기록 |
 | 공개 실험 결과 | [results](results/), [평가 manifest](results/evaluation_manifest.json) | 조건·체크포인트·원본 해시와 함께 확인 |
 | 공개 체크포인트 | [GitHub Release](https://github.com/heechan9/bunkering-ai/releases/tag/official-eval-2026-09-01) | 공식 단일 모델. 4-seed 체크포인트 전체 보관을 뜻하지 않음 |
-| 원본 데이터·논문·인수인계 | [병커시유 Drive](https://drive.google.com/drive/folders/1g5uRRYEoS69lhMiuRyHNi_u1lwkd33Bx) | 비공개 보관함. 허가된 계정만 열 수 있음 |
-| 자료별 위치·최신본 목록 | [Drive 자료 목록](https://drive.google.com/file/d/1H42yNhpf0Ho0kJyZsCt7b7sdUn3UMzfb/view) | 파일 링크·최종본 식별·중복 확인·미확보 항목 |
+| 원본 데이터·논문·인수인계 | 병커시유 Drive (비공개 보관) | 비공개 보관함. 허가된 계정만 열 수 있음 |
+| 자료별 위치·최신본 목록 | Drive 자료 목록 (비공개 보관) | 파일 링크·최종본 식별·중복 확인·미확보 항목 |
 | 논문 공개 안내 | [제출 상태](docs/submission/submission_status.md) | 최종 Word 식별 기록. 최종본 전문은 공개하지 않음 |
 
 Drive는 `01_원본데이터`, `02_실험결과`, `03_프로젝트논문`,
@@ -361,8 +361,8 @@ Drive는 `01_원본데이터`, `02_실험결과`, `03_프로젝트논문`,
 
 | 자료 | 보관 위치 | 구분 |
 |---|---|---|
-| 기존 4-seed 모델·원본 평가 | [Drive 보관 폴더](https://drive.google.com/drive/folders/1dNGPH5qu2QoWmC66-crlLtSHpJ_tbnxP) | 모델·원본 평가 백업과 독립 재실행 검증 ZIP. [공개 출처·해시](results/diagnostics/review_4seed/provenance.json)와 함께 확인 |
-| 소비·출력 후보 모델, 항만 대기 연구, 공개자료 연결 검토 | [학습모델 및 재현](https://drive.google.com/drive/folders/1rnSBEGCh9byHomAAuu2N4XGiI4lY1pDT) | 하위 폴더별 연구 자료. 공식 DQN 교체·운영 채택 여부는 각 결과의 판정을 따름 |
+| 기존 4-seed 모델·원본 평가 | Drive 보관 폴더 (비공개 보관) | 모델·원본 평가 백업과 독립 재실행 검증 ZIP. [공개 출처·해시](results/diagnostics/review_4seed/provenance.json)와 함께 확인 |
+| 소비·출력 후보 모델, 항만 대기 연구, 공개자료 연결 검토 | 학습모델 및 재현 (비공개 보관) | 하위 폴더별 연구 자료. 공식 DQN 교체·운영 채택 여부는 각 결과의 판정을 따름 |
 
 공식 단일 모델은 위 Release에서 받습니다. Drive ZIP의 원본 평가와 재실행 결과는 서로 다른 기록이므로 원본을 덮어쓰지 않습니다.
 
@@ -373,11 +373,7 @@ Drive는 `01_원본데이터`, `02_실험결과`, `03_프로젝트논문`,
   실시간 API 연동도 구현하지 않았습니다.
   [출처·해시](docs/data/upa_bunkering_anchorage.md) ·
   [검토 기록](docs/data/upa_review_20260919.md) · [분석 결과](results/public_data/)
-- **한바다호 AB-LOG:** 2026년 5월 기록의 요약표 M/T·일별표 kL를 구분하고
-  날짜 범위 3개 × 가정 밀도 5개의 산술 민감도를 계산했습니다.
-  ROB 차감값의 일치는 독립 소비량 계측 검증이 아니며 밀도·기준 조건·시간 정합성은 미확인입니다.
-  [검토 기능](docs/technical/hanbada_ab_log_design_20260922.md) ·
-  [집계 비교·15개 가정 시나리오](docs/technical/hanbada_comparison_experiment.md)
+- **실선 자료 검토:** 세부 운항 기록과 파생 수치는 공개본에서 제외했습니다. 단위·시간 정합성 및 측정 독립성의 한계를 검토했으며 실선 비용 절감의 증거로 사용하지 않습니다. [공개 범위](docs/technical/hanbada_provider_clarification.md)
 
 | 확인 항목 | 저장소 근거 |
 |---|---|

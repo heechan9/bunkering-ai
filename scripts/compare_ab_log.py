@@ -1,7 +1,7 @@
 """Reproducible aggregate comparison and hypothetical density/window sensitivity.
 
 No measured density, time alignment, policy inference, or raw workbook publishing.
-Run as python -m scripts.compare_ab_log --workbook /private/file.xlsx, or --check.
+Public CLI only supports --check; authorized data analysis belongs in a private workspace.
 """
 import argparse
 from decimal import Decimal, InvalidOperation
@@ -112,24 +112,14 @@ def compare(inputs):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('--workbook', type=Path)
-    group.add_argument('--check', action='store_true')
-    args = parser.parse_args()
-    if args.workbook:
-        inputs = extract(args.workbook)
-        result = compare(inputs)
-        for path, data in [(INPUT, inputs), (OUTPUT, result), (WEB, result)]:
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
-        print('Generated aggregate inputs, comparison and web report; original workbook unchanged')
-    else:
-        result = compare(json.loads(INPUT.read_text()))
-        for path in (OUTPUT, WEB):
-            if json.loads(path.read_text()) != result:
-                raise SystemExit(f'FAIL: stale comparison artifact: {path.name}')
-        print('PASS: 3 selected windows and 15 hypothetical density scenarios reproduce exactly')
+    parser = argparse.ArgumentParser(description='Verify withheld public vessel artifacts; real-data export is disabled.')
+    parser.add_argument('--check', action='store_true', required=True)
+    parser.parse_args()
+    for path in (INPUT, OUTPUT, WEB):
+        data = json.loads(path.read_text())
+        if 'withheld' not in str(data.get('status', '')) or any(k in data for k in ('source_sha256', 'opening_rob', 'windows', 'density_scenarios')):
+            raise SystemExit(f'FAIL: public vessel payload must be withheld: {path.name}')
+    print('PASS: public vessel artifacts are withheld; no real-data re-export performed')
 
 
 if __name__ == '__main__':

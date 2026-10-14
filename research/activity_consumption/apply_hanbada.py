@@ -12,6 +12,7 @@ spec.loader.exec_module(m)
 
 
 def main():
+    raise SystemExit("Public export disabled: use a private analysis workspace; do not regenerate tracked vessel data.")
     source = ROOT / 'results/real_voyage/hanbada_review.json'
     raw = source.read_bytes()
     data = json.loads(raw)

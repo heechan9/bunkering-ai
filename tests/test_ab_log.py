@@ -1,10 +1,12 @@
 import copy
 import unittest
-from scripts.review_ab_log import review_cells, CONFIRMED_SOURCE_SHA256
+from scripts.review_ab_log import review_cells
+from unittest.mock import patch
+CONFIRMED_SOURCE_SHA256 = "synthetic-test-only"
 
 
 def fixture():
-    a = {'D4':'HANBADA','S24':'D.O(M/T)','O26':'ROB','O41':'ROB','O42':'CONS','AA6':'CONSUMPTION(M/T)', 'AA8':'M/E','AB8':'G/E','AC8':'BLR','AD8':'M/E','AF8':'G/E','AH8':'BLR','S26':'10','S41':'7','S42':'3','AA10':'3','X4':'2026. 5.31','J4':'test'}
+    a = {'D4':'HANBADA','S24':'D.O(M/T)','O26':'ROB','O41':'ROB','O42':'CONS','AA6':'CONSUMPTION(M/T)', 'AA8':'M/E','AB8':'G/E','AC8':'BLR','AD8':'M/E','AF8':'G/E','AH8':'BLR','S26':'10','S41':'7','S42':'3','AA10':'3','X4':'2030. 1.31','J4':'test'}
     b = {'T4':'Consumption','T5':'M/E','U5':'G/E','V5':'Boiler','T8':'4'}
     return {k:{p:{'value':v,'formula':False} for p,v in d.items()} for k,d in [('AB-LOG',a),('B FOAM',b)]}
 
@@ -40,6 +42,11 @@ class ReviewTests(unittest.TestCase):
         self.assertEqual(review_cells(f,'test')['file_year'],2027)
 
 class ProviderConfirmationTests(unittest.TestCase):
+    def setUp(self):
+        patcher = patch('scripts.review_ab_log.CONFIRMED_SOURCE_SHA256', CONFIRMED_SOURCE_SHA256)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def test_confirmation_bound_to_exact_source(self):
         r = review_cells(fixture(), 'different-workbook')
         self.assertNotIn('daily_unit_confirmation', r)
@@ -56,7 +63,7 @@ class ProviderConfirmationTests(unittest.TestCase):
     def test_derived_consumption_and_estimates_remain_explicit(self):
         r = review_cells(fixture(), CONFIRMED_SOURCE_SHA256)
         self.assertFalse(r['independent_consumption_measurement'])
-        self.assertEqual(r['reported_year'], 2026)
+        self.assertEqual(r['reported_year'], 2030)
         self.assertIn('estimate', r['rob_time_basis']['certainty'])
         self.assertIn('pending', r['status'])
         self.assertIsNone(r['supply'])
