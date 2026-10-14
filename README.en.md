@@ -8,6 +8,10 @@ Bunkering-AI compares three rule-based policies with Double DQN in a synthetic v
 
 [Ocean Lab demo](https://bunkering-ocean-lab.hc24734503.chatgpt.site/) · [Repository](https://github.com/heechan9/bunkering-ai) · [Quick start](#quick-start) · [Evidence and results](#evidence-and-results) · [Research boundaries](#research-boundaries)
 
+![Bunkering-AI project artwork with a tanker, container ship, and market charts](docs/assets/bunkering-project-hero.png)
+
+*Project artwork: “Smart fuel, smarter voyage.” The ships and market graphics illustrate the research theme; they are not operational records or evidence of realized savings.*
+
 > Research prototype. Results describe specified synthetic experiments, not demonstrated fuel savings, monetary savings, or safety certification for real ships. The official DQN remains unchanged; experimental alternatives are evaluated separately.
 
 This English entry point summarizes the repository reviewed at [`c98304b`](https://github.com/heechan9/bunkering-ai/tree/c98304b00158d3cb56891bdc6a42f8f600ae315b). The [Korean README](README.md) and linked technical records contain the fuller development history. Many linked documents are in Korean; Ocean Lab supports Korean and English interface text.
@@ -22,6 +26,10 @@ Refueling is a sequence of decisions: buying earlier may provide more fuel margi
 
 The core workflow is **synthetic market and voyage state → policy action → common evaluation → traceable CSV, manifest, and diagnostic results**.
 
+![Conceptual illustration linking market and voyage inputs to refueling decisions](docs/assets/bunkering-ai-decision-system-hero-v2.jpg)
+
+*Concept illustration: fuel price, exchange rate, remaining fuel, route, and consumption inform a refueling decision. The port choices and dashboard are illustrative; the baseline does not optimize port-specific prices or provide live vessel control.*
+
 ## What is implemented
 
 - **Shared simulation and evaluation:** a Gymnasium `BunkeringEnv`, three rule-based baselines, a PyTorch Double DQN agent, and a common evaluation contract.
@@ -31,6 +39,12 @@ The core workflow is **synthetic market and voyage state → policy action → c
 - **Data review tools:** voyage CSV validation, fuel-balance checks, public-source inventories, and checks against official experiment outputs.
 
 The core action space is limited: action 0 skips refueling; positive actions request a fixed quantity, capped by available tank capacity. Although action labels include port IDs, the baseline does not implement different prices or transition dynamics for individual ports. It does not establish optimal port selection or variable-quantity bunkering. See the [environment code](envs/bunkering_env.py) and [model boundary](docs/technical/model_boundary_and_research_roadmap.md).
+
+### Ocean Lab preview
+
+![Archived Ocean Lab desktop view showing synthetic Safe Stock voyage replay, normalized fuel levels, and purchase-plan comparison](docs/audits/final_v7_5_verification_20260927/desktop_safestock_step16_boundary.png)
+
+*Archived interface capture from [September 27, 2026](docs/audits/final_v7_5_verification_20260927.md): Safe Stock at step 16 of a 30-step synthetic replay, with remaining fuel and hypothetical purchase plans. The Korean labels describe replay controls, normalized fuel, and SCI, not measured ship operations or currency costs. The geographic view is explanatory. This historical screenshot may differ from the current demo; select “English” in Ocean Lab for English interface text.*
 
 ## Synthetic experiments and real-world reference data
 
