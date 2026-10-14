@@ -25,7 +25,7 @@ function compile(file){
  return exports;
 }
 const {passagePaths,makePassageTraffic,passageSample,arcticMapProject,arcticMapProjection}=compile('components/ocean/PassageTraffic.ts');
-const {regions,arcticCoastlinePolygons}=compile('components/ocean/Geography.tsx');
+const {regions,arcticCoastlinePolygons,groupProjectedRings}=compile('components/ocean/Geography.tsx');
 const {readShareState,shareURL}=compile('lib/share-state.ts');
 const legacy=['suez','hormuz','taiwan','bab','cape','dover','ulsan'];
 assert.deepEqual(Object.keys(regions),[...legacy,'arctic']);
@@ -48,6 +48,16 @@ for(const polygon of polygons){
  assert([...geometry.attributes.position.array].every(Number.isFinite),'Flat coastline triangulates without invalid positions');
  geometry.dispose();
 }
+// Assert actual triangle coverage, not merely finite coordinates: a large
+// disjoint exterior incorrectly treated as a hole previously passed that test.
+const meshes=polygons.map(rings=>{const shape=new THREE.Shape(rings[0].map(p=>new THREE.Vector2(...p)));rings.slice(1).forEach(r=>shape.holes.push(new THREE.Path(r.map(p=>new THREE.Vector2(...p)))));const mesh=new THREE.Mesh(new THREE.ShapeGeometry(shape),new THREE.MeshBasicMaterial({side:THREE.DoubleSide}));mesh.updateMatrixWorld();return mesh});
+function filled(point){const [x,y]=arcticMapProject(point);return new THREE.Raycaster(new THREE.Vector3(x,y,10),new THREE.Vector3(0,0,-1)).intersectObjects(meshes).length>0}
+for(const [name,point] of [['Siberia',[110,65]],['western Russia',[50,64]],['Chukotka',[175,66]],['Alaska',[-150,66]],['Canada',[-110,65]],['Greenland',[-42,73]],['Norway',[24,69]]])assert(filled(point),name+' must have visible land fill');
+for(const [name,point] of [['North Pole',[0,90]],['Barents Sea',[35,78]],['Chukchi Sea',[-170,75]]])assert(!filled(point),name+' must remain water');
+const square=(x,y,size)=>[[x,y],[x+size,y],[x+size,y+size],[x,y+size],[x,y]];
+const classified=groupProjectedRings([square(20,20,4),square(2,2,3).reverse(),square(0,0,10),square(3,3,1)]);
+assert.equal(JSON.stringify(classified.map(p=>p.length)),JSON.stringify([2,1,1]),'Disjoint exteriors, genuine hole and nested island survive arbitrary ordering/winding');
+meshes.forEach(m=>{m.geometry.dispose();m.material.dispose()});
 land.geometry.coordinates=land.geometry.coordinates.map(rings=>geoArea({type:'Polygon',coordinates:rings})>2*Math.PI?rings.map(ring=>ring.slice().reverse()):rings);
 // A visual-geometry regression against a simplified coastline, never a test of
 // depth, ice, permits, vessel capability, safety or actual route feasibility.

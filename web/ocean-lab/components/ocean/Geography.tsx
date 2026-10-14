@@ -40,7 +40,24 @@ export function arcticCoastlinePolygons(land:WorldLand):Coordinates[][][] {
   sphere(){},polygonStart(){polygon=[]},polygonEnd(){if(polygon.length)polygons.push(polygon)},
   lineStart(){ring=[]},lineEnd(){if(ring.length>=3)polygon.push(ring)},point(x,y){ring.push([x,-y])},
  }));
- return polygons;
+ // Spherical clipping can split one source polygon into several disconnected
+ // exterior rings (notably Eurasia at the latitude clip). They must not be
+ // passed to Three.js as holes of the first ring. Classify by containment,
+ // independent of ring ordering/winding, preserving genuine interior holes.
+ return polygons.flatMap(groupProjectedRings);
+}
+
+export function groupProjectedRings(rings:Coordinates[][]):Coordinates[][][] {
+ const area=(ring:Coordinates[])=>Math.abs(ring.reduce((sum,[x,y],i)=>{const q=ring[(i+1)%ring.length];return sum+x*q[1]-q[0]*y},0));
+ const contains=(ring:Coordinates[],[x,y]:Coordinates)=>{let inside=false;for(let i=0,j=ring.length-1;i<ring.length;j=i++){const a=ring[i],b=ring[j];if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])inside=!inside}return inside};
+ const sorted=rings.map(ring=>({ring,area:area(ring),parent:-1,depth:0})).sort((a,b)=>b.area-a.area);
+ const result:Coordinates[][][]=[],outer=new Map<number,Coordinates[][]>();
+ sorted.forEach((entry,i)=>{
+  for(let j=i-1;j>=0;j--)if(contains(sorted[j].ring,entry.ring[0])){entry.parent=j;entry.depth=sorted[j].depth+1;break}
+  if(entry.depth%2===0){const polygon=[entry.ring];result.push(polygon);outer.set(i,polygon)}
+  else outer.get(entry.parent)!.push(entry.ring);
+ });
+ return result;
 }
 
 type MapProps={region:string;reset:number;exaggeration:number;trafficProgress:number;selectedShip?:number;singleShip?:boolean;bunkering?:boolean;replayLabel?:string};
