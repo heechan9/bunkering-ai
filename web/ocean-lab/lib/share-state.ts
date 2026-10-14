@@ -1,6 +1,6 @@
 // Share only public display selections; never credentials or arbitrary query parameters.
 export type ShareState={policy:string;checkpoint:string;caseSeed:string;step:number;region:string;tab:string;view:string;lang:'ko'|'en';started:boolean};
-const allowed={policy:['double_dqn','safe_stock','price_reactive','fixed_fueling'],checkpoint:['42','1042','2042','3042'],region:['hormuz','suez','cape','taiwan','bab','dover','ulsan'],tab:['geography','explore','compare'],view:['geography','route','ship','tank']};
+const allowed={policy:['double_dqn','safe_stock','price_reactive','fixed_fueling'],checkpoint:['42','1042','2042','3042'],region:['hormuz','suez','cape','taiwan','bab','dover','ulsan','arctic'],tab:['geography','explore','compare'],view:['geography','route','ship','tank']};
 export function readShareState(search:string):ShareState|null{
  const p=new URLSearchParams(search);if(p.get('share')!=='1')return null;
  const pick=(key:keyof typeof allowed)=>{const v=p.get(key);return v&&allowed[key].includes(v)?v:allowed[key][0]};

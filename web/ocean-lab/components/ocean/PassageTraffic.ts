@@ -1,7 +1,16 @@
 import * as THREE from 'three';
+import {geoAzimuthalEquidistant} from 'd3-geo';
 
 // Authored geographic illustrations, not AIS tracks or navigable waypoints.
-// All seven paths are presentation-only and never enter the research model.
+// All paths are presentation-only and never enter the research model.
+// Arctic points are manually authored in marine areas of the bundled, simplified
+// coastline. That visual check establishes no depth, ice, access or navigability.
+export const arcticMapProjection = geoAzimuthalEquidistant()
+ .rotate([-100,-90]).translate([0,0]).scale(100).clipAngle(34).precision(.2);
+export function arcticMapProject(point:number[]):[number,number] {
+ const projected=arcticMapProjection([point[0],point[1]])!;
+ return [projected[0],-projected[1]];
+}
 export const passagePaths: Record<string, number[][]> = {
  suez: [[32.15,31.8],[32.31,31.26],[32.33,30.9],[32.34,30.59],[32.52,30.36],[32.56,30.02],[32.7,29.65],[33.1,28.9],[33.6,28.1]],
  hormuz: [[53.2,26.6],[54.6,26.6],[55.6,26.65],[56.05,26.7],[56.45,26.65],[56.8,26.4],[57.0,26.0],[57.5,25.6],[58.6,25.05],[59.4,24.8]],
@@ -9,6 +18,7 @@ export const passagePaths: Record<string, number[][]> = {
  bab: [[41.7,15.0],[42.5,13.8],[43.0,13.1],[43.3,12.6],[43.5,12.3],[44.3,12.0],[45.8,11.7]],
  cape: [[16,-32],[16.5,-33.5],[17.3,-34.8],[18.3,-35.5],[19.6,-35.8],[21,-35.6],[22.5,-35.0],[23.2,-34.6]],
  dover: [[-0.5,50.2],[0.2,50.5],[0.9,50.8],[1.5,51.0],[1.9,51.35],[2.5,51.9],[3.2,52.5]],
+ arctic: [[33,73],[45,74.5],[60,78],[80,80.5],[100,81.5],[120,79],[140,77],[160,74.5],[175,74],[-172,73],[-168,70],[-168.5,67]],
  ulsan: [[130.0,34.95],[129.85,35.05],[129.65,35.2],[129.55,35.32],[129.48,35.42],[129.42,35.47]],
 };
 
@@ -28,7 +38,7 @@ export function passageSample(points: THREE.Vector3[], progress: number) {
 export function makePassageTraffic(region:string, project:(p:number[])=>number[], singleShip=false) {
  const group=new THREE.Group();group.name='Illustrative_passage_traffic';
  const points=passagePaths[region].map(p=>{const [x,y]=project(p);return new THREE.Vector3(x,.45,-y)});
- const route=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineDashedMaterial({color:'#b5e9e3',dashSize:1.2,gapSize:.75,transparent:true,opacity:.85,depthTest:false}));route.computeLineDistances();route.renderOrder=200;group.add(route);
+ const route=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineDashedMaterial({color:'#b5e9e3',dashSize:1.2,gapSize:.75,transparent:true,opacity:.85,depthTest:false}));route.name='Illustrative_route_'+region;route.computeLineDistances();route.renderOrder=200;group.add(route);
  // The 1:10m coastline omits the canal. A visibly exaggerated blue ribbon
  // marks the illustrative passage, never a surveyed waterway or depth map.
  if(region==='suez')for(let i=0;i<points.length-1;i++){

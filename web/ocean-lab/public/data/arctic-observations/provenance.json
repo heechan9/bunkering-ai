@@ -1,0 +1,28 @@
+{
+  "date": "2026-01-15",
+  "time": "2026-01-15T00:00:00Z",
+  "dataset": "NOAA/NSIDC NRT Climate Data Record V3, Northern Hemisphere",
+  "variable": "cdr_seaice_conc",
+  "units": "fraction (0\u20131)",
+  "crs": "EPSG:3411",
+  "coordinateUnits": "m",
+  "nativeGridSpacingMeters": 25000,
+  "samplingStride": 8,
+  "sampleSpacingMeters": 200000,
+  "samplingMethod": "Every eighth original grid center in each axis; not spatial aggregation or interpolation. Each value represents its native 25 km cell, not the whole 200 km gap.",
+  "source": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/nsidcG10016v3nh1day.csv?cdr_seaice_conc[(2026-01-15T00:00:00Z)][0:8:447][0:8:303]",
+  "productUrl": "https://nsidc.org/data/g10016/versions/3",
+  "doi": "https://doi.org/10.7265/j0z0-4h87",
+  "license": "No constraints on data access or use (ERDDAP metadata). NSIDC requests citation of the data set.",
+  "citation": "Meier, W. N., Fetterer, F., Windnagel, A. K., Stewart, J. S. & Stafford, T. (2024). Near-Real-Time NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration. (G10016, Version 3). National Snow and Ice Data Center. https://doi.org/10.7265/j0z0-4h87. Subset: northern hemisphere, 2026-01-15, every eighth grid cell in each axis. Accessed 2026-10-14.",
+  "retrievedAt": "2026-10-14T10:33:46.609628+00:00",
+  "counts": {
+    "downloadedGridPoints": 2128,
+    "validCells": 856,
+    "excludedNonfiniteOrMissing": 1272,
+    "excludedOutsideValidRange": 0,
+    "positiveConcentrationCells": 330,
+    "zeroConcentrationCells": 526
+  },
+  "availabilityNote": "Historical snapshot, not current conditions or contemporaneous with July\u2013August 2026 research-vessel track. Official NSIDC V3 page says retired June 2026 and lists coverage through January 15, 2026. ERDDAP advertises time_coverage_end February 22, 2026, but both February 21 and 22 returned 2128 missing samples. January 15 returned usable values and is the newest usable date in the bounded checks, not proven latest valid date. An August 3, 2025 check also returned valid data. V3 archive root returned HTTP 404."
+}
