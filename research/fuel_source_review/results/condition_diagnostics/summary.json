@@ -640,16 +640,7 @@
     "Nearest-neighbour support thresholds are research heuristics, not a deployment authorization."
   ],
   "hanbada": {
-    "selected_days": 7,
-    "train_n": 4,
-    "test_n": 3,
-    "train_speed_range": [
-      10.25,
-      14.86
-    ],
-    "test_speed_supported_n": 2,
-    "test_speed_outside_n": 1,
-    "full_feature_gate": "not_evaluable_without_aligned_wind_draught_STW",
-    "decision": "seven_daily_rows_insufficient_for_validated_rejection_rule"
+    "status": "withheld_from_public_distribution",
+    "decision": "not_validated_for_operating_use"
   }
 }

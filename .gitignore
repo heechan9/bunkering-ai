@@ -17,3 +17,7 @@ handoff_notes/
 
 # Real (non-public) port-call timing inputs/results stay local; see research/port_call_time/INTAKE.md (git-ignore does not affect already-tracked files)
 research/port_call_time/private/
+
+# Private vessel inputs and derived outputs must never be published
+private/
+private_backups/

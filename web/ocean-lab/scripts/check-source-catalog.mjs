@@ -12,7 +12,7 @@ for(const lang of ['ko','en']){
  const exports={};
  vm.runInNewContext(code,{exports,require:path=>path==='@/lib/locale'?{useLocale:()=>({lang})}:path==='@/public/data/source-catalog.json'?catalog:require(path)});
  const html=renderToStaticMarkup(React.createElement(exports.default));
- assert.equal((html.match(/class="source-catalog-card"/g)||[]).length,4);
+ assert.equal((html.match(/class="source-catalog-card"/g)||[]).length,3);
  for(const source of catalog.sources){assert(html.includes(source.title[lang]));assert(html.includes(source.url));assert(html.includes(source.sha256));}
  assert(html.includes('download="bunkering-source-catalog.json"'));
  assert(html.includes(lang==='ko'?'남은 확인사항':'Still needed'));

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from decimal import Decimal, InvalidOperation
 import hashlib
 import json
@@ -118,7 +119,7 @@ def review_cells(sheets: dict, sha256: str) -> dict:
         'schema': 'hanbada-ab-log-review/v2', 'source_sha256': sha256,
         'record_date': date, 'voyage_id': voyage, 'unit': 'M/T',
         'status': 'review_pending', 'source_kind': 'provided_vessel_record',
-        'reported_year': 2025, 'file_year': int(date[:4]) if date[:4].isdigit() else None,
+        'reported_year': None, 'file_year': int(date[:4]) if date[:4].isdigit() else None,
         'year_confirmation': 'pending',
         'opening_rob': str(opening), 'closing_rob': str(closing), 'consumption': str(consumed),
         'supply': None, 'supply_record': 'blank' if not supply_cells else 'present_requires_review',
@@ -143,17 +144,16 @@ def review_cells(sheets: dict, sha256: str) -> dict:
     return apply_provider_confirmation(result)
 
 
-CONFIRMED_SOURCE_SHA256 = 'eaf7945109e2675ba8dbd6716d357f4babe737c6f36195f3a8f4da8c21af6665'
+CONFIRMED_SOURCE_SHA256 = os.environ.get('PRIVATE_AB_LOG_SHA256', '')
 
 
 def apply_provider_confirmation(result: dict) -> dict:
     """Apply correspondence only to the exact workbook, never infer from the template."""
-    if result['source_sha256'] != CONFIRMED_SOURCE_SHA256:
+    if not CONFIRMED_SOURCE_SHA256 or result['source_sha256'] != CONFIRMED_SOURCE_SHA256:
         return result
     result.update({
         'status': 'provider_clarified_reconciliation_pending',
-        'reported_year': 2026,
-        'initial_relay_year': 2025,
+        'reported_year': result.get('file_year'),
         'year_confirmation': 'confirmed_by_provider',
         'record_date_role': 'monthly_submission_date',
         'consumption_basis': 'opening_rob_minus_closing_rob',
@@ -166,11 +166,11 @@ def apply_provider_confirmation(result: dict) -> dict:
         'sheet1_status': 'excluded_provider_confirmed_unrelated',
         'conversion_factor_applied': None,
         'rob_time_basis': {
-            'opening': '2026-05-06 approximately 15:54 (S/B ENG)',
-            'closing': 'voyage end approximately 13:00',
+            'opening': 'private provider estimate; exact timestamp withheld',
+            'closing': 'private provider estimate; exact timestamp withheld',
             'certainty': 'provider_estimate_not_verified_timestamp',
         },
-        'noon_record_explanation': 'provider_tentatively_attributes_May31_underway_record_to_berthing_at_noon',
+        'noon_record_explanation': 'provider_tentative_explanation; exact date withheld',
         'publication_scope': 'citation_and_aggregates_allowed_original_workbook_not_public',
         'provider_evidence': 'docs/technical/hanbada_provider_clarification.md',
     })

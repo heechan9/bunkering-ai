@@ -39,7 +39,7 @@ def build(root=ROOT):
                 raise ValueError(f'Missing localized source metadata: {field}')
         source['bytes'] = len(raw)
         source['url'] = f"https://github.com/{config['repository']}/blob/{config['revision']}/{path.as_posix()}"
-    if seen != {'simulation', 'upa', 'maritime_review', 'kmou'}:
+    if seen != {'simulation', 'upa', 'maritime_review'}:
         raise ValueError('Source coverage differs')
     return config
 
@@ -52,7 +52,7 @@ def main():
     if args.check:
         if json.loads((ROOT / OUTPUT).read_text(encoding='utf-8')) != expected:
             raise SystemExit('Source catalog is stale; regenerate after review')
-        print('PASS: 4 source records match reviewed evidence')
+        print('PASS: 3 source records match reviewed evidence')
     else:
         (ROOT / OUTPUT).write_text(json.dumps(expected, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
