@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          python -m pytest -q --junitxml=test-results/pytest.xml 2>&1 | tee test-results/pytest.log
+          python -m pytest -q --strict-config --strict-markers -W error --junitxml=test-results/pytest.xml 2>&1 | tee test-results/pytest.log
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
