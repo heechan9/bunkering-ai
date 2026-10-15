@@ -44,4 +44,4 @@ Difference = `sum(rule cost − optimum cost) / sum(rule cost) × 100`. The sepa
 
 Results in [validation/windows_20261015](validation/windows_20261015/) are local integration evidence. The handoff and development cases have already been used to identify and fix the solver counterexample; they are not independent future confirmation data. No real prices, operational records, private identifiers, forecasts, route optimization, multi-grade contracts, quality/tax/credit constraints, or causal realized-savings evaluation are included.
 
-See [LOCAL_INTEGRATION.md](LOCAL_INTEGRATION.md) for executed checks, initially failed integration attempts, environment differences, and final status. No remote PR, push, merge, or web deployment is part of this integration task.
+See [LOCAL_INTEGRATION.md](LOCAL_INTEGRATION.md) for the initial local integration checks, failed baseline attempts, and environment differences. The subsequent approved Windows fixes and current validation status are recorded in [WINDOWS_COMPATIBILITY.md](WINDOWS_COMPATIBILITY.md). This branch is prepared for Draft PR review; no model replacement, merge, or web deployment is included.

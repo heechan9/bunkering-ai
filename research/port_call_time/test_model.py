@@ -146,7 +146,8 @@ def test_readiness_cannot_hide_inside_cleanup_or_cargo_work():
 
 def test_committed_sensitivity_csv_is_regenerated_exactly_with_zero_readiness():
     # the 63 synthetic rows keep departure readiness 0; compare values, not line endings
-    committed = list(csv.DictReader(open(Path(__file__).with_name('sensitivity.csv'), newline='', encoding='utf-8')))
+    with Path(__file__).with_name('sensitivity.csv').open(newline='', encoding='utf-8') as source:
+        committed = list(csv.DictReader(source))
     regenerated = [{k: str(v) for k, v in row.items()} for row in scenarios()]
     assert len(committed) == len(regenerated) == 63
     assert committed == regenerated

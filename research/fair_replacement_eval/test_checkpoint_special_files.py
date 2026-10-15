@@ -17,9 +17,6 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 
-pytestmark = pytest.mark.skipif(not hasattr(os, "mkfifo"), reason="named pipes need a POSIX platform")
-
-
 def run_cli(module: str, checkpoint: Path, out: Path, *extra: str) -> subprocess.CompletedProcess:
     cmd = [sys.executable, "-m", f"research.fair_replacement_eval.{module}", "--checkpoint", str(checkpoint), "--out", str(out), *extra]
     return subprocess.run(cmd, cwd=ROOT, env={**os.environ, "PYTHONPATH": str(ROOT)}, capture_output=True, text=True, timeout=90)
@@ -33,6 +30,7 @@ def make_special(kind: str, tmp_path: Path) -> Path:
     return Path("/dev/zero")
 
 
+@pytest.mark.skipif(not hasattr(os, "mkfifo"), reason="named pipes need a POSIX platform")
 @pytest.mark.parametrize("kind", ["fifo", "device"])
 def test_evaluate_records_a_non_regular_checkpoint_and_stops_before_any_worker(kind, tmp_path):
     if kind == "device" and not Path("/dev/zero").exists():
@@ -51,6 +49,8 @@ def test_directories_still_fail_with_the_original_error_name(tmp_path):
 
     directory = tmp_path / "dir"
     directory.mkdir()
-    evaluate.ensure_hashable_checkpoint(directory)  # allowed through: open() reports IsADirectoryError, as #108 tests expect
+    evaluate.ensure_hashable_checkpoint(directory)  # directory classification belongs to the hashing preflight
+    with pytest.raises(IsADirectoryError):
+        evaluate.file_sha256(directory)
     with pytest.raises(FileNotFoundError):
         evaluate.ensure_hashable_checkpoint(tmp_path / "missing")

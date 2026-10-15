@@ -1,5 +1,7 @@
 # Local integration and verification — 2026-10-15
 
+This preserves the **initial local integration phase** and its six known existing Windows/strict failures. The subsequently authorized fixes and current validation supersede its remaining-blocker status; see [WINDOWS_COMPATIBILITY.md](WINDOWS_COMPATIBILITY.md). Historical failed logs and the clean-main comparison have not been removed.
+
 Branch: `research/procurement-baseline-integration-20261015`.
 Baseline: latest fetched main `25f89464db42b8e71b4f56ba51d05198e5d3921e`.
 Scope: local preparation only; no remote push, PR, merge, or web deployment.

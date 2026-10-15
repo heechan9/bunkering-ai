@@ -27,13 +27,25 @@ GENEROUS = 10.0  # for tests where every call is expected to answer (no flakines
 
 
 def pid_alive(pid: int) -> bool:
-    try:
-        os.kill(pid, 0)
-    except ProcessLookupError:
-        return False
-    except PermissionError:
-        return True
-    return True
+    """Inspect our multiprocessing workers without sending a Windows kill signal."""
+    return any(child.pid == pid and child.is_alive() for child in mp.active_children())
+
+
+def test_worker_liveness_probe_distinguishes_owned_children_without_signals(monkeypatch):
+    from types import SimpleNamespace
+
+    def forbidden(*args):
+        raise AssertionError("Liveness inspection must not signal a process")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(os, "kill", forbidden)
+        patch.setattr(mp, "active_children", lambda: [
+            SimpleNamespace(pid=123, is_alive=lambda: True),
+            SimpleNamespace(pid=124, is_alive=lambda: False),
+        ])
+        assert pid_alive(123)
+        assert not pid_alive(124)
+        assert not pid_alive(125)
 
 
 def run(factory, seeds=SEEDS[:1], *, timeout=TIMEOUT, max_consecutive=3, **kwargs):
