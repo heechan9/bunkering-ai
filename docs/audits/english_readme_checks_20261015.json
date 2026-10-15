@@ -1,0 +1,89 @@
+{
+  "source_revision": "8ea74a952c9d0fd60875bde152c5196e81d3b8da",
+  "tables": 13,
+  "data_rows": 105,
+  "rows_per_table": [
+    30,
+    3,
+    5,
+    4,
+    5,
+    4,
+    6,
+    6,
+    2,
+    4,
+    5,
+    13,
+    18
+  ],
+  "table_source_links": 68,
+  "local_references": 106,
+  "originals_preserved": 6,
+  "quick_start_boundaries_reuse_preserved": true,
+  "images": [
+    {
+      "path": "docs/assets/bunkering-project-hero-en.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "sha256": "5e662605c4a47218ea45dcdccf31c4bd5071f36e8292f59dec3493e4ef418958"
+    },
+    {
+      "path": "docs/assets/international-evidence-flow-en.png",
+      "size": [
+        1370,
+        1148
+      ],
+      "mode": "RGBA",
+      "sha256": "417d8ec63138d55c5410ae2d3cdebefa9cf0c30174fb88bcda626520fcf7caa7"
+    },
+    {
+      "path": "docs/assets/international-evidence-flow-ko.png",
+      "size": [
+        760,
+        637
+      ],
+      "mode": "RGBA",
+      "sha256": "3e355457ca4a6a13ba86477431089f17d2f9d67b4c584290e6ca1118030f9a9b"
+    },
+    {
+      "path": "docs/assets/international-evidence-pipeline-en.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "sha256": "db5d8c2ff142649f6fde5184e5c1b11ea00b45ae68a82a81cf921cdbb3528387"
+    },
+    {
+      "path": "docs/assets/ocean-lab-live-en-compare-20261015.png",
+      "size": [
+        1440,
+        2686
+      ],
+      "mode": "RGB",
+      "sha256": "e5bec6a307da87908bc1d4ebac306ad3371af420c618722abe968a232cd2e5a4"
+    },
+    {
+      "path": "docs/assets/ocean-lab-live-en-replay-20261015.png",
+      "size": [
+        1440,
+        1080
+      ],
+      "mode": "RGB",
+      "sha256": "b40a098caeffbad6792724730720117e51a77226c8f0e176ee54b23b34d771e0"
+    },
+    {
+      "path": "docs/assets/ocean-lab-live-en-route-20261015.png",
+      "size": [
+        1440,
+        1976
+      ],
+      "mode": "RGB",
+      "sha256": "2290b49bc9edb3e8261b54dd0121565cd57b7f4683ea152a59ace94c36730dd3"
+    }
+  ]
+}
