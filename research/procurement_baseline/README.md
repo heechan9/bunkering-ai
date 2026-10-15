@@ -30,6 +30,8 @@ The benchmark stores the specification and **every generated input before solvin
 
 ## Reproduced results and boundaries
 
+`verify_handoff` reads the committed reviewed ZIP directly, so no expanded local-only handoff files are required in a fresh checkout.
+
 The seed 20261015 generates three blocks of 40 cases each. Reference status: **86 optimal, 34 infeasible, no unresolved/error/contradiction results**. Policy feasible counts: minimum required 75, next cheaper 79, departure concentrated 79. Among the 86 proven feasible cases, policy failure counts are 11/7/7; failure on an infeasible problem is reported separately.
 
 All-policy common feasible denominator: **75 cases**, optimum total **1,750,550 USD**.

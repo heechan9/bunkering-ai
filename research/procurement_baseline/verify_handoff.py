@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from zipfile import ZipFile
 
 import argparse
 root=Path(__file__).resolve().parent
@@ -10,8 +11,13 @@ args=parser.parse_args()
 run=args.input_dir.resolve()
 if args.output.exists(): raise FileExistsError(args.output)
 load=lambda p: json.loads(p.read_text(encoding='utf-8'))
-assert load(run/'cases.json') == load(root/'handoff/cases.json')
-a=load(run/'results.json');b=load(root/'handoff/results.json')
+# Expanded handoff files are local-only; the exact reviewed archive is committed.
+with ZipFile(root/'provenance/reviewed_bundle.zip') as archived:
+    prefix='procurement_baseline_comparison_20261015/'
+    original_cases=json.loads(archived.read(prefix+'cases.json'))
+    original_results=json.loads(archived.read(prefix+'results.json'))
+assert load(run/'cases.json') == original_cases
+a=load(run/'results.json');b=original_results
 assert len(a)==len(b)==120
 max_delta=0.
 for actual,expected in zip(a,b):
