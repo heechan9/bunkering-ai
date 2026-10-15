@@ -10,7 +10,7 @@ parser.add_argument('--spec',type=Path,help='Specification when auditing legacy 
 args=parser.parse_args()
 P=args.input_dir.resolve(); OUT=args.output_dir.resolve()
 OUT.mkdir(parents=True,exist_ok=False)
-cases=json.load(open(P/'cases.json'));rows=json.load(open(P/'results.json'));summary=json.load(open(P/'summary.json'))
+cases=json.loads((P/'cases.json').read_text(encoding='utf-8'));rows=json.loads((P/'results.json').read_text(encoding='utf-8'));summary=json.loads((P/'summary.json').read_text(encoding='utf-8'))
 assert len(cases)==len(rows)==120
 assert len({x['case']['case_id'] for x in cases})==120
 assert Counter(x['block'] for x in cases)==dict.fromkeys(['zero_fees_unlimited','monetary_fees','limited_supply_minimum'],40)
@@ -62,5 +62,5 @@ for block in ['ALL']+list(dict.fromkeys(x['block'] for x in rows)):
 import ast,inspect
 calls=[ast.unparse(n.func) for n in ast.walk(ast.parse(inspect.getsource(b.policy))) if isinstance(n,ast.Call)]
 assert not any(any(word in f for word in ['solve','milp','linprog','enumerate']) for f in calls)
-report=dict(status='PASS',checks=dict(checks),all=summary['ALL'],policy_calls=calls)
+report=dict(status='PASS',checks=dict(checks),all=summary['ALL'],summary=summary,policy_calls=calls)
 (OUT/'independent_checks.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))

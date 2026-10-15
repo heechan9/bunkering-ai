@@ -1,20 +1,68 @@
+"""Render actual summary values; verification requires matching audit evidence."""
+import argparse
 import json
 from pathlib import Path
-import argparse
-parser=argparse.ArgumentParser(description='Generate a report from one reproduced result directory')
-parser.add_argument('--input-dir',type=Path,required=True)
-parser.add_argument('--output',type=Path,help='Optional new report path; default is INPUT_DIR/REPORT_KO.md')
-args=parser.parse_args()
-R=args.input_dir.resolve();s=json.loads((R/'summary.json').read_text(encoding='utf-8'))
-report_path=args.output or R/'REPORT_KO.md'
-if report_path.exists(): raise FileExistsError('Report exists; choose a new report path')
-labels={'minimum_required':'최소필요량','next_cheaper':'다음저가항우선','departure_concentrated':'출항집중구매'}
-a=['# 합성 정적 구매정책 개발 비교','', '## 결론', '합성 STATIC_KNOWN 120건을 사전 고정한 seed와 생성규칙으로 전부 보존했다. 모든 정책은 같은 전체 가격·수요·공급정보와 초기재고·탱크용량·중간 reserve·종착재고 equality·수수료·최소급유·공급한도를 적용받았다. 실제 운항 causal 평가, 미사용 holdout, AI 실측 절감 검증이 아니다.', '', '수정 전 MILP는 feasible 사례 1건을 잘못 INFEASIBLE로 반환했다. 기존 원본은 보존하고 복사본의 두 MILP 호출에 presolve=False만 설정했다. 수정 후 전체 120건에 대해 정차조합 열거 LP의 상태 및 최적비용과 일치했다. 환경 한정 우회 수정이며 내부 수치 원인을 완전히 규명했다는 뜻은 아니다. 상세 증거는 PATCH_NOTES_KO.md와 solver_diagnostic.json에 있다.', '', '수정 후 기준: 최적해 86/120(71.67%), 원문제 불가능 34/120(28.33%), solver error/limit/audit failure/참조불일치 0. 전체 정책 공통 feasible은 75/120이다. 정책 실패는 원문제 불가능과 구분해야 한다.', '', '## 블록별 집계']
-a.insert(9, '동일 공통분모 75건의 비용가중 차이: '+ '; '.join(f"{labels[p]} {d['common_cost_weighted_difference_pct']:.4f}% (규칙 ${d['common_policy_total_usd']:,.2f}, 최적 ${d['common_optimum_total_usd']:,.2f})" for p,d in s['ALL']['policies'].items())+'. 이 동일분모 결과를 우선 비교한다.')
-for block,v in s.items():
- a.extend(['',f'### {block}', f"전체 {v['n']}건; 기준상태 {v['reference_status']}; 전체 정책 공통 feasible {v['common_feasible_n']}건."])
- for p,d in v['policies'].items():
-  a.append(f"- {labels[p]}: 성공 {d['feasible_n']}/{v['n']} ({100*d['feasible_rate']:.2f}%), 전체 실패 {d['failure_n']} ({100*d['failure_rate']:.2f}%). 기준 feasible인데 정책실패 {d['policy_failure_on_proven_feasible_n']}건, 원문제 infeasible에서 실패 {d['failure_on_proven_infeasible_n']}건. Pairwise 공통분모 {d['pairwise_feasible_n']}건: 규칙 총비용 ${d['pairwise_policy_total_usd']:,.2f}, 최적 총비용 ${d['pairwise_optimum_total_usd']:,.2f}, 차이 ${d['pairwise_difference_usd']:,.2f}, 비용가중 차이 {d['pairwise_cost_weighted_difference_pct']:.4f}%; 최적 일치 {d['optimal_match_n']}건. 전체정책 공통분모에서 규칙 ${d['common_policy_total_usd']:,.2f}, 최적 ${d['common_optimum_total_usd']:,.2f}.")
-a.extend(['', '## 해석과 이미 최적인 조건', '- 수수료·최소급유가 없고 공급이 충분한 블록에서는 다음저가항우선이 feasible 34건 모두 최적과 일치했다. 이 결과는 해당 사례집에 대한 관측이며 모든 reserve/정보구조에 대한 일반적 정리가 아니다.', '- 단위시험의 모든 가격동률, 수수료 0 조건에서는 구매 총량이 고정되어 feasible 규칙들은 동일 비용이다. 가격역전 [9,1,9] 시험에서도 다음저가항우선이 최적과 일치한다.', '- 정적 LP/MILP는 같은 제약 아래 최소비용을 찾는다. feasible 규칙보다 나쁘지 않은 것은 설계상 당연하며 AI 우위가 아니다. 제한공급·최소급유 블록의 낮은 pairwise 차이는 실패 사례를 제외한 분모의 특성도 반영하므로 성공률과 함께 읽어야 한다.', '- 비용가중 차이는 sum(규칙비용−최적비용)/sum(규칙비용)×100이다. 사례별 백분율 단순평균이 아니다. 각 정책의 pairwise 분모가 다르므로 정책 간 비율만 비교해 순위를 매기면 안 된다.', '- 요청량이 minlift를 만족하지 못하거나 terminal equality 등에 실패한 정책은 솔버로 수리하지 않았다. 실패 원장 비용은 results.json/csv에 남기되 성공 비용 집계에는 섞지 않았다.', '', '## 재현 및 파일', '- python -m research.procurement_baseline.benchmark --output-dir NEW_DIRECTORY: 같은 seed로 120건 생성/보존, 수정 솔버 및 정책 실행, 전수 정차조합 열거검산, JSON/CSV 집계.', '- python -m pytest tests/test_procurement_baseline_core.py tests/test_procurement_baseline_policies.py -q: 정책 경계조건 8개 및 solver 반례 회귀 1개. 원본 27개 테스트도 수정 모듈을 명시 로드해 통과. 총 36개 통과.', '- spec.json, ALGORITHMS_KO.md, PREREGISTERED_SHA256.txt: 최초 결과 계산 전 저장한 생성/정책 정의. 수치오류 발견에 따른 사후 변경은 PATCH_NOTES_KO.md에 공개.', '- cases.json: 120개 전체 입력. results.json: 정책별 전체 원장·실패원인·해와 독립검산. summary.json/results.csv: 집계 및 평탄표. original_solver_* 및 first_run_results.json: 수정 전 결과.', '- vendor/procurement.py: 원본 복사본. patched/procurement.py: 옵션만 수정한 복사본. environment.json 및 SHA256SUMS.txt: 환경과 파일해시.', '- 이 보고서는 제한된 개발 benchmark다. 현실 운항 불확실성, ETA/수요예측 오차, 계약·품질·세금·신용·다유종·시간대 제약 및 실제 실현절감은 평가하지 않았다.'])
-report_path.parent.mkdir(parents=True,exist_ok=True)
-report_path.write_text(('\n'.join(a)+'\n').replace('vendor/procurement.py','reference_original.py').replace('patched/procurement.py','procurement.py'),encoding='utf-8')
+
+
+def build_report(summary, audit=None):
+    overall = summary['ALL']
+    n = overall['n']
+    if not isinstance(n, int) or n <= 0:
+        raise ValueError('ALL.n must be a positive integer')
+    status = overall['reference_status']
+    if sum(status.values()) != n:
+        raise ValueError('Reference status counts must sum to ALL.n')
+    if audit is not None and (audit.get('status') != 'PASS' or audit.get('summary') != summary):
+        raise ValueError('Audit failed or does not match the input summary')
+    lines = ['# Synthetic procurement comparison', '',
+             'Synthetic STATIC_KNOWN development data with identical full information; '
+             'not unused holdout evidence, AI superiority, or realized vessel savings.', '',
+             f"Cases: {n}. Reference status: {status}. "
+             f"All-policy common feasible: {overall['common_feasible_n']}/{n}.", '',
+             ('Independent ledger/summary audit: PASS (matching supplied audit evidence). '
+              'This report does not independently certify stop-pattern enumeration.'
+              if audit is not None else
+              'Verification: UNVERIFIED. No independent audit evidence supplied; '
+              'summary values alone do not establish ledger or enumeration agreement.'), '',
+             '## Reported aggregates']
+    for block, values in summary.items():
+        lines += ['', f'### {block}',
+                  f"Cases: {values['n']}; reference status: {values['reference_status']}; "
+                  f"common feasible: {values['common_feasible_n']}."]
+        for policy, data in values['policies'].items():
+            lines += ['', f'#### {policy}', '', '| Metric | Reported value |', '|---|---:|']
+            for metric, value in data.items():
+                lines.append(f'| {metric} | {json.dumps(value, ensure_ascii=False)} |')
+    lines += ['', '## Interpretation and evidence',
+              'Cost-weighted difference = sum(rule cost - optimum cost) / sum(rule cost) * 100. '
+              'Pairwise and all-policy common denominators differ; compare them separately.',
+              'Feasible rules being no cheaper than a constrained optimum is expected by construction. '
+              'Failed policies are not repaired and failed-ledger costs are excluded from feasible aggregates.',
+              'The historical solver counterexample and presolve workaround are documented in '
+              'PATCH_NOTES_KO.md and the unchanged reviewed ZIP. They are not a diagnosis of this input run.',
+              'This simplified fixed-route, single-grade benchmark does not evaluate forecasts, '
+              'route optimization, contracts, quality, tax, credit, or causal operational savings.',
+              'Run benchmark and audit_results into new directories; preserve cases.json, results.json, '
+              'summary.json, spec.json and environment.json alongside the audit.']
+    return '\n'.join(lines) + '\n'
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--input-dir', type=Path, required=True)
+    parser.add_argument('--output', type=Path)
+    parser.add_argument('--audit', type=Path, help='Optional independent_checks.json for this summary')
+    args = parser.parse_args()
+    output = args.output or args.input_dir / 'REPORT_KO.md'
+    if output.exists():
+        raise FileExistsError('Report exists; choose a new report path')
+    summary = json.loads((args.input_dir / 'summary.json').read_text(encoding='utf-8'))
+    audit = json.loads(args.audit.read_text(encoding='utf-8')) if args.audit else None
+    report = build_report(summary, audit)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with output.open('x', encoding='utf-8') as stream:
+        stream.write(report)
+
+
+if __name__ == '__main__':
+    main()

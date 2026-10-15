@@ -6,7 +6,7 @@ It does not replace `research/ntnu_bunkering`, the official normalized SCI envir
 
 ## Preserved evidence and solver correction
 
-The reviewed user-downloaded input ZIP is preserved unchanged at `provenance/reviewed_bundle.zip` (258,193 bytes; SHA-256 `863b074677d43e6aae774f13cde77a02eb145f682fb98142732b4a25f5b6d923`). `provenance/integration_manifest.json` records the integration baseline and exact-copy hashes. `handoff/` retains the supplied reports, all 120 cases/results, preregistration records, original solver outputs, first-run results, and independent review. Its `SHA256SUMS.txt` describes the original ZIP members; the full archive includes the source/test members that are not duplicated in `handoff/`.
+The reviewed user-downloaded input ZIP is preserved unchanged at `provenance/reviewed_bundle.zip` (258,193 bytes; SHA-256 `863b074677d43e6aae774f13cde77a02eb145f682fb98142732b4a25f5b6d923`). `provenance/integration_manifest.json` records the integration baseline and exact-copy hashes. The full cases/results, preregistration, original solver outputs, first-run records, independent review, and SHA256SUMS.txt are members of that committed ZIP. Only selected supplied reports and summaries are duplicated under `handoff/` in a fresh checkout; the expanded full handoff on the integration laptop is ignored and is not required.
 
 `reference_original.py` is a byte-identical copy of the supplied original solver; `procurement.py` is a byte-identical copy of the reviewed patched solver. The only solver correction relative to the original is `presolve=False` in **both** MILP calls. Objective, constraints, tolerances, and policy rules are unchanged. Read [PATCH_NOTES_KO.md](PATCH_NOTES_KO.md), [ALGORITHMS_KO.md](ALGORITHMS_KO.md), and the [supplied report](handoff/REPORT_KO.md).
 
@@ -22,11 +22,13 @@ python -m research.procurement_baseline.benchmark --output-dir PATH_TO_NEW_RUN
 python -m research.procurement_baseline.audit_results --input-dir PATH_TO_NEW_RUN --output-dir PATH_TO_NEW_AUDIT
 python -m research.procurement_baseline.verify_handoff --input-dir PATH_TO_NEW_RUN --output PATH_TO_NEW_COMPARISON.json
 python -m research.procurement_baseline.diagnose_solver --output PATH_TO_NEW_DIAGNOSTIC.json
-python -m research.procurement_baseline.generate_report --input-dir PATH_TO_NEW_RUN
+python -m research.procurement_baseline.generate_report --input-dir PATH_TO_NEW_RUN --audit PATH_TO_NEW_AUDIT/independent_checks.json
 python -m pytest -q --strict-config --strict-markers -W error
 ```
 
 The benchmark stores the specification and **every generated input before solving**. It runs all cases without exclusion or resampling, saves all policy failures, and checks the optimizer against independent stop-pattern enumeration. Output directories must be new; existing directories are rejected. Diagnostics/report generation reject an existing output file. Archived evidence is never used as the default output location. `audit_results` accepts `--spec research/procurement_baseline/spec.json` when auditing the first integration run, which predates the additional copied-spec output file. These commands use package imports; no cloud filesystem path or `sys.path` mutation is required.
+
+The generated report derives every count and policy metric from the supplied summary. Without `--audit`, it explicitly marks verification as UNVERIFIED. A supplied audit must report PASS and contain the exact complete summary; missing, failed, stale, or mismatched evidence is rejected before writing. The report does not independently certify enumeration agreement. The default report filename remains `REPORT_KO.md` for CLI compatibility; newly generated reports use English, while supplied Korean evidence is preserved unchanged.
 
 ## Reproduced results and boundaries
 
@@ -44,6 +46,6 @@ All-policy common feasible denominator: **75 cases**, optimum total **1,750,550 
 
 Difference = `sum(rule cost − optimum cost) / sum(rule cost) × 100`. The separate pairwise denominators are 75/79/79; their rates must not be used interchangeably with the common-75 rates. In the fee-free, unlimited-supply block, next-cheaper matched the optimum on all 34 feasible cases. A constrained mathematical optimum being no worse than feasible rules is expected by construction and is not evidence of AI benefit. Failed policies are not repaired by the solver, and failed-ledger costs do not enter feasible-cost aggregates.
 
-Results in [validation/windows_20261015](validation/windows_20261015/) are local integration evidence. The handoff and development cases have already been used to identify and fix the solver counterexample; they are not independent future confirmation data. No real prices, operational records, private identifiers, forecasts, route optimization, multi-grade contracts, quality/tax/credit constraints, or causal realized-savings evaluation are included.
+`validation/windows_20261015/` is an ignored, local-only integration output directory, absent from a fresh checkout. Committed validation summaries are in WINDOWS_COMPATIBILITY.md, WINDOWS_STRICT_RESULT.txt, and verification_summary.json; full reviewed source evidence is in the ZIP. The handoff and development cases have already been used to identify and fix the solver counterexample; they are not independent future confirmation data. No real prices, operational records, private identifiers, forecasts, route optimization, multi-grade contracts, quality/tax/credit constraints, or causal realized-savings evaluation are included.
 
 See [LOCAL_INTEGRATION.md](LOCAL_INTEGRATION.md) for the initial local integration checks, failed baseline attempts, and environment differences. The subsequent approved Windows fixes and current validation status are recorded in [WINDOWS_COMPATIBILITY.md](WINDOWS_COMPATIBILITY.md). This branch is prepared for Draft PR review; no model replacement, merge, or web deployment is included.
