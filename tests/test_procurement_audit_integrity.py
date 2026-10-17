@@ -180,3 +180,141 @@ def test_reference_status_cannot_contradict_valid_solution(data, status):
     data[2] = recompute_summary(data[1])
     with pytest.raises(AuditError):
         audit_artifacts(*data)
+
+
+@pytest.mark.parametrize('attack', ['B1', 'B2', 'B3', 'B4', 'B5'])
+def test_cross_artifact_attacks_with_recomputed_summary(data, attack):
+    row = next(r for r in data[1] if r['case_id'] == 'monetary_fees_003')
+    if attack in ('B1', 'B2'):
+        row['reference'] = {'status': 'LIMIT_REACHED' if attack == 'B1' else 'INFEASIBLE',
+                            'message': 'time limit'}
+    elif attack == 'B3':
+        row['reference']['status'] = 'REFERENCE_CONTRADICTION'
+    elif attack == 'B4':
+        row['policies']['minimum_required'].update(status='POLICY_FAILURE', reasons=['fabricated'])
+    else:
+        policy = row['policies']['next_cheaper']
+        for key in ('q_t', 'z', 'audit'):
+            row['reference'][key] = copy.deepcopy(policy[key])
+        row['reference']['objective_usd'] = policy['audit']['total_usd']
+        assert row['reference']['objective_usd'] - row['raw_reference']['objective_usd'] == 1070
+    data[2] = recompute_summary(data[1])
+    with pytest.raises(AuditError):
+        audit_artifacts(*data)
+
+
+@pytest.mark.parametrize('raw_status', ['LIMIT_REACHED', 'INFEASIBLE', 'SOLVER_ERROR', 'LEXICOGRAPHIC_FAILED'])
+def test_legitimate_raw_failure_contradiction(data, raw_status):
+    row = next(r for r in data[1] if r['reference']['status'] == 'OPTIMAL')
+    raw = {'status': raw_status, 'message': 'recorded solver failure'}
+    if raw_status == 'LEXICOGRAPHIC_FAILED':
+        raw.update(primary_status='OPTIMAL', secondary_status='LIMIT_REACHED')
+    row['raw_reference'] = raw
+    row['reference'] = dict(raw, status='REFERENCE_CONTRADICTION')
+    data[2] = recompute_summary(data[1])
+    assert audit_artifacts(*data)['status'] == 'PASS'
+
+
+def test_legitimate_objective_contradiction(data):
+    row = next(r for r in data[1] if r['case_id'] == 'monetary_fees_003')
+    policy = row['policies']['next_cheaper']
+    for key in ('q_t', 'z', 'audit'):
+        row['raw_reference'][key] = copy.deepcopy(policy[key])
+    row['raw_reference']['objective_usd'] = policy['audit']['total_usd']
+    row['reference'] = dict(row['raw_reference'], status='REFERENCE_CONTRADICTION')
+    data[2] = recompute_summary(data[1])
+    assert audit_artifacts(*data)['status'] == 'PASS'
+
+
+@pytest.mark.parametrize('change', ['missing_raw', 'missing_enum', 'raw_extra', 'enum_extra',
+                                   'count_bool', 'count_zero', 'patterns', 'best_missing',
+                                   'best_shape', 'best_nonfinite', 'best_objective',
+                                   'best_infeasible', 'infeasible_best'])
+def test_raw_and_enumeration_schema(data, change):
+    row = next(r for r in data[1] if r['reference']['status'] == 'OPTIMAL')
+    enum = row['independent_stop_enumeration']
+    if change == 'missing_raw':
+        del row['raw_reference']
+    elif change == 'missing_enum':
+        del row['independent_stop_enumeration']
+    elif change == 'raw_extra':
+        row['raw_reference']['unexpected'] = 1
+    elif change == 'enum_extra':
+        enum['unexpected'] = 1
+    elif change == 'count_bool':
+        enum['feasible_patterns'] = True
+    elif change == 'count_zero':
+        enum['feasible_patterns'] = 0
+    elif change == 'patterns':
+        enum['patterns'] += 1
+    elif change == 'best_missing':
+        enum['best'] = None
+    elif change == 'best_shape':
+        enum['best']['q_t'].pop()
+    elif change == 'best_nonfinite':
+        enum['best']['q_t'][0] = float('nan')
+    elif change == 'best_objective':
+        enum['best']['objective_usd'] += 1
+    elif change == 'best_infeasible':
+        enum['best']['q_t'][0] += 1
+    else:
+        enum['status'] = 'INFEASIBLE'
+        enum['feasible_patterns'] = 0
+    with pytest.raises(AuditError):
+        audit_artifacts(*data)
+
+
+def test_audit_does_not_run_optimizers(original, monkeypatch):
+    from research.procurement_baseline import benchmark, procurement
+    def forbidden(*args, **kwargs):
+        raise AssertionError('audit must not invoke an optimizer')
+    for module, names in [(benchmark, ('solve', 'enumerate_stops')),
+                          (procurement, ('solve', 'enumerate_stops', 'linprog', 'milp'))]:
+        for name in names:
+            monkeypatch.setattr(module, name, forbidden)
+    assert audit_artifacts(*original)['status'] == 'PASS'
+
+
+def test_enumeration_unused_enabled_stop_is_valid(data):
+    # Enumeration masks permit q=0, z=1 when minimum and fixed fee are zero.
+    for item, row in zip(data[0], data[1]):
+        if row['block'] != 'zero_fees_unlimited' or row['reference']['status'] != 'OPTIMAL':
+            continue
+        best = row['independent_stop_enumeration']['best']
+        for i, qty in enumerate(best['q_t']):
+            if qty == 0 and item['case']['available'][i] and best['z'][i] == 0:
+                best['z'][i] = 1
+                assert audit_artifacts(*data)['status'] == 'PASS'
+                return
+    pytest.fail('fixture needs an unused available zero-fee stop')
+
+
+def test_forging_raw_and_reference_still_checks_enumeration(data):
+    row = next(r for r in data[1] if r['case_id'] == 'monetary_fees_003')
+    policy = row['policies']['next_cheaper']
+    for key in ('q_t', 'z', 'audit'):
+        row['raw_reference'][key] = copy.deepcopy(policy[key])
+    row['raw_reference']['objective_usd'] = policy['audit']['total_usd']
+    row['reference'] = copy.deepcopy(row['raw_reference'])
+    data[2] = recompute_summary(data[1])
+    with pytest.raises(AuditError, match='reference provenance.status'):
+        audit_artifacts(*data)
+
+
+def test_oversized_integer_is_structured_audit_error(data):
+    row = next(r for r in data[1] if r['reference']['status'] == 'OPTIMAL')
+    row['raw_reference']['q_t'][0] = 10 ** 400
+    with pytest.raises(AuditError, match='finite representable number'):
+        audit_artifacts(*data)
+
+
+def test_nonfinite_raw_audit_failed_is_intentionally_unauditable(data):
+    row = next(r for r in data[1] if r['reference']['status'] == 'OPTIMAL')
+    raw = row['raw_reference']
+    raw['status'] = 'AUDIT_FAILED'
+    raw['q_t'][0] = float('nan')
+    raw['audit'] = {'valid': False, 'errors': ['nonfinite solution']}
+    row['reference'] = dict(raw, status='REFERENCE_CONTRADICTION')
+    data[2] = recompute_summary(data[1])
+    with pytest.raises(AuditError, match='finite number required'):
+        audit_artifacts(*data)

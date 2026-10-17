@@ -22,7 +22,12 @@ def require(condition, context):
 
 
 def number(value, context):
-    require(type(value) in (int, float) and math.isfinite(value), context + ': finite number required')
+    require(type(value) in (int, float), context + ': finite number required')
+    try:
+        finite = math.isfinite(value)
+    except OverflowError as exc:
+        raise AuditError(context + ': finite representable number required') from exc
+    require(finite, context + ': finite number required')
     return value
 
 
@@ -45,7 +50,7 @@ def compare(actual, expected, context, tolerance=1e-6):
         require(abs(actual - expected) <= tolerance, context + ': numeric mismatch')
 
 
-def check_result(c, result, name, checks):
+def check_result(c, result, name, checks, *, enumeration_witness=False):
     require(type(result) is dict, name + ': result object')
     status = result.get('status')
     policy = name in b.POLICIES
@@ -81,7 +86,7 @@ def check_result(c, result, name, checks):
         if qty < -tol or qty > min(c['supply'][i], c['capacity']) * stop + tol: errors.append(f'{i}:supply/link')
         if not c['available'][i] and (qty > tol or stop > 1e-7): errors.append(f'{i}:unavailable')
         if qty < c['minimum'][i] * stop - tol: errors.append(f'{i}:minimum')
-        if qty <= tol and stop > .5: errors.append(f'{i}:ghost stop')
+        if not enumeration_witness and qty <= tol and stop > .5: errors.append(f'{i}:ghost stop')
         if min(inv, dep, after) < -tol or max(inv, dep, after) > c['capacity'] + tol: errors.append(f'{i}:inventory')
         if after < c['reserve'][i] - tol: errors.append(f'{i}:reserve')
         fuel = qty * (c['p'][i] if c['available'][i] else 0.)
@@ -104,7 +109,8 @@ def check_result(c, result, name, checks):
                 number(result[key], name + ': ' + key)
     expected = dict(valid=not errors, errors=errors, ledger=ledger, total_usd=float(cost),
                     terminal_t=float(inv), mass_residual_t=float(residual))
-    compare(result['audit'], expected, name + '.audit', tolerance=.0001)
+    if not enumeration_witness:
+        compare(result['audit'], expected, name + '.audit', tolerance=.0001)
     require(status != 'AUDIT_FAILED' or bool(errors), name + ': AUDIT_FAILED without errors')
     purchase = sum(c['d']) + c['terminal'] - c['initial']
     if policy:
@@ -119,6 +125,54 @@ def check_result(c, result, name, checks):
         checks[name + '_valid'] += 1
     checks['ledgers'] += 1
     return expected
+
+
+def check_reference_evidence(c, row):
+    """Check producer provenance relationships, not independent optimality proof.
+
+    Enumeration may contain unused enabled stops: its LP masks permit these.
+    Its best witness must still satisfy all physical and objective constraints.
+    Feasible-pattern counts are range checked, not independently enumerated.
+    """
+    raw = row.get('raw_reference')
+    require(type(raw) is dict and raw.get('status') != 'REFERENCE_CONTRADICTION', 'raw_reference: status')
+    check_result(c, raw, 'raw_reference', Counter())
+    if 'q_t' in raw:
+        require(set(raw) == {'status', 'mode', 'q_t', 'z', 'objective_usd', 'solver_message',
+                             'mip_gap', 'mip_dual_bound', 'audit'}, 'raw_reference: fields')
+        require(raw['mode'] in {'LP', 'MILP'} and type(raw['solver_message']) is str,
+                'raw_reference: solver metadata')
+    else:
+        fields = {'status', 'message'}
+        if raw['status'] == 'LEXICOGRAPHIC_FAILED':
+            fields |= {'primary_status', 'secondary_status'}
+            require(raw.get('primary_status') == 'OPTIMAL' and raw.get('secondary_status') in
+                    {'LIMIT_REACHED', 'INFEASIBLE', 'UNBOUNDED', 'SOLVER_ERROR'},
+                    'raw_reference: lexicographic metadata')
+        require(set(raw) == fields, 'raw_reference: failure fields')
+    enum = row.get('independent_stop_enumeration')
+    require(type(enum) is dict and set(enum) == {'status', 'best', 'feasible_patterns', 'patterns'},
+            'independent_stop_enumeration: fields')
+    require(enum['status'] in {'OPTIMAL', 'INFEASIBLE'}, 'independent_stop_enumeration: status')
+    patterns = 2 ** len(c['d'])
+    require(type(enum['patterns']) is int and enum['patterns'] == patterns,
+            'independent_stop_enumeration: patterns')
+    count = enum['feasible_patterns']
+    require(type(count) is int and 0 <= count <= patterns, 'independent_stop_enumeration: feasible_patterns')
+    if enum['status'] == 'INFEASIBLE':
+        require(enum['best'] is None and count == 0, 'independent_stop_enumeration: infeasible witness')
+    else:
+        best = enum['best']
+        require(count > 0 and type(best) is dict and set(best) == {'objective_usd', 'q_t', 'z'},
+                'independent_stop_enumeration: best witness')
+        require(type(best['z']) is list and all(type(z) is int and z in (0, 1) for z in best['z']),
+                'independent_stop_enumeration: binary mask')
+        check_result(c, dict(best, status='OPTIMAL', audit={}), 'enumeration', Counter(),
+                     enumeration_witness=True)
+    conflict = raw['status'] != enum['status'] or (
+        raw['status'] == 'OPTIMAL' and abs(raw['objective_usd'] - enum['best']['objective_usd']) > .01)
+    expected = dict(raw, status='REFERENCE_CONTRADICTION') if conflict else raw
+    compare(row.get('reference'), expected, 'reference provenance', tolerance=0)
 
 
 def recompute_summary(rows):
@@ -168,22 +222,28 @@ def audit_artifacts(cases, rows, summary, spec):
     require(len({x['case']['case_id'] for x in cases}) == 120, 'duplicate cases')
     require(Counter(x['block'] for x in cases) == dict.fromkeys(
         ['zero_fees_unlimited', 'monetary_fees', 'limited_supply_minimum'], 40), 'case blocks')
+    calls = [ast.unparse(n.func) for n in ast.walk(ast.parse(inspect.getsource(b.policy))) if isinstance(n, ast.Call)]
+    require(not any(any(word in f for word in ['solve', 'milp', 'linprog', 'enumerate']) for f in calls), 'policy optimizer call')
     checks = Counter()
     checked_rows = copy.deepcopy(rows)
     for item, row in zip(cases, checked_rows):
         require(type(row) is dict, 'row object')
         require(row.get('case_id') == item['case']['case_id'] and row.get('block') == item['block'], 'row membership')
         require(type(row.get('policies')) is dict and set(row['policies']) == set(b.POLICIES), 'policy membership')
+        check_reference_evidence(item['case'], row)
         reference_audit = check_result(item['case'], row.get('reference'), 'reference', checks)
         if reference_audit is not None:
             row['reference']['audit'] = reference_audit
         for name in b.POLICIES:
+            replayed = b.policy(b.Case(**item['case']), name)
+            compare(row['policies'][name], replayed, name + ': deterministic policy replay', tolerance=0)
             row['policies'][name]['audit'] = check_result(item['case'], row['policies'][name], name, checks)
     recomputed = recompute_summary(checked_rows)
     compare(summary, recomputed, 'summary')
-    calls = [ast.unparse(n.func) for n in ast.walk(ast.parse(inspect.getsource(b.policy))) if isinstance(n, ast.Call)]
-    require(not any(any(word in f for word in ['solve', 'milp', 'linprog', 'enumerate']) for f in calls), 'policy optimizer call')
-    return dict(status='PASS', checks=dict(checks), all=recomputed['ALL'], summary=recomputed, policy_calls=calls)
+    return dict(status='PASS', checks=dict(checks), all=recomputed['ALL'], summary=recomputed, policy_calls=calls,
+                scope='Artifact consistency, sequential accounting, and deterministic policy replay only; '
+                      'does not independently certify optimizer optimality, infeasibility, or enumeration counts. '
+                      'Nonfinite solver evidence, including minimal AUDIT_FAILED records, is rejected as unauditable.')
 
 
 def main():
