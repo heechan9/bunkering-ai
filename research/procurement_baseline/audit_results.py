@@ -238,6 +238,14 @@ def audit_artifacts(cases, rows, summary, spec):
             replayed = b.policy(b.Case(**item['case']), name)
             compare(row['policies'][name], replayed, name + ': deterministic policy replay', tolerance=0)
             row['policies'][name]['audit'] = check_result(item['case'], row['policies'][name], name, checks)
+        # Replayed feasible policies are constructive witnesses even when the
+        # raw solver failed. They can refute, but cannot prove, enumeration claims.
+        enum = row['independent_stop_enumeration']
+        for policy in row['policies'].values():
+            if policy['status'] == 'FEASIBLE':
+                require(enum['status'] == 'OPTIMAL', 'enumeration contradicted by feasible policy')
+                require(enum['best']['objective_usd'] <= policy['audit']['total_usd'] + .01,
+                        'enumeration objective contradicted by cheaper feasible policy')
     recomputed = recompute_summary(checked_rows)
     compare(summary, recomputed, 'summary')
     return dict(status='PASS', checks=dict(checks), all=recomputed['ALL'], summary=recomputed, policy_calls=calls,

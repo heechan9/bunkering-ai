@@ -318,3 +318,37 @@ def test_nonfinite_raw_audit_failed_is_intentionally_unauditable(data):
     data[2] = recompute_summary(data[1])
     with pytest.raises(AuditError, match='finite number required'):
         audit_artifacts(*data)
+
+
+def test_c3_feasible_policy_refutes_coherent_infeasibility_claim(data):
+    row = next(r for r in data[1] if r['case_id'] == 'zero_fees_unlimited_000')
+    assert any(p['status'] == 'FEASIBLE' for p in row['policies'].values())
+    row['raw_reference'] = {'status': 'INFEASIBLE', 'message': 'infeasible'}
+    row['reference'] = copy.deepcopy(row['raw_reference'])
+    row['independent_stop_enumeration'].update(status='INFEASIBLE', best=None, feasible_patterns=0)
+    data[2] = recompute_summary(data[1])
+    with pytest.raises(AuditError, match='enumeration contradicted by feasible policy'):
+        audit_artifacts(*data)
+
+
+def test_c4_feasible_policy_refutes_costlier_enumeration_witness(data):
+    row = next(r for r in data[1] if r['case_id'] == 'monetary_fees_003')
+    row['raw_reference'] = {'status': 'LIMIT_REACHED', 'message': 'time limit'}
+    row['reference'] = dict(row['raw_reference'], status='REFERENCE_CONTRADICTION')
+    expensive = row['policies']['departure_concentrated']
+    row['independent_stop_enumeration']['best'] = dict(
+        q_t=copy.deepcopy(expensive['q_t']), z=copy.deepcopy(expensive['z']),
+        objective_usd=expensive['audit']['total_usd'])
+    data[2] = recompute_summary(data[1])
+    with pytest.raises(AuditError, match='enumeration objective contradicted by cheaper feasible policy'):
+        audit_artifacts(*data)
+
+
+def test_raw_infeasible_error_preserves_legitimate_reference_contradiction(data):
+    row = next(r for r in data[1] if r['case_id'] == 'zero_fees_unlimited_000')
+    assert row['independent_stop_enumeration']['status'] == 'OPTIMAL'
+    assert any(p['status'] == 'FEASIBLE' for p in row['policies'].values())
+    row['raw_reference'] = {'status': 'INFEASIBLE', 'message': 'incorrect solver conclusion'}
+    row['reference'] = dict(row['raw_reference'], status='REFERENCE_CONTRADICTION')
+    data[2] = recompute_summary(data[1])
+    assert audit_artifacts(*data)['status'] == 'PASS'
