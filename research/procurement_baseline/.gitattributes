@@ -1,0 +1,6 @@
+*.py text eol=lf
+*.md text eol=lf
+spec.json -text
+handoff/** -text
+provenance/** -text
+validation/** -text

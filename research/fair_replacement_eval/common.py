@@ -8,6 +8,7 @@ classification.
 
 from __future__ import annotations
 
+import errno
 import hashlib
 import json
 import sys
@@ -39,8 +40,13 @@ SAFETY_TOL = 1e-9
 
 
 def file_sha256(path: Path) -> str:
+    path = Path(path)
+    # Windows open(directory) raises PermissionError; retain a stable preflight
+    # classification without mistaking an actual unreadable file for a directory.
+    if path.is_dir():
+        raise IsADirectoryError(errno.EISDIR, "Cannot hash a directory", str(path))
     digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
+    with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1 << 20), b""):
             digest.update(chunk)
     return digest.hexdigest()

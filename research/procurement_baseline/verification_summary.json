@@ -1,0 +1,77 @@
+{
+  "base_revision": "25f89464db42b8e71b4f56ba51d05198e5d3921e",
+  "input_zip_sha256": "863b074677d43e6aae774f13cde77a02eb145f682fb98142732b4a25f5b6d923",
+  "strict_flags": [
+    "--strict-config",
+    "--strict-markers",
+    "-W",
+    "error"
+  ],
+  "before": {
+    "failed": 6,
+    "passed": 728,
+    "skipped": 5,
+    "subtests_passed": 32
+  },
+  "clean_same_main": {
+    "failed": 6,
+    "same_failed_nodes": [
+      "research.fair_replacement_eval.test_preflight.test_main_records_checkpoint_read_failure_before_workers[False-directory]",
+      "research.fair_replacement_eval.test_preflight.test_main_records_checkpoint_read_failure_before_workers[True-directory]",
+      "research.fair_replacement_eval.test_shadow_timeout.test_a_timeout_is_recorded_the_dqn_run_continues_and_the_worker_is_reclaimed[sleep]",
+      "research.fair_replacement_eval.test_shadow_timeout.test_a_timeout_is_recorded_the_dqn_run_continues_and_the_worker_is_reclaimed[spin]",
+      "research.fair_replacement_eval.test_shadow_timeout.test_close_is_idempotent_and_run_shadow_closes_the_worker_even_if_the_run_fails",
+      "research.port_call_time.test_model.test_committed_sensitivity_csv_is_regenerated_exactly_with_zero_readiness"
+    ]
+  },
+  "after_windows": {
+    "passed": 736,
+    "failed": 0,
+    "skipped": 4,
+    "subtests_passed": 32,
+    "seconds": 193.2,
+    "skipped_nodes": [
+      {
+        "node": "research.fair_replacement_eval.test_checkpoint_special_files.test_evaluate_records_a_non_regular_checkpoint_and_stops_before_any_worker[fifo]",
+        "reason": "named pipes need a POSIX platform"
+      },
+      {
+        "node": "research.fair_replacement_eval.test_checkpoint_special_files.test_evaluate_records_a_non_regular_checkpoint_and_stops_before_any_worker[device]",
+        "reason": "named pipes need a POSIX platform"
+      },
+      {
+        "node": "research.fair_replacement_eval.test_shadow_timeout.test_shadow_records_a_non_regular_checkpoint_and_runs_no_episode[fifo]",
+        "reason": "named pipes need a POSIX platform"
+      },
+      {
+        "node": "research.fair_replacement_eval.test_shadow_timeout.test_shadow_records_a_non_regular_checkpoint_and_runs_no_episode[device]",
+        "reason": "named pipes need a POSIX platform"
+      }
+    ]
+  },
+  "focused_procurement": {
+    "passed": 36,
+    "failed": 0
+  },
+  "windows_regressions": {
+    "passed": 8,
+    "failed": 0
+  },
+  "development_cases": 120,
+  "optimal": 86,
+  "infeasible": 34,
+  "policy_feasible": [
+    75,
+    79,
+    79
+  ],
+  "independent_ledgers": 446,
+  "independent_enumeration_max_absolute_difference_usd": 7.275957614183426e-12,
+  "common_feasible_cases": 75,
+  "common_optimum_total_usd": 1750550,
+  "common_cost_weighted_difference_pct": [
+    23.696713451312004,
+    0.27799456543411016,
+    18.520328608997183
+  ]
+}

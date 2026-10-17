@@ -1,0 +1,23 @@
+{
+  "input_zip_sha256": "863b074677d43e6aae774f13cde77a02eb145f682fb98142732b4a25f5b6d923",
+  "input_zip_bytes": 258193,
+  "source_revision": "25f89464db42b8e71b4f56ba51d05198e5d3921e",
+  "copies": {
+    "procurement.py": {
+      "source_member": "patched/procurement.py",
+      "sha256": "e9f08f7cb0467b3681717b512bb4179689d341117a2af169976c17bb6fca9b75"
+    },
+    "reference_original.py": {
+      "source_member": "vendor/procurement.py",
+      "sha256": "93c7a81ec8dc8eb8613d720b26f8bd43754b4adcab73d731d9fea013851c7b5b"
+    },
+    "spec.json": {
+      "source_member": "spec.json",
+      "sha256": "c96df9d8bab519e60da1ec25183b7b300013e8a7245b0c17b78f3918ad95101e"
+    },
+    "ALGORITHMS_KO.md": {
+      "source_member": "ALGORITHMS_KO.md",
+      "sha256": "868c650df0e4f9bf3ba86300e0ea9eabc6d1a9edf28cf4bc3565cf2902fb14eb"
+    }
+  }
+}

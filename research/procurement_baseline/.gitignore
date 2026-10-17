@@ -1,0 +1,12 @@
+# Keep local reruns and verbose failed-attempt logs on the laptop.
+/validation/
+# The complete reviewed source and raw pre/post-patch evidence are retained in
+# provenance/reviewed_bundle.zip. Keep only concise handoff navigation in diffs.
+/handoff/*
+!/handoff/REPORT_KO.md
+!/handoff/README_KO.md
+!/handoff/summary.json
+!/handoff/original_solver_summary.json
+!/handoff/independent_audit/
+/handoff/independent_audit/*
+!/handoff/independent_audit/AUDIT_KO.md

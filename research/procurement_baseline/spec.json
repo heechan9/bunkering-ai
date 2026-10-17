@@ -1,0 +1,14 @@
+{
+  "protocol_version": "1.0", "seed": 20261015,
+  "information_tier": "STATIC_KNOWN", "data_kind": "synthetic", "development_benchmark": true,
+  "holdout": false, "causal_or_measured_AI_savings": false,
+  "mass_input_grid_t": 0.001, "capacity_max_t": 1000,
+  "blocks": ["zero_fees_unlimited", "monetary_fees", "limited_supply_minimum"],
+  "random_cases_per_block": 40,
+  "generator": "For each block generate 40 cases sequentially from Python random.Random(seed). n=randint(3,7), C in [30,45,60], initial randint(0,15), terminal randint(2,8); d=randint(3,16), reserve=randint(0,min(2,terminal)), available=(random()>0.2); price randint(30,100)*10. Supply=C, except limited block randint(0,C); minimum=0 except limited block choice(0,3,8,15); fixed=0 except nonzero blocks choice(0,100,500,1500); variable=0 except nonzero blocks choice(0,5,20). No resampling, exclusion, or screening by result.",
+  "policies": ["minimum_required", "next_cheaper", "departure_concentrated"],
+  "unit_cases": ["price_tie", "price_reversal", "supply_gap", "intermediate_reserve", "terminal_caps_purchase", "minimum_lift_failure", "unavoidable_infeasible", "zero_purchase"],
+  "comparison": "Unweighted case counts; pooled cost difference sum(policy-optimum), pooled percentage=sum(policy-optimum)/sum(policy), only pairwise jointly feasible. Report all-policy common feasible denominator separately. Never substitute solver output into policy plans.",
+  "policy_failure": "Invalid ledger or unable to make requested positive purchase satisfying minimum, upper supply, capacity and remaining exact total; diagnostic classification conditioned on reference status.",
+  "solver": "Unmodified copied scipy LP/MILP prototype with independent sequential audit; all inputs same. Continuous q, grid constraint applies to inputs only."
+}
