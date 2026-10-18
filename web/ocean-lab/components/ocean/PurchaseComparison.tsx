@@ -15,7 +15,7 @@ export default function PurchaseComparison({trace,index,replaySelection}:{trace:
    <div className="purchase-readings">
     {([{label:en?'Current fuel':'현재 잔량',r:s.fuel,scale:100},{label:en?'Current price':'현재 합성 가격',r:s.price,scale:1},{label:en?'Current FX':'현재 합성 환율',r:s.fx,scale:1},{label:en?'Previous price':'이전 합성 가격',r:s.previousPrice,scale:1}]).map(({label,r,scale})=><div key={label}><strong>{label}: {format(r.value===null?null:r.value*scale)}</strong><span>{r.kind==='missing'?(en?'Missing · not zero':'누락 · 0으로 대체하지 않음'):(en?`Synthetic record · ${readingAge(r,index)} steps old`:`합성 관측 기록 · ${readingAge(r,index)}단계 경과`)}</span></div>)}
    </div>
-   <p className="small-muted">{en?'Observation timestamps are not provided. Age is measured in simulation steps, not real time. The next-step market is an explicit assumption, not an LSTM forecast. Fuel units: initial inventory = 100. SCI is a synthetic index, not currency.':'관측 시각은 미제공입니다. 정보 경과시간은 실제 시간이 아닌 시뮬레이션 단계로 표시합니다. 다음 시장값은 명시적 가정이며 LSTM 예측이 아닙니다. 연료 단위는 초기 잔량=100, SCI는 실제 금액이 아닌 합성 지표입니다.'}</p>
+   <p className="small-muted">{en?'Observation timestamps are not provided. Age is measured in simulation steps, not real time. The next-step market is an explicit assumption, not an LSTM forecast. Fuel is displayed in normalized units: initial inventory = 100. SCI is a synthetic index, not currency.':'관측 시각은 미제공입니다. 정보 경과시간은 실제 시간이 아닌 시뮬레이션 단계로 표시합니다. 다음 시장값은 명시적 가정이며 LSTM 예측이 아닙니다. 연료는 정규화 단위로 표시하며 초기 잔량=100, SCI는 실제 금액이 아닌 합성 지표입니다.'}</p>
    <FixedScenarioReview snapshot={s} replaySelection={replaySelection}/>
   </>}
   <ArcticScenarioReview/>

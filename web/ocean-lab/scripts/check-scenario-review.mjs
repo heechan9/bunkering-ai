@@ -340,7 +340,17 @@ check('repeated review, preset changes and export leave current input objects un
 
 // This is server-side markup inspection only. It does not simulate browser
 // interaction, exercise event handlers/download delivery, or verify appearance.
-const FixedScenarioReview = loadModule('components/ocean/FixedScenarioReview.tsx').default;
+const {default:FixedScenarioReview,selectedScenarioPreset} = loadModule('components/ocean/FixedScenarioReview.tsx');
+check('preset selection matches every raw field exactly and edited forms become custom',()=>{
+  for(const id of ['normal','deadline','missing']) {
+    const form=scenarioPreset(id);
+    assert.equal(selectedScenarioPreset(form)?.id,id);
+    for(const field of TIME_FIELDS) {
+      assert.equal(selectedScenarioPreset({...form,[field]:`${form[field]} `}),undefined);
+    }
+  }
+  assert.equal(selectedScenarioPreset({...scenarioPreset('normal'),transfer:'8.0'}),undefined);
+});
 const PurchaseComparison = loadModule('components/ocean/PurchaseComparison.tsx').default;
 const render = (component,props) => renderToStaticMarkup(createElement(component,props));
 const inputTags = html => html.match(/<input\b[^>]*>/g) ?? [];
@@ -358,6 +368,36 @@ const labels={
     '이송 시간','마무리 시간','모든 작업 후 출항 준비','출항 마감'],
 };
 for(const language of ['ko','en']) {
+  check(`${language} static review guidance, selected preset, input reset and reserve margins`,()=>{
+    renderedLanguage=language;
+    const html=render(FixedScenarioReview,{snapshot:snapshot()});
+    const guide=html.match(/<ol class="scenario-guide"[^>]*>([\s\S]*?)<\/ol>/)?.[1];
+    assert(guide);
+    assert(fs.readFileSync('app/globals.css','utf8').includes('.scenario-guide{list-style:upper-alpha;'),'Panel A/B/C is distinct from global 01–03 navigation');
+    assert.equal((guide.match(/<li>/g) ?? []).length,3);
+    for(const label of language==='en'
+      ? ['Choose synthetic assumptions','Inspect pre-refill safety and departure time','Compare adjusted SCI for passing candidates']
+      : ['합성 가정 선택','급유 전 안전여유·출항 시간 확인','제약 충족 후보의 보정 SCI 비교']) assert(guide.includes(label));
+    const buttons=html.match(/<button\b[^>]*>[\s\S]*?<\/button>/g) ?? [];
+    const pressed=buttons.filter(button=>button.includes('aria-pressed="true"'));
+    assert.equal(pressed.length,1);
+    assert(pressed[0].includes(language==='en'?'Normal example':'정상 예시'));
+    assert.equal(buttons.filter(button=>button.includes('aria-pressed="false"')).length,2);
+    const reset=buttons.find(button=>button.includes(language==='en'?'Reset time inputs to normal':'시간 입력을 정상 예시로 초기화'));
+    assert(reset); assert(!reset.includes('aria-pressed'));
+    assert(html.includes(language==='en'?'replay and camera stay unchanged.':'재생·카메라는 바뀌지 않습니다.'));
+    assert(html.includes(language==='en'?'minimum 15 normalized units (initial fuel = 100)':'최소 15 정규화 단위(초기 연료 = 100)'));
+    assert.equal((html.match(/class="candidate-reserve"/g) ?? []).length,8);
+    assert(html.includes(language==='en'?'Pre-refill margin vs 15: +30 normalized units':'급유 전 15 대비 여유량: +30 정규화 단위'));
+    const low=render(FixedScenarioReview,{snapshot:snapshot(.1)});
+    assert(low.includes(language==='en'?'Pre-refill margin vs 15: -10 normalized units':'급유 전 15 대비 여유량: -10 정규화 단위'));
+    assert(low.includes(language==='en'?'Pre-refill reserve below 15':'급유 전 안전여유 15 미달'));
+    const boundary=render(FixedScenarioReview,{snapshot:snapshot(.2)});
+    assert(boundary.includes(language==='en'?'Pre-refill margin vs 15: +0 normalized units':'급유 전 15 대비 여유량: +0 정규화 단위'));
+    const unavailable=render(FixedScenarioReview,{snapshot:null});
+    assert(!unavailable.includes('class="candidate-reserve"'));
+  });
+
   check(`${language} static markup has eight associated labels, normal rows and tied summary`,()=>{
     renderedLanguage=language;
     const html=render(FixedScenarioReview,{snapshot:snapshot()});

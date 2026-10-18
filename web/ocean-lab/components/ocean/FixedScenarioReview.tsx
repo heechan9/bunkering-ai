@@ -2,7 +2,7 @@
 import {useState} from 'react';
 import {useLocale} from '@/lib/locale';
 import type {DecisionSnapshot} from '@/lib/purchase-comparison';
-import {parseTiming, reviewScenario, scenarioExport, scenarioPreset, SOURCE_REVISION, TIME_FIELDS, type Reason, type TimeField, type ReviewSelection} from '@/lib/scenario-review';
+import {parseTiming, reviewScenario, scenarioExport, scenarioPreset, SOURCE_REVISION, TIME_FIELDS, type Reason, type TimeField, type TimingForm, type ReviewSelection} from '@/lib/scenario-review';
 import {Button} from '@/components/ui/button';
 import {Table,TableHeader,TableHead,TableBody,TableRow,TableCell} from '@/components/ui/table';
 
@@ -18,6 +18,19 @@ const reasonLabels: Record<Reason,[string,string]> = {
   deadline:['출항 마감 초과','Departure deadline exceeded'], missing_time:['작업·마감 입력 누락','Missing work/deadline inputs'],
   invalid_time:['유효하지 않은 시간 입력','Invalid time input'], arithmetic:['수치 계산 범위 초과','Arithmetic out of range'],
 };
+const presets = [
+  {id:'normal', labels:['정상 예시','Normal example']},
+  {id:'deadline', labels:['마감 충돌 예시','Deadline conflict']},
+  {id:'missing', labels:['입력 누락 예시','Missing inputs']},
+] as const;
+
+export function selectedScenarioPreset(form:TimingForm) {
+  return presets.find(({id})=>{
+    const preset=scenarioPreset(id);
+    return TIME_FIELDS.every(field=>form[field]===preset[field]);
+  });
+}
+
 export default function FixedScenarioReview({snapshot,replaySelection}:{snapshot:DecisionSnapshot|null;replaySelection?:ReviewSelection}) {
   const {lang}=useLocale(), en=lang==='en';
   const [form,setForm]=useState(()=>scenarioPreset('normal'));
@@ -29,6 +42,8 @@ export default function FixedScenarioReview({snapshot,replaySelection}:{snapshot
     setExportStatus(null);
   }
   const review=reviewScenario(snapshot,parseTiming(form));
+  const selectedPreset=selectedScenarioPreset(form);
+  const resetInputs=()=>{setForm(scenarioPreset('normal'));setExportStatus(null);};
   const label=(buy:boolean)=>buy?(en?'Buy':'구매'):(en?'Wait':'미구매');
   function download() {
     try {
@@ -43,10 +58,18 @@ export default function FixedScenarioReview({snapshot,replaySelection}:{snapshot
   return <div className="fixed-scenario-review">
     <div className="scenario-heading"><div><span className="scenario-tag">{en?'FIXED SYNTHETIC SCENARIO':'고정 합성 시나리오'}</span><h3>{en?'Fuel, work time and departure review':'연료·작업시간·출항 마감 검토'}</h3></div><Button variant="outline" onClick={download} disabled={!review.candidates.length}>{en?'Export review JSON':'검토 결과 JSON 저장'}</Button></div>
     <p>{en?'Review the next one or two buy/wait choices against explicit assumptions. This is not a real-route optimizer or a replacement for the 30-step policy. Passing these checks does not establish real-world feasibility.':'다음 1~2단계의 구매·미구매 후보를 명시한 가정으로 검토합니다. 실제 항로 최적화나 30단계 정책 대체 기능이 아니며, 검사 통과가 실선 운항 가능성을 뜻하지 않습니다.'}</p>
-    <div className="scenario-presets" aria-label={en?'Synthetic presets':'합성 예시 선택'}>
-      <Button variant="outline" onClick={()=>{setForm(scenarioPreset('normal'));setExportStatus(null);}}>{en?'Normal example':'정상 예시'}</Button>
-      <Button variant="outline" onClick={()=>{setForm(scenarioPreset('deadline'));setExportStatus(null);}}>{en?'Deadline conflict':'마감 충돌 예시'}</Button>
-      <Button variant="outline" onClick={()=>{setForm(scenarioPreset('missing'));setExportStatus(null);}}>{en?'Missing inputs':'입력 누락 예시'}</Button>
+    <ol className="scenario-guide" aria-label={en?'How to review':'검토 순서'}>
+      <li>{en?'Choose synthetic assumptions':'합성 가정 선택'}</li>
+      <li>{en?'Inspect pre-refill safety and departure time':'급유 전 안전여유·출항 시간 확인'}</li>
+      <li>{en?'Compare adjusted SCI for passing candidates':'제약 충족 후보의 보정 SCI 비교'}</li>
+    </ol>
+    <div className="scenario-presets" role="group" aria-label={en?'Synthetic presets':'합성 예시 선택'}>
+      {presets.map(({id,labels})=><Button key={id} variant="outline" aria-pressed={selectedPreset?.id===id} onClick={()=>{setForm(scenarioPreset(id));setExportStatus(null);}}>{labels[en?1:0]}</Button>)}
+    </div>
+    <div className="scenario-input-tools">
+      <p className="small-muted" role="status">{en?'Current inputs: ':'현재 입력: '}{selectedPreset?selectedPreset.labels[en?1:0]:(en?'Custom assumptions':'직접 수정한 가정')}</p>
+      <Button variant="outline" onClick={resetInputs}>{en?'Reset time inputs to normal':'시간 입력을 정상 예시로 초기화'}</Button>
+      <p className="small-muted">{en?'Resets only these time inputs; replay and camera stay unchanged.':'이 시간 입력만 초기화하며 재생·카메라는 바뀌지 않습니다.'}</p>
     </div>
     <details className="scenario-inputs" open><summary>{en?'Time assumptions · editable hours':'시간 가정 · 시간(h) 단위로 수정'}</summary>
       <p className="small-muted">{en?'The same existing-cargo-call template is used at each step. Event times share a local zero; baseline step origins are 0 h and 24 h. Earlier extra delay is added without recovery. Blank means UNKNOWN.':'각 단계에 같은 기존 화물 기항 양식을 적용합니다. 시각은 기항별 같은 기준점 0을 사용하며 기본 단계 시작은 0h·24h입니다. 앞 단계 추가 지연은 회복 없이 더합니다. 빈칸은 UNKNOWN입니다.'}</p>
@@ -54,9 +77,10 @@ export default function FixedScenarioReview({snapshot,replaySelection}:{snapshot
       <p className="small-muted">{en?'Departure without bunkering already includes readiness. Cargo end must include bunker interruptions; bunker-ready includes access/waiting. Preparation → transfer → cleanup are sequential. Readiness starts after BOTH cargo and bunker work, with no overlap or double counting. These are unverified synthetic assumptions.':'급유 없는 출항은 출항 준비를 이미 포함합니다. 하역 종료에는 급유로 인한 중단을, 급유 준비 가능 시각에는 대기·접근 제한을 반영해야 합니다. 급유 준비 → 이송 → 마무리는 순차 작업이며, 출항 준비는 하역·급유가 모두 끝난 뒤에 시작합니다. 중복·병행 시간을 넣지 않는다는 미검증 합성 가정입니다.'}</p>
     </details>
     <p className="scenario-summary" role="status">{!review.candidates.length?(en?'Review unavailable: current record is ended, missing, stale or invalid.':'현재 기록 종료·누락·오래된 관측·입력 오류로 검토할 수 없습니다.'):en?`${review.horizon}-step horizon · ${review.eligibleCount}/${review.candidates.length} candidates pass modeled checks${review.tied?' · Adjusted SCI tied':''}`:`${review.horizon}단계 검토 · ${review.candidates.length}개 중 ${review.eligibleCount}개 가정 제약 충족${review.tied?' · 보정 SCI 동률':''}`}</p>
+    <p className="scenario-reserve-legend">{en?'Pre-refill reserve: minimum 15 normalized units (initial fuel = 100). Margin = pre-refill fuel − 15; negative means below the threshold. Display values are rounded; checks use full precision with the stated tolerance.':'급유 전 안전여유: 최소 15 정규화 단위(초기 연료 = 100). 여유량 = 급유 전 잔량 − 15이며 음수는 기준 미달입니다. 표시는 반올림하며 판정은 명시된 허용오차와 반올림 전 값을 사용합니다.'}</p>
     {!!review.candidates.length&&<Table><TableHeader><TableRow>{(en?['Choice / checks','Fuel flow · before refill → ending','Departure / deadline (h)','Purchase SCI','Ending fuel','Comparable adjusted SCI']:['선택 / 판정','연료 흐름 · 급유 전 → 종료','출항 / 마감 (h)','구매 SCI','종료 잔량','비교 가능한 보정 SCI']).map(text=><TableHead key={text} scope="col">{text}</TableHead>)}</TableRow></TableHeader><TableBody>{review.candidates.map(candidate=><TableRow key={candidate.id}>
       <TableCell><strong>{candidate.actions.map(label).join(' → ')}</strong><span className={`scenario-status ${candidate.status}`}>{statusLabel[candidate.status]}</span>{candidate.reasons.map(reason=><span className="candidate-flag" key={reason}>{reasonLabels[reason][en?1:0]}</span>)}</TableCell>
-      <TableCell><ol className="candidate-flow">{candidate.steps.map(step=><li key={step.decision}>{en?'Step':'단계'} {step.decision}: {format(step.fuelBeforeRefill*100)} → {format(step.fuelAfter*100)}<small>{en?'Refill':'구매'} +{format(step.amount*100)}</small></li>)}</ol>{candidate.steps.length<candidate.actions.length&&<span className="candidate-flag">{en?'Later action not executed or checked':'이후 선택 미실행·미검사'}</span>}</TableCell>
+      <TableCell><ol className="candidate-flow">{candidate.steps.map(step=><li key={step.decision}>{en?'Step':'단계'} {step.decision}: {format(step.fuelBeforeRefill*100)} → {format(step.fuelAfter*100)}<small>{en?'Refill':'구매'} +{format(step.amount*100)}</small><small className="candidate-reserve">{en?'Pre-refill margin vs 15':'급유 전 15 대비 여유량'}: {step.fuelBeforeRefill>=.15?'+':''}{format(step.fuelBeforeRefill*100-15,6)} {en?'normalized units':'정규화 단위'}</small></li>)}</ol>{candidate.steps.length<candidate.actions.length&&<span className="candidate-flag">{en?'Later action not executed or checked':'이후 선택 미실행·미검사'}</span>}</TableCell>
       <TableCell>{candidate.steps.map(step=><div className="scenario-time" key={step.decision}>{en?'Step':'단계'} {step.decision}: {format(step.departureHours)} / {format(step.deadlineHours)}<span className="candidate-flag">{step.onTime===null?(en?'UNKNOWN':'UNKNOWN · 판정 보류'):step.onTime?(en?'Within deadline':'마감 이내'):(en?'Late':'마감 초과')}</span>{[...step.timing.missing,...step.timing.invalid].map(field=><span className="candidate-flag" key={field}>{fieldLabels[field][en?1:0]}</span>)}</div>)}</TableCell>
       <TableCell>{format(candidate.purchaseSCI,2)}</TableCell><TableCell>{format(candidate.finalFuel*100)}</TableCell><TableCell>{format(candidate.comparableSCI,2)}{candidate.rank!==null&&<span className="candidate-flag">{en?`Eligible rank ${candidate.rank}`:`충족 후보 내 ${candidate.rank}위`}</span>}</TableCell>
     </TableRow>)}</TableBody></Table>}
