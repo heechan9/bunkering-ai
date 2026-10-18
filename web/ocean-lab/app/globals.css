@@ -137,6 +137,8 @@ html[lang=en] .topbar .status{display:none}
 @media(max-width:800px){.regional-exhibit .map-height-bar{padding:0 22px 18px}.regional-exhibit .map-height-bar .terrain-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:0;border:0}.regional-exhibit .map-height-bar .terrain-controls>span,.regional-exhibit .map-height-bar .terrain-controls small{grid-column:1/-1}}
 
 /* Replay explanations and controls have their own rows, outside the camera viewport. */
+/* Let those rows size their parent too, so the following comparison cannot overlap. */
+.workspace:has(> .replay-layout){height:auto}
 .workspace .ocean.replay-layout{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"title tools" "badge badge" "event event" "map map" "controls controls" "timeline timeline" "key key" "footnote footnote";align-content:start;gap:16px;min-width:0;min-height:0;height:auto;padding:24px;overflow:visible;background:#102e39}
 .replay-layout>.scene-title,.replay-layout>.scene-tools,.replay-layout>.voyage-badge,.replay-layout>.event-explainer,.replay-layout>.scene-bottom,.replay-layout>.timeline,.replay-layout>.scene-footnote{position:static;inset:auto;min-width:0;max-width:100%;margin:0;transform:none}
 .replay-layout>.scene-title{grid-area:title;pointer-events:auto;text-shadow:none}
