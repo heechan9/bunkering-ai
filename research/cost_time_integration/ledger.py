@@ -1,6 +1,6 @@
 """Independent sequential ledger: no optimizer matrices or project timing calls."""
 from collections.abc import Mapping, Set
-from decimal import Decimal, DecimalException
+from decimal import Decimal, DecimalException, ROUND_HALF_EVEN, localcontext
 import math
 from numbers import Real
 
@@ -50,8 +50,14 @@ def audit(c, q):
     try:
         if isinstance(q, (Mapping, Set, str, bytes)):
             raise ValueError('quantity must be an ordered numeric iterable, not mapping/set/text')
-        _validate_case_numbers(c)
-        result = _audit_validated(c, q)
+        # Prevent low caller precision/rounding from weakening the historical audit.
+        # Preserve higher precision; this is not arbitrary-magnitude validation.
+        # Retain exponent limits/traps so arithmetic failures still fail closed.
+        with localcontext() as context:
+            context.prec = max(28, context.prec)
+            context.rounding = ROUND_HALF_EVEN
+            _validate_case_numbers(c)
+            result = _audit_validated(c, q)
         for key in ('cost_usd', 'time_hours', 'terminal_t'):
             if key in result and not math.isfinite(result[key]):
                 raise ValueError(key + ': nonfinite result')
