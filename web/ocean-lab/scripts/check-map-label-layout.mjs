@@ -34,3 +34,22 @@ for(const width of [NaN,10])assert.equal(layoutMapLabels([{id:0,x:50,y:50,width:
 const crowded=[{id:0,x:180,y:210,width:240,height:44,priority:100},{id:1,x:180,y:210,width:240,height:44,priority:20}];
 assert.equal(layoutMapLabels(crowded,360,420).filter(label=>label.visible).length,1);
 console.log(`PASS: ${cases} Korean/English screen-width and camera-density combinations; bounded, stable, non-overlapping labels and vessel priority. No browser visual verification.`);
+
+// Source-level layout contract: normal-flow replay rows must size their workspace.
+// This intentionally does not claim browser geometry/visual coverage.
+const css=fs.readFileSync('app/globals.css','utf8');
+const page=fs.readFileSync('app/page.tsx','utf8');
+assert.match(page,/<section className="workspace"><div className=\{"ocean replay-layout /,
+  'The replay grid is a direct child of the workspace targeted by the height override');
+assert.match(page,/<\/aside><\/section>\{started&&<PurchaseComparison/,
+  'The comparison remains after the replay workspace in normal document flow');
+const workspaceOverride=/\.workspace:has\(>\s*\.replay-layout\)\s*\{([^}]+)\}/.exec(css);
+assert(workspaceOverride,'Replay workspaces must override the legacy viewport-height constraint');
+assert.match(workspaceOverride[1],/(?:^|;)\s*height\s*:\s*auto\s*(?:;|$)/);
+assert(workspaceOverride.index>css.indexOf('height:calc(100svh - 202px)'),
+  'The content-height rule follows the legacy fixed-height desktop rule');
+const replayRule=/\.workspace \.ocean\.replay-layout\{([^}]+)\}/.exec(css)[1];
+assert.match(replayRule,/height:auto/);
+for(const row of ['map','controls','timeline','key','footnote'])
+  assert(replayRule.includes(`"${row} ${row}"`),`${row} keeps its own normal-flow grid row`);
+console.log('PASS: replay workspace content-height and following-comparison source contracts. Browser geometry is not covered.');
