@@ -16,7 +16,7 @@ NATIVE_UNITS = {
 }
 INTEGRATION_ENUMS = {
     "reserve_phase": {"pre_refill_unclipped"},
-    "consumption_known_at_decision": {True, False},
+    "consumption_known_at_decision": {True},
     "terminal_valuation": {"terminal_mark_to_market"},
     "statistics_ddof": {0, 1},
     "seed_status": {"used_reproduction_set", "new_frozen_plan"},

@@ -44,6 +44,8 @@ def check_out_dir(out_dir, inputs, overwrite):
         for target in out.iterdir():
             if target.is_symlink() or (hasattr(target, "is_junction") and target.is_junction()):
                 raise OutputGuardError(f"linked output target: {target}")
+            if target.is_file() and target.stat().st_nlink > 1:
+                raise OutputGuardError(f"hardlinked output target: {target}")
     for p in inputs:
         p = Path(p).resolve()
         # Inputs and their folders (e.g. a bundle's results/) are never write targets, even with --overwrite.

@@ -1,7 +1,9 @@
 """Copied-fixture regressions for the independent integration review."""
+import contextlib
 import copy
 import csv
 import json
+import io
 import tempfile
 import unittest
 from pathlib import Path
@@ -14,6 +16,37 @@ from test_ledger import CFG, EP, ST, rewrite
 
 
 class IntegrationRegressionTests(unittest.TestCase):
+    def test_unknown_consumption_information_is_rejected(self):
+        cfg = copy.deepcopy(CFG)
+        cfg["integration"]["consumption_known_at_decision"]["value"] = False
+        with self.assertRaisesRegex(config.ConfigError, "consumption_known_at_decision"):
+            config.validate(cfg)
+
+    def test_hardlinked_output_preserves_all_inputs(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            source, steps, cfg_path = root / "episodes.csv", root / "steps.csv", root / "config.json"
+            source.write_bytes(EP.read_bytes())
+            steps.write_bytes(ST.read_bytes())
+            cfg = copy.deepcopy(CFG)
+            cfg["integration"]["seed_range_inclusive"]["value"] = [1, 3]
+            cfg_path.write_text(json.dumps(cfg), encoding="utf-8")
+            out = root / "out"
+            out.mkdir()
+            try:
+                (out / "ledger.csv").hardlink_to(source)
+            except OSError as exc:
+                self.skipTest(f"OS cannot create hard link: {exc}")
+            before = {p: p.read_bytes() for p in (source, steps, cfg_path)}
+            stdout, stderr = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                rc = cli.main(["ledger", "--config", str(cfg_path), "--episodes", str(source),
+                               "--steps", str(steps), "--out-dir", str(out), "--overwrite"])
+            self.assertEqual(rc, 2)
+            self.assertIn("hardlinked output target", stderr.getvalue())
+            self.assertEqual(before, {p: p.read_bytes() for p in before})
+            self.assertFalse((out / "run_manifest.json").exists())
+
     def test_input_proposed_is_received_but_not_adopted(self):
         template = Path(__file__).parent / "contracts/input_contract_template.csv"
         rows = list(contracts.read_rows(template).values())
