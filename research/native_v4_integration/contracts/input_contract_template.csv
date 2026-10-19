@@ -1,0 +1,7 @@
+﻿contract_id,field,input_owner,baseline_proposal_not_approved,unit,unresolved_question,contract_version,proposed_value,evidence_file_or_url,domain_status,owner_decision,checked_by,checked_at
+C01,safety_phase,domain_review,pre_refill_unclipped 감사; legacy post-refill 도착과 별도,탱크 비율,안전 시점과 급유 가능 시점 확인,BAI-CONTRACT-v0.1-draft,,,pending,pending,,
+C02,consumption_information,domain_review,native 0.05 known constant,탱크 비율/step,실제 소비 불확실성은 미반영,BAI-CONTRACT-v0.1-draft,,,pending,pending,,
+C03,units_and_provenance,data_statistics,native fuel/purchase 비율; SCI 비통화,필드별 명시,실자료로 변환하지 않음,BAI-CONTRACT-v0.1-draft,,,pending,pending,,
+C04,statistics_and_denominators,data_statistics,paired seed; 전체/공통안전 분리; CI ddof=1,SCI 및 episode 수,과거 ddof0/1 차이 보존,BAI-CONTRACT-v0.1-draft,,,pending,pending,,
+C05,valuation_and_limits,domain_review,initial value minus terminal mark-to-market,SCI,실제 매각 또는 절감 아님,BAI-CONTRACT-v0.1-draft,,,pending,pending,,
+C06,execution_and_versions,현수,legacy immutable; new policy/config separate,version/hash,희찬 최종 채택 전 pending,BAI-CONTRACT-v0.1-draft,,,pending,pending,,
