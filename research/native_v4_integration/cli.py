@@ -35,7 +35,15 @@ def sha256(path):
 
 def check_out_dir(out_dir, inputs, overwrite):
     """Refuse unsafe targets before any work; the folder is created only when writing."""
-    out = Path(out_dir).resolve()
+    raw_out = Path(out_dir).absolute()
+    for target in (raw_out, *raw_out.parents):
+        if target.is_symlink() or (hasattr(target, "is_junction") and target.is_junction()):
+            raise OutputGuardError(f"linked output directory: {target}")
+    out = raw_out.resolve()
+    if out.exists():
+        for target in out.iterdir():
+            if target.is_symlink() or (hasattr(target, "is_junction") and target.is_junction()):
+                raise OutputGuardError(f"linked output target: {target}")
     for p in inputs:
         p = Path(p).resolve()
         # Inputs and their folders (e.g. a bundle's results/) are never write targets, even with --overwrite.
@@ -123,6 +131,10 @@ def cmd_ledger(args):
     out = check_out_dir(args.out_dir, given, args.overwrite)
     version = cfg["contract_version"]
     episodes = ledger.load_episodes(args.episodes, cfg)
+    lo, hi = config_mod.setting(cfg, "seed_range_inclusive")
+    seeds = {s for _, s in episodes}
+    if len(seeds) != hi - lo + 1 or min(seeds) != lo or max(seeds) != hi:
+        raise ledger.InputError("episode seeds do not match config.seed_range_inclusive")
     rows, mismatches = ledger.build_ledger(episodes, version)
     steps_checked = 0
     if args.steps:

@@ -15,7 +15,7 @@ NATIVE_UNITS = {
     "n_ports": "count",
 }
 INTEGRATION_ENUMS = {
-    "reserve_phase": {"pre_refill_unclipped", "post_refill"},
+    "reserve_phase": {"pre_refill_unclipped"},
     "consumption_known_at_decision": {True, False},
     "terminal_valuation": {"terminal_mark_to_market"},
     "statistics_ddof": {0, 1},

@@ -95,6 +95,23 @@ def audit_steps(path, episodes, cfg):
     tol, reserve = native(cfg, "tolerance"), native(cfg, "reserve")
     traces = defaultdict(list)
     for r in rows:
+        for name in STEP_COLUMNS:
+            if name == "policy":
+                continue
+            try:
+                value = float(r[name])
+                if not math.isfinite(value):
+                    raise ValueError("non-finite")
+                if name in {"seed", "step", "action"} and value != int(r[name]):
+                    raise ValueError("not an integer")
+            except (ValueError, TypeError, OverflowError) as exc:
+                raise InputError(f"{path}: invalid {name}: {r[name]!r}") from exc
+        if not 0 <= int(r["action"]) <= native(cfg, "n_ports"):
+            raise InputError(f"{path}: invalid action {r['action']}")
+        if not 0 <= float(r["fuel_before"]) <= 1.0 + tol:
+            raise InputError(f"{path}: fuel_before outside tank range")
+        if float(r["decision_price"]) <= 0 or float(r["decision_fx"]) <= 0:
+            raise InputError(f"{path}: price and FX must be positive")
         traces[(r["policy"], int(r["seed"]))].append(r)
     mismatches, totals, market = [], {}, {}
 
@@ -108,6 +125,8 @@ def audit_steps(path, episodes, cfg):
         raise InputError(f"{path}: step traces do not match episodes (missing {missing}, extra {extra})")
     for key, trace in traces.items():
         trace.sort(key=lambda t: int(t["step"]))
+        if [int(t["step"]) for t in trace] != list(range(1, len(trace) + 1)):
+            raise InputError(f"{path}: {key}: steps must be consecutive from 1")
         prev_after, cost, short, res = None, 0.0, 0, 0
         for t in trace:
             step = int(t["step"])
@@ -244,6 +263,8 @@ def policy_summary(episodes, contract_version):
     for policy in sorted({p for p, _ in episodes}):
         es = [e for (p, _), e in episodes.items() if p == policy]
         n = len(es)
+        arrived = [e for e in es if e["legacy_arrived"]]
+        strict = [e for e in es if _strict(e)]
         reasons = Counter(e["end_reason"] for e in es)
         rows.append({"contract_version": contract_version, "policy": policy, "episodes": n,
                      "legacy_arrivals": sum(e["legacy_arrived"] for e in es),
@@ -254,6 +275,14 @@ def policy_summary(episodes, contract_version):
                      "mean_purchase_sci": math.fsum(e["purchase_sci"] for e in es) / n,
                      "mean_inventory_adjusted_sci": math.fsum(e["inventory_adjusted_sci"] for e in es) / n,
                      "mean_final_fuel": math.fsum(e["final_fuel"] for e in es) / n,
+                     "final_fuel_subset": "all_episodes",
+                     "final_fuel_n_all": n,
+                     "final_fuel_n_legacy_arrived": len(arrived),
+                     "final_fuel_n_strict_safe": len(strict),
+                     "mean_final_fuel_legacy_arrived": (math.fsum(e["final_fuel"] for e in arrived) / len(arrived)
+                                                        if arrived else None),
+                     "mean_final_fuel_strict_safe": (math.fsum(e["final_fuel"] for e in strict) / len(strict)
+                                                     if strict else None),
                      "mean_steps": sum(e["steps"] for e in es) / n})
     return rows
 
