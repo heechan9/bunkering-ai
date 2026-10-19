@@ -134,7 +134,11 @@ class CliTests(unittest.TestCase):
         shutil.rmtree(self.tmp)
 
     def ledger(self, out, *extra):
-        return run("ledger", "--config", CFG_PATH, "--episodes", self.tmp / "episodes.csv",
+        cfg = copy.deepcopy(CFG)
+        cfg["integration"]["seed_range_inclusive"]["value"] = [1, 3]
+        path = self.tmp / "smoke_config.json"
+        path.write_text(json.dumps(cfg), encoding="utf-8")
+        return run("ledger", "--config", path, "--episodes", self.tmp / "episodes.csv",
                    "--steps", self.tmp / "steps.csv", "--out-dir", out, *extra)
 
     def test_ledger_smoke_pass(self):

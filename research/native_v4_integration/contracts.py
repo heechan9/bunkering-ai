@@ -14,6 +14,7 @@ DECISIONS = {"pending", "accepted", "rejected"}
 # Member review vocabulary from the v4 instructions (domain_review: 적합/부적합/조건부/미확인).
 DOMAIN_STATUSES = {"pending", "적합", "부적합", "조건부", "미확인"}
 # Contract row -> integration config field, test and code that consume it.
+DOMAIN_STATUSES.add("input_proposed")  # Received proposal; owner_decision remains independent.
 INTEGRATION = {
     "C01": ("integration.reserve_phase; native_fixed.reserve; native_fixed.tolerance",
             "test_native_fixture.ReserveBoundaryTests", "evaluation/safety_accounting.py (reused); policies.py"),
