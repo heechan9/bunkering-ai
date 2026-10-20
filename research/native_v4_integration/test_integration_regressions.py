@@ -16,6 +16,61 @@ from test_ledger import CFG, EP, ST, rewrite
 
 
 class IntegrationRegressionTests(unittest.TestCase):
+    def test_config_cannot_mislabel_changed_constants_as_native_reproduction(self):
+        for key, value in (("max_steps", 31), ("n_ports", 4), ("consumption_per_step", 0.1),
+                           ("reserve", 0.2), ("refill_request", 0.8), ("max_fill", 0.9),
+                           ("tolerance", 0.0)):
+            with self.subTest(key=key):
+                cfg = copy.deepcopy(CFG)
+                cfg["native_fixed"][key]["value"] = value
+                with self.assertRaisesRegex(config.ConfigError, "pinned native"):
+                    config.validate(cfg)
+        cfg = copy.deepcopy(CFG)
+        cfg["policy_version"] = "unimplemented-candidate"
+        with self.assertRaisesRegex(config.ConfigError, "unsupported policy_version"):
+            config.validate(cfg)
+
+    def test_invalid_native_counts_and_seed_ranges_are_rejected(self):
+        for key in ("max_steps", "n_ports"):
+            for value in (float("nan"), float("inf"), -1, 0, 1.5, True):
+                with self.subTest(key=key, value=value):
+                    cfg = copy.deepcopy(CFG)
+                    cfg["native_fixed"][key]["value"] = value
+                    with self.assertRaises(config.ConfigError):
+                        config.validate(cfg)
+        for value in ([True, 3], [-1, 3], [1], [1, 2, 3], None, "13"):
+            with self.subTest(seed_range=value):
+                cfg = copy.deepcopy(CFG)
+                cfg["integration"]["seed_range_inclusive"]["value"] = value
+                with self.assertRaises(config.ConfigError):
+                    config.validate(cfg)
+
+    def test_coordinated_terminal_value_edit_cannot_receive_pass(self):
+        # The identity still holds after this corruption. Do not mistake it for
+        # independent terminal-market verification, even when steps are supplied.
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            cfg = copy.deepcopy(CFG)
+            cfg["integration"]["seed_range_inclusive"]["value"] = [1, 3]
+            cfg_path = root / "config.json"
+            cfg_path.write_text(json.dumps(cfg), encoding="utf-8")
+            def edit(rows):
+                rows[0]["terminal_inventory_value"] = str(float(rows[0]["terminal_inventory_value"]) + 100)
+                rows[0]["inventory_adjusted_sci"] = str(float(rows[0]["inventory_adjusted_sci"]) - 100)
+                return rows
+            episodes = rewrite(EP, root / "episodes.csv", edit)
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                rc = cli.main(["ledger", "--config", str(cfg_path), "--episodes", str(episodes),
+                               "--steps", str(ST), "--out-dir", str(root / "out")])
+            report = json.loads(stdout.getvalue())
+            self.assertEqual(rc, 3)
+            self.assertEqual(report["status"], "INCOMPLETE")
+            self.assertEqual(report["accounting_status"], "PASS")
+            self.assertEqual(report["terminal_valuation_status"], "not_independently_verified")
+            self.assertEqual(report["step_audit_status"], "checked")
+            self.assertEqual(report["accounting_mismatches"], 0)
+
     def test_unknown_consumption_information_is_rejected(self):
         cfg = copy.deepcopy(CFG)
         cfg["integration"]["consumption_known_at_decision"]["value"] = False
