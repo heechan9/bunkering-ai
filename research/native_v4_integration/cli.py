@@ -151,16 +151,24 @@ def cmd_ledger(args):
     write_csv(out / "accounting_mismatches.csv", mismatches,
               ["check", "policy", "seed", "step", "expected", "actual"])
     legacy_bad = [r for r in paired if r["legacy_match"].startswith("MISMATCH")]
-    status = "PASS" if not mismatches and not legacy_bad else "FAIL"
+    # An identity and a legacy aggregate are not independent terminal price/FX evidence.
+    # Until such evidence is supported, never publish an unqualified ledger PASS.
+    accounting_status = "PASS" if not mismatches and not legacy_bad else "FAIL"
+    status = "INCOMPLETE" if accounting_status == "PASS" else "FAIL"
     report = {"status": status, "contract_version": version, "policy_version": cfg["policy_version"],
               "config_sha256": cfg_sha, "episodes_checked": len(rows), "steps_checked": steps_checked,
               "accounting_mismatches": len(mismatches), "first_mismatch": mismatches[0] if mismatches else None,
               "legacy_summary_mismatches": len(legacy_bad),
+              "accounting_status": accounting_status,
+              "step_audit_status": "checked" if args.steps else "not_checked",
+              "terminal_valuation_status": "not_independently_verified",
+              "contract_adoption_status": "not_established_by_ledger",
+              "limitations": ["Terminal market price/FX evidence is not independently verified; an accounting identity is insufficient."],
               "all_policy_common_strict_safe": {"n": common, "of": total},
               "interpretation": "SCI is a synthetic index, not currency; intervals are descriptive."}
     write_manifest(out, args, given, {"report": report})
     print(json.dumps(report, indent=2, ensure_ascii=False))
-    return 0 if status == "PASS" else 1
+    return 3 if status == "INCOMPLETE" else 1
 
 
 def main(argv=None):

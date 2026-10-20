@@ -55,3 +55,9 @@ BAI_EVAL_ROOT=<bunker_disjoint_eval_v3 copy> python -m unittest -v test_native_f
 - 쌍 차이 구간은 1.96·sd/√n 기술통계입니다. 우위 검정이 아닙니다. 공통 strict-safe 집합이 0이면 비용 비교는 null입니다.
 - legacy `run_evaluation.py`는 n=1일 때 se=0을 씁니다. v4 도구는 같은 경우 구간을 "추정 불가"로 보고합니다. 이는 새 도구 계약일 뿐이며 legacy 출력은 바꾸지 않습니다.
 - `fixtures/smoke_*.csv`는 손으로 만든 합성 fixture입니다(`make_smoke_fixture.py`로 재생성). native 결과가 아닙니다.
+
+## Local validation follow-up (2026-10-20)
+
+This section supersedes the ledger PASS/exit-code description above. Clean ledger accounting now returns **INCOMPLETE, exit 3**, because terminal market price/FX has not been independently verified. `accounting_status=PASS` is a narrower identity/recorded-step result, not complete valuation or owner adoption. Accounting mismatches return FAIL/1; invalid input/output targets return 2. Other subcommands retain their exit codes.
+
+Only pinned native-legacy-v3 constants/policy are supported by this reproduction tool. Alternate constants need a separately versioned implementation; proposals remain pending. See [local integration and verification](LOCAL_INTEGRATION_20261020.md).

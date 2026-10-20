@@ -1,6 +1,7 @@
 """Load and validate the v4 integration config. Unknown keys or units are errors."""
 import hashlib
 import json
+import math
 from pathlib import Path
 
 CONTRACT_IDS = {"C01", "C02", "C03", "C04", "C05", "C06"}
@@ -14,6 +15,11 @@ NATIVE_UNITS = {
     "max_steps": "step",
     "n_ports": "count",
 }
+# The only implemented reproduction policy is pinned native-legacy-v3.
+# Alternative domain values require a separately versioned implementation.
+NATIVE_VALUES = {"consumption_per_step": 0.05, "reserve": 0.15,
+                 "refill_request": 0.9, "max_fill": 0.95, "tolerance": 1e-9,
+                 "max_steps": 30, "n_ports": 3}
 INTEGRATION_ENUMS = {
     "reserve_phase": {"pre_refill_unclipped"},
     "consumption_known_at_decision": {True},
@@ -43,6 +49,8 @@ def validate(cfg):
     if not isinstance(cfg, dict):
         raise ConfigError("config must be a JSON object")
     _check_keys("config", cfg, TOP_KEYS)
+    if cfg["policy_version"] != "native-legacy-v3":
+        raise ConfigError("unsupported policy_version; only native-legacy-v3 reproduction is implemented")
     if not str(cfg["contract_version"]).startswith("BAI-CONTRACT-v"):
         raise ConfigError("contract_version must start with BAI-CONTRACT-v")
     frozen = cfg["contract_version"] == "BAI-CONTRACT-v1.0"
@@ -57,8 +65,14 @@ def validate(cfg):
         value = item.get("value")
         if isinstance(value, bool) or not isinstance(value, (int, float)):
             raise ConfigError(f"native_fixed.{key}: value must be numeric")
+        if not math.isfinite(value):
+            raise ConfigError(f"native_fixed.{key}: value must be finite")
+        if key in {"max_steps", "n_ports"} and (type(value) is not int or value < 1):
+            raise ConfigError(f"native_fixed.{key}: value must be a positive integer")
         if unit.startswith("tank_fraction") and not 0.0 <= value <= 1.0:
             raise ConfigError(f"native_fixed.{key}: tank fraction {value} outside [0, 1]")
+        if value != NATIVE_VALUES[key]:
+            raise ConfigError(f"native_fixed.{key}: differs from pinned native-legacy-v3 value {NATIVE_VALUES[key]}")
 
     integ = cfg["integration"]
     _check_keys("integration", integ, set(INTEGRATION_ENUMS) | {"seed_range_inclusive"})
@@ -73,8 +87,11 @@ def validate(cfg):
         # bool is an int subclass, so compare type as well as value.
         if allowed is not None and not any(item["value"] == a and type(item["value"]) is type(a) for a in allowed):
             raise ConfigError(f"integration.{key}: {item['value']!r} not in {sorted(map(str, allowed))}")
-    lo, hi = integ["seed_range_inclusive"]["value"]
-    if not (isinstance(lo, int) and isinstance(hi, int) and lo <= hi):
+    seed_range = integ["seed_range_inclusive"].get("value")
+    if not isinstance(seed_range, list) or len(seed_range) != 2:
+        raise ConfigError("integration.seed_range_inclusive: need [low, high] integers")
+    lo, hi = seed_range
+    if not (type(lo) is int and type(hi) is int and 0 <= lo <= hi):
         raise ConfigError("integration.seed_range_inclusive: need [low, high] integers")
     if integ["seed_status"]["value"] == "new_frozen_plan" and any(lo <= b and a <= hi for a, b in USED_RANGES):
         raise ConfigError("seed_range overlaps an already used range; it cannot be a new frozen plan")

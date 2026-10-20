@@ -141,10 +141,11 @@ class CliTests(unittest.TestCase):
         return run("ledger", "--config", path, "--episodes", self.tmp / "episodes.csv",
                    "--steps", self.tmp / "steps.csv", "--out-dir", out, *extra)
 
-    def test_ledger_smoke_pass(self):
+    def test_ledger_smoke_reports_accounting_only(self):
         code, out, _ = self.ledger(self.tmp / "out")
-        self.assertEqual(code, 0, out)
-        self.assertEqual(json.loads(out)["status"], "PASS")
+        self.assertEqual(code, 3, out)
+        self.assertEqual(json.loads(out)["status"], "INCOMPLETE")
+        self.assertEqual(json.loads(out)["accounting_status"], "PASS")
         for name in ["ledger.csv", "paired_summary.csv", "policy_summary.csv", "accounting_mismatches.csv",
                      "run_manifest.json"]:
             self.assertTrue((self.tmp / "out" / name).exists(), name)
@@ -157,11 +158,11 @@ class CliTests(unittest.TestCase):
         self.assertEqual((self.tmp / "episodes.csv").read_bytes(), before)
 
     def test_refuses_nonempty_out_without_overwrite(self):
-        self.assertEqual(self.ledger(self.tmp / "out")[0], 0)
+        self.assertEqual(self.ledger(self.tmp / "out")[0], 3)
         code, _, err = self.ledger(self.tmp / "out")
         self.assertEqual(code, 2)
         self.assertIn("not empty", err)
-        self.assertEqual(self.ledger(self.tmp / "out", "--overwrite")[0], 0)
+        self.assertEqual(self.ledger(self.tmp / "out", "--overwrite")[0], 3)
 
     def test_validate_config_reports_pending(self):
         code, out, _ = run("validate-config", "--config", CFG_PATH)
