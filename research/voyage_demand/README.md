@@ -112,3 +112,7 @@ python -m pytest tests/test_voyage_demand_validation.py -q --strict-config --str
 All fixtures use invented dates/quantities and measure software behavior only. Tests
 must never be described as vessel prediction or fuel-saving performance. Do not run
 private exporter CLIs or commit private inputs, row-level predictions or identifying metadata.
+
+## Analysis review checklist
+
+Before interpreting existing outputs, use the [cost and residual review checklist](../../docs/technical/DATA_ANALYSIS_REVIEW_CHECKLIST.md). It reuses the existing metrics and does not report a new experiment.
