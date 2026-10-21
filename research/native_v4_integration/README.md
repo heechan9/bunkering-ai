@@ -1,6 +1,6 @@
 # native v4 통합 (C06): config·계약 병합·ledger·안전 fixture
 
-> 공개 반영본: 역할명 기반 인터페이스로 가져온 검토용 초안입니다. 원본과 CSV owner/파일명/CLI 인수가 다릅니다. 입력 검증, 설정-실제 데이터 일치, 출력 symlink 보호의 미수정 문제가 있으므로 아래 기능 설명을 보증으로 읽지 마세요. [공개본 호환성·검증 범위·병합 전 보완](../../docs/audits/native_v4_first_round_20261019.md)을 먼저 확인하세요.
+> 공개 반영본: 역할명 기반 인터페이스로 가져온 검토용 초안입니다. 원본과 CSV owner/파일명/CLI 인수가 다릅니다. #133·#134에서 step CSV 입력 검증, 설정-실제 seed 일치, 출력 symlink/hardlink 보호와 검증 범위 표시를 보완했습니다. **독립 종료 재고 가치 검증과 C01–C06 채택은 미완료**이므로 전체 검증 완료나 운영 승인으로 읽지 마세요. [현재 보완 범위](LOCAL_INTEGRATION_20261020.md)와 [최초 공개본 호환성·검증 이력](../../docs/audits/native_v4_first_round_20261019.md)을 구분해 확인하세요.
 
 상태: **검토용 초안**. 계약 버전은 `BAI-CONTRACT-v0.1-draft`이고 C01~C06 모두 `pending`입니다. 희찬님이 채택하기 전에는 새 결과를 확정본으로 합치지 않습니다.
 
@@ -40,7 +40,7 @@ cd research/native_v4_integration
 BAI_EVAL_ROOT=<bunker_disjoint_eval_v3 copy> python -m unittest -v test_native_fixture test_ledger test_config_cli
 ```
 
-종료 코드: 0은 PASS, 1은 회계 또는 소스 불일치(출력은 남김), 2는 입력·설정·계약 오류이거나 덮어쓰기 차단(출력 없음).
+종료 코드: `ledger`는 회계 불일치가 없어도 독립 종료 가격·환율 검증이 없으므로 **INCOMPLETE/3**을 반환합니다. 회계 또는 legacy-summary 불일치는 FAIL/1이며 ledger 출력은 남깁니다. 도구가 `InputError`·`ConfigError`·`ContractError`로 처리하는 형식·값·설정·계약 검증 오류와 `OutputGuardError` 덮어쓰기 차단은 2입니다. 모든 예외가 처리되는 것은 아닙니다. 파일 없음·디코딩 오류, legacy-summary JSON 파싱 오류·필수 키 누락 등 일부 미처리 예외는 traceback과 종료 코드 1을 내므로 코드 1만으로 회계 FAIL과 구분할 수 없습니다. config JSON 파싱 오류는 `ConfigError`로 처리되어 2입니다. `validate-config`, `verify-source`, `merge-contracts`의 정상 종료는 0이지만 전체 ledger 검증이나 계약 채택을 뜻하지 않습니다. `verify-source`의 소스 불일치는 1입니다.
 
 ## 고정 수식 (native, 계약 채택 전)
 
@@ -58,6 +58,6 @@ BAI_EVAL_ROOT=<bunker_disjoint_eval_v3 copy> python -m unittest -v test_native_f
 
 ## Local validation follow-up (2026-10-20)
 
-This section supersedes the ledger PASS/exit-code description above. Clean ledger accounting now returns **INCOMPLETE, exit 3**, because terminal market price/FX has not been independently verified. `accounting_status=PASS` is a narrower identity/recorded-step result, not complete valuation or owner adoption. Accounting mismatches return FAIL/1; invalid input/output targets return 2. Other subcommands retain their exit codes.
+Clean ledger accounting returns **INCOMPLETE, exit 3**, because terminal market price/FX has not been independently verified. `accounting_status=PASS` is a narrower identity result, not complete valuation or owner adoption. Recorded-step checks run only when `--steps` is supplied; otherwise `step_audit_status=not_checked`. Even `step_audit_status=checked` does not establish terminal market price/FX independently. Accounting mismatches return FAIL/1. Handled `InputError`, `ConfigError`, `ContractError` and `OutputGuardError` exceptions return 2, not every input/output failure. Unhandled errors such as missing files, decoding failures or malformed/missing-key legacy-summary JSON can exit 1 with a traceback; exit 1 alone does not identify an accounting FAIL. Config JSON parse errors are handled as `ConfigError` (exit 2). Other subcommands retain their exit codes.
 
 Only pinned native-legacy-v3 constants/policy are supported by this reproduction tool. Alternate constants need a separately versioned implementation; proposals remain pending. See [local integration and verification](LOCAL_INTEGRATION_20261020.md).
