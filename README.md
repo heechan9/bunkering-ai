@@ -32,7 +32,13 @@ DAYTONA·VISBY 국내 LNG 사례와 현재 구간 24h·급유 기항 8h 합성 �
 
 ## 지금 어디까지 완료됐나
 
-2026-10-13 확인 기준 main은 `2e00985`이며, PR #113–#117까지 병합됐습니다. 추가시간 계산·출항 준비 시간·자료 입력 검증 도구는 구현 및 합성 검증을 마쳤습니다. 실자료 검증과 운영 의사결정 연결은 아직 남아 있습니다. [Sites 36판 운영 검증](docs/audits/ocean_lab_live_verification_20261007.md)은 10월 7일의 기록이며 이번에 웹을 재검증하거나 배포하지 않았습니다. **논문은 제출했지만 프로젝트의 실선 검증·데이터 확보·기능 개선은 진행 중입니다.**
+2026-10-21 확인 기준 main은 `183ab3a684cc970315112c312cc52953bd02f6e1`입니다. main에 포함된 기능과 아직 병합되지 않은 연구 Draft를 구분합니다. 아래 과거 검사 기록의 날짜·분모는 유지하며, 이번 README 갱신은 웹 재검증·배포나 모델 교체를 뜻하지 않습니다. **논문 제출과 실선 검증·운영 채택은 별개이며, 실제 비용·연료 절감은 아직 입증하지 않았습니다.**
+
+- **main에 포함:** [LP/MILP 고정 항로 조달 기준선](research/procurement_baseline/README.md)은 tonnes·USD, 공급 한도·최소 급유·금전 수수료·동일 종료 재고를 사용하는 120개 합성 개발 사례 비교입니다. 실제 절감률이나 새로운 미사용 평가 집합의 결과가 아닙니다. [항차 연료 수요 검증 준비](research/voyage_demand/README.md)는 자료 계약·합성 파이프라인 검사이며 실제 선박 예측 실험은 미완료입니다.
+- **native-v4는 Draft:** [#132](https://github.com/heechan9/bunkering-ai/pull/132) → [#133](https://github.com/heechan9/bunkering-ai/pull/133) → [#134](https://github.com/heechan9/bunkering-ai/pull/134) 위의 [#136](https://github.com/heechan9/bunkering-ai/pull/136)(head `40100e3`, base #134 `732b25e`)을 검토 중입니다. [#135](https://github.com/heechan9/bunkering-ai/pull/135)는 이력·기여 표기를 바로잡은 #136으로 대체되어 닫혔습니다. main 병합이나 웹 연결 완료가 아닙니다.
+- **Draft의 검사와 한계:** [#136 CI](https://github.com/heechan9/bunkering-ai/actions/runs/39574886103)는 #134 대상 임시 PR merge에서 961 passed / 1 skipped / 110 subtests passed입니다. main 검사나 전체 모델 재현 결과가 아닙니다. ledger는 독립 종료 가격·환율 근거 미완료로 **INCOMPLETE/3**, C01–C06은 pending입니다. 기록된 4,000 episodes / 100,520 steps 감사와 별도 12-episode 모델 replay를 구분하며, 안전성·절감 우위를 주장하지 않습니다.
+- **기여 기록:** 요구사항·기획, 실제 구현, AI 지원, 검토, 병합을 [기여 정책](CONTRIBUTIONS.md)에 따라 구분합니다. 자료 제출·AI 초안·CI 통과를 담당자 본인 검토나 계약 채택으로 간주하지 않습니다.
+
 아래 상태는 각 항목의 확인 범위이며 전체 프로젝트의 검증 완료를 뜻하지 않습니다.
 
 | 연구·개발 단계 | 상태 | 확인된 범위와 남은 일 |
