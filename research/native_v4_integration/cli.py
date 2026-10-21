@@ -109,9 +109,7 @@ def cmd_merge_contracts(args):
     out = check_out_dir(args.out_dir, given, args.overwrite)
     merged, issues = contracts.merge(args.template, inputs)
     if args.decisions:
-        with Path(args.decisions).open(encoding="utf-8-sig", newline="") as f:
-            decisions = {r["contract_id"]: r["owner_decision"] for r in csv.DictReader(f)}
-        contracts.apply_decisions(merged, decisions)
+        contracts.apply_decisions(merged, contracts.read_decisions(args.decisions))
     version = merged[0]["contract_version"]
     extra = {"issues": issues}
     frozen = None

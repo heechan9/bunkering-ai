@@ -90,12 +90,42 @@ def merge(template_path, inputs):
     return merged, issues
 
 
+def read_decisions(path):
+    """Read an owner decision CSV without silently overwriting duplicate IDs."""
+    with Path(path).open(encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f)
+        fields = reader.fieldnames or []
+        required = {"contract_id", "owner_decision"}
+        if not required.issubset(fields) or len(fields) != len(set(fields)):
+            raise ContractError(f"{path}: decisions header needs unique contract_id and owner_decision columns")
+        decisions = {}
+        for line, row in enumerate(reader, start=2):
+            if None in row or any(value is None for value in row.values()):
+                raise ContractError(f"{path}:line {line}: decisions row width differs from header")
+            cid, decision = row["contract_id"], row["owner_decision"]
+            if not cid.strip():
+                raise ContractError(f"{path}:line {line}: blank contract_id")
+            if cid in decisions:
+                raise ContractError(f"{path}:line {line}: duplicate decision contract_id {cid!r}")
+            if decision not in DECISIONS:
+                raise ContractError(f"{path}:line {line}: invalid decision {decision!r}")
+            decisions[cid] = decision
+    return decisions
+
+
 def apply_decisions(merged, decisions):
-    """decisions: {contract_id: accepted|rejected|pending} supplied by 희찬."""
+    """Validate all supplied owner decisions before changing any merged row."""
+    ids = {row["contract_id"] for row in merged}
+    unknown = set(decisions) - ids
+    if unknown:
+        raise ContractError(f"unknown decision contract_id: {sorted(unknown)}")
+    pending = []
     for row in merged:
         decision = decisions.get(row["contract_id"], row["owner_decision"])
         if decision not in DECISIONS:
             raise ContractError(f"{row['contract_id']}: invalid decision {decision!r}")
+        pending.append(decision)
+    for row, decision in zip(merged, pending):
         row["owner_decision"] = decision
     return merged
 

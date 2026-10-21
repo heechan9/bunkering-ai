@@ -51,6 +51,14 @@ def _read(path, columns):
         return list(reader)
 
 
+def _episode_number(row, name, convert, where):
+    """Report malformed CSV numbers through the documented input-error path."""
+    try:
+        return convert(row[name])
+    except (ValueError, TypeError, OverflowError) as exc:
+        raise InputError(f"{where}.{name}: invalid numeric value {row[name]!r}") from exc
+
+
 def load_episodes(path, cfg):
     rows = _read(path, EPISODE_COLUMNS)
     if not rows:
@@ -59,21 +67,21 @@ def load_episodes(path, cfg):
     episodes = {}
     for i, r in enumerate(rows, start=2):
         where = f"{path}:line {i}"
-        key = (r["policy"], int(r["seed"]))
+        key = (r["policy"], _episode_number(r, "seed", int, where))
         if key in episodes:
             raise InputError(f"{where}: duplicate policy/seed {key}")
         e = {k: r[k] for k in r}
         e["seed"] = key[1]
-        e["steps"] = int(r["steps"])
+        e["steps"] = _episode_number(r, "steps", int, where)
         for k in ["legacy_arrived", "safe_arrival"]:
             e[k] = _bool(r[k], f"{where}.{k}")
         for k in ["pre_refill_shortage_steps", "pre_refill_reserve_violation_steps"]:
-            e[k] = int(r[k])
+            e[k] = _episode_number(r, k, int, where)
             if e[k] < 0:
                 raise InputError(f"{where}.{k}: negative count")
         for k in ["purchase_sci", "initial_inventory_value", "terminal_inventory_value",
                   "final_fuel", "inventory_adjusted_sci"]:
-            e[k] = float(r[k])
+            e[k] = _episode_number(r, k, float, where)
             if not math.isfinite(e[k]):
                 raise InputError(f"{where}.{k}: not finite")
         if not -tol <= e["final_fuel"] <= cap + tol:
