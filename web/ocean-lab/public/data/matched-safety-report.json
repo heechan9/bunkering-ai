@@ -1,0 +1,3732 @@
+{
+  "schema_version": 1,
+  "scope": "saved_simulator_observations_descriptive_only",
+  "row_count": 400,
+  "matched_cases_per_policy": 100,
+  "distinct_evaluation_seeds": 100,
+  "checkpoint_sha256_recorded": "970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392",
+  "training_seed_recorded": 42,
+  "confidence_interval": null,
+  "p_value": null,
+  "inference_status": "withheld: independent sampling/training replications not established",
+  "limits": [
+    "Same manifest seed/config is a planned match, not proof of identical exogenous trajectories.",
+    "Repeated episodes/time points are not asserted independent.",
+    "Cost is conditional on both policies safe; excluded cases remain in safety denominators.",
+    "Conditioning on post-policy safety can select cases; no overall policy cost effect is estimated.",
+    "Synthetic Cost Index is not currency or real monetary savings.",
+    "Saved audit has observational safety semantics; environment termination is unchanged.",
+    "No model training, fit, imputation, causal inference, or policy performance improvement."
+  ],
+  "comparisons": [
+    {
+      "policy_a": "fixed_fueling",
+      "policy_b": "price_reactive",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 0,
+        "a_only_safe": 0,
+        "b_only_safe": 2,
+        "neither_safe": 98
+      },
+      "safe_arrival_difference_b_minus_a": 0.02,
+      "both_safe_coverage": 0.0,
+      "cost_difference_b_minus_a": null,
+      "pairs": [
+        {
+          "seed": 42,
+          "episode": 0,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 43,
+          "episode": 1,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 44,
+          "episode": 2,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 45,
+          "episode": 3,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 46,
+          "episode": 4,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 47,
+          "episode": 5,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 48,
+          "episode": 6,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 49,
+          "episode": 7,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 50,
+          "episode": 8,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 51,
+          "episode": 9,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 52,
+          "episode": 10,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 53,
+          "episode": 11,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 54,
+          "episode": 12,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 55,
+          "episode": 13,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 56,
+          "episode": 14,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 57,
+          "episode": 15,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 58,
+          "episode": 16,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 59,
+          "episode": 17,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 60,
+          "episode": 18,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 61,
+          "episode": 19,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 62,
+          "episode": 20,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 63,
+          "episode": 21,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 64,
+          "episode": 22,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 65,
+          "episode": 23,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 66,
+          "episode": 24,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 67,
+          "episode": 25,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 68,
+          "episode": 26,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 69,
+          "episode": 27,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 70,
+          "episode": 28,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 71,
+          "episode": 29,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 72,
+          "episode": 30,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 73,
+          "episode": 31,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 74,
+          "episode": 32,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 75,
+          "episode": 33,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 76,
+          "episode": 34,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 77,
+          "episode": 35,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 78,
+          "episode": 36,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 79,
+          "episode": 37,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 80,
+          "episode": 38,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 81,
+          "episode": 39,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 82,
+          "episode": 40,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 83,
+          "episode": 41,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 84,
+          "episode": 42,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 85,
+          "episode": 43,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 86,
+          "episode": 44,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 87,
+          "episode": 45,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 88,
+          "episode": 46,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 89,
+          "episode": 47,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 90,
+          "episode": 48,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 91,
+          "episode": 49,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 92,
+          "episode": 50,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 93,
+          "episode": 51,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 94,
+          "episode": 52,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 95,
+          "episode": 53,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 96,
+          "episode": 54,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 97,
+          "episode": 55,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 98,
+          "episode": 56,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 99,
+          "episode": 57,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 100,
+          "episode": 58,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 101,
+          "episode": 59,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 102,
+          "episode": 60,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 103,
+          "episode": 61,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 104,
+          "episode": 62,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 105,
+          "episode": 63,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 106,
+          "episode": 64,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 107,
+          "episode": 65,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 108,
+          "episode": 66,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 109,
+          "episode": 67,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 110,
+          "episode": 68,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 111,
+          "episode": 69,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 112,
+          "episode": 70,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 113,
+          "episode": 71,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 114,
+          "episode": 72,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 115,
+          "episode": 73,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 116,
+          "episode": 74,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 117,
+          "episode": 75,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 118,
+          "episode": 76,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 119,
+          "episode": 77,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 120,
+          "episode": 78,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 121,
+          "episode": 79,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 122,
+          "episode": 80,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 123,
+          "episode": 81,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 124,
+          "episode": 82,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 125,
+          "episode": 83,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 126,
+          "episode": 84,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 127,
+          "episode": 85,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 128,
+          "episode": 86,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 129,
+          "episode": 87,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 130,
+          "episode": 88,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 131,
+          "episode": 89,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 132,
+          "episode": 90,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 133,
+          "episode": 91,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 134,
+          "episode": 92,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 135,
+          "episode": 93,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 136,
+          "episode": 94,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 137,
+          "episode": 95,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 138,
+          "episode": 96,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 139,
+          "episode": 97,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 140,
+          "episode": 98,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 141,
+          "episode": 99,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        }
+      ]
+    },
+    {
+      "policy_a": "fixed_fueling",
+      "policy_b": "safe_stock",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 0,
+        "a_only_safe": 0,
+        "b_only_safe": 0,
+        "neither_safe": 100
+      },
+      "safe_arrival_difference_b_minus_a": 0.0,
+      "both_safe_coverage": 0.0,
+      "cost_difference_b_minus_a": null,
+      "pairs": [
+        {
+          "seed": 42,
+          "episode": 0,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 43,
+          "episode": 1,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 44,
+          "episode": 2,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 45,
+          "episode": 3,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 46,
+          "episode": 4,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 47,
+          "episode": 5,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 48,
+          "episode": 6,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 49,
+          "episode": 7,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 50,
+          "episode": 8,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 51,
+          "episode": 9,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 52,
+          "episode": 10,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 53,
+          "episode": 11,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 54,
+          "episode": 12,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 55,
+          "episode": 13,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 56,
+          "episode": 14,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 57,
+          "episode": 15,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 58,
+          "episode": 16,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 59,
+          "episode": 17,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 60,
+          "episode": 18,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 61,
+          "episode": 19,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 62,
+          "episode": 20,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 63,
+          "episode": 21,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 64,
+          "episode": 22,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 65,
+          "episode": 23,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 66,
+          "episode": 24,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 67,
+          "episode": 25,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 68,
+          "episode": 26,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 69,
+          "episode": 27,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 70,
+          "episode": 28,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 71,
+          "episode": 29,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 72,
+          "episode": 30,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 73,
+          "episode": 31,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 74,
+          "episode": 32,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 75,
+          "episode": 33,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 76,
+          "episode": 34,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 77,
+          "episode": 35,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 78,
+          "episode": 36,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 79,
+          "episode": 37,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 80,
+          "episode": 38,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 81,
+          "episode": 39,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 82,
+          "episode": 40,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 83,
+          "episode": 41,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 84,
+          "episode": 42,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 85,
+          "episode": 43,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 86,
+          "episode": 44,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 87,
+          "episode": 45,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 88,
+          "episode": 46,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 89,
+          "episode": 47,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 90,
+          "episode": 48,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 91,
+          "episode": 49,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 92,
+          "episode": 50,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 93,
+          "episode": 51,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 94,
+          "episode": 52,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 95,
+          "episode": 53,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 96,
+          "episode": 54,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 97,
+          "episode": 55,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 98,
+          "episode": 56,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 99,
+          "episode": 57,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 100,
+          "episode": 58,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 101,
+          "episode": 59,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 102,
+          "episode": 60,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 103,
+          "episode": 61,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 104,
+          "episode": 62,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 105,
+          "episode": 63,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 106,
+          "episode": 64,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 107,
+          "episode": 65,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 108,
+          "episode": 66,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 109,
+          "episode": 67,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 110,
+          "episode": 68,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 111,
+          "episode": 69,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 112,
+          "episode": 70,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 113,
+          "episode": 71,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 114,
+          "episode": 72,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 115,
+          "episode": 73,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 116,
+          "episode": 74,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 117,
+          "episode": 75,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 118,
+          "episode": 76,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 119,
+          "episode": 77,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 120,
+          "episode": 78,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 121,
+          "episode": 79,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 122,
+          "episode": 80,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 123,
+          "episode": 81,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 124,
+          "episode": 82,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 125,
+          "episode": 83,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 126,
+          "episode": 84,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 127,
+          "episode": 85,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 128,
+          "episode": 86,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 129,
+          "episode": 87,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 130,
+          "episode": 88,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 131,
+          "episode": 89,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 132,
+          "episode": 90,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 133,
+          "episode": 91,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 134,
+          "episode": 92,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 135,
+          "episode": 93,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 136,
+          "episode": 94,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 137,
+          "episode": 95,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 138,
+          "episode": 96,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 139,
+          "episode": 97,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 140,
+          "episode": 98,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 141,
+          "episode": 99,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        }
+      ]
+    },
+    {
+      "policy_a": "fixed_fueling",
+      "policy_b": "double_dqn",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 0,
+        "a_only_safe": 0,
+        "b_only_safe": 100,
+        "neither_safe": 0
+      },
+      "safe_arrival_difference_b_minus_a": 1.0,
+      "both_safe_coverage": 0.0,
+      "cost_difference_b_minus_a": null,
+      "pairs": [
+        {
+          "seed": 42,
+          "episode": 0,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 43,
+          "episode": 1,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 44,
+          "episode": 2,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 45,
+          "episode": 3,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 46,
+          "episode": 4,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 47,
+          "episode": 5,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 48,
+          "episode": 6,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 49,
+          "episode": 7,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 50,
+          "episode": 8,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 51,
+          "episode": 9,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 52,
+          "episode": 10,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 53,
+          "episode": 11,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 54,
+          "episode": 12,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 55,
+          "episode": 13,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 56,
+          "episode": 14,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 57,
+          "episode": 15,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 58,
+          "episode": 16,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 59,
+          "episode": 17,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 60,
+          "episode": 18,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 61,
+          "episode": 19,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 62,
+          "episode": 20,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 63,
+          "episode": 21,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 64,
+          "episode": 22,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 65,
+          "episode": 23,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 66,
+          "episode": 24,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 67,
+          "episode": 25,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 68,
+          "episode": 26,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 69,
+          "episode": 27,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 70,
+          "episode": 28,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 71,
+          "episode": 29,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 72,
+          "episode": 30,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 73,
+          "episode": 31,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 74,
+          "episode": 32,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 75,
+          "episode": 33,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 76,
+          "episode": 34,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 77,
+          "episode": 35,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 78,
+          "episode": 36,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 79,
+          "episode": 37,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 80,
+          "episode": 38,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 81,
+          "episode": 39,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 82,
+          "episode": 40,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 83,
+          "episode": 41,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 84,
+          "episode": 42,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 85,
+          "episode": 43,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 86,
+          "episode": 44,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 87,
+          "episode": 45,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 88,
+          "episode": 46,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 89,
+          "episode": 47,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 90,
+          "episode": 48,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 91,
+          "episode": 49,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 92,
+          "episode": 50,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 93,
+          "episode": 51,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 94,
+          "episode": 52,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 95,
+          "episode": 53,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 96,
+          "episode": 54,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 97,
+          "episode": 55,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 98,
+          "episode": 56,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 99,
+          "episode": 57,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 100,
+          "episode": 58,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 101,
+          "episode": 59,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 102,
+          "episode": 60,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 103,
+          "episode": 61,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 104,
+          "episode": 62,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 105,
+          "episode": 63,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 106,
+          "episode": 64,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 107,
+          "episode": 65,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 108,
+          "episode": 66,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 109,
+          "episode": 67,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 110,
+          "episode": 68,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 111,
+          "episode": 69,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 112,
+          "episode": 70,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 113,
+          "episode": 71,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 114,
+          "episode": 72,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 115,
+          "episode": 73,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 116,
+          "episode": 74,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 117,
+          "episode": 75,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 118,
+          "episode": 76,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 119,
+          "episode": 77,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 120,
+          "episode": 78,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 121,
+          "episode": 79,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 122,
+          "episode": 80,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 123,
+          "episode": 81,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 124,
+          "episode": 82,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 125,
+          "episode": 83,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 126,
+          "episode": 84,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 127,
+          "episode": 85,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 128,
+          "episode": 86,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 129,
+          "episode": 87,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 130,
+          "episode": 88,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 131,
+          "episode": 89,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 132,
+          "episode": 90,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 133,
+          "episode": 91,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 134,
+          "episode": 92,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 135,
+          "episode": 93,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 136,
+          "episode": 94,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 137,
+          "episode": 95,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 138,
+          "episode": 96,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 139,
+          "episode": 97,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 140,
+          "episode": 98,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 141,
+          "episode": 99,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        }
+      ]
+    },
+    {
+      "policy_a": "price_reactive",
+      "policy_b": "safe_stock",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 0,
+        "a_only_safe": 2,
+        "b_only_safe": 0,
+        "neither_safe": 98
+      },
+      "safe_arrival_difference_b_minus_a": -0.02,
+      "both_safe_coverage": 0.0,
+      "cost_difference_b_minus_a": null,
+      "pairs": [
+        {
+          "seed": 42,
+          "episode": 0,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 43,
+          "episode": 1,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 44,
+          "episode": 2,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 45,
+          "episode": 3,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 46,
+          "episode": 4,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 47,
+          "episode": 5,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 48,
+          "episode": 6,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 49,
+          "episode": 7,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 50,
+          "episode": 8,
+          "safety_category": "a_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 51,
+          "episode": 9,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 52,
+          "episode": 10,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 53,
+          "episode": 11,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 54,
+          "episode": 12,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 55,
+          "episode": 13,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 56,
+          "episode": 14,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 57,
+          "episode": 15,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 58,
+          "episode": 16,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 59,
+          "episode": 17,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 60,
+          "episode": 18,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 61,
+          "episode": 19,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 62,
+          "episode": 20,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 63,
+          "episode": 21,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 64,
+          "episode": 22,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 65,
+          "episode": 23,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 66,
+          "episode": 24,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 67,
+          "episode": 25,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 68,
+          "episode": 26,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 69,
+          "episode": 27,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 70,
+          "episode": 28,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 71,
+          "episode": 29,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 72,
+          "episode": 30,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 73,
+          "episode": 31,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 74,
+          "episode": 32,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 75,
+          "episode": 33,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 76,
+          "episode": 34,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 77,
+          "episode": 35,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 78,
+          "episode": 36,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 79,
+          "episode": 37,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 80,
+          "episode": 38,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 81,
+          "episode": 39,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 82,
+          "episode": 40,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 83,
+          "episode": 41,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 84,
+          "episode": 42,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 85,
+          "episode": 43,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 86,
+          "episode": 44,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 87,
+          "episode": 45,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 88,
+          "episode": 46,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 89,
+          "episode": 47,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 90,
+          "episode": 48,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 91,
+          "episode": 49,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 92,
+          "episode": 50,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 93,
+          "episode": 51,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 94,
+          "episode": 52,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 95,
+          "episode": 53,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 96,
+          "episode": 54,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 97,
+          "episode": 55,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 98,
+          "episode": 56,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 99,
+          "episode": 57,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 100,
+          "episode": 58,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 101,
+          "episode": 59,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 102,
+          "episode": 60,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 103,
+          "episode": 61,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 104,
+          "episode": 62,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 105,
+          "episode": 63,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 106,
+          "episode": 64,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 107,
+          "episode": 65,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 108,
+          "episode": 66,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 109,
+          "episode": 67,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 110,
+          "episode": 68,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 111,
+          "episode": 69,
+          "safety_category": "a_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 112,
+          "episode": 70,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 113,
+          "episode": 71,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 114,
+          "episode": 72,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 115,
+          "episode": 73,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 116,
+          "episode": 74,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 117,
+          "episode": 75,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 118,
+          "episode": 76,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 119,
+          "episode": 77,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 120,
+          "episode": 78,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 121,
+          "episode": 79,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 122,
+          "episode": 80,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 123,
+          "episode": 81,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 124,
+          "episode": 82,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 125,
+          "episode": 83,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 126,
+          "episode": 84,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 127,
+          "episode": 85,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 128,
+          "episode": 86,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 129,
+          "episode": 87,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 130,
+          "episode": 88,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 131,
+          "episode": 89,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 132,
+          "episode": 90,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 133,
+          "episode": 91,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 134,
+          "episode": 92,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 135,
+          "episode": 93,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 136,
+          "episode": 94,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 137,
+          "episode": 95,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 138,
+          "episode": 96,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 139,
+          "episode": 97,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 140,
+          "episode": 98,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 141,
+          "episode": 99,
+          "safety_category": "neither_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        }
+      ]
+    },
+    {
+      "policy_a": "price_reactive",
+      "policy_b": "double_dqn",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 2,
+        "a_only_safe": 0,
+        "b_only_safe": 98,
+        "neither_safe": 0
+      },
+      "safe_arrival_difference_b_minus_a": 0.98,
+      "both_safe_coverage": 0.02,
+      "cost_difference_b_minus_a": {
+        "n": 2,
+        "mean": 17854.650976305362,
+        "median": 17854.650976305362,
+        "minimum": 14712.831042502658,
+        "maximum": 20996.470910108066,
+        "negative": 0,
+        "zero": 0,
+        "positive": 2
+      },
+      "pairs": [
+        {
+          "seed": 42,
+          "episode": 0,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 43,
+          "episode": 1,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 44,
+          "episode": 2,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 45,
+          "episode": 3,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 46,
+          "episode": 4,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 47,
+          "episode": 5,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 48,
+          "episode": 6,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 49,
+          "episode": 7,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 50,
+          "episode": 8,
+          "safety_category": "both_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": 20996.470910108066
+        },
+        {
+          "seed": 51,
+          "episode": 9,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 52,
+          "episode": 10,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 53,
+          "episode": 11,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 54,
+          "episode": 12,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 55,
+          "episode": 13,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 56,
+          "episode": 14,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 57,
+          "episode": 15,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 58,
+          "episode": 16,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 59,
+          "episode": 17,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 60,
+          "episode": 18,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 61,
+          "episode": 19,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 62,
+          "episode": 20,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 63,
+          "episode": 21,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 64,
+          "episode": 22,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 65,
+          "episode": 23,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 66,
+          "episode": 24,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 67,
+          "episode": 25,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 68,
+          "episode": 26,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 69,
+          "episode": 27,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 70,
+          "episode": 28,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 71,
+          "episode": 29,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 72,
+          "episode": 30,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 73,
+          "episode": 31,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 74,
+          "episode": 32,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 75,
+          "episode": 33,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 76,
+          "episode": 34,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 77,
+          "episode": 35,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 78,
+          "episode": 36,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 79,
+          "episode": 37,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 80,
+          "episode": 38,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 81,
+          "episode": 39,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 82,
+          "episode": 40,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 83,
+          "episode": 41,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 84,
+          "episode": 42,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 85,
+          "episode": 43,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 86,
+          "episode": 44,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 87,
+          "episode": 45,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 88,
+          "episode": 46,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 89,
+          "episode": 47,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 90,
+          "episode": 48,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 91,
+          "episode": 49,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 92,
+          "episode": 50,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 93,
+          "episode": 51,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 94,
+          "episode": 52,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 95,
+          "episode": 53,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 96,
+          "episode": 54,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 97,
+          "episode": 55,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 98,
+          "episode": 56,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 99,
+          "episode": 57,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 100,
+          "episode": 58,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 101,
+          "episode": 59,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 102,
+          "episode": 60,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 103,
+          "episode": 61,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 104,
+          "episode": 62,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 105,
+          "episode": 63,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 106,
+          "episode": 64,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 107,
+          "episode": 65,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 108,
+          "episode": 66,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 109,
+          "episode": 67,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 110,
+          "episode": 68,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 111,
+          "episode": 69,
+          "safety_category": "both_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": 14712.831042502658
+        },
+        {
+          "seed": 112,
+          "episode": 70,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 113,
+          "episode": 71,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 114,
+          "episode": 72,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 115,
+          "episode": 73,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 116,
+          "episode": 74,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 117,
+          "episode": 75,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 118,
+          "episode": 76,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 119,
+          "episode": 77,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 120,
+          "episode": 78,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 121,
+          "episode": 79,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 122,
+          "episode": 80,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 123,
+          "episode": 81,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 124,
+          "episode": 82,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 125,
+          "episode": 83,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 126,
+          "episode": 84,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 127,
+          "episode": 85,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 128,
+          "episode": 86,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 129,
+          "episode": 87,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 130,
+          "episode": 88,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 131,
+          "episode": 89,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 132,
+          "episode": 90,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 133,
+          "episode": 91,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 134,
+          "episode": 92,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 135,
+          "episode": 93,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 136,
+          "episode": 94,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 137,
+          "episode": 95,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 138,
+          "episode": 96,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 139,
+          "episode": 97,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 140,
+          "episode": 98,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 141,
+          "episode": 99,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        }
+      ]
+    },
+    {
+      "policy_a": "safe_stock",
+      "policy_b": "double_dqn",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 0,
+        "a_only_safe": 0,
+        "b_only_safe": 100,
+        "neither_safe": 0
+      },
+      "safe_arrival_difference_b_minus_a": 1.0,
+      "both_safe_coverage": 0.0,
+      "cost_difference_b_minus_a": null,
+      "pairs": [
+        {
+          "seed": 42,
+          "episode": 0,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 43,
+          "episode": 1,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 44,
+          "episode": 2,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 45,
+          "episode": 3,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 46,
+          "episode": 4,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 47,
+          "episode": 5,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 48,
+          "episode": 6,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 49,
+          "episode": 7,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 50,
+          "episode": 8,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 51,
+          "episode": 9,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 52,
+          "episode": 10,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 53,
+          "episode": 11,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 54,
+          "episode": 12,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 55,
+          "episode": 13,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 56,
+          "episode": 14,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 57,
+          "episode": 15,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 58,
+          "episode": 16,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 59,
+          "episode": 17,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 60,
+          "episode": 18,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 61,
+          "episode": 19,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 62,
+          "episode": 20,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 63,
+          "episode": 21,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 64,
+          "episode": 22,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 65,
+          "episode": 23,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 66,
+          "episode": 24,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 67,
+          "episode": 25,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 68,
+          "episode": 26,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 69,
+          "episode": 27,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 70,
+          "episode": 28,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 71,
+          "episode": 29,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 72,
+          "episode": 30,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 73,
+          "episode": 31,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 74,
+          "episode": 32,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 75,
+          "episode": 33,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 76,
+          "episode": 34,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 77,
+          "episode": 35,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 78,
+          "episode": 36,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 79,
+          "episode": 37,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 80,
+          "episode": 38,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 81,
+          "episode": 39,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 82,
+          "episode": 40,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 83,
+          "episode": 41,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 84,
+          "episode": 42,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 85,
+          "episode": 43,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 86,
+          "episode": 44,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 87,
+          "episode": 45,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 88,
+          "episode": 46,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 89,
+          "episode": 47,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 90,
+          "episode": 48,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 91,
+          "episode": 49,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 92,
+          "episode": 50,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 93,
+          "episode": 51,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 94,
+          "episode": 52,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 95,
+          "episode": 53,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 96,
+          "episode": 54,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 97,
+          "episode": 55,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 98,
+          "episode": 56,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 99,
+          "episode": 57,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 100,
+          "episode": 58,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 101,
+          "episode": 59,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 102,
+          "episode": 60,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 103,
+          "episode": 61,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 104,
+          "episode": 62,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 105,
+          "episode": 63,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 106,
+          "episode": 64,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 107,
+          "episode": 65,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 108,
+          "episode": 66,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 109,
+          "episode": 67,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 110,
+          "episode": 68,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 111,
+          "episode": 69,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 112,
+          "episode": 70,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 113,
+          "episode": 71,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 114,
+          "episode": 72,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 115,
+          "episode": 73,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 116,
+          "episode": 74,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 117,
+          "episode": 75,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 118,
+          "episode": 76,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 119,
+          "episode": 77,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 120,
+          "episode": 78,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 121,
+          "episode": 79,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 122,
+          "episode": 80,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 123,
+          "episode": 81,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 124,
+          "episode": 82,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 125,
+          "episode": 83,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 126,
+          "episode": 84,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 127,
+          "episode": 85,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 128,
+          "episode": 86,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 129,
+          "episode": 87,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 130,
+          "episode": 88,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 131,
+          "episode": 89,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 132,
+          "episode": 90,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 133,
+          "episode": 91,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 134,
+          "episode": 92,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 135,
+          "episode": 93,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 136,
+          "episode": 94,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 137,
+          "episode": 95,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 138,
+          "episode": 96,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 139,
+          "episode": 97,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 140,
+          "episode": 98,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        },
+        {
+          "seed": 141,
+          "episode": 99,
+          "safety_category": "b_only_safe",
+          "inventory_adjusted_sci_difference_b_minus_a": null
+        }
+      ]
+    }
+  ],
+  "input_sha256": {
+    "episodes.csv": "44d473359cb45647e046e2650f49246f923e6f62ebfe68ffcd8c1f0f75a7fcfb",
+    "manifest.json": "da80c9cb459f3453c28e627c7eb333c030b114d1c581b69cf676a332b017ceb9"
+  }
+}
