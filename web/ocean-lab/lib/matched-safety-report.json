@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "scope": "saved_simulator_observations_descriptive_only",
+  "row_count": 400,
+  "matched_cases_per_policy": 100,
+  "distinct_evaluation_seeds": 100,
+  "checkpoint_sha256_recorded": "970aafbf2d32e9bef558a5611a300cd0885f826af2c872a83119a6e9fcbcf392",
+  "training_seed_recorded": 42,
+  "confidence_interval": null,
+  "p_value": null,
+  "inference_status": "withheld: independent sampling/training replications not established",
+  "limits": [
+    "Same manifest seed/config is a planned match, not proof of identical exogenous trajectories.",
+    "Repeated episodes/time points are not asserted independent.",
+    "Cost is conditional on both policies safe; excluded cases remain in safety denominators.",
+    "Conditioning on post-policy safety can select cases; no overall policy cost effect is estimated.",
+    "Synthetic Cost Index is not currency or real monetary savings.",
+    "Saved audit has observational safety semantics; environment termination is unchanged.",
+    "No model training, fit, imputation, causal inference, or policy performance improvement."
+  ],
+  "comparisons": [
+    {
+      "policy_a": "fixed_fueling",
+      "policy_b": "price_reactive",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 0,
+        "a_only_safe": 0,
+        "b_only_safe": 2,
+        "neither_safe": 98
+      },
+      "safe_arrival_difference_b_minus_a": 0.02,
+      "both_safe_coverage": 0.0,
+      "cost_difference_b_minus_a": null
+    },
+    {
+      "policy_a": "fixed_fueling",
+      "policy_b": "safe_stock",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 0,
+        "a_only_safe": 0,
+        "b_only_safe": 0,
+        "neither_safe": 100
+      },
+      "safe_arrival_difference_b_minus_a": 0.0,
+      "both_safe_coverage": 0.0,
+      "cost_difference_b_minus_a": null
+    },
+    {
+      "policy_a": "fixed_fueling",
+      "policy_b": "double_dqn",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 0,
+        "a_only_safe": 0,
+        "b_only_safe": 100,
+        "neither_safe": 0
+      },
+      "safe_arrival_difference_b_minus_a": 1.0,
+      "both_safe_coverage": 0.0,
+      "cost_difference_b_minus_a": null
+    },
+    {
+      "policy_a": "price_reactive",
+      "policy_b": "safe_stock",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 0,
+        "a_only_safe": 2,
+        "b_only_safe": 0,
+        "neither_safe": 98
+      },
+      "safe_arrival_difference_b_minus_a": -0.02,
+      "both_safe_coverage": 0.0,
+      "cost_difference_b_minus_a": null
+    },
+    {
+      "policy_a": "price_reactive",
+      "policy_b": "double_dqn",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 2,
+        "a_only_safe": 0,
+        "b_only_safe": 98,
+        "neither_safe": 0
+      },
+      "safe_arrival_difference_b_minus_a": 0.98,
+      "both_safe_coverage": 0.02,
+      "cost_difference_b_minus_a": {
+        "n": 2,
+        "mean": 17854.650976305362,
+        "median": 17854.650976305362,
+        "minimum": 14712.831042502658,
+        "maximum": 20996.470910108066,
+        "negative": 0,
+        "zero": 0,
+        "positive": 2
+      }
+    },
+    {
+      "policy_a": "safe_stock",
+      "policy_b": "double_dqn",
+      "matched_cases": 100,
+      "safety_counts": {
+        "both_safe": 0,
+        "a_only_safe": 0,
+        "b_only_safe": 100,
+        "neither_safe": 0
+      },
+      "safe_arrival_difference_b_minus_a": 1.0,
+      "both_safe_coverage": 0.0,
+      "cost_difference_b_minus_a": null
+    }
+  ],
+  "input_sha256": {
+    "episodes.csv": "44d473359cb45647e046e2650f49246f923e6f62ebfe68ffcd8c1f0f75a7fcfb",
+    "manifest.json": "da80c9cb459f3453c28e627c7eb333c030b114d1c581b69cf676a332b017ceb9"
+  }
+}
