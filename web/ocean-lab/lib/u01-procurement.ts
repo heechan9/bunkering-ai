@@ -15,6 +15,8 @@ function quantity(text: string): number|null {
   return Number.isFinite(n) && n <= u01.input.capacity ? n : null;
 }
 
+export const isU01Quantity = (text: string): boolean => quantity(text) !== null;
+
 export function checkU01(values: readonly string[]): Candidate {
   if (values.length !== 2) return {validInput:false,feasible:false,rows:[],violations:[],rawCost:null,comparableCost:null,terminal:null};
   const quantities = values.map(quantity);

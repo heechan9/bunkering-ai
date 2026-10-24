@@ -49,18 +49,29 @@ range is 0–100 t with at most three decimal places; these are not editable mar
 or ship assumptions. Capacity, reserves and terminal equality are independently
 checked for numeric candidates. Source tolerances remain explicit.
 
-## Overlap with the report-generation assignment
+## External review assignment and candidate separation
 
-Heechan identified a report-generation task assigned to an outside contributor.
-Potential overlap: result labels, numerical summaries and evidence links. Exact
-task specification/accepted deliverables were not found in the inspected main,
-open PR summaries or accessible contribution records; do not infer acceptance or
-completion from the assignment alone.
+Heechan confirmed the external review scope: fresh-environment README/test
+execution, invalid-input rejection, and CSV/CLI clarity. Report generation is
+not this assignment. U01 is reviewed on PR142; the separate native CSV/CLI
+candidate is PR136 at `40100e398efb15f44cf9a032bf000cf519a6fa87`.
+The old introduction's `0f96511b4b277a8d69236b3d7d4cce888cced882` is for
+practice/historical reproduction, not the current review candidate.
+Do not merge candidates or mix normalized SCI with U01 tonnes/USD.
+The frozen commands and acceptance criteria are in PR142 comment 6384844796.
+No report generator, original dataset, model or native CSV/CLI source is changed.
 
-This change implements only a screen, a frozen example fixture and verification.
-It adds no PDF/Markdown report generator, downloadable report, template or report
-API. Existing `research/procurement_baseline/generate_report.py` and its tests are
-untouched. Agree any shared schema/wording before integrating that assignment.
+## Accessibility follow-up after Claude review
+
+The user relayed Claude's browser review of `ae2170e`: calculation passed;
+real devices, screen readers and full regression were not covered by that review.
+Boundary navigation retains native focusable buttons with `aria-disabled` and
+explicit no-op guards instead of disabling the focused button. Each input uses
+the same strict quantity parser independently for `aria-invalid`; only the
+invalid input references the error message. C reserve errors say destination
+arrival inventory and explicitly state that C has no purchasing.
+These changes require fresh actual browser keyboard/layout verification;
+component checks do not certify focus behavior in a browser.
 
 ## Reproduction and checks directly executed
 

@@ -2,7 +2,7 @@
 import {useState} from 'react';
 import Link from 'next/link';
 import {LocaleProvider,useLocale} from '@/lib/locale';
-import {checkU01,defaultQuantities,u01,u01Step} from '@/lib/u01-procurement';
+import {checkU01,defaultQuantities,isU01Quantity,u01,u01Step} from '@/lib/u01-procurement';
 import './procurement.css';
 
 const fmt=(n:number)=>n.toLocaleString('en-US',{maximumFractionDigits:3});
@@ -31,18 +31,18 @@ function ProcurementExample(){
 
   <section aria-labelledby="u01-walkthrough"><h2 id="u01-walkthrough">{en?'2. Follow the purchase ledger':'2. 구매와 잔량을 따라가기'}</h2>
    <p>{en?'The initial quantities are the saved Python LP solution. Editing quantities checks a proposed ledger only; the browser does not run an optimizer or a model.':'초기 구매량은 저장된 Python LP 해입니다. 구매량 편집은 제안한 원장만 검산하며 브라우저에서 최적화나 모델을 실행하지 않습니다.'}</p>
-   <div className="u01-input-row">{['A','B'].map((port,i)=><label key={port} htmlFor={`u01-q-${port}`}>{en?`Purchase at ${port} (t)`:`${port}항 구매량 (t)`}<input id={`u01-q-${port}`} type="text" inputMode="decimal" value={values[i]} aria-invalid={!result.validInput} aria-describedby="u01-input-help" onChange={e=>{const next=[...values];next[i]=e.target.value;setValues(next);setStep(0)}}/></label>)}</div>
+   <div className="u01-input-row">{['A','B'].map((port,i)=><label key={port} htmlFor={`u01-q-${port}`}>{en?`Purchase at ${port} (t)`:`${port}항 구매량 (t)`}<input id={`u01-q-${port}`} type="text" inputMode="decimal" value={values[i]} aria-invalid={!isU01Quantity(values[i])} aria-describedby={!isU01Quantity(values[i])?'u01-input-help u01-input-error':'u01-input-help'} onChange={e=>{const next=[...values];next[i]=e.target.value;setValues(next);setStep(0)}}/></label>)}</div>
    <p id="u01-input-help">{en?'Use 20 / 40 to inspect U01. Try 19 / 41 to see the reserve failure.':'20 / 40으로 U01을 확인하고, 19 / 41로 안전잔량 위반을 확인해보세요.'}</p>
    <div className="u01-actions"><button type="button" onClick={reset}>{en?'Reset U01':'U01 초기화'}</button><button type="button" onClick={()=>{setValues(['19','41']);setStep(0)}}>{en?'Load unsafe 19 / 41':'위반 예시 19 / 41'}</button></div>
-   {!result.validInput?<p className="u01-error" role="alert">{inputError}</p>:<>
+   {!result.validInput?<p id="u01-input-error" className="u01-error" role="alert">{inputError}</p>:<>
     <nav className="u01-step-nav" aria-label={en?'U01 voyage steps':'U01 항차 단계'}>{steps.map((label,i)=><button type="button" key={label} aria-current={step===i?'step':undefined} onClick={()=>setStep(i)}>{i+1}. {label}</button>)}</nav>
     <div className="u01-step-state" aria-live="polite" aria-atomic="true"><h3>{steps[step]}</h3><p>{en?'Arrival inventory':'도착 잔량'}: <strong>{fmt(current!.fuel)} t</strong> · {en?'Cumulative purchase outlay':'누적 구매지출'}: <strong>${fmt(current!.spent)}</strong></p>
      {step===0?<p>{en?'Start with 20 t. The first leg consumes 30 t, so at least 20 t must be purchased at A to arrive at B with 10 t.':'20t로 시작합니다. 첫 구간에서 30t를 소비하므로 B에 10t로 도착하려면 A에서 적어도 20t를 사야 합니다.'}</p>:<p>{result.rows[step-1].arrival} + {result.rows[step-1].purchase} − {result.rows[step-1].consumption} = {fmt(result.rows[step-1].nextArrival)} t · ${fmt(result.rows[step-1].cost)} {en?'at this purchase':'이번 구매비'}</p>}
     </div>
-    <div className="u01-actions"><button type="button" disabled={step===0} onClick={()=>setStep(step-1)}>{en?'Previous step':'이전 단계'}</button><button type="button" disabled={step===2} onClick={()=>setStep(step+1)}>{en?'Next step':'다음 단계'}</button></div>
+    <div className="u01-actions"><button type="button" aria-disabled={step===0} onClick={()=>{if(step>0)setStep(step-1)}}>{en?'Previous step':'이전 단계'}</button><button type="button" aria-disabled={step===2} onClick={()=>{if(step<2)setStep(step+1)}}>{en?'Next step':'다음 단계'}</button></div>
     <div className="u01-table-scroll" role="region" aria-label={en?'Purchase ledger, scroll horizontally if needed':'구매 원장, 필요 시 가로 스크롤'} tabIndex={0}><table><caption>{en?'Complete two-leg ledger (t / USD)':'전체 두 구간 원장 (t / USD)'}</caption><thead><tr>{(en?['Port','Arrival t','Buy t','Depart t','Burn t','Next arrival t','Cost USD']:['항구','도착 t','구매 t','출항 t','소모 t','다음 도착 t','비용 USD']).map(h=><th scope="col" key={h}>{h}</th>)}</tr></thead><tbody>{result.rows.map(r=><tr key={r.port}><th scope="row">{r.port}</th>{[r.arrival,r.purchase,r.departure,r.consumption,r.nextArrival,r.cost].map((v,i)=><td key={i}>{fmt(v)}</td>)}</tr>)}</tbody></table></div>
     <p role="status" className={result.feasible?'u01-success':'u01-error'}>{result.feasible?(en?`All constraints satisfied. Total $${fmt(result.comparableCost!)} · final inventory ${fmt(result.terminal!)} t.`:`모든 제약 충족. 총비용 $${fmt(result.comparableCost!)} · 최종 잔량 ${fmt(result.terminal!)}t.`):(en?`Failed plan. Raw outlay $${fmt(result.rawCost!)} is excluded from valid cost comparisons. Final inventory ${fmt(result.terminal!)} t does not erase an earlier violation.`:`실패한 구매안입니다. 원지출 $${fmt(result.rawCost!)}는 유효 비용 비교에서 제외합니다. 최종 잔량 ${fmt(result.terminal!)}t여도 앞선 위반은 사라지지 않습니다.`)}</p>
-    {result.violations.length>0&&<ul className="u01-error">{result.violations.map((v,i)=><li key={i}>{v.port}: {({reserve:en?'Arrival reserve below 10 t BEFORE refueling; later purchases cannot repair it.':'급유 전 도착 잔량 10t 미만. 이후 구매로 복구 처리하지 않습니다.',capacity:en?'Departure inventory exceeds capacity.':'출항 잔량이 용량을 초과합니다.',supply:en?'Purchase exceeds supply.':'공급한도를 초과합니다.',terminal:en?'Final inventory is not 10 t.':'최종 잔량이 10t가 아닙니다.'})[v.kind]}</li>)}</ul>}
+    {result.violations.length>0&&<ul className="u01-error">{result.violations.map((v,i)=><li key={i}>{v.port}: {({reserve:v.port==='C'?(en?'Destination arrival inventory below 10 t. No purchase is allowed at C.':'종점 도착 잔량 10t 미만. C에서는 급유하지 않습니다.'):(en?'Arrival reserve below 10 t BEFORE refueling; later purchases cannot repair it.':'급유 전 도착 잔량 10t 미만. 이후 구매로 복구 처리하지 않습니다.'),capacity:en?'Departure inventory exceeds capacity.':'출항 잔량이 용량을 초과합니다.',supply:en?'Purchase exceeds supply.':'공급한도를 초과합니다.',terminal:en?'Final inventory is not 10 t.':'최종 잔량이 10t가 아닙니다.'})[v.kind]}</li>)}</ul>}
    </>}
   </section>
 
