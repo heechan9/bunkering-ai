@@ -1,0 +1,243 @@
+{
+  "schema": "u01-tonne-usd-v1",
+  "source_commit": "fcf3c38d5606285626734d1f8cc8bfc14408b300",
+  "source_path": "research/procurement_baseline/procurement.py",
+  "source_sha256": "e9f08f7cb0467b3681717b512bb4179689d341117a2af169976c17bb6fca9b75",
+  "input": {
+    "case_id": "U01",
+    "d": [
+      30.0,
+      40.0
+    ],
+    "p": [
+      600.0,
+      400.0
+    ],
+    "available": [
+      true,
+      true
+    ],
+    "supply": [
+      100.0,
+      100.0
+    ],
+    "minimum": [
+      0.0,
+      0.0
+    ],
+    "fixed": [
+      0.0,
+      0.0
+    ],
+    "variable": [
+      0.0,
+      0.0
+    ],
+    "reserve": [
+      10.0,
+      10.0
+    ],
+    "capacity": 100.0,
+    "initial": 20.0,
+    "terminal": 10.0,
+    "mass_unit": "t",
+    "currency": "USD",
+    "fuel_grade": "MGO",
+    "data_kind": "synthetic",
+    "information_tier": "STATIC_KNOWN",
+    "mass_input_precision_t": 0.001
+  },
+  "ports": [
+    "A",
+    "B",
+    "C"
+  ],
+  "terminal_reference_price_usd_t": 550,
+  "methods": [
+    {
+      "id": "lp",
+      "status": "OPTIMAL",
+      "purchases_t": [
+        20.0,
+        40.0
+      ],
+      "total_usd": 28000.0,
+      "terminal_t": 10.0,
+      "ledger": [
+        {
+          "call_index": 0,
+          "I_before_t": 20.0,
+          "q_t": 20.0,
+          "D_after_t": 40.0,
+          "consumption_t": 30.0,
+          "I_next_t": 10.0,
+          "reserve_t": 10.0,
+          "z": 1.0,
+          "fuel_cost_usd": 12000.0,
+          "variable_fee_usd": 0.0,
+          "fixed_fee_usd": 0.0,
+          "total_usd": 12000.0
+        },
+        {
+          "call_index": 1,
+          "I_before_t": 10.0,
+          "q_t": 40.0,
+          "D_after_t": 50.0,
+          "consumption_t": 40.0,
+          "I_next_t": 10.0,
+          "reserve_t": 10.0,
+          "z": 1.0,
+          "fuel_cost_usd": 16000.0,
+          "variable_fee_usd": 0.0,
+          "fixed_fee_usd": 0.0,
+          "total_usd": 16000.0
+        }
+      ]
+    },
+    {
+      "id": "minimum_required",
+      "status": "FEASIBLE",
+      "purchases_t": [
+        20.0,
+        40.0
+      ],
+      "total_usd": 28000.0,
+      "terminal_t": 10.0,
+      "ledger": [
+        {
+          "call_index": 0,
+          "I_before_t": 20.0,
+          "q_t": 20.0,
+          "D_after_t": 40.0,
+          "consumption_t": 30.0,
+          "I_next_t": 10.0,
+          "reserve_t": 10.0,
+          "z": 1.0,
+          "fuel_cost_usd": 12000.0,
+          "variable_fee_usd": 0.0,
+          "fixed_fee_usd": 0.0,
+          "total_usd": 12000.0
+        },
+        {
+          "call_index": 1,
+          "I_before_t": 10.0,
+          "q_t": 40.0,
+          "D_after_t": 50.0,
+          "consumption_t": 40.0,
+          "I_next_t": 10.0,
+          "reserve_t": 10.0,
+          "z": 1.0,
+          "fuel_cost_usd": 16000.0,
+          "variable_fee_usd": 0.0,
+          "fixed_fee_usd": 0.0,
+          "total_usd": 16000.0
+        }
+      ]
+    },
+    {
+      "id": "next_cheaper",
+      "status": "FEASIBLE",
+      "purchases_t": [
+        20.0,
+        40.0
+      ],
+      "total_usd": 28000.0,
+      "terminal_t": 10.0,
+      "ledger": [
+        {
+          "call_index": 0,
+          "I_before_t": 20.0,
+          "q_t": 20.0,
+          "D_after_t": 40.0,
+          "consumption_t": 30.0,
+          "I_next_t": 10.0,
+          "reserve_t": 10.0,
+          "z": 1.0,
+          "fuel_cost_usd": 12000.0,
+          "variable_fee_usd": 0.0,
+          "fixed_fee_usd": 0.0,
+          "total_usd": 12000.0
+        },
+        {
+          "call_index": 1,
+          "I_before_t": 10.0,
+          "q_t": 40.0,
+          "D_after_t": 50.0,
+          "consumption_t": 40.0,
+          "I_next_t": 10.0,
+          "reserve_t": 10.0,
+          "z": 1.0,
+          "fuel_cost_usd": 16000.0,
+          "variable_fee_usd": 0.0,
+          "fixed_fee_usd": 0.0,
+          "total_usd": 16000.0
+        }
+      ]
+    },
+    {
+      "id": "departure_concentrated",
+      "status": "FEASIBLE",
+      "purchases_t": [
+        60.0,
+        0.0
+      ],
+      "total_usd": 36000.0,
+      "terminal_t": 10.0,
+      "ledger": [
+        {
+          "call_index": 0,
+          "I_before_t": 20.0,
+          "q_t": 60.0,
+          "D_after_t": 80.0,
+          "consumption_t": 30.0,
+          "I_next_t": 50.0,
+          "reserve_t": 10.0,
+          "z": 1.0,
+          "fuel_cost_usd": 36000.0,
+          "variable_fee_usd": 0.0,
+          "fixed_fee_usd": 0.0,
+          "total_usd": 36000.0
+        },
+        {
+          "call_index": 1,
+          "I_before_t": 50.0,
+          "q_t": 0.0,
+          "D_after_t": 50.0,
+          "consumption_t": 40.0,
+          "I_next_t": 10.0,
+          "reserve_t": 10.0,
+          "z": 0.0,
+          "fuel_cost_usd": 0.0,
+          "variable_fee_usd": 0.0,
+          "fixed_fee_usd": 0.0,
+          "total_usd": 0.0
+        }
+      ]
+    }
+  ],
+  "negative": {
+    "purchases_t": [
+      19,
+      41
+    ],
+    "errors": [
+      "0:reserve"
+    ]
+  },
+  "enumeration": {
+    "status": "OPTIMAL",
+    "best": {
+      "objective_usd": 28000.0,
+      "q_t": [
+        20.0,
+        40.0
+      ],
+      "z": [
+        1,
+        1
+      ]
+    },
+    "feasible_patterns": 2,
+    "patterns": 4
+  }
+}
