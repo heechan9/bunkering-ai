@@ -146,6 +146,7 @@ def cmd_ledger(args):
     write_csv(out / "ledger.csv", rows)
     write_csv(out / "paired_summary.csv", paired)
     write_csv(out / "policy_summary.csv", ledger.policy_summary(episodes, version))
+    write_csv(out / "paired_final_fuel.csv", ledger.paired_final_fuel(episodes, version))
     write_csv(out / "accounting_mismatches.csv", mismatches,
               ["check", "policy", "seed", "step", "expected", "actual"])
     legacy_bad = [r for r in paired if r["legacy_match"].startswith("MISMATCH")]

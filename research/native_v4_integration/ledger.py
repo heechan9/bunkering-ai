@@ -220,27 +220,52 @@ def _strict(e):
     return e["legacy_arrived"] and e["pre_refill_shortage_steps"] == 0 and e["pre_refill_reserve_violation_steps"] == 0
 
 
-def paired_summary(episodes, ddof, contract_version, comparator="double_dqn", legacy=None):
+def _paired_cohorts(episodes, comparator):
+    """One seed membership definition for SCI deltas and both final-fuel means."""
     policies = sorted({p for p, _ in episodes})
     if comparator not in policies:
         raise InputError(f"comparator {comparator} not in episodes")
     seeds = sorted({s for _, s in episodes})
-    rows = []
+    for policy in policies:
+        if {s for p, s in episodes if p == policy} != set(seeds):
+            raise InputError("pairing requires identical policy seed sets")
     for base in [p for p in policies if p != comparator]:
         safe = [s for s in seeds if _strict(episodes[comparator, s]) and _strict(episodes[base, s])]
-        for subset, ss in [("all", seeds), ("common_strict_safe", safe)]:
-            for metric in METRICS:
-                d = [episodes[comparator, s][metric] - episodes[base, s][metric] for s in ss]
-                st = describe(d, ddof)
-                row = {"contract_version": contract_version, "comparator": comparator, "baseline": base,
-                       "delta": f"{comparator}_minus_baseline", "metric": metric, "subset": subset,
-                       "n_all": len(seeds), "n_common_safe": len(safe), "n_excluded": len(seeds) - len(safe),
-                       "n": st["n"], "mean_delta": st["mean"], "sd_delta": st["sd"], "ddof": ddof,
-                       "sd_delta_ddof0": st["sd_ddof0"], "ci95_low": st["ci95_low"], "ci95_high": st["ci95_high"],
-                       "ci_method": "mean +/- 1.96*sd/sqrt(n), descriptive, not a superiority test",
-                       "status": st["status"], "sci_unit": "synthetic_index_not_currency"}
-                row.update(_legacy_compare(legacy, base, subset, metric, st))
-                rows.append(row)
+        for subset, selected in [("all", seeds), ("common_strict_safe", safe)]:
+            yield base, subset, selected, len(seeds), len(safe)
+
+
+def paired_final_fuel(episodes, contract_version, comparator="double_dqn"):
+    """Tank-fraction means on identical paired seeds; never a savings percentage."""
+    rows = []
+    for base, subset, seeds, n_all, n_safe in _paired_cohorts(episodes, comparator):
+        n = len(seeds)
+        rows.append({"contract_version": contract_version, "comparator": comparator,
+                     "baseline": base, "subset": "common_safe" if subset == "common_strict_safe" else subset,
+                     "n_all": n_all, "n_common_safe": n_safe, "n_excluded": n_all - n_safe,
+                     "n": n,
+                     "mean_final_fuel_comparator": (math.fsum(episodes[comparator, s]["final_fuel"] for s in seeds) / n if n else None),
+                     "mean_final_fuel_baseline": (math.fsum(episodes[base, s]["final_fuel"] for s in seeds) / n if n else None),
+                     "unit": "tank_fraction_not_tonnes_not_savings",
+                     "status": "ok" if n else "empty_subset_null"})
+    return rows
+
+
+def paired_summary(episodes, ddof, contract_version, comparator="double_dqn", legacy=None):
+    rows = []
+    for base, subset, ss, n_all, n_safe in _paired_cohorts(episodes, comparator):
+        for metric in METRICS:
+            d = [episodes[comparator, s][metric] - episodes[base, s][metric] for s in ss]
+            st = describe(d, ddof)
+            row = {"contract_version": contract_version, "comparator": comparator, "baseline": base,
+                   "delta": f"{comparator}_minus_baseline", "metric": metric, "subset": subset,
+                   "n_all": n_all, "n_common_safe": n_safe, "n_excluded": n_all - n_safe,
+                   "n": st["n"], "mean_delta": st["mean"], "sd_delta": st["sd"], "ddof": ddof,
+                   "sd_delta_ddof0": st["sd_ddof0"], "ci95_low": st["ci95_low"], "ci95_high": st["ci95_high"],
+                   "ci_method": "mean +/- 1.96*sd/sqrt(n), descriptive, not a superiority test",
+                   "status": st["status"], "sci_unit": "synthetic_index_not_currency"}
+            row.update(_legacy_compare(legacy, base, subset, metric, st))
+            rows.append(row)
     return rows
 
 

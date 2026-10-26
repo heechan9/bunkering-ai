@@ -147,8 +147,14 @@ class CliTests(unittest.TestCase):
         self.assertEqual(json.loads(out)["status"], "INCOMPLETE")
         self.assertEqual(json.loads(out)["accounting_status"], "PASS")
         for name in ["ledger.csv", "paired_summary.csv", "policy_summary.csv", "accounting_mismatches.csv",
-                     "run_manifest.json"]:
+                     "run_manifest.json", "paired_final_fuel.csv"]:
             self.assertTrue((self.tmp / "out" / name).exists(), name)
+        with (self.tmp / "out" / "paired_final_fuel.csv").open(newline="") as stream:
+            rows = list(csv.DictReader(stream))
+        empty = next(r for r in rows if r["baseline"] == "fixed_fueling" and r["subset"] == "common_safe")
+        self.assertEqual(empty["n"], "0")
+        self.assertEqual(empty["mean_final_fuel_comparator"], "")
+        self.assertEqual(empty["mean_final_fuel_baseline"], "")
 
     def test_refuses_input_folder_even_with_overwrite(self):
         before = (self.tmp / "episodes.csv").read_bytes()

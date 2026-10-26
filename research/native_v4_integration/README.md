@@ -61,3 +61,15 @@ BAI_EVAL_ROOT=<bunker_disjoint_eval_v3 copy> python -m unittest -v test_native_f
 Clean ledger accounting returns **INCOMPLETE, exit 3**, because terminal market price/FX has not been independently verified. `accounting_status=PASS` is a narrower identity result, not complete valuation or owner adoption. Recorded-step checks run only when `--steps` is supplied; otherwise `step_audit_status=not_checked`. Even `step_audit_status=checked` does not establish terminal market price/FX independently. Accounting mismatches return FAIL/1. Handled `InputError`, `ConfigError`, `ContractError` and `OutputGuardError` exceptions return 2, not every input/output failure. Unhandled errors such as missing files, decoding failures or malformed/missing-key legacy-summary JSON can exit 1 with a traceback; exit 1 alone does not identify an accounting FAIL. Config JSON parse errors are handled as `ConfigError` (exit 2). Other subcommands retain their exit codes.
 
 Only pinned native-legacy-v3 constants/policy are supported by this reproduction tool. Alternate constants need a separately versioned implementation; proposals remain pending. See [local integration and verification](LOCAL_INTEGRATION_20261020.md).
+
+## 2026-10-26 contract/code review candidate
+
+[Contract reflection table, input draft and evidence limits](../../docs/audits/native_contract_integration_20261026.md).
+This unmerged follow-up adds `paired_final_fuel.csv`: both policies use the same
+seeds within `all` or `common_safe`; an empty common-safe subset leaves both means
+null (empty CSV cells). Its `common_safe` corresponds to SCI `common_strict_safe`.
+Per-policy means in `policy_summary.csv` are not paired safe-population estimates.
+Existing SCI/ledger outputs and native configuration are preserved; fuel is a
+normalized tank fraction, not savings. No contract is accepted or frozen.
+The domain-review draft under `contracts/drafts/` is prepared by Codex from the
+first-round document, not a new personal review, and is not loaded by default.
