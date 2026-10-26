@@ -106,6 +106,51 @@ class LedgerTests(unittest.TestCase):
                                e["purchase_sci"] + e["initial_inventory_value"] - e["terminal_inventory_value"])
 
 
+class PairedFinalFuelTests(unittest.TestCase):
+    def setUp(self):
+        self.ep = ledger.load_episodes(EP, CFG)
+
+    def rows(self):
+        return {(r["baseline"], r["subset"]): r for r in ledger.paired_final_fuel(self.ep, "v")}
+
+    def test_common_safe_uses_same_seeds_for_both_means(self):
+        # A deliberately distinct excluded DDQN value catches the old mixed-cohort bug.
+        self.ep["double_dqn", 2]["final_fuel"] = 0.123
+        row = self.rows()["safe_stock", "common_safe"]
+        seeds = [s for s in (1, 2, 3) if ledger._strict(self.ep["double_dqn", s]) and ledger._strict(self.ep["safe_stock", s])]
+        self.assertEqual(len(seeds), 1)
+        self.assertEqual(row["n"], 1)
+        self.assertEqual(row["mean_final_fuel_comparator"], self.ep["double_dqn", seeds[0]]["final_fuel"])
+        self.assertEqual(row["mean_final_fuel_baseline"], self.ep["safe_stock", seeds[0]]["final_fuel"])
+
+    def test_all_keeps_failed_episodes_and_nulls_empty_pair(self):
+        rows = self.rows()
+        row = rows["fixed_fueling", "all"]
+        self.assertEqual(row["n"], 3)
+        self.assertAlmostEqual(row["mean_final_fuel_comparator"], sum(self.ep["double_dqn", s]["final_fuel"] for s in (1, 2, 3)) / 3)
+        empty = rows["fixed_fueling", "common_safe"]
+        self.assertEqual(empty["n"], 0)
+        self.assertIsNone(empty["mean_final_fuel_comparator"])
+        self.assertIsNone(empty["mean_final_fuel_baseline"])
+        # The all-policy intersection is zero even though one pair has a safe seed.
+        self.assertEqual(ledger.all_policy_common_safe(self.ep), (0, 3))
+        self.assertEqual(rows["safe_stock", "common_safe"]["n"], 1)
+
+    def test_final_fuel_and_sci_denominators_agree(self):
+        ff = self.rows()
+        for row in ledger.paired_summary(self.ep, 1, "v"):
+            subset = "common_safe" if row["subset"] == "common_strict_safe" else "all"
+            fuel = ff[row["baseline"], subset]
+            for key in ("n", "n_all", "n_common_safe", "n_excluded"):
+                self.assertEqual(fuel[key], row[key])
+
+    def test_direct_call_rejects_mismatched_seeds(self):
+        del self.ep["safe_stock", 2]
+        for function in (ledger.paired_final_fuel, lambda ep, v: ledger.paired_summary(ep, 1, v)):
+            with self.assertRaisesRegex(ledger.InputError, "identical"):
+                function(self.ep, "v")
+
+
 class ValidationTests(TempDirTest):
     def test_duplicate_seed_rejected(self):
         p = rewrite(EP, self.tmp / "e.csv", lambda rows: rows + [rows[0]])
