@@ -3,7 +3,7 @@
     python research/native_v4_integration/cli.py validate-config --config CONFIG
     python research/native_v4_integration/cli.py verify-source --source-verification JSON
     python research/native_v4_integration/cli.py merge-contracts --template CSV --domain-review CSV --data-statistics CSV --hyeonsu CSV --out-dir DIR
-    python research/native_v4_integration/cli.py ledger --config CONFIG --episodes CSV [--steps CSV] [--legacy-summary JSON] --out-dir DIR
+    python research/native_v4_integration/cli.py ledger --config CONFIG --episodes CSV [--steps CSV] [--legacy-summary JSON] [--regenerate-market] --out-dir DIR
 """
 import argparse
 import csv
@@ -21,6 +21,7 @@ sys.path[:0] = [str(HERE), str(REPO)]
 import config as config_mod  # noqa: E402
 import contracts  # noqa: E402
 import ledger  # noqa: E402
+import market_tape  # noqa: E402
 
 REUSED_SOURCES = ["envs/bunkering_env.py", "scripts/baseline.py", "evaluation/safety_accounting.py", "agents/dqn.py"]
 
@@ -89,7 +90,7 @@ def cmd_validate_config(args):
 
 
 def cmd_verify_source(args):
-    pinned = {e["path"]: e["git_blob_sha1"] for e in json.loads(Path(args.source_verification).read_text())}
+    pinned = {e["path"]: e["git_blob_sha1"] for e in json.loads(Path(args.source_verification).read_text(encoding="utf-8"))}
     result, ok = {}, True
     for rel in REUSED_SOURCES:
         data = (REPO / rel).read_bytes()
@@ -140,7 +141,11 @@ def cmd_ledger(args):
     if args.steps:
         _, step_mismatches, steps_checked = ledger.audit_steps(args.steps, episodes, cfg)
         mismatches += step_mismatches
-    legacy = json.loads(Path(args.legacy_summary).read_text()) if args.legacy_summary else None
+    seeds_regenerated = 0
+    if args.regenerate_market:
+        market_mismatches, seeds_regenerated = market_tape.audit_valuation(episodes, args.steps)
+        mismatches += market_mismatches
+    legacy = json.loads(Path(args.legacy_summary).read_text(encoding="utf-8")) if args.legacy_summary else None
     paired = ledger.paired_summary(episodes, config_mod.setting(cfg, "statistics_ddof"), version, legacy=legacy)
     common, total = ledger.all_policy_common_safe(episodes)
     write_csv(out / "ledger.csv", rows)
@@ -151,23 +156,34 @@ def cmd_ledger(args):
               ["check", "policy", "seed", "step", "expected", "actual"])
     legacy_bad = [r for r in paired if r["legacy_match"].startswith("MISMATCH")]
     # An identity and a legacy aggregate are not independent terminal price/FX evidence.
-    # Until such evidence is supported, never publish an unqualified ledger PASS.
+    # Overall PASS needs the regenerated market tape and the step audit (purchase SCI).
     accounting_status = "PASS" if not mismatches and not legacy_bad else "FAIL"
-    status = "INCOMPLETE" if accounting_status == "PASS" else "FAIL"
+    if accounting_status == "FAIL":
+        status = "FAIL"
+    else:
+        status = "PASS" if args.regenerate_market and args.steps else "INCOMPLETE"
+    if not args.regenerate_market:
+        valuation, limitations = "not_independently_verified", [
+            "Terminal market price/FX evidence is not independently verified; an accounting identity is insufficient."]
+    else:
+        valuation = "regenerated_market_tape_match" if accounting_status == "PASS" else "checked_see_mismatches"
+        limitations = ["Market tape is regenerated from the pinned native-legacy-v3 env formula and seed; "
+                       "it verifies the recorded valuation inputs, not the C05 valuation contract or real prices."]
     report = {"status": status, "contract_version": version, "policy_version": cfg["policy_version"],
               "config_sha256": cfg_sha, "episodes_checked": len(rows), "steps_checked": steps_checked,
               "accounting_mismatches": len(mismatches), "first_mismatch": mismatches[0] if mismatches else None,
               "legacy_summary_mismatches": len(legacy_bad),
               "accounting_status": accounting_status,
               "step_audit_status": "checked" if args.steps else "not_checked",
-              "terminal_valuation_status": "not_independently_verified",
+              "terminal_valuation_status": valuation,
+              "market_seeds_regenerated": seeds_regenerated,
               "contract_adoption_status": "not_established_by_ledger",
-              "limitations": ["Terminal market price/FX evidence is not independently verified; an accounting identity is insufficient."],
+              "limitations": limitations,
               "all_policy_common_strict_safe": {"n": common, "of": total},
               "interpretation": "SCI is a synthetic index, not currency; intervals are descriptive."}
     write_manifest(out, args, given, {"report": report})
     print(json.dumps(report, indent=2, ensure_ascii=False))
-    return 3 if status == "INCOMPLETE" else 1
+    return {"PASS": 0, "INCOMPLETE": 3}.get(status, 1)
 
 
 def main(argv=None):
@@ -193,6 +209,8 @@ def main(argv=None):
     s.add_argument("--episodes", required=True)
     s.add_argument("--steps")
     s.add_argument("--legacy-summary")
+    s.add_argument("--regenerate-market", action="store_true",
+                   help="rebuild price/FX from each seed and check initial/terminal values and decision prices")
     s.add_argument("--out-dir", required=True)
     s.add_argument("--overwrite", action="store_true")
     args = p.parse_args(argv)
