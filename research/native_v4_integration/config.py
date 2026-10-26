@@ -28,6 +28,8 @@ INTEGRATION_ENUMS = {
     "seed_status": {"used_reproduction_set", "new_frozen_plan"},
 }
 TOP_KEYS = {"contract_version", "policy_version", "native_fixed", "integration", "proposed_pending"}
+NATIVE_ITEM_KEYS = {"value", "unit", "contract_id"}
+INTEGRATION_ITEM_KEYS = {"value", "status", "contract_id"}
 # Seed ranges already evaluated; a "new_frozen_plan" must not reuse them.
 USED_RANGES = [(42, 5041), (0, 60000999), (91000000, 91000999)]
 
@@ -58,6 +60,10 @@ def validate(cfg):
     _check_keys("native_fixed", cfg["native_fixed"], NATIVE_UNITS)
     for key, unit in NATIVE_UNITS.items():
         item = cfg["native_fixed"][key]
+        if not isinstance(item, dict):
+            raise ConfigError(f"native_fixed.{key}: must be an object")
+        # A misspelled field (e.g. "unit_misspelling") must not be silently ignored.
+        _check_keys(f"native_fixed.{key}", item, NATIVE_ITEM_KEYS)
         if item.get("unit") != unit:
             raise ConfigError(f"native_fixed.{key}: unit must be {unit!r}, got {item.get('unit')!r}")
         if item.get("contract_id") not in CONTRACT_IDS:
@@ -77,6 +83,11 @@ def validate(cfg):
     integ = cfg["integration"]
     _check_keys("integration", integ, set(INTEGRATION_ENUMS) | {"seed_range_inclusive"})
     for key, item in integ.items():
+        if key == "_note":
+            continue
+        if not isinstance(item, dict):
+            raise ConfigError(f"integration.{key}: must be an object")
+        _check_keys(f"integration.{key}", item, INTEGRATION_ITEM_KEYS)
         if item.get("contract_id") not in CONTRACT_IDS:
             raise ConfigError(f"integration.{key}: unknown contract_id {item.get('contract_id')!r}")
         if item.get("status") not in STATUSES:

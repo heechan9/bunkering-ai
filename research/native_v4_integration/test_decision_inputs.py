@@ -44,7 +44,7 @@ class DecisionInputTests(unittest.TestCase):
             with self.subTest(label=label), tempfile.TemporaryDirectory() as d:
                 root = Path(d)
                 decision_path = root/'decisions.csv'
-                decision_path.write_text(text)
+                decision_path.write_text(text, encoding='utf-8')
                 before = decision_path.read_bytes()
                 code, out, err = run('merge-contracts', '--template', TEMPLATE,
                                      '--decisions', decision_path, '--out-dir', root/'out')
@@ -56,7 +56,7 @@ class DecisionInputTests(unittest.TestCase):
     def test_valid_partial_decisions_and_extra_metadata_preserved(self):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d)/'decisions.csv'
-            p.write_text('\ufeffowner_decision,contract_id,note\naccepted,C01,owner choice\n')
+            p.write_text('\ufeffowner_decision,contract_id,note\naccepted,C01,owner choice\n', encoding='utf-8')
             decisions = contracts.read_decisions(p)
         rows = contracts.apply_decisions(self.rows(), decisions)
         self.assertEqual(rows[0]['owner_decision'], 'accepted')

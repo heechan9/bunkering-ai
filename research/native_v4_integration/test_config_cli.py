@@ -44,6 +44,13 @@ class ConfigTests(unittest.TestCase):
 
     def test_unknown_key(self):
         self.bad(lambda c: c["integration"].update(reserve_mode={"value": 1}), "unknown keys")
+        # Field-level typos inside an entry were silently accepted before (round-2 guard probe).
+        self.bad(lambda c: c["native_fixed"]["reserve"].update(unit_misspelling="ton"),
+                 r"native_fixed\.reserve: unknown keys")
+        self.bad(lambda c: c["integration"]["reserve_phase"].update(stauts="accepted"),
+                 r"integration\.reserve_phase: unknown keys")
+        self.bad(lambda c: c["native_fixed"]["reserve"].pop("contract_id"),
+                 r"native_fixed\.reserve: missing keys")
 
     def test_unknown_enum(self):
         self.bad(lambda c: c["integration"]["reserve_phase"].update(value="whenever"), "not in")
@@ -191,6 +198,15 @@ class CliTests(unittest.TestCase):
 
     def test_reused_native_sources_match_pinned_commit(self):
         code, out, _ = run("verify-source", "--source-verification", HERE / "fixtures/pinned_source_blobs.json")
+        self.assertEqual(code, 0, out)
+
+    def test_verify_source_reads_utf8_json_regardless_of_locale(self):
+        # A Korean note made a cp949-locale Windows run crash with an unhandled UnicodeDecodeError.
+        entries = json.loads((HERE / "fixtures/pinned_source_blobs.json").read_text(encoding="utf-8"))
+        entries[0]["note"] = "검토용 메모"
+        p = self.tmp / "pinned_utf8.json"
+        p.write_text(json.dumps(entries, ensure_ascii=False), encoding="utf-8")
+        code, out, _ = run("verify-source", "--source-verification", p)
         self.assertEqual(code, 0, out)
 
 
