@@ -114,6 +114,40 @@ class ValuationAuditTests(unittest.TestCase):
         self.assertEqual(report["terminal_valuation_status"], "regenerated_market_tape_match")
         self.assertEqual(report["contract_adoption_status"], "not_established_by_ledger")
 
+    def make_legacy_summary(self, mismatch=False):
+        episodes = ledger.load_episodes(self.tmp / "episodes.csv", self.cfg)
+        paired = {}
+        for row in ledger.paired_summary(episodes, 1, "fixture"):
+            subset = "common_safe" if row["subset"] == "common_strict_safe" else "all"
+            paired.setdefault(row["baseline"], {})[f"{subset}_{row['metric']}_ddqn_minus_baseline"] = {
+                "n": row["n"], "mean": row["mean_delta"],
+                "ci95_low": row["ci95_low"], "ci95_high": row["ci95_high"]}
+        if mismatch:
+            paired["never"]["all_purchase_sci_ddqn_minus_baseline"]["mean"] += 100.0
+        path = self.tmp / "legacy.json"
+        path.write_text(json.dumps({"paired": paired}), encoding="utf-8")
+        return path
+
+    def check_legacy_status(self, expected, exit_code, *extra):
+        code, text, _ = self.ledger("--regenerate-market", *extra)
+        report = json.loads(text)
+        manifest = json.loads((self.tmp / "out" / "run_manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(code, exit_code, text)
+        self.assertEqual(report["legacy_summary_status"], expected)
+        self.assertEqual(manifest["report"]["legacy_summary_status"], expected)
+        self.assertEqual(report["legacy_summary_mismatches"], 1 if exit_code == 1 else 0)
+        self.assertEqual(report["status"], "FAIL" if exit_code == 1 else "PASS")
+        self.assertEqual(report["contract_adoption_status"], "not_established_by_ledger")
+
+    def test_legacy_summary_absent_reports_not_checked(self):
+        self.check_legacy_status("not_checked", 0)
+
+    def test_legacy_summary_match_is_recorded_in_manifest(self):
+        self.check_legacy_status("checked_match", 0, "--legacy-summary", self.make_legacy_summary())
+
+    def test_legacy_summary_mismatch_is_recorded_in_manifest(self):
+        self.check_legacy_status("checked_mismatch", 1, "--legacy-summary", self.make_legacy_summary(mismatch=True))
+
     def test_without_flag_stays_incomplete(self):
         code, out, _ = self.ledger()
         self.assertEqual((code, json.loads(out)["status"]), (3, "INCOMPLETE"))

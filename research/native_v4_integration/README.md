@@ -41,7 +41,19 @@ cd research/native_v4_integration
 BAI_EVAL_ROOT=<bunker_disjoint_eval_v3 copy> python -m unittest -v test_native_fixture test_ledger test_config_cli test_market_tape
 ```
 
-종료 코드: `ledger`는 `--steps`와 `--regenerate-market`을 함께 주고 회계·legacy-summary·재생성 시장값이 모두 맞으면 **PASS/0**입니다. `--steps` 없이 재생성만 하면 구매 SCI를 확인하지 않았으므로 INCOMPLETE/3입니다. 이 옵션이 없으면 회계 불일치가 없어도 독립 종료 가격·환율 검증이 없으므로 **INCOMPLETE/3**을 반환합니다. 회계 또는 legacy-summary 불일치는 FAIL/1이며 ledger 출력은 남깁니다. 도구가 `InputError`·`ConfigError`·`ContractError`로 처리하는 형식·값·설정·계약 검증 오류와 `OutputGuardError` 덮어쓰기 차단은 2입니다. 모든 예외가 처리되는 것은 아닙니다. 파일 없음·디코딩 오류, legacy-summary JSON 파싱 오류·필수 키 누락 등 일부 미처리 예외는 traceback과 종료 코드 1을 내므로 코드 1만으로 회계 FAIL과 구분할 수 없습니다. config JSON 파싱 오류는 `ConfigError`로 처리되어 2입니다. `validate-config`, `verify-source`, `merge-contracts`의 정상 종료는 0이지만 전체 ledger 검증이나 계약 채택을 뜻하지 않습니다. `verify-source`의 소스 불일치는 1입니다.
+종료 코드: `ledger`는 `--steps`와 `--regenerate-market`을 함께 주고 회계·재생성 시장값과 **제공된 경우의 legacy-summary 비교**가 모두 맞으면 **PASS/0**입니다. `--steps` 없이 재생성만 하면 구매 SCI를 확인하지 않았으므로 INCOMPLETE/3입니다. 이 옵션이 없으면 회계 불일치가 없어도 독립 종료 가격·환율 검증이 없으므로 **INCOMPLETE/3**을 반환합니다. 회계 또는 legacy-summary 불일치는 FAIL/1이며 ledger 출력은 남깁니다. 도구가 `InputError`·`ConfigError`·`ContractError`로 처리하는 형식·값·설정·계약 검증 오류와 `OutputGuardError` 덮어쓰기 차단은 2입니다. 모든 예외가 처리되는 것은 아닙니다. 파일 없음·디코딩 오류, legacy-summary JSON 파싱 오류·필수 키 누락 등 일부 미처리 예외는 traceback과 종료 코드 1을 내므로 코드 1만으로 회계 FAIL과 구분할 수 없습니다. config JSON 파싱 오류는 `ConfigError`로 처리되어 2입니다. `validate-config`, `verify-source`, `merge-contracts`의 정상 종료는 0이지만 전체 ledger 검증이나 계약 채택을 뜻하지 않습니다. `verify-source`의 소스 불일치는 1입니다.
+
+## Legacy summary 비교 상태
+
+`--legacy-summary`는 제공된 경우에만 기존 요약과 비교합니다.
+manifest의 `report.legacy_summary_status`와 CLI 보고서에 다음 상태를 기록합니다.
+
+- `not_checked`: legacy summary 미제공, 비교하지 않음.
+- `checked_match`: 제공된 summary가 기존 비교 규약상 일치함.
+- `checked_mismatch`: 제공된 summary에서 불일치가 확인됨(FAIL/1).
+
+따라서 PASS/0만으로 legacy summary를 제공하거나 비교했다고 해석하지 않습니다.
+이 상태 표시는 계산 결과·기존 CSV·종료 코드 규약을 바꾸지 않습니다.
 
 ## 고정 수식 (native, 계약 채택 전)
 
@@ -69,7 +81,7 @@ pinned env는 시장을 `env.np_random`에서만 뽑습니다. reset에서 가�
 
 ## Local validation follow-up (2026-10-20)
 
-Without `--regenerate-market`, clean ledger accounting remains **INCOMPLETE/3**. With the flag and `--steps`, clean recorded accounting/market checks return **PASS/0**. PASS certifies only these recorded-data checks; it is not policy superiority, real-vessel safety, savings, personal review or contract adoption. `contract_adoption_status` remains `not_established_by_ledger`. Missing independent inputs or errors retain the documented narrower status.
+Without `--regenerate-market`, clean ledger accounting remains **INCOMPLETE/3**. With the flag and `--steps`, clean recorded accounting/market checks return **PASS/0**; legacy summary is compared when supplied. PASS certifies only these recorded-data checks; it is not policy superiority, real-vessel safety, savings, personal review or contract adoption. `contract_adoption_status` remains `not_established_by_ledger`. Missing independent inputs or errors retain the documented narrower status.
 
 Only pinned native-legacy-v3 constants/policy are supported by this reproduction tool. Alternate constants need a separately versioned implementation; proposals remain pending. See [local integration and verification](LOCAL_INTEGRATION_20261020.md).
 

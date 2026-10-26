@@ -173,6 +173,8 @@ def cmd_ledger(args):
               "config_sha256": cfg_sha, "episodes_checked": len(rows), "steps_checked": steps_checked,
               "accounting_mismatches": len(mismatches), "first_mismatch": mismatches[0] if mismatches else None,
               "legacy_summary_mismatches": len(legacy_bad),
+              "legacy_summary_status": ("not_checked" if legacy is None else
+                                        "checked_mismatch" if legacy_bad else "checked_match"),
               "accounting_status": accounting_status,
               "step_audit_status": "checked" if args.steps else "not_checked",
               "terminal_valuation_status": valuation,
