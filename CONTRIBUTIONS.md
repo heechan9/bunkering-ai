@@ -75,3 +75,15 @@ Issue #3은 PR #4(#3A)의 요구사항 명세이며 구현·리뷰 담당을 사
   기록으로 확인되는 범위에서만 기술한다.
 - 새로운 증거가 확인되면 history를 재작성하지 않고 이 문서를 일반
   commit으로 갱신한다.
+
+## 2026-10-19 native-v4 first-round contributions
+
+This dated entry records the submitted first round on a draft review branch; it does not change the historical ledger above or certify merge readiness.
+
+- **Requirements/Planning — 최희찬:** v4 task scope and final contract-adoption responsibility.
+- **Domain review — 자료 검토 담당자:** [four-part criteria review](docs/domain/m1_domain_review_first_round_20261019.md) covering safety timing, consumption assumptions, terminal inventory and practical bunkering constraints. Structured C01/C02/C05 rows, limits CSV and current-code comparison remain pending; unknown physical inputs should be labeled unknown rather than invented.
+- **Implementation / AI-assisted editing — Claude draft submitted through 이현수 (`HyeonSuuuuu`):** the package reports Claude execution/code authoring on Hyeonsu's Windows PC, and source patch `b5c1f70fcb0dc892887f41ce47df5148eae2e7bc` adds 18 files / 1,480 lines. Hyeonsu's personal review is pending. Package submission and source-author metadata do not prove direct human code entry or approval.
+- **Review / integration editing — Codex:** independent 36-test and recorded-ledger checks, reproduced validation/guard gaps, privacy-adjusted import and this contribution/status documentation. Full model replay and the 14 native fixture tests were not run here.
+- **Merge/Integration:** draft import only; main merge, deployment, repairs and contract adoption remain pending. No contribution percentages are inferred.
+
+[Source scope, dates, public-interface changes, validation commands and remaining work](docs/audits/native_v4_first_round_20261019.md). The source document and patch are dated 2026-10-19; the patch timestamp is 09:17:55 +09:00. Receipt dates do not establish working time. This native-v4 contribution does not close the separate port-call-time review tasks.

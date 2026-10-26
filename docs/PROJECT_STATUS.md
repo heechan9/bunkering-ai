@@ -1,3 +1,38 @@
+# 2026-10-26 native-v4 누적 통합 검토본 (main 반영 전)
+
+최신 main `34e1e82ce10309ba737572fdae24625e4bc722a7`과 #145 `0ac21d636037c02549fb06a49f12ab434e0caa1c`를 합친 별도 Draft 후보입니다. #132 → #133 → #134 → #136 → #144 → #145 원본 PR·브랜치는 보존하며, 이 문서는 실제 main 병합·배포·최종 제출을 뜻하지 않습니다.
+
+- `ledger --steps ... --regenerate-market`의 기록 회계·시장 재생성 검사가 맞으면 PASS/0입니다. `--legacy-summary`는 제공된 경우에만 비교하며 `not_checked` / `checked_match` / `checked_mismatch`로 범위를 구분합니다.
+- C01–C06과 본인 확인은 별도 미완료입니다. 코드 통합·테스트 통과로 도메인 값을 채택하거나 실선 안전·절감·정책 우위를 주장하지 않습니다.
+- 아래 2026-10-20·2026-10-19 절의 무조건 INCOMPLETE 및 당시 미완료 항목은 **해당 날짜/head의 이력**입니다. 현재 실행 규약은 [native README](../research/native_v4_integration/README.md)를 따릅니다.
+- [누적 통합 범위·직접 검증·기여 구분](audits/native_v4_cumulative_main_20261026.md). 기존 main의 U01·웹 작업과 기존 native 계산/계약을 보존합니다.
+
+---
+
+# 2026-10-20 native-v4 검토 브랜치 상태 동기화
+
+기준은 Draft #134 `732b25ed793acf6fefafca5086644e3a7ec08fc6`입니다. #134는 #133 `0f96511b4b277a8d69236b3d7d4cce888cced882` 위에, #133은 #132 위에 쌓여 있습니다. 확인한 main은 `183ab3a684cc970315112c312cc52953bd02f6e1`이며 세 PR 모두 병합·배포 완료를 뜻하지 않습니다. 아래 2026-10-19 절은 최초 수신 당시 이력입니다.
+
+- 보완됨: 입력·native 고정값/seed 범위 검증, 출력 symlink/hardlink 보호, 검증 결과의 범위 표시. 모든 가능한 입력·파일시스템 안전성을 보증하는 것은 아닙니다.
+- 현재 ledger 판정: 회계 일치도 **INCOMPLETE/3**. `accounting_status=PASS`와 독립 종료 가격·환율 검증은 다릅니다. `--steps`를 생략하면 기록 step 감사도 미실행입니다.
+- Hosted CI: [#134 run 39385241192](https://github.com/heechan9/bunkering-ai/actions/runs/39385241192) 성공. PR에 기록된 955 passed / 1 skipped / 63 subtests는 해당 head의 임시 PR merge 검사이며 main 통합 검사, 비공개 전체 모델 replay 또는 계약 승인으로 해석하지 않습니다.
+- 남음: 독립 종료 재고 가치 증거/재구성, C01–C06 입력·채택과 담당자 본인 검토. 4,000 episode / 100,520 step 기록 ledger 검사는 4,000 episode 모델 추론 재실행이 아닙니다. 공통 strict-safe n=0의 비용 비교는 계속 null이며 절감·우위는 주장하지 않습니다.
+- [현재 검증 범위](../research/native_v4_integration/LOCAL_INTEGRATION_20261020.md) · [CLI와 종료 코드](../research/native_v4_integration/README.md)
+
+---
+
+# 2026-10-19 native-v4 1차 제출물 검토 반영
+
+이 절은 검토 브랜치의 1차 수신·검증 상태입니다. 기준 main `183ab3a684cc970315112c312cc52953bd02f6e1`이며 병합·배포 완료를 뜻하지 않습니다.
+
+- 자료 검토 담당자의 안전 시점·소모·종료 재고·급유 제약 검토와, 이현수 제출의 Claude 작성 native-v4 구현 초안을 역할별 기여로 기록했습니다. 원문 작성일과 수신일을 구분합니다.
+- Codex 직접 확인: 36개 테스트, 기록된 4,000 episode / 100,520 step의 ledger 대조, 원본 45개 파일 해시 보존. 전체 모델 재실행과 Gymnasium 의존 14개 native fixture 테스트는 미실행입니다.
+- 남은 일: 입력 검증, 설정-실제 데이터 일치, 출력 보호 3개 보완 묶음, 현수 본인 검토, C01–C06 담당자 입력과 희찬의 채택. 역할명 공개본은 원본 CSV/CLI와 이름 기반 인터페이스가 다릅니다.
+- 91M seed는 재사용 재현 세트입니다. `safe_stock_pre_refill_v1`은 미평가 후보이며, 공통 strict-safe 표본 0의 비용 비교는 null입니다. 실제 절감·모델 우위 또는 실선 검증을 주장하지 않습니다.
+- [상세 검토와 실행 명령](audits/native_v4_first_round_20261019.md) · [자료 검토 1차본](domain/m1_domain_review_first_round_20261019.md) · [기여 기록](../CONTRIBUTIONS.md)
+
+---
+
 # 2026-10-14 공개 실선 자료 최소화
 
 세부 실선 자료·파생 수치·원본 식별 해시와 공개 다운로드를 최소화했습니다. 공개본에는 검토 방법과 한계만 남기고, 세부 검토는 비공개로 보관합니다. 아래 과거 공개·재현 설명은 당시 이력이며 현재 공개 자료 제공 상태를 뜻하지 않습니다. 실제 제출 논문과 공식 합성 실험 결과는 변경하지 않았습니다. 과거 Git 이력·캐시·기존 복사본의 삭제는 이 조치에 포함되지 않습니다.
