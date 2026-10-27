@@ -40,7 +40,7 @@ DAYTONA·VISBY 국내 LNG 사례와 현재 구간 24h·급유 기항 8h 합성 �
 - **누적 native-v4 Draft [#146](https://github.com/heechan9/bunkering-ai/pull/146):** head `6436a0a`의 [main 대상 PR CI](https://github.com/heechan9/bunkering-ai/actions/runs/40296975591)는 임시 merge `49904c5`에서 **985 passed / 2 skipped / 140 subtests passed**입니다. 이전 #132 → #133 → #134 → #136 → #144 → #145 계열을 누적한 검토이며 실제 main 병합은 아닙니다. 기록 CSV의 수치·회계 검증과 새 모델 추론·학습·미사용 평가를 구분합니다. C01–C06 채택은 pending입니다. 전체 정책 공통 strict-safe **0/1000·비용 null**과 DDQN–Price Reactive 쌍 **33/1000**은 다른 집합이며 안전·절감 우위를 뜻하지 않습니다.
 - **검토 절차 문서 Draft [#147](https://github.com/heechan9/bunkering-ai/pull/147):** head `90ef2a6`, 체크리스트 한 파일 +68줄입니다. [자체 PR CI](https://github.com/heechan9/bunkering-ai/actions/runs/40363957999)는 임시 merge `83cb29a`에서 **899 passed / 32 subtests passed**, [웹 근거 CI](https://github.com/heechan9/bunkering-ai/actions/runs/40363957933)도 성공했습니다. #146의 985개 검사나 계약 채택을 대신하지 않습니다.
 - **기여 접수 문서 Draft [#148](https://github.com/heechan9/bunkering-ai/pull/148):** head `36115d0`, `CONTRIBUTIONS.md` 한 파일 +32줄이며 [Python 3.12 CPU PR CI](https://github.com/heechan9/bunkering-ai/actions/runs/40455242934)가 성공했습니다. 외부 지원의 #136 고정 SHA `40100e3` CLI 화면 확인과 10월 27일 환경 준비 PASS·Python 테스트 진행 중·pnpm 웹 미진행 보고를 구분합니다. 팀원의 1차 도메인 검토·2차 19개 제안 제출 완료와 계약 채택 pending도 분리합니다. 원본 환경 로그·실행 SHA·최종 테스트 결과 미확보를 검증 완료로 바꾸지 않습니다.
-- **기여·제출 경계:** 요구사항·기획, 구현, AI 지원, 검토, 병합은 [기여 정책](CONTRIBUTIONS.md)에 따라 구분합니다. 보고서 통합자료 갱신은 공식 최종제출 완료가 아닙니다. 이번 README 갱신은 새 모델 평가·웹 재검증·배포를 포함하지 않습니다.
+- **기여·제출 경계:** 요구사항·기획, 구현, AI 지원, 검토, 병합은 [기여 정책](CONTRIBUTIONS.md)에 따라 구분합니다. 자료 제출·AI 초안·CI 통과를 담당자 본인 검토나 계약 채택으로 간주하지 않습니다. 보고서 통합자료 갱신은 공식 최종제출 완료가 아닙니다. 이번 README 갱신은 새 모델 평가·웹 재검증·배포를 포함하지 않습니다.
 
 아래 상태는 각 항목의 확인 범위이며 전체 프로젝트의 검증 완료를 뜻하지 않습니다.
 
