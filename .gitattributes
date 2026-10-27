@@ -1,2 +1,3 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+/web/ocean-lab/public/data/arctic-observations/PS155_10min.tsv -text
