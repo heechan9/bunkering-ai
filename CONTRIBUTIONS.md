@@ -75,3 +75,35 @@ Issue #3은 PR #4(#3A)의 요구사항 명세이며 구현·리뷰 담당을 사
   기록으로 확인되는 범위에서만 기술한다.
 - 새로운 증거가 확인되면 history를 재작성하지 않고 이 문서를 일반
   commit으로 갱신한다.
+
+## 2026-10-27 팀원 기여·진행 보고 접수
+
+기준 main은 `34e1e82ce10309ba737572fdae24625e4bc722a7`이다. 아래는 이날 접수한
+화면 자료와 진행 보고의 범위이며, 파일명의 날짜를 실제 실행 일시로 확정하지 않는다.
+[접수 범위와 원본 목록](https://drive.google.com/file/d/1ehKgA3jcVBSbID9c9xduVaySg-Q_4Pb0/view)을
+기존 기여 기록에 연결한다.
+
+- **승섭 — 제한된 CLI 실행 확인:** [원본 화면 4장과 요청 안내 PDF](https://drive.google.com/drive/folders/1wdjCHRuk9B0itJA3-grRY_h7VOAGmqHO).
+  안내 PDF는 수행 요청 범위이며 완료 증거가 아니다. 별도 화면들에서
+  `python research/native_v4_integration/cli.py --help`의 도움말,
+  `validate-config`의 `status: valid`와 pending 6개, `git rev-parse HEAD`의
+  `40100e398efb15f44cf9a032bf000cf519a6fa87`, `Python 3.11.9` 출력을 확인했다.
+  이 SHA는 [PR #136](https://github.com/heechan9/bunkering-ai/pull/136)의 기준이다.
+  pending은 `consumption_known_at_decision`, `reserve_phase`, `seed_range_inclusive`,
+  `seed_status`, `statistics_ddof`, `terminal_valuation`이다. 설정 valid는
+  C01–C06 채택이나 전체 검증 PASS를 뜻하지 않는다. OS·명령별 종료 코드·전체 원시 로그,
+  전체 테스트·웹 검수 완료와 별도 본인 검토 메모는 미확보다.
+- **기예 — 환경 준비·진행 현황 보고:** [2026-10-27 접수한 상태표 화면](https://drive.google.com/drive/folders/1DxWbCSLf-ELo_A05w5E_0Z1juML0AE6-).
+  저장소 다운로드·Python 가상환경·패키지 설치·`pip check`는 PASS,
+  환경 정보 로그 저장은 완료라고 보고했다. Python 자동 테스트는 진행 중이며
+  pnpm 웹 설치는 미진행이다. 이는 상태표 보고이며 원본 환경 로그·최종 테스트 수·종료 코드,
+  실행 SHA·정확한 Python 버전·OS는 미확보다. 승섭의 SHA나 Python 버전을 대입하지 않는다.
+- **민재 — 정식 팀원, 도메인 검토·제안 제출:** 1차 도메인 검토와 2차 19개 제안
+  제출은 완료했으며, 계약 채택은 pending이다. 제출과 채택을 구분한다.
+
+접수 시 [PR #146](https://github.com/heechan9/bunkering-ai/pull/146)과
+[문서 PR #147](https://github.com/heechan9/bunkering-ai/pull/147)은 별도 Draft/open/미병합이다.
+위 개인별 화면·보고를 #146 검증 완료, 모델 성능 검증, main 통합 또는 배포의 근거로
+확대하지 않는다. 전체 정책 공통 strict-safe 0/1000·비용 null과
+DDQN–Price Reactive 쌍의 33/1000은 서로 다른 비교 집합이다.
+이번 기록은 모델·계약·실험 수치를 변경하지 않으며 Claude 검토 완료를 의미하지 않는다.
