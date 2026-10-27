@@ -2,6 +2,8 @@
 
 [한국어](README.md) | [English](README.en.md)
 
+> [프로젝트 상태 페이지 바로 보기](https://heechan9.github.io/deadhd-status/bunkering-ai.html) · 2026-10-27 검토: main `34e1e82`와 별도 Draft #146·#147·#148을 구분합니다. 자동 main·PR·CI 조회와 수동 마감·제출·팀원 진행의 확인 시각은 상태 페이지에 따로 표시됩니다. 15초 새로고침은 배포본 재조회이며 전체 상태의 실시간 검증이 아닙니다.
+
 선박의 가격·환율·연료잔량·잔여항로를 바탕으로 급유 의사결정을 실험하는 프로젝트입니다.
 합성 항해 환경에서 규칙 기반 정책 3종과 Double DQN을 같은 조건으로 비교하고,
 구매·소비·최종잔량과 결과의 근거를 함께 확인합니다.
@@ -32,12 +34,13 @@ DAYTONA·VISBY 국내 LNG 사례와 현재 구간 24h·급유 기항 8h 합성 �
 
 ## 지금 어디까지 완료됐나
 
-2026-10-21 확인 기준 main은 `183ab3a684cc970315112c312cc52953bd02f6e1`입니다. main에 포함된 기능과 아직 병합되지 않은 연구 Draft를 구분합니다. 아래 과거 검사 기록의 날짜·분모는 유지하며, 이번 README 갱신은 웹 재검증·배포나 모델 교체를 뜻하지 않습니다. **논문 제출과 실선 검증·운영 채택은 별개이며, 실제 비용·연료 절감은 아직 입증하지 않았습니다.**
+2026-10-27 확인 기준 main은 `34e1e82ce10309ba737572fdae24625e4bc722a7`입니다. [공개 상태 페이지](https://heechan9.github.io/deadhd-status/bunkering-ai.html)에서 자동 Git 조회와 수동 검토 시각을 구분해 볼 수 있습니다. 아래 Draft 세 건은 각각 main 대상의 별도 PR이며 서로 합쳐지거나 main에 병합된 상태가 아닙니다. 과거 검사 기록은 당시 날짜·대상·분모로 보존합니다. **논문 제출과 실선 검증·운영 채택은 별개이며, 실제 비용·연료 절감은 아직 입증하지 않았습니다.**
 
-- **main에 포함:** [LP/MILP 고정 항로 조달 기준선](research/procurement_baseline/README.md)은 tonnes·USD, 공급 한도·최소 급유·금전 수수료·동일 종료 재고를 사용하는 120개 합성 개발 사례 비교입니다. 실제 절감률이나 새로운 미사용 평가 집합의 결과가 아닙니다. [항차 연료 수요 검증 준비](research/voyage_demand/README.md)는 자료 계약·합성 파이프라인 검사이며 실제 선박 예측 실험은 미완료입니다.
-- **native-v4는 Draft:** [#132](https://github.com/heechan9/bunkering-ai/pull/132) → [#133](https://github.com/heechan9/bunkering-ai/pull/133) → [#134](https://github.com/heechan9/bunkering-ai/pull/134) 위의 [#136](https://github.com/heechan9/bunkering-ai/pull/136)(head `40100e3`, base #134 `732b25e`)을 검토 중입니다. [#135](https://github.com/heechan9/bunkering-ai/pull/135)는 이력·기여 표기를 바로잡은 #136으로 대체되어 닫혔습니다. main 병합이나 웹 연결 완료가 아닙니다.
-- **Draft의 검사와 한계:** [#136 CI](https://github.com/heechan9/bunkering-ai/actions/runs/39574886103)는 #134 대상 임시 PR merge에서 961 passed / 1 skipped / 110 subtests passed입니다. main 검사나 전체 모델 재현 결과가 아닙니다. ledger는 독립 종료 가격·환율 근거 미완료로 **INCOMPLETE/3**, C01–C06은 pending입니다. 기록된 4,000 episodes / 100,520 steps 감사와 별도 12-episode 모델 replay를 구분하며, 안전성·절감 우위를 주장하지 않습니다.
-- **기여 기록:** 요구사항·기획, 실제 구현, AI 지원, 검토, 병합을 [기여 정책](CONTRIBUTIONS.md)에 따라 구분합니다. 자료 제출·AI 초안·CI 통과를 담당자 본인 검토나 계약 채택으로 간주하지 않습니다.
+- **main에 포함:** [LP/MILP 고정 항로 조달 기준선](research/procurement_baseline/README.md)은 [#126](https://github.com/heechan9/bunkering-ai/pull/126)이 2026-10-17 21:36 KST에 병합됐습니다. tonnes·USD, 공급 한도·최소 급유·금전 수수료·동일 종료 재고를 사용하는 120개 합성 개발 사례 비교이며 실제 절감률이나 미사용 평가 집합의 결과가 아닙니다. [항차 연료 수요 검증 준비](research/voyage_demand/README.md)는 자료 계약·합성 파이프라인 검사이며 실제 선박 예측 실험은 미완료입니다.
+- **누적 native-v4 Draft [#146](https://github.com/heechan9/bunkering-ai/pull/146):** head `6436a0a`의 [main 대상 PR CI](https://github.com/heechan9/bunkering-ai/actions/runs/40296975591)는 임시 merge `49904c5`에서 **985 passed / 2 skipped / 140 subtests passed**입니다. 이전 #132 → #133 → #134 → #136 → #144 → #145 계열을 누적한 검토이며 실제 main 병합은 아닙니다. 기록 CSV의 수치·회계 검증과 새 모델 추론·학습·미사용 평가를 구분합니다. C01–C06 채택은 pending입니다. 전체 정책 공통 strict-safe **0/1000·비용 null**과 DDQN–Price Reactive 쌍 **33/1000**은 다른 집합이며 안전·절감 우위를 뜻하지 않습니다.
+- **검토 절차 문서 Draft [#147](https://github.com/heechan9/bunkering-ai/pull/147):** head `90ef2a6`, 체크리스트 한 파일 +68줄입니다. [자체 PR CI](https://github.com/heechan9/bunkering-ai/actions/runs/40363957999)는 임시 merge `83cb29a`에서 **899 passed / 32 subtests passed**, [웹 근거 CI](https://github.com/heechan9/bunkering-ai/actions/runs/40363957933)도 성공했습니다. #146의 985개 검사나 계약 채택을 대신하지 않습니다.
+- **기여 접수 문서 Draft [#148](https://github.com/heechan9/bunkering-ai/pull/148):** head `36115d0`, `CONTRIBUTIONS.md` 한 파일 +32줄이며 [Python 3.12 CPU PR CI](https://github.com/heechan9/bunkering-ai/actions/runs/40455242934)가 성공했습니다. 외부 지원의 #136 고정 SHA `40100e3` CLI 화면 확인과 10월 27일 환경 준비 PASS·Python 테스트 진행 중·pnpm 웹 미진행 보고를 구분합니다. 팀원의 1차 도메인 검토·2차 19개 제안 제출 완료와 계약 채택 pending도 분리합니다. 원본 환경 로그·실행 SHA·최종 테스트 결과 미확보를 검증 완료로 바꾸지 않습니다.
+- **기여·제출 경계:** 요구사항·기획, 구현, AI 지원, 검토, 병합은 [기여 정책](CONTRIBUTIONS.md)에 따라 구분합니다. 자료 제출·AI 초안·CI 통과를 담당자 본인 검토나 계약 채택으로 간주하지 않습니다. 보고서 통합자료 갱신은 공식 최종제출 완료가 아닙니다. 이번 README 갱신은 새 모델 평가·웹 재검증·배포를 포함하지 않습니다.
 
 아래 상태는 각 항목의 확인 범위이며 전체 프로젝트의 검증 완료를 뜻하지 않습니다.
 
