@@ -64,6 +64,21 @@ pnpm dev
 
 실행 시 출력된 로컬 주소를 엽니다. 일반 로컬 실행 경로의 기본 개발 포트는 5173입니다. 빌드는 `pnpm build`입니다. `.sites-runtime`은 환경별 임시 실행 설정으로 포함하지 않습니다.
 
+### Windows 개발 서버 시작 확인
+
+명시적으로 IPv4 loopback을 사용하려면 `pnpm dev --host 127.0.0.1`을
+실행합니다. 실행 래퍼는 Vite의 `--host`를 portable 프로필의 vinext가
+인식하는 `--hostname`으로 변환합니다. `--hostname`과 `-H`도 지원하며,
+주소 없는 host 옵션은 실수로 전체 인터페이스를 열지 않도록 거부합니다.
+출력 주소가 `http://127.0.0.1:5173/`인지 확인하세요.
+
+서버가 시작되기 전에 `ECONNRESET`이 발생하면
+[진단·검증 절차](../docs/technical/windows_web_startup.md)를 따릅니다.
+`pnpm check:dev-startup`은 별도 loopback 포트에서 서버 시작과
+`/procurement` HTTP 요청 2회를 확인한 뒤 자신이 시작한 서버만 종료합니다.
+이미 실행 중인 같은 checkout의 dev 서버는 먼저 정상 종료하세요.
+이는 브라우저 hydration·클릭·시각 검사를 대신하지 않습니다.
+
 ## 배포와 검증 경계
 
 GitHub에 소스를 반영하는 작업과 Sites 배포는 별개입니다. 현재 GitHub push로 웹이 자동 배포되도록 연결하지 않았습니다. 기존 Sites 주소와 접근 권한은 유지합니다. `.openai/hosting.json`은 기존 프로젝트 식별 정보이며 인증 토큰이 아닙니다. `.env`, node_modules, 빌드 결과 및 인증 정보는 수입 대상에 없습니다.

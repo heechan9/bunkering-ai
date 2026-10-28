@@ -13,6 +13,8 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
     "typecheck": "tsc --noEmit --incremental false",
+    "check:framework": "node scripts/check-framework-args.mjs",
+    "check:dev-startup": "node scripts/check-dev-startup.mjs",
     "check:regressions": "node scripts/check-replay-load-state.mjs && node scripts/check-localization.mjs && node scripts/check-source-catalog.mjs && node scripts/check-voyage-csv.mjs && node scripts/check-scenario-review.mjs && node scripts/check-map-label-layout.mjs && node scripts/check-arctic-scenario.mjs && node scripts/check-arctic-map.mjs && node scripts/check-arctic-voyage.mjs && node scripts/check-arctic-observations.mjs && node scripts/check-u01-procurement.mjs"
   },
   "dependencies": {
