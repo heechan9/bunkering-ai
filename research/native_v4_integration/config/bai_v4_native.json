@@ -1,0 +1,31 @@
+{
+  "contract_version": "BAI-CONTRACT-v0.1-draft",
+  "policy_version": "native-legacy-v3",
+  "native_fixed": {
+    "_note": "Pinned native env a4634faa constants. Reproduction only; not approved domain values.",
+    "consumption_per_step": {"value": 0.05, "unit": "tank_fraction_per_step", "contract_id": "C02"},
+    "reserve": {"value": 0.15, "unit": "tank_fraction", "contract_id": "C01"},
+    "refill_request": {"value": 0.9, "unit": "tank_fraction", "contract_id": "C03"},
+    "max_fill": {"value": 0.95, "unit": "tank_fraction", "contract_id": "C03"},
+    "tolerance": {"value": 1e-9, "unit": "tank_fraction", "contract_id": "C01"},
+    "max_steps": {"value": 30, "unit": "step", "contract_id": "C06"},
+    "n_ports": {"value": 3, "unit": "count", "contract_id": "C06"}
+  },
+  "integration": {
+    "reserve_phase": {"value": "pre_refill_unclipped", "contract_id": "C01", "status": "pending"},
+    "consumption_known_at_decision": {"value": true, "contract_id": "C02", "status": "pending"},
+    "terminal_valuation": {"value": "terminal_mark_to_market", "contract_id": "C05", "status": "pending"},
+    "statistics_ddof": {"value": 1, "contract_id": "C04", "status": "pending"},
+    "seed_status": {"value": "used_reproduction_set", "contract_id": "C06", "status": "pending"},
+    "seed_range_inclusive": {"value": [91000000, 91000999], "contract_id": "C06", "status": "pending"}
+  },
+  "proposed_pending": {
+    "_note": "Candidates only. Not applied to confirmed results before Heechan accepts the contract.",
+    "safe_stock_pre_refill_v1": {
+      "rule": "action=1 if observed_fuel <= float32(reserve + consumption) else 0",
+      "threshold_dtype": "observation_dtype",
+      "contract_id": "C01",
+      "status": "pending"
+    }
+  }
+}
