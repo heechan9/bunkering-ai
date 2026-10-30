@@ -2,7 +2,7 @@
 
 [한국어](README.md) | [English](README.en.md)
 
-> [프로젝트 상태 페이지 바로 보기](https://heechan9.github.io/deadhd-status/bunkering-ai.html) · 2026-10-27 검토: main `34e1e82`와 별도 Draft #146·#147·#148을 구분합니다. 자동 main·PR·CI 조회와 수동 마감·제출·팀원 진행의 확인 시각은 상태 페이지에 따로 표시됩니다. 15초 새로고침은 배포본 재조회이며 전체 상태의 실시간 검증이 아닙니다.
+> [프로젝트 상태 페이지 바로 보기](https://heechan9.github.io/deadhd-status/bunkering-ai.html) · 2026-10-30 검토: main `df0621c`에 #150 통합이 반영됐으며, 조달 비교 문서 Draft #151은 별도 미병합입니다. 자동 main·PR·CI 조회와 수동 마감·제출·팀원 진행의 확인 시각은 상태 페이지에 따로 표시됩니다. 15초 새로고침은 배포본 재조회이며 전체 상태의 실시간 검증이 아닙니다.
 
 선박의 가격·환율·연료잔량·잔여항로를 바탕으로 급유 의사결정을 실험하는 프로젝트입니다.
 합성 항해 환경에서 규칙 기반 정책 3종과 Double DQN을 같은 조건으로 비교하고,
@@ -34,7 +34,20 @@ DAYTONA·VISBY 국내 LNG 사례와 현재 구간 24h·급유 기항 8h 합성 �
 
 ## 지금 어디까지 완료됐나
 
-2026-10-27 확인 기준 main은 `34e1e82ce10309ba737572fdae24625e4bc722a7`입니다. [공개 상태 페이지](https://heechan9.github.io/deadhd-status/bunkering-ai.html)에서 자동 Git 조회와 수동 검토 시각을 구분해 볼 수 있습니다. 아래 Draft 세 건은 각각 main 대상의 별도 PR이며 서로 합쳐지거나 main에 병합된 상태가 아닙니다. 과거 검사 기록은 당시 날짜·대상·분모로 보존합니다. **논문 제출과 실선 검증·운영 채택은 별개이며, 실제 비용·연료 절감은 아직 입증하지 않았습니다.**
+2026-10-30 확인 기준 main은 [`df0621c61e28df0e480f4e41a9ffc150454a1cdd`](https://github.com/heechan9/bunkering-ai/commit/df0621c61e28df0e480f4e41a9ffc150454a1cdd)입니다. [#150](https://github.com/heechan9/bunkering-ai/pull/150)에서 native-v4 누적 구현·검토 절차·기여 기록(#146·#147·#148), EOL 및 웹 시작 인수 처리가 통합됐습니다. 아래 10월 27일 기록의 ‘Draft·미병합’은 당시 상태이며 현재 main에 구현이 없다는 뜻이 아닙니다. **논문 제출·코드 병합과 실선 검증·운영 채택은 별개이며 실제 비용·연료 절감은 아직 입증하지 않았습니다.**
+
+- **지금 사용할 수 있는 기록 검증:** [native-v4 CLI](research/native_v4_integration/README.md)의 `ledger --steps ... --regenerate-market`는 기록 회계와 seed 기반 합성 가격·환율 재생성 검사가 맞으면 **PASS/0**입니다. `--legacy-summary`는 제공한 경우에만 비교합니다. 실제 시장가격 검증·모델 추론 재실행·새 평가가 아니며, **C01–C06 채택은 pending**입니다. 전체 정책 strict-safe **0/1000·비용 null**과 DDQN–Price Reactive 쌍 **33/1000**을 섞거나 비용 우위로 해석하지 않습니다.
+- **아직 main에 없는 문서:** [Draft #151](https://github.com/heechan9/bunkering-ai/pull/151), head `d43aa3dc16991b95ae619fa10443eca5639589b3`는 향후 고정항로 비교의 입력·정보·행동·안전시점·종료재고·실패 처리 조건을 정리하는 조달 연구 문서입니다. 새 실험·RL 구현·비용 절감 결과나 계약 채택이 아닙니다.
+- **빠른 확인:** 아래 명령으로 설정과 CLI 사용법을 확인한 뒤, 실제 기록 파일을 가진 경우에만 [ledger 실행 안내](research/native_v4_integration/README.md#실행)를 따르세요. 설정 valid는 계약 승인이나 전체 검증 완료가 아닙니다.
+
+```bash
+python research/native_v4_integration/cli.py --help
+python research/native_v4_integration/cli.py validate-config --config research/native_v4_integration/config/bai_v4_native.json
+```
+
+### 기존 연구와 2026-10-27 검토 이력
+
+아래 PR별 검사·기여 기록은 당시 head의 범위를 보존한 이력입니다. 최신 main 전체 재실행 결과로 바꾸어 읽지 않습니다.
 
 - **main에 포함:** [LP/MILP 고정 항로 조달 기준선](research/procurement_baseline/README.md)은 [#126](https://github.com/heechan9/bunkering-ai/pull/126)이 2026-10-17 21:36 KST에 병합됐습니다. tonnes·USD, 공급 한도·최소 급유·금전 수수료·동일 종료 재고를 사용하는 120개 합성 개발 사례 비교이며 실제 절감률이나 미사용 평가 집합의 결과가 아닙니다. [항차 연료 수요 검증 준비](research/voyage_demand/README.md)는 자료 계약·합성 파이프라인 검사이며 실제 선박 예측 실험은 미완료입니다.
 - **누적 native-v4 Draft [#146](https://github.com/heechan9/bunkering-ai/pull/146):** head `6436a0a`의 [main 대상 PR CI](https://github.com/heechan9/bunkering-ai/actions/runs/40296975591)는 임시 merge `49904c5`에서 **985 passed / 2 skipped / 140 subtests passed**입니다. 이전 #132 → #133 → #134 → #136 → #144 → #145 계열을 누적한 검토이며 실제 main 병합은 아닙니다. 기록 CSV의 수치·회계 검증과 새 모델 추론·학습·미사용 평가를 구분합니다. C01–C06 채택은 pending입니다. 전체 정책 공통 strict-safe **0/1000·비용 null**과 DDQN–Price Reactive 쌍 **33/1000**은 다른 집합이며 안전·절감 우위를 뜻하지 않습니다.
@@ -463,3 +476,4 @@ Drive는 `01_원본데이터`, `02_실험결과`, `03_프로젝트논문`,
 [별도 시간 계산 모듈](research/port_call_time/README.md)은 기존 화물 기항의 동시 급유와 급유 전용 기항을 구분합니다. 누락 시간은 `UNKNOWN`으로 유지합니다. 구현과 합성 검사는 완료했고 [#113–#116](https://github.com/heechan9/bunkering-ai/pull/116)은 2026-10-12 main(`a405b1f`)에 병합됐습니다. 현수가 발견한 출항 준비 시간 누락은 `departure_readiness` 입력으로 반영했고 Codex가 연동 head를 재검토했으나, 현수가 수정된 코드까지 재검토했는지는 확인되지 않았습니다. 실자료 검증, 실측 보정, 정책 성능 비교는 완료 전입니다. 기존 공식 평가의 24h/8h 가정과 결과는 보존합니다.
 
 국내 DAYTONA·VISBY 사례의 공급 작업시간은 추가 항해 지연을 뜻하지 않습니다. 출처와 확보 범위는 [국내 사례 검토 PR #113](https://github.com/heechan9/bunkering-ai/pull/113), 코드 검토는 [PR #114](https://github.com/heechan9/bunkering-ai/pull/114)를 참조하세요. 두 PR 모두 2026-10-12 병합됐으며, 병합은 실자료 검증이나 실선 효과를 뜻하지 않습니다.
+

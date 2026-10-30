@@ -2,7 +2,7 @@
 
 [한국어](README.md) | **English**
 
-> [Open the project status page](https://heechan9.github.io/deadhd-status/bunkering-ai.html) · Reviewed October 27, 2026: main `34e1e82` and separate Drafts #146, #147, and #148. Automated main/PR/CI retrieval and manual deadline/submission/team-progress review have separate timestamps on the status page (Korean). The 15-second reload rereads the published page; it does not verify all progress in real time.
+> [Open the project status page](https://heechan9.github.io/deadhd-status/bunkering-ai.html) · Reviewed October 30, 2026: main `df0621c` includes integration #150; procurement-documentation Draft #151 remains separate and unmerged. Automated main/PR/CI retrieval and manual deadline/submission/team-progress review have separate timestamps on the status page (Korean). The 15-second reload rereads the published page; it does not verify all progress in real time.
 
 **A reproducible research project for sequential ship-refueling decisions.** Three rule-based policies and Double DQN are compared under identical synthetic voyage conditions. Purchases, consumption, terminal inventory, and source evidence are examined together.
 
@@ -27,7 +27,20 @@ This English overview mirrors the images and all 13 tables of the [Korean README
 
 ## Current research and development status
 
-Checked on October 27, 2026: main is `34e1e82ce10309ba737572fdae24625e4bc722a7`. The [public status page](https://heechan9.github.io/deadhd-status/bunkering-ai.html) separates automated Git retrieval from manual review timestamps. The three Drafts below independently target main; they are not combined or merged into main. Historical checks retain their original dates, targets, and denominators. **Manuscript submission does not establish real-vessel validation or operational adoption; actual cost/fuel savings remain unproven.**
+Checked on October 30, 2026: main is [`df0621c61e28df0e480f4e41a9ffc150454a1cdd`](https://github.com/heechan9/bunkering-ai/commit/df0621c61e28df0e480f4e41a9ffc150454a1cdd). [#150](https://github.com/heechan9/bunkering-ai/pull/150) integrated cumulative native-v4 implementation, review procedures and contribution records (#146/#147/#148), EOL handling and web-start argument dispatch. “Draft/unmerged” in the October 27 records below describes that historical checkpoint, not absence from current main. **Manuscript submission and code integration do not establish real-vessel validation or operational adoption; actual cost/fuel savings remain unproven.**
+
+- **Available recorded-data checks:** the [native-v4 CLI](research/native_v4_integration/README.md) returns **PASS/0** for `ledger --steps ... --regenerate-market` when accounting and seed-regenerated synthetic price/FX checks match. `--legacy-summary` is compared only when supplied. This is not external market-price validation, rerun model inference or a new evaluation. **C01–C06 adoption remains pending.** Keep the all-policy strict-safe **0/1000 with null cost** distinct from the DDQN–Price Reactive pair's **33/1000**; neither establishes cost superiority.
+- **Not on main:** [Draft #151](https://github.com/heechan9/bunkering-ai/pull/151), head `d43aa3dc16991b95ae619fa10443eca5639589b3`, documents input/information/action parity, safety timing, terminal inventory and failure accounting for a future fixed-route comparison. It is not a new experiment, RL implementation, savings result or contract adoption.
+- **Quick check:** inspect the CLI and validate configuration below. Follow the [ledger instructions](research/native_v4_integration/README.md#실행) only when the actual recorded input files are available. A valid configuration is not contract approval or complete validation.
+
+```bash
+python research/native_v4_integration/cli.py --help
+python research/native_v4_integration/cli.py validate-config --config research/native_v4_integration/config/bai_v4_native.json
+```
+
+### Existing research and October 27, 2026 review history
+
+The following per-PR checks and contribution records retain their historical heads and scope; they are not a fresh full-main test run.
 
 - **On main:** the [fixed-route LP/MILP procurement baseline](research/procurement_baseline/README.md) was merged through [#126](https://github.com/heechan9/bunkering-ai/pull/126) on October 17, 2026 at 21:36 KST. It compares 120 synthetic development cases using tonnes/USD, supply limits, minimum lifts, monetary fees, and identical terminal inventory. It is not realized savings or an unused holdout evaluation. [Voyage fuel-demand preparation](research/voyage_demand/README.md) covers data contracts and synthetic pipeline checks, not completed vessel prediction experiments.
 - **Cumulative native-v4 Draft [#146](https://github.com/heechan9/bunkering-ai/pull/146):** head `6436a0a`; [main-target PR CI](https://github.com/heechan9/bunkering-ai/actions/runs/40296975591) passed **985 tests / 2 skipped / 140 subtests** on temporary merge `49904c5`. This accumulates the #132 → #133 → #134 → #136 → #144 → #145 review stack, not an actual main merge. Recorded-CSV numerical/accounting checks are distinct from new model inference, training, or unused evaluation. C01–C06 adoption remains pending. The all-policy common strict-safe cohort of **0/1000 with null cost** differs from the DDQN–Price Reactive pair's **33/1000**; neither establishes safety or savings superiority.
@@ -375,3 +388,4 @@ Domestic DAYTONA/VISBY supply-work durations do not equal added voyage delay. [S
 Read [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for human/AI attribution and review principles. For research changes, state the hypothesis, data provenance, evaluation contract, and limitations; keep new outputs separate from official reference artifacts.
 
 No top-level project license is present in the reviewed revision. This README does not grant a new license. Third-party code and datasets retain their own notices and terms; do not infer their reuse permissions from repository visibility.
+
