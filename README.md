@@ -241,6 +241,8 @@ Rule-based 3종과 Double DQN의 **공식 동일조건 성능비교를 수행했
 [평가 manifest](results/evaluation_manifest.json)입니다.
 학습 seed 42의 모델 하나를 평가 seed 42~141의 100개 합성 항차에서 비교했습니다.
 
+보존 manifest의 학습 메타데이터와 현재 학습 코드 기준으로 평가 seed **42–141**은 기록된 학습 seed **42–5041** 범위와 겹칩니다. 따라서 아래 표는 미사용 holdout 일반화의 근거가 아니라 기존 합성 조건의 비교·재현 기록입니다. 과거 학습 실행 전체를 새로 복원·검증했다는 뜻은 아닙니다. [시드 사용 이력](docs/technical/reproduction_materials_guide.md#시드와-판정-해석).
+
 | 정책 | 평균 Reward | Synthetic Cost Index | 성공률 | 연료고갈률 | 평균 급유횟수 |
 |---|---:|---:|---:|---:|---:|
 | Fixed Fueling (고정 급유) | -2.030 | 0 | 0% | 100% | 0.00 |

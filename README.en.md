@@ -186,6 +186,8 @@ The official Release checkpoint was used without retraining. `planner_ops` recei
 
 One model trained with seed 42; 100 synthetic voyages per policy with evaluation seeds 42–141. [Raw CSV](results/evaluation_results.csv) · [Manifest](results/evaluation_manifest.json).
 
+The preserved manifest training metadata and current training source place evaluation seeds **42–141** within the recorded training range **42–5041**. This table is therefore a comparison/reproduction record under existing synthetic conditions, not evidence of generalization to an unused holdout. This does not claim a fresh reconstruction or verification of the complete historical training run. [Seed-use history](docs/technical/reproduction_materials_guide.md#시드와-판정-해석).
+
 <!-- TABLE 4: 4 data rows. -->
 | Policy | Mean reward | Synthetic Cost Index | Success rate | Fuel-depletion rate | Mean refueling actions |
 |---|---:|---:|---:|---:|---:|
