@@ -49,3 +49,72 @@ Difference = `sum(rule cost − optimum cost) / sum(rule cost) × 100`. The sepa
 `validation/windows_20261015/` is an ignored, local-only integration output directory, absent from a fresh checkout. Committed validation summaries are in WINDOWS_COMPATIBILITY.md, WINDOWS_STRICT_RESULT.txt, and verification_summary.json; full reviewed source evidence is in the ZIP. The handoff and development cases have already been used to identify and fix the solver counterexample; they are not independent future confirmation data. No real prices, operational records, private identifiers, forecasts, route optimization, multi-grade contracts, quality/tax/credit constraints, or causal realized-savings evaluation are included.
 
 See [LOCAL_INTEGRATION.md](LOCAL_INTEGRATION.md) for the initial local integration checks, failed baseline attempts, and environment differences. The subsequent approved Windows fixes and current validation status are recorded in [WINDOWS_COMPATIBILITY.md](WINDOWS_COMPATIBILITY.md). This branch is prepared for Draft PR review; no model replacement, merge, or web deployment is included.
+
+## Admission gate for a future fixed-route rule / optimizer / RL comparison
+
+2026-10-30: **research protocol only**, not a new benchmark, RL implementation or
+result. The user-supplied Europe semiconductor career lecture (19 pages, pp. 5,
+9 and 12) motivates attention to collaboration, efficiency and field outcomes.
+The following comparison design is our proposal, not validation by that lecture;
+none of its industrial savings figures is a Bunkering result. Preserve the
+official submission baseline, manuscript/HWP, checkpoints and archived results.
+
+Fixed route does not by itself make methods comparable. Reuse the existing
+[specification](spec.json), [rule definitions](ALGORITHMS_KO.md) and
+[same-information evaluation design](../fair_replacement_eval/README.md), rather
+than introducing a second set of thresholds or a new result table.
+
+| Gate before ranking methods | Required record / stop condition |
+|---|---|
+| Same task and inputs | Pin ordered port/leg IDs, demand, prices, availability, supply, minimum lift, fees, reserve, capacity, initial/terminal inventory, units and input hashes. Keep route and speed assumptions fixed; do not credit route optimization that is absent. |
+| Same information and actions | This module gives rules and LP/MILP full static information and continuous purchase quantities. It has no RL policy. Do not rank these results against the native discrete-action DQN with different action semantics. A future RL adapter needs a separately reviewed contract with the same available information, observation timing and feasible actions. An oracle or extra forecast is an information-bound experiment, not a same-information winner. |
+| Same safety clock | Identify inventory before purchase, after purchase and after leg consumption; record which state each reserve constraint checks. This module purchases before the leg, whereas native reproduction consumes before refilling. Do not silently relabel phases or let a later purchase erase an earlier reserve violation. |
+| Same terminal treatment | Keep this module's exact terminal inventory equality for every method. Native inventory-adjusted SCI uses terminal valuation instead; equal-target USD costs and mark-to-market SCI cannot be pooled. Any changed terminal target/valuation needs its own version, not relabelled historical results. |
+| Same constraints and failure accounting | Apply supply, minimum-lift, capacity, intermediate reserve and terminal constraints to every policy. Keep the prespecified clipping rules; do not repair a failed policy with an optimizer. New guards are separate policies. Missing time/queue/quality constraints are unmodelled, not zero or satisfied. |
+| Same evidence budget | Freeze scenario roles, development/confirmation history, seeds and evaluation criteria before a new run. Record training/search effort separately from decision runtime and use the same runtime measurement environment. This protocol schedules no training or evaluation. |
+
+### Failure-first review, using existing cases
+
+Report all cases and status counts before jointly feasible cost differences.
+Retain pairwise and all-policy common denominators separately. A cheap failed
+voyage is not efficient; an empty eligible cohort is undefined, not zero savings.
+An optimal reference is a mathematical comparator, not evidence of realized
+cost reduction, safer vessels or RL benefit.
+
+| Review question | Existing regression evidence to reuse |
+|---|---|
+| Are unknown inputs distinct from impossible routes? | [Core tests](../../tests/test_procurement_baseline_core.py): `test_U13_unknown_price` (`NOT_READY`), `test_unit_scope_rejection` (`INVALID_INPUT`), `test_U07` / `test_U11` (`INFEASIBLE`). |
+| Is a solver time/iteration limit being called infeasible? | Same file: `test_U17_statuses` distinguishes `LIMIT_REACHED`, `INFEASIBLE` and `SOLVER_ERROR`. Preserve unresolved/audit/lexicographic failures; do not force them into success or infeasibility. |
+| Does a feasible problem expose a policy limitation? | [Policy tests](../../tests/test_procurement_baseline_policies.py): `test_minimum_lift_failure` retains `POLICY_FAILURE` while the reference is `OPTIMAL`; `test_unavoidable_infeasible` is a different case. |
+| Are supply gaps, intermediate reserve and terminal inventory respected? | Same file: `test_supply_gap`, `test_intermediate_reserve`, `test_terminal_caps_purchase` and `test_zero_purchase`. Preserve the first violated constraint and the complete ledger, not cost alone. |
+| Does the reference itself need independent checking? | `test_presolve_counterexample_regression` and core `test_U15_enumeration`; use the existing audit rather than treating a solver label as sufficient proof. |
+
+These are existing synthetic regression cases, not newly executed performance
+experiments. A file/test name is not proof of execution. For a small reproducible
+code check without model weights or the full benchmark, run from the repo root:
+
+```bash
+python -m unittest -v tests.test_procurement_baseline_core tests.test_procurement_baseline_policies
+```
+
+### English handoff: add only the comparison-specific fields
+
+Reuse the [English reproduction/review receipt](../../docs/technical/DATA_ANALYSIS_REVIEW_CHECKLIST.md#english-reproduction--review-receipt)
+for code SHA, input hashes, environment, seeds, command, log, exit code and human
+review. Add the fields below; blank/unexecuted fields remain pending. Do not
+publish private paths or data. A receiving reviewer should be able to identify
+the same inputs, outputs and expected failure without guessing the model scope.
+
+```text
+Comparison scope: static t/USD procurement | native normalized SCI | other (separate)
+Route/leg order / information tier / action contract / reserve-check phase:
+Terminal inventory target or valuation rule / unmodelled operational constraints:
+Input artifacts and hashes -> output files, units and eligible-cohort definition:
+Known-failure case ID / expected input-reference-policy statuses / actual result:
+Reproduction status: not run | regression only | saved-result audit | new evaluation
+Implementation author / execution author / independent reviewer / unresolved question:
+```
+
+Acceptance is a reviewable protocol and an accurately scoped receipt, not a
+cost-only ranking. Any later execution or claim change needs separate approval;
+this documentation does not adopt native C01-C06 or change `spec.json`.
