@@ -2,6 +2,8 @@
 
 [한국어](README.md) | **English**
 
+**Code license:** Apache 2.0 applies only to original project-owned code in [LICENSED_CODE.txt](LICENSED_CODE.txt). See [scope and preserved third-party terms](LICENSE_SCOPE.md); data, images, models and other unlisted material are not included.
+
 > [Open the project status page](https://heechan9.github.io/deadhd-status/bunkering-ai.html) · Reviewed October 30, 2026: main `df0621c` includes integration #150; procurement-documentation Draft #151 remains separate and unmerged. Automated main/PR/CI retrieval and manual deadline/submission/team-progress review have separate timestamps on the status page (Korean). The 15-second reload rereads the published page; it does not verify all progress in real time.
 
 **A reproducible research project for sequential ship-refueling decisions.** Three rule-based policies and Double DQN are compared under identical synthetic voyage conditions. Purchases, consumption, terminal inventory, and source evidence are examined together.
@@ -389,5 +391,4 @@ Domestic DAYTONA/VISBY supply-work durations do not equal added voyage delay. [S
 
 Read [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for human/AI attribution and review principles. For research changes, state the hypothesis, data provenance, evaluation contract, and limitations; keep new outputs separate from official reference artifacts.
 
-No top-level project license is present in the reviewed revision. This README does not grant a new license. Third-party code and datasets retain their own notices and terms; do not infer their reuse permissions from repository visibility.
-
+The [Apache 2.0 source-code grant](LICENSE) is limited to [explicitly listed files](LICENSED_CODE.txt), subject to [LICENSE_SCOPE.md](LICENSE_SCOPE.md). Third-party code and datasets retain their own notices and terms; do not infer their reuse permissions from repository visibility.
