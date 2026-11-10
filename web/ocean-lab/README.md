@@ -132,3 +132,49 @@ Background source: [IMO Polar Code](https://www.imo.org/en/ourwork/safety/pages/
 ## 2026-09-22 mentor-review polish
 
 Paper links point to v7.0 and a separately named layout-corrected PDF. The original mentor review document is preserved; this update changes no research text or numerical results. Tab, evidence, and boundary-case controls expose translated accessible names, and existing notices translate on language changes. CSV hashing requires a secure HTTPS context; an explicit message replaces an opaque browser exception otherwise.
+
+## Interactive fuel mission (U01-derived synthetic example)
+
+`/voyage-lab` recalculates two fixed legs when the visitor edits A/B quantities,
+assumed prices or B supply availability. The ledger, displayed fuel meter and
+3D vessel/tank use one deterministic result. Editing shows the end/stopping point;
+visitors can inspect the five purchase/arrival stages. Prices are assumed, not live.
+No DQN checkpoint, route optimizer, original SCI replay or private data is involved.
+
+Unlike the original requested-quantity diagnostic at `/procurement`, this operational
+illustration delivers only the minimum of the request, supply and tank space. It
+charges delivered fuel only; fuel exhaustion stops the voyage and prevents later
+purchases. Requested capacity/supply failures and arrival reserve failures persist.
+Failed plans have a null comparable cost. Two fixed candidate quantity plans are
+recomputed under the same visible prices/supply, without claiming optimization.
+The unchanged original U01 and saved research methods remain available separately.
+
+`node scripts/check-voyage-mission.mjs` checks 20,402 deterministic quantity/supply
+cases, fuel conservation, costs, stopping and repeated real component handlers.
+Three.js WebGL has an SVGRenderer compatibility path. The cloud Chrome browser
+verified the SVG path, presets, supply failure, candidate application, keyboard
+sliders and Korean/English. GPU rendering and physical mobile devices are not
+verified. No animation clock or geographic motion enters the computation.
+
+## Responsive map camera repair
+
+The regional map now fits the viewport using map bounds and the limiting field
+of view. The previous camera cropped normal maps at a 390 × 560 portrait aspect.
+Move mode is the default: one finger/left drag pans, or choose Rotate to orbit.
+Two fingers pan and pinch in either mode. Ground-plane panning is bounded to the
+map footprint, preserving the camera offset. The zoom limit is now based on map
+size (at least 18 world units), rather than 45% of fitted distance. Visible mode,
+left/right, zoom and fit buttons provide an alternative; Fit restores the center. Mobile map
+height is capped at 420 CSS pixels and labels use the shared collision layout.
+The changes also apply to the map used by replay without altering replay data.
+
+`check:map-camera` verifies 140 viewport/map-size/orbit fits, including portrait
+widths 320/360/390. An actual 500 CSS px Chrome window verified complete framing,
+mouse drag, rotate/zoom buttons and fit recovery with the SVG renderer. These
+checks do not establish physical-phone multi-touch or WebGL GPU behavior.
+
+The follow-up pan/zoom checks use the installed OrbitControls with synthetic
+pointer events for one-finger Move/Rotate, two-finger translation/pinch, repeated
+extreme pan, damping and reset. The actual 500 CSS px Chrome SVG preview verified
+horizontal drag, button pan, mode switching without target loss, deeper zoom and
+centered Fit recovery. These are not a physical-phone or GPU WebGL test.
