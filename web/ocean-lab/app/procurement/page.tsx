@@ -19,6 +19,8 @@ function ProcurementExample(){
  const reset=()=>{setValues([...defaultQuantities]);setStep(0)};
  return <main className="u01-page">
   <header className="u01-header"><Link href="/">← {en?'Ocean Lab replay':'Ocean Lab 기록 재생'}</Link><div className="language-switch" role="group" aria-label="Language / 언어"><button type="button" aria-pressed={!en} onClick={()=>setLang('ko')}>한국어</button><button type="button" aria-pressed={en} onClick={()=>setLang('en')}>English</button></div></header>
+  <p><Link href="/voyage-lab">{en?'Live mission: change prices, supply and quantities →':'직접 조작: 가격·공급·구매량으로 항해 바꾸기 →'}</Link></p>
+  <p><Link href="/decision-practice" prefetch={false}>{en?'Practice: predict a purchase decision':'의사결정 연습: 먼저 구매안을 예상해보기'}</Link></p>
   <p className="u01-kicker">U01 · t / USD · STATIC_KNOWN</p>
   <h1>{en?'Three ports. One fuel balance.':'항구 세 곳, 하나의 연료 수지'}</h1>
   <p className="u01-boundary">{en?'Illustrative synthetic example. Purchase THEN consume. Separate from normalized fuel/SCI, recorded replay and PR141’s 400-row safety accounting. This is not an RL improvement or real-vessel cost-saving result.':'설명용 합성 예제입니다. 구매 후 소비하며, 정규화 연료·SCI, 기존 리플레이, PR141의 400행 안전회계와 분리됩니다. 강화학습 개선이나 실제 선박 비용 절감 결과가 아닙니다.'}</p>
