@@ -1,4 +1,5 @@
 'use client';
+import {advancePassageProgress} from '@/lib/passage-clock';
 import {useLocale} from '@/lib/locale';
 import {useCallback,useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import * as THREE from 'three';
@@ -100,11 +101,12 @@ export function MapScene({region,reset,exaggeration,trafficProgress,selectedShip
   const endLabel=document.createElement('span');endLabel.className='map-label endpoint-label destination-label';el.appendChild(endLabel);labels.push({el:endLabel,pos:traffic.destination.clone().add(new THREE.Vector3(0,8,0)),priority:80});
   const shipLabel=document.createElement('span');shipLabel.className='map-label traffic-ship-label';el.appendChild(shipLabel);
   let lastProgress=-1,lastSelected=-1,lastDraw=0,lastLabel='',lastBunkering=false;
+  let labelSizes=new WeakMap<HTMLElement,{text:string;width:number;height:number}>();
   const mapWidth=arctic?136:126,mapDepth=arctic?136:h+6;
   const boundTarget=()=>{const next=mapCameraTarget(controls.target.x,controls.target.z,mapWidth,mapDepth);const correction=new THREE.Vector3(next.x,next.y,next.z).sub(controls.target);controls.target.add(correction);camera.position.add(correction)};
   let raf=0,dirty=true;controls.addEventListener('change',()=>{boundTarget();dirty=true});
   const fit=()=>{controls.enableDamping=false;controls.update();const layout=mapCameraFit(el.clientWidth,el.clientHeight,mapWidth,mapDepth);camera.aspect=layout.aspect;camera.zoom=1;controls.minDistance=layout.minDistance;controls.maxDistance=layout.maxDistance;controls.target.set(0,0,0);camera.position.set(18,110,125).normalize().multiplyScalar(layout.distance);camera.lookAt(controls.target);camera.updateProjectionMatrix();controls.update();controls.enableDamping=true;dirty=true};
-  const size=()=>{renderer.setSize(el.clientWidth,el.clientHeight);fit()};const ro=new ResizeObserver(size);ro.observe(el);size();
+  const size=()=>{labelSizes=new WeakMap();renderer.setSize(el.clientWidth,el.clientHeight);fit()};const ro=new ResizeObserver(size);ro.observe(el);size();
   cameraAction.current=action=>{
    if(action==='pan'||action==='rotate'){controls.enableDamping=false;controls.update();controls.enableDamping=true;cameraModeRef.current=action;controls.touches.ONE=action==='pan'?THREE.TOUCH.PAN:THREE.TOUCH.ROTATE;controls.mouseButtons.LEFT=action==='pan'?THREE.MOUSE.PAN:THREE.MOUSE.ROTATE;return}
    if(action==='fit'){fit();return}const offset=camera.position.clone().sub(controls.target);
@@ -114,7 +116,7 @@ export function MapScene({region,reset,exaggeration,trafficProgress,selectedShip
    }else offset.setLength(THREE.MathUtils.clamp(offset.length()*(action==='in'?.8:1.25),controls.minDistance,controls.maxDistance));
    camera.position.copy(controls.target).add(offset);boundTarget();controls.update();dirty=true
   };
-  const draw=(now=0)=>{raf=requestAnimationFrame(draw);if(document.hidden)return;controls.update();const state=trafficState.current;if(lastProgress!==state.trafficProgress||lastSelected!==state.selectedShip||lastLabel!==state.replayLabel||lastBunkering!==state.bunkering)dirty=true;if(!dirty||(software&&now-lastDraw<90))return;lastDraw=now;
+  const draw=(now=0)=>{raf=requestAnimationFrame(draw);if(document.hidden)return;controls.update();const state=trafficState.current;if(lastProgress!==state.trafficProgress||lastSelected!==state.selectedShip||lastLabel!==state.replayLabel||lastBunkering!==state.bunkering)dirty=true;if(!dirty||now-lastDraw<(software?90:1000/30))return;lastDraw=now;
    endLabel.textContent=singleShip&&state.trafficProgress>=1?(lang==='en'?'✓ Arrived · illustrative destination':'✓ 도착 · 설명용 목적지'):(lang==='en'?'⚑ Illustrative destination':'⚑ 설명용 목적지');
    const positions=traffic.update(state.trafficProgress,state.selectedShip,state.bunkering);lastProgress=state.trafficProgress;lastSelected=state.selectedShip;
    const selected=positions[state.selectedShip];shipLabel.textContent=singleShip?(state.replayLabel||t("체험 선박")):t("선박 ")+(state.selectedShip+1)+t(" · 설명용");lastLabel=state.replayLabel;lastBunkering=state.bunkering;
@@ -122,11 +124,12 @@ export function MapScene({region,reset,exaggeration,trafficProgress,selectedShip
    renderer.render(scene,camera);
    const currentLabels=[...labels,{el:shipLabel,pos:selected.position.clone().add(new THREE.Vector3(0,4,0)),priority:100}];
    const boxes=currentLabels.flatMap((label,id)=>{
-    label.el.style.visibility='hidden';
+    const text=label.el.textContent||'';let dimensions=labelSizes.get(label.el);if(!dimensions||dimensions.text!==text){dimensions={text,width:label.el.offsetWidth,height:label.el.offsetHeight};labelSizes.set(label.el,dimensions)}
     const p=label.pos.clone().project(camera);
-    return p.z < -1||p.z>1||Math.abs(p.x)>.98||Math.abs(p.y)>.98?[]:[{id,x:(p.x+1)/2*el.clientWidth,y:(1-p.y)/2*el.clientHeight,width:label.el.offsetWidth,height:label.el.offsetHeight,priority:label.priority}];
+    return p.z < -1||p.z>1||Math.abs(p.x)>.98||Math.abs(p.y)>.98?[]:[{id,x:(p.x+1)/2*el.clientWidth,y:(1-p.y)/2*el.clientHeight,width:dimensions.width,height:dimensions.height,priority:label.priority}];
    });
    const placements=layoutMapLabels(boxes,el.clientWidth,el.clientHeight);
+   for(const label of currentLabels)label.el.style.visibility='hidden';
    for(const placement of placements){
     const label=currentLabels[placement.id].el;
     label.style.left=placement.x+'px';label.style.top=placement.y+'px';label.style.visibility=placement.visible?'visible':'hidden';
@@ -146,7 +149,19 @@ export default function Geography({onReplay,region,onRegionChange}:{onReplay:()=
  const [reset,setReset]=useState(0),[stage,setStage]=useState("region"),[exaggeration,setExaggeration]=useState(8),[flight,setFlight]=useState<Flight|null>(null);const cfg=regions[region];
  const [playOverride,setTrafficPlaying]=useState<boolean|null>(null),[trafficSpeed,setTrafficSpeed]=useState(1),[trafficProgress,setTrafficProgress]=useState(0),[selectedShip,setSelectedShip]=useState(0);
  const autoPlay=useSyncExternalStore(subscribeMotion,readMotion,serverMotion);const trafficPlaying=playOverride??autoPlay;
- useEffect(()=>{if(!trafficPlaying||stage!=='region')return;let frame=0,last=0;const advance=(now:number)=>{if(last&&!document.hidden)setTrafficProgress(p=>(p+Math.min(now-last,100)/48000*trafficSpeed)%1);last=now;frame=requestAnimationFrame(advance)};frame=requestAnimationFrame(advance);return()=>cancelAnimationFrame(frame)},[trafficPlaying,trafficSpeed,stage]);
+ useEffect(()=>{
+  if(!trafficPlaying||stage!=='region')return;
+  let frame=0,last=performance.now();
+  // Discard only time spent in a hidden tab, never slow visible frames.
+  const visibility=()=>{last=performance.now()};
+  const advance=(now:number)=>{
+   if(!document.hidden&&now-last>=1000/30){const elapsed=now-last;last=now;setTrafficProgress(p=>advancePassageProgress(p,elapsed,trafficSpeed))}
+   frame=requestAnimationFrame(advance);
+  };
+  document.addEventListener('visibilitychange',visibility);
+  frame=requestAnimationFrame(advance);
+  return()=>{cancelAnimationFrame(frame);document.removeEventListener('visibilitychange',visibility)};
+ },[trafficPlaying,trafficSpeed,stage]);
  function choose(key:string){setTrafficProgress(0);onRegionChange(key);if(stage==="world")setFlight({region:key})}
  const arrive=useCallback(()=>{setStage("region");setFlight(null)},[]);
  return <section className="regional-exhibit">
