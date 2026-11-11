@@ -46,3 +46,12 @@ center();controls.touches.ONE=THREE.TOUCH.PAN;touch('pointerdown',1,190,210);for
 controls.enableDamping=true;center();touch('pointerdown',1,190,210);touch('pointermove',1,4000,4000);touch('pointerup',1,4000,4000);for(let i=0;i<60;i++)controls.update();assert(Math.abs(controls.target.x)<=63&&Math.abs(controls.target.z)<=68);controls.enableDamping=false;controls.update();
 center();assert(controls.target.length()===0&&Math.abs(camera.position.length()-fit.distance)<1e-8,'Reset restores centered fit');controls.dispose();
 console.log('PASS: actual OrbitControls synthetic one-touch pan/rotate, two-touch pan/pinch, extreme-pan bounds, offset preservation and reset. Not a physical-device test.');
+
+// Desktop-only overlay hit targets: transparent stack gaps reach the map.
+// Browser hit testing is required separately; these are source regression contracts.
+const desktopOverlay=css.slice(css.indexOf('/* Desktop overlay gaps must not intercept map drags;')).match(/@media\(min-width:801px\)\{([\s\S]*?)\n\}/)?.[1];
+assert(desktopOverlay,'Desktop hit-target rules must not change the mobile layout');
+assert(desktopOverlay.includes('.regional-exhibit .map-information{pointer-events:none}'));
+assert(desktopOverlay.includes('.regional-exhibit .map-information .passage-playback,.regional-exhibit .map-information .map-source a{pointer-events:auto}'));
+assert(!desktopOverlay.includes('display:')&&!desktopOverlay.includes('visibility:')&&!desktopOverlay.includes('touch-action:'),'Hit-target fix must preserve layout, visibility and touch behavior');
+console.log('PASS: desktop overlay gaps pass pointer input; playback panel and attribution links remain targets. Browser hit testing is separate.');
