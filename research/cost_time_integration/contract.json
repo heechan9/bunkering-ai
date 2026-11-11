@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "synthetic_assumption",
+  "information_tier": "STATIC_KNOWN",
+  "purchase_opportunities": 4,
+  "purchase_order": "Before each of legs1..4. Initial inventory is before first purchase. No post-terminal purchase.",
+  "quantities": "continuous nonnegative t; fixture input mass grid0.001t is not a decision lot size",
+  "inventory_identity": "arrival_next = arrival_before_buy + purchase - leg_demand",
+  "constraints": [
+    "initial and every arrival >= applicable reserve",
+    "departure inventory <= capacity",
+    "q <= supply_max",
+    "unavailable implies q=0",
+    "q>0 implies q>=minimum_lift",
+    "terminal inventory equals exact target"
+  ],
+  "stop_semantics": "z = 1 iff q>0; q0 incurs no bunker fees or incremental bunker time",
+  "cost_usd": "sum(q*(price+variable_fee)+fixed_fee*1[q>0])",
+  "total_time_hours": "sailing_hours + baseline_existing_call_hours + sum(incremental_bunker_delay)",
+  "existing_time": "q0:0; otherwise max(baseline_departure,max(cargo_end_with_bunkering,bunker_ready+preparation+transfer_rate*q+cleanup)+departure_readiness)-baseline_departure",
+  "dedicated_time": "q0:0; otherwise detour+port_transit+waiting+preparation+transfer_rate*q+cleanup",
+  "missing_time": "NOT_COMPUTED_UNKNOWN_TIME; no default0",
+  "safety_phase": "arrival before next buy; refilling cannot repair a previously violated reserve",
+  "deadline_semantics": "total_time<=deadline",
+  "randomness": "none; deterministic analytical/software fixtures, not holdout",
+  "numeric_acceptance_proposed": {
+    "mass_abs_t": 1e-7,
+    "hours_abs": 0.000001,
+    "cost_abs_usd": 0.0001,
+    "optimality_gap_requirement": "solver target0; independently verify objective against analytical bound",
+    "note": "Proposed future adapter tolerances, not project API promises. Fraction arithmetic checks exact values. Positive stop semantics must not be replaced by rounding away physical quantities."
+  }
+}

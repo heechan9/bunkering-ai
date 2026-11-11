@@ -1,0 +1,3319 @@
+{
+  "environment": {
+    "python": "3.14.6",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0"
+  },
+  "input_hashes": {
+    "contract.json": "05644974d908b998d81a582ebdbb940877c1e8541df0f623a9ba58337ccafb7c",
+    "fixtures_compact.json": "7ea9f3d9d6d5d2a36d00bf6b4ae40426fe34816b507245d9d92e1c1343c13e96",
+    "analytical_proofs.json": "1b869a5a139024971faeee342673dfe69976133a05b72ff46adc10993b044a35"
+  },
+  "passed": 17,
+  "total": 17,
+  "results": [
+    {
+      "id": "base_cheaper_second",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          0.0,
+          16.0,
+          0.0,
+          0.0
+        ],
+        "cost_usd": 7200.0,
+        "time_hours": 26.32,
+        "incremental_delays_hours": [
+          0.0,
+          2.32,
+          0.0,
+          0.0
+        ],
+        "positive_purchase_count": 1,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "0.0",
+              "departure_t": "30.0",
+              "arrival_t": "20.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "20.0",
+              "q_t": "16.0",
+              "departure_t": "36.0",
+              "arrival_t": "26.0",
+              "cost_usd": "7200.0",
+              "extra_hours": "2.320"
+            },
+            {
+              "before_t": "26.0",
+              "q_t": "0.0",
+              "departure_t": "26.0",
+              "arrival_t": "16.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "16.0",
+              "q_t": "0.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            }
+          ],
+          "cost_usd": 7200.0,
+          "time_hours": 26.32,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "Exactly16t at minimum450; all16 at port2 attains7200."
+    },
+    {
+      "id": "flat_price_nonunique",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          0.0,
+          0.0,
+          16.0,
+          0.0
+        ],
+        "cost_usd": 9600.0,
+        "time_hours": 26.32,
+        "incremental_delays_hours": [
+          0.0,
+          0.0,
+          2.32,
+          0.0
+        ],
+        "positive_purchase_count": 1,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "0.0",
+              "departure_t": "30.0",
+              "arrival_t": "20.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "20.0",
+              "q_t": "0.0",
+              "departure_t": "20.0",
+              "arrival_t": "10.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "10.0",
+              "q_t": "16.0",
+              "departure_t": "26.0",
+              "arrival_t": "16.0",
+              "cost_usd": "9600.0",
+              "extra_hours": "2.320"
+            },
+            {
+              "before_t": "16.0",
+              "q_t": "0.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            }
+          ],
+          "cost_usd": 9600.0,
+          "time_hours": 26.32,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "Exactly16t at600; purchases and stops need not be unique."
+    },
+    {
+      "id": "cheap_supply8_two_stops",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          8.0,
+          8.0,
+          0.0,
+          0.0
+        ],
+        "cost_usd": 8400.0,
+        "time_hours": 28.32,
+        "incremental_delays_hours": [
+          2.16,
+          2.16,
+          0.0,
+          0.0
+        ],
+        "positive_purchase_count": 2,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "8.0",
+              "departure_t": "38.0",
+              "arrival_t": "28.0",
+              "cost_usd": "4800.0",
+              "extra_hours": "2.160"
+            },
+            {
+              "before_t": "28.0",
+              "q_t": "8.0",
+              "departure_t": "36.0",
+              "arrival_t": "26.0",
+              "cost_usd": "3600.0",
+              "extra_hours": "2.160"
+            },
+            {
+              "before_t": "26.0",
+              "q_t": "0.0",
+              "departure_t": "26.0",
+              "arrival_t": "16.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "16.0",
+              "q_t": "0.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            }
+          ],
+          "cost_usd": 8400.0,
+          "time_hours": 28.32,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "At most8t at450; remaining8t at least600."
+    },
+    {
+      "id": "cheap_supply8_fee100",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          8.0,
+          8.0,
+          0.0,
+          0.0
+        ],
+        "cost_usd": 8600.0,
+        "time_hours": 28.32,
+        "incremental_delays_hours": [
+          2.16,
+          2.16,
+          0.0,
+          0.0
+        ],
+        "positive_purchase_count": 2,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "8.0",
+              "departure_t": "38.0",
+              "arrival_t": "28.0",
+              "cost_usd": "4900.0",
+              "extra_hours": "2.160"
+            },
+            {
+              "before_t": "28.0",
+              "q_t": "8.0",
+              "departure_t": "36.0",
+              "arrival_t": "26.0",
+              "cost_usd": "3700.0",
+              "extra_hours": "2.160"
+            },
+            {
+              "before_t": "26.0",
+              "q_t": "0.0",
+              "departure_t": "26.0",
+              "arrival_t": "16.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "16.0",
+              "q_t": "0.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            }
+          ],
+          "cost_usd": 8600.0,
+          "time_hours": 28.32,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "Two stops >=8400+200; cheapest feasible single stop9700."
+    },
+    {
+      "id": "cheap_supply8_fee1500_consolidates",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          16.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "cost_usd": 11100.0,
+        "time_hours": 26.32,
+        "incremental_delays_hours": [
+          2.32,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "positive_purchase_count": 1,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "16.0",
+              "departure_t": "46.0",
+              "arrival_t": "36.0",
+              "cost_usd": "11100.0",
+              "extra_hours": "2.320"
+            },
+            {
+              "before_t": "36.0",
+              "q_t": "0.0",
+              "departure_t": "36.0",
+              "arrival_t": "26.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "26.0",
+              "q_t": "0.0",
+              "departure_t": "26.0",
+              "arrival_t": "16.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "16.0",
+              "q_t": "0.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            }
+          ],
+          "cost_usd": 11100.0,
+          "time_hours": 26.32,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "Two stops >=11400; cheapest feasible single stop11100."
+    },
+    {
+      "id": "cheap_supply8_deadline3h_consolidates",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          16.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "cost_usd": 9600.0,
+        "time_hours": 26.32,
+        "incremental_delays_hours": [
+          2.32,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "positive_purchase_count": 1,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "16.0",
+              "departure_t": "46.0",
+              "arrival_t": "36.0",
+              "cost_usd": "9600.0",
+              "extra_hours": "2.320"
+            },
+            {
+              "before_t": "36.0",
+              "q_t": "0.0",
+              "departure_t": "36.0",
+              "arrival_t": "26.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "26.0",
+              "q_t": "0.0",
+              "departure_t": "26.0",
+              "arrival_t": "16.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "16.0",
+              "q_t": "0.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            }
+          ],
+          "cost_usd": 9600.0,
+          "time_hours": 26.32,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "2k+0.32h permits one stop; port2 capped8."
+    },
+    {
+      "id": "cheap_minimum20_disabled",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          16.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "cost_usd": 9600.0,
+        "time_hours": 26.32,
+        "incremental_delays_hours": [
+          2.32,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "positive_purchase_count": 1,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "16.0",
+              "departure_t": "46.0",
+              "arrival_t": "36.0",
+              "cost_usd": "9600.0",
+              "extra_hours": "2.320"
+            },
+            {
+              "before_t": "36.0",
+              "q_t": "0.0",
+              "departure_t": "36.0",
+              "arrival_t": "26.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "26.0",
+              "q_t": "0.0",
+              "departure_t": "26.0",
+              "arrival_t": "16.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "16.0",
+              "q_t": "0.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            }
+          ],
+          "cost_usd": 9600.0,
+          "time_hours": 26.32,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "Total16 excludes minimum20; cheapest remaining port1."
+    },
+    {
+      "id": "cheap_variable_fee200_reverses_rank",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          16.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "cost_usd": 9600.0,
+        "time_hours": 26.32,
+        "incremental_delays_hours": [
+          2.32,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "positive_purchase_count": 1,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "16.0",
+              "departure_t": "46.0",
+              "arrival_t": "36.0",
+              "cost_usd": "9600.0",
+              "extra_hours": "2.320"
+            },
+            {
+              "before_t": "36.0",
+              "q_t": "0.0",
+              "departure_t": "36.0",
+              "arrival_t": "26.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "26.0",
+              "q_t": "0.0",
+              "departure_t": "26.0",
+              "arrival_t": "16.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "16.0",
+              "q_t": "0.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            }
+          ],
+          "cost_usd": 9600.0,
+          "time_hours": 26.32,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "Unit prices600/650/700/650;16 at600."
+    },
+    {
+      "id": "first_two_unavailable",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          0.0,
+          0.0,
+          6.0,
+          10.0
+        ],
+        "cost_usd": 10700.0,
+        "time_hours": 28.32,
+        "incremental_delays_hours": [
+          0.0,
+          0.0,
+          2.12,
+          2.2
+        ],
+        "positive_purchase_count": 2,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 0,
+            "discarded": "support mismatch"
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "0.0",
+              "departure_t": "30.0",
+              "arrival_t": "20.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "20.0",
+              "q_t": "0.0",
+              "departure_t": "20.0",
+              "arrival_t": "10.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "10.0",
+              "q_t": "6.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "4200.0",
+              "extra_hours": "2.120"
+            },
+            {
+              "before_t": "6.0",
+              "q_t": "10.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "6500.0",
+              "extra_hours": "2.200"
+            }
+          ],
+          "cost_usd": 10700.0,
+          "time_hours": 28.32,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "By arrival3 buy>=6 at700; remaining10 at650."
+    },
+    {
+      "id": "early_supply_shortfall",
+      "passed": true,
+      "result": {
+        "status": "INFEASIBLE",
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ]
+      },
+      "analytical_proof": "First3 supply5 < required cumulative6."
+    },
+    {
+      "id": "all_minimum20_exact_terminal_impossible",
+      "passed": true,
+      "result": {
+        "status": "INFEASIBLE",
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ]
+      },
+      "analytical_proof": "Total16 incompatible with any positive minimum20."
+    },
+    {
+      "id": "all_supply8_deadline4_31h",
+      "passed": true,
+      "result": {
+        "status": "INFEASIBLE",
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ]
+      },
+      "analytical_proof": "At least2 stops:4.32h >4.31h."
+    },
+    {
+      "id": "one_stop_deadline_boundary",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          0.0,
+          16.0,
+          0.0,
+          0.0
+        ],
+        "cost_usd": 7200.0,
+        "time_hours": 26.32,
+        "incremental_delays_hours": [
+          0.0,
+          2.32,
+          0.0,
+          0.0
+        ],
+        "positive_purchase_count": 1,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "0.0",
+              "departure_t": "30.0",
+              "arrival_t": "20.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "20.0",
+              "q_t": "16.0",
+              "departure_t": "36.0",
+              "arrival_t": "26.0",
+              "cost_usd": "7200.0",
+              "extra_hours": "2.320"
+            },
+            {
+              "before_t": "26.0",
+              "q_t": "0.0",
+              "departure_t": "26.0",
+              "arrival_t": "16.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "16.0",
+              "q_t": "0.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            }
+          ],
+          "cost_usd": 7200.0,
+          "time_hours": 26.32,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "One stop takes2.32h exactly;7200 lower bound."
+    },
+    {
+      "id": "one_stop_deadline_below_boundary",
+      "passed": true,
+      "result": {
+        "status": "INFEASIBLE",
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ]
+      },
+      "analytical_proof": "At least one stop:2.32h >2.31h."
+    },
+    {
+      "id": "sailing_alone_late",
+      "passed": true,
+      "result": {
+        "status": "INFEASIBLE",
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ]
+      },
+      "analytical_proof": "Sailing24h > deadline23h."
+    },
+    {
+      "id": "existing_call_full_overlap",
+      "passed": true,
+      "result": {
+        "status": "FEASIBLE_OPTIMAL",
+        "purchases_t": [
+          0.0,
+          16.0,
+          0.0,
+          0.0
+        ],
+        "cost_usd": 7200.0,
+        "time_hours": 27.5,
+        "incremental_delays_hours": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "positive_purchase_count": 1,
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 0
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ],
+        "independent_audit": {
+          "valid": true,
+          "errors": [],
+          "ledger": [
+            {
+              "before_t": "30",
+              "q_t": "0.0",
+              "departure_t": "30.0",
+              "arrival_t": "20.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "20.0",
+              "q_t": "16.0",
+              "departure_t": "36.0",
+              "arrival_t": "26.0",
+              "cost_usd": "7200.0",
+              "extra_hours": "0.0"
+            },
+            {
+              "before_t": "26.0",
+              "q_t": "0.0",
+              "departure_t": "26.0",
+              "arrival_t": "16.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            },
+            {
+              "before_t": "16.0",
+              "q_t": "0.0",
+              "departure_t": "16.0",
+              "arrival_t": "6.0",
+              "cost_usd": "0.0",
+              "extra_hours": "0"
+            }
+          ],
+          "cost_usd": 7200.0,
+          "time_hours": 27.5,
+          "terminal_t": 6.0
+        }
+      },
+      "analytical_proof": "Fuel done2.32h, cargo3h, readiness0.5h; baseline3.5h absorbs all."
+    },
+    {
+      "id": "existing_overlap_supply8_no_slack",
+      "passed": true,
+      "result": {
+        "status": "INFEASIBLE",
+        "patterns_checked": 16,
+        "patterns": [
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              0,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              0
+            ],
+            "status": 2
+          },
+          {
+            "pattern": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "status": 2
+          }
+        ]
+      },
+      "analytical_proof": "Only port2 has zero extra delay but supplies8 < required16."
+    }
+  ]
+}
