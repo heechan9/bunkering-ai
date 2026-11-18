@@ -17,3 +17,11 @@ Repeat under -O is duplicate execution, not extra coverage.
 
 ## R3 JSON-native boundary
 R2 independent review found Python tuples serialize as lists and non-string object keys can serialize as strings. R3 validates the entire input recursively BEFORE any normalization: exact built-in dict/list/str/bool/int/float and None only, dict keys must be exact strings, floating values finite. Tuples, bytes, sets, custom subclasses, and cyclic containers are rejected with ValueError. Shared but noncyclic containers are permitted. This is an input data contract, not a hostile-input resource isolation/security guarantee. Time values must now be JSON strings (not Python datetime objects). Existing UTC timestamp and feature-order normalization and conservative numeric-type policy remain unchanged. Existing upstream files remain unchanged; this is a private integration candidate only.
+
+
+## Review follow-up: lossless normalization boundaries
+Before converting any of the six context/feature timestamps, reject nonzero fractional digits beyond six places; trailing zero digits remain accepted. This prevents datetime microsecond truncation from hiding distinct declared instants. Before JSON normalization, reject surrogate code points in every string value and object key, while accepting ordinary Unicode including valid non-BMP characters. This prevents surrogate-pair/Unicode spelling collisions from dropping metadata entries. These are declaration-contract corrections, not proof of real input provenance or an operational security boundary.
+
+
+## Timezone-offset contract
+All six timestamps must end in `Z` or an explicit whole-minute offset written exactly `+HH:MM` / `-HH:MM`. Offset seconds, fractional offsets, and compact/hour-only offset spellings are rejected before datetime conversion, including zero offset seconds. This intentionally narrower declaration syntax prevents fractional timezone offsets from being silently discarded by the underlying parser. Standard positive/negative offsets, including half-hour and quarter-hour zones, retain UTC-equivalence normalization; representable fractional wall-clock seconds and trailing fractional zeroes remain accepted. The upstream shared timestamp validator is unchanged.

@@ -6,6 +6,15 @@ class NativeRegression(unittest.TestCase):
  def reject(self,value):
   a=fixture();a['features'][0]['extra']=value
   with self.assertRaises(ValueError):compare_contexts(a,fixture())
+ def test_surrogate_collision_rejected(self):
+  self.reject({'\ud83d\ude00':1,'\U0001f600':2})
+ def test_surrogate_values_and_keys_rejected(self):
+  for value in ('\ud800','\udfff',{'x':['\ud83d\ude00']},{'\ud800':1}):
+   with self.subTest(value=repr(value)):self.reject(value)
+ def test_valid_nonbmp_preserved(self):
+  a=fixture();a['features'][0]['extra']={'\U0001f600':[1,'\U0001f600']}
+  r=compare_contexts(a,copy.deepcopy(a));self.assertEqual(r['status'],'DECLARED_CONTEXTS_MATCH')
+  self.assertEqual(r['left_context_sha256'],r['right_context_sha256'])
  def test_tuple_rejected(self):self.reject((0,1))
  def test_integer_key_rejected(self):self.reject({1:'x'})
  def test_bool_none_float_keys_rejected(self):

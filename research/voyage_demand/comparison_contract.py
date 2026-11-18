@@ -16,7 +16,11 @@ def require_json_native(value, active=None):
     if active is None:
         active = set()
     kind = type(value)
-    if kind in (str, bool, int) or value is None:
+    if kind is str:
+        if any(0xD800 <= ord(char) <= 0xDFFF for char in value):
+            raise ValueError('surrogate code points are not supported')
+        return
+    if kind in (bool, int) or value is None:
         return
     if kind is float:
         if not math.isfinite(value):
@@ -33,12 +37,23 @@ def require_json_native(value, active=None):
             for key, item in value.items():
                 if type(key) is not str:
                     raise ValueError('JSON object keys must be strings')
+                require_json_native(key, active)
                 require_json_native(item, active)
         else:
             for item in value:
                 require_json_native(item, active)
     finally:
         active.remove(identity)
+
+def lossless_timestamp(value):
+    """Reject fractional digits that datetime would silently truncate."""
+    zone = re.search(r'(Z|([+-])([0-9]{2}):([0-9]{2}))$', value) if isinstance(value, str) else None
+    if zone is None or (zone.group(1) != 'Z' and (int(zone.group(3)) > 23 or int(zone.group(4)) > 59)):
+        raise ValueError('timezone must be Z or a whole-minute +/-HH:MM offset')
+    for fraction in re.findall(r'[.,]([0-9]+)', value):
+        if any(digit != '0' for digit in fraction[6:]):
+            raise ValueError('timestamp precision exceeds microseconds')
+    return timestamp(value)
 
 def checked(raw):
     require_json_native(raw)
@@ -52,7 +67,7 @@ def checked(raw):
     for k in HASH:
         if not isinstance(raw[k],str) or not re.fullmatch('[0-9a-f]{64}',raw[k]):
             raise ValueError('invalid declared hash')
-    times={k:timestamp(raw[k]) for k in ('decision_at','departure_at','arrival_deadline')}
+    times={k:lossless_timestamp(raw[k]) for k in ('decision_at','departure_at','arrival_deadline')}
     if not times['decision_at']<=times['departure_at']<times['arrival_deadline']:
         raise ValueError('invalid time order')
     features=raw['features']
@@ -61,11 +76,12 @@ def checked(raw):
     names=set(); normalized=[]
     for f in features:
         if not isinstance(f,dict): raise ValueError('invalid feature')
+        feature_times = {k:lossless_timestamp(f.get(k)) for k in ('issued_at','target_at','received_at')}
         available_feature(f, times['decision_at'])
         if f['name'] in names: raise ValueError('duplicate feature')
         names.add(f['name'])
         g=dict(f)
-        for k in ('issued_at','target_at','received_at'): g[k]=timestamp(g[k]).isoformat()
+        for k in ('issued_at','target_at','received_at'): g[k]=feature_times[k].isoformat()
         normalized.append(g)
     value=dict(raw)
     value.update({k:v.isoformat() for k,v in times.items()})
