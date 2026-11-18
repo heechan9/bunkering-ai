@@ -27,18 +27,28 @@ def available_feature(field, purchase_at):
                 'received_at', 'latency_seconds', 'missing_policy', 'available_at_purchase')
     if any(key not in field or field[key] is None or field[key] == '' for key in required):
         raise ValueError('Incomplete feature dictionary')
+    for key in ('name', 'unit', 'source', 'missing_policy'):
+        if not isinstance(field[key], str) or not field[key].strip():
+            raise ValueError('Feature metadata must be nonblank text')
     decision = timestamp(purchase_at)
     issued, target, received = (timestamp(field[key]) for key in
                                 ('issued_at', 'target_at', 'received_at'))
-    latency = number(field['latency_seconds'])
-    if received < issued or received < issued + timedelta(seconds=latency):
+    try:
+        latency = number(field['latency_seconds'])
+        earliest_receipt = issued + timedelta(seconds=latency)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise ValueError('Invalid receipt latency') from exc
+    if received < issued or received < earliest_receipt:
         raise ValueError('Inconsistent receipt latency')
     if field['available_at_purchase'] is not True or received > decision or issued > decision:
         raise ValueError('Feature unavailable at purchase')
     if field['kind'] not in ('observation', 'forecast', 'plan', 'static'):
         raise ValueError('Unknown feature kind')
-    if field['kind'] == 'observation' and target > decision:
-        raise ValueError('Future observations are not planning inputs')
+    if field['kind'] == 'observation':
+        if target > decision:
+            raise ValueError('Future observations are not planning inputs')
+        if received < target:
+            raise ValueError('Observation cannot be received before its target time')
     if field.get('post_voyage_aggregate', False):
         raise ValueError('Post-voyage aggregates are excluded')
     return True
