@@ -2,7 +2,9 @@
 
 Status: preparation and synthetic pipeline tests only. No vessel prediction experiment,
 paper reproduction, measured savings, or operating recommendation has been completed.
-This branch starts at main `25f89464db42b8e71b4f56ba51d05198e5d3921e`.
+Historical branch origin: main `25f89464db42b8e71b4f56ba51d05198e5d3921e`.
+The private semantic-guard review candidate is based on
+`a0e8698e4d748dab4bd28ecfaa1a76946210f321`; this is distinct from the branch origin.
 The separate procurement Draft PR is unchanged. Official SCI, manuscripts and deployed
 models are outside this module.
 
@@ -60,6 +62,22 @@ from pre-purchase planning, even when useful for contemporaneous consumption est
 `available_feature` fails closed on missing provenance/timing. Names alone cannot prove
 availability: a source owner must attest whether a field is observed, planned or forecast.
 
+
+### Observation timestamp semantics
+
+For `kind=observation`, `target_at` means the actual time of the measured
+condition, not a future planning horizon. `received_at` is when that observation
+was received and cannot precede `target_at`. Equality is permitted. Forecasts
+and plans may refer to future targets; do not relabel them as observations.
+Earlier `issued_at` is not by itself rejected when receipt is at or after the
+observation, because source-specific issue semantics require human mapping.
+This rule assumes the supplied timestamps and kind are truthful; it does not
+verify sensors, provenance, physical accuracy, or operational safety.
+Invalid or unrepresentable receipt latency raises `ValueError`, including numeric
+conversion and datetime overflow.
+Nonblank metadata strings do not authenticate their source or validate arbitrary
+unit names. A source owner must verify field meaning before real-data use.
+
 ## Frozen evaluation protocol
 
 1. Freeze qualifying complete voyages and exclusions before viewing test outcomes.
@@ -106,7 +124,7 @@ and issue/receipt timestamps, planned durations, independently measured aligned 
 targets, density reference conditions, and replay inputs listed above.
 
 ```bash
-python -m pytest tests/test_voyage_demand_validation.py -q --strict-config --strict-markers -W error
+python -m pytest tests/test_voyage_demand_validation.py tests/test_feature_semantics.py -q --strict-config --strict-markers -W error
 ```
 
 All fixtures use invented dates/quantities and measure software behavior only. Tests
