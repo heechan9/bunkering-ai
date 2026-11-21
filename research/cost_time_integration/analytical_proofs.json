@@ -1,0 +1,19 @@
+{
+  "base_cheaper_second": "Exactly16t at minimum450; all16 at port2 attains7200.",
+  "flat_price_nonunique": "Exactly16t at600; purchases and stops need not be unique.",
+  "cheap_supply8_two_stops": "At most8t at450; remaining8t at least600.",
+  "cheap_supply8_fee100": "Two stops >=8400+200; cheapest feasible single stop9700.",
+  "cheap_supply8_fee1500_consolidates": "Two stops >=11400; cheapest feasible single stop11100.",
+  "cheap_supply8_deadline3h_consolidates": "2k+0.32h permits one stop; port2 capped8.",
+  "cheap_minimum20_disabled": "Total16 excludes minimum20; cheapest remaining port1.",
+  "cheap_variable_fee200_reverses_rank": "Unit prices600/650/700/650;16 at600.",
+  "first_two_unavailable": "By arrival3 buy>=6 at700; remaining10 at650.",
+  "early_supply_shortfall": "First3 supply5 < required cumulative6.",
+  "all_minimum20_exact_terminal_impossible": "Total16 incompatible with any positive minimum20.",
+  "all_supply8_deadline4_31h": "At least2 stops:4.32h >4.31h.",
+  "one_stop_deadline_boundary": "One stop takes2.32h exactly;7200 lower bound.",
+  "one_stop_deadline_below_boundary": "At least one stop:2.32h >2.31h.",
+  "sailing_alone_late": "Sailing24h > deadline23h.",
+  "existing_call_full_overlap": "Fuel done2.32h, cargo3h, readiness0.5h; baseline3.5h absorbs all.",
+  "existing_overlap_supply8_no_slack": "Only port2 has zero extra delay but supplies8 < required16."
+}

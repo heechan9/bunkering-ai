@@ -1,0 +1,514 @@
+{
+  "source_main_sha": "a4634faa261e1a433bbbddbee6106dfac73dd6a5",
+  "source_procurement_draft_sha": "57de151d19e54ec58248fd1edfe94fb1af9c6520",
+  "base": {
+    "data_kind": "synthetic_assumption",
+    "information_tier": "STATIC_KNOWN",
+    "capacity_t": 60,
+    "initial_inventory_t": 30,
+    "terminal_inventory_exact_t": 6,
+    "leg_demands_t": [
+      10,
+      10,
+      10,
+      10
+    ],
+    "arrival_reserves_t": [
+      6,
+      6,
+      6,
+      6
+    ],
+    "prices_usd_per_t": [
+      600,
+      450,
+      700,
+      650
+    ],
+    "supply_max_t": [
+      60,
+      60,
+      60,
+      60
+    ],
+    "minimum_lift_t": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "available": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "fixed_fee_usd": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "variable_fee_usd_per_t": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "sailing_hours": 24,
+    "baseline_existing_call_hours": 0,
+    "deadline_hours": 32,
+    "calls": [
+      {
+        "kind": "dedicated",
+        "detour_hours": 0,
+        "port_transit_hours": 0,
+        "waiting_hours": 0,
+        "preparation_hours": 1,
+        "cleanup_hours": 1,
+        "transfer_hours_per_t": 0.02
+      },
+      {
+        "kind": "dedicated",
+        "detour_hours": 0,
+        "port_transit_hours": 0,
+        "waiting_hours": 0,
+        "preparation_hours": 1,
+        "cleanup_hours": 1,
+        "transfer_hours_per_t": 0.02
+      },
+      {
+        "kind": "dedicated",
+        "detour_hours": 0,
+        "port_transit_hours": 0,
+        "waiting_hours": 0,
+        "preparation_hours": 1,
+        "cleanup_hours": 1,
+        "transfer_hours_per_t": 0.02
+      },
+      {
+        "kind": "dedicated",
+        "detour_hours": 0,
+        "port_transit_hours": 0,
+        "waiting_hours": 0,
+        "preparation_hours": 1,
+        "cleanup_hours": 1,
+        "transfer_hours_per_t": 0.02
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "base_cheaper_second",
+      "overrides": {},
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 7200,
+        "witness_purchases_t": [
+          0,
+          16,
+          0,
+          0
+        ],
+        "optimal_positive_purchase_count": 1
+      }
+    },
+    {
+      "id": "flat_price_nonunique",
+      "overrides": {
+        "prices_usd_per_t": [
+          600,
+          600,
+          600,
+          600
+        ]
+      },
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 9600,
+        "witness_purchases_t": [
+          0,
+          16,
+          0,
+          0
+        ],
+        "optimal_positive_purchase_count": null
+      }
+    },
+    {
+      "id": "cheap_supply8_two_stops",
+      "overrides": {
+        "supply_max_t": [
+          60,
+          8,
+          60,
+          60
+        ]
+      },
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 8400,
+        "witness_purchases_t": [
+          8,
+          8,
+          0,
+          0
+        ],
+        "optimal_positive_purchase_count": 2
+      }
+    },
+    {
+      "id": "cheap_supply8_fee100",
+      "overrides": {
+        "supply_max_t": [
+          60,
+          8,
+          60,
+          60
+        ],
+        "fixed_fee_usd": [
+          100,
+          100,
+          100,
+          100
+        ]
+      },
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 8600,
+        "witness_purchases_t": [
+          8,
+          8,
+          0,
+          0
+        ],
+        "optimal_positive_purchase_count": 2
+      }
+    },
+    {
+      "id": "cheap_supply8_fee1500_consolidates",
+      "overrides": {
+        "supply_max_t": [
+          60,
+          8,
+          60,
+          60
+        ],
+        "fixed_fee_usd": [
+          1500,
+          1500,
+          1500,
+          1500
+        ]
+      },
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 11100,
+        "witness_purchases_t": [
+          16,
+          0,
+          0,
+          0
+        ],
+        "optimal_positive_purchase_count": 1
+      }
+    },
+    {
+      "id": "cheap_supply8_deadline3h_consolidates",
+      "overrides": {
+        "supply_max_t": [
+          60,
+          8,
+          60,
+          60
+        ],
+        "deadline_hours": 27
+      },
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 9600,
+        "witness_purchases_t": [
+          16,
+          0,
+          0,
+          0
+        ],
+        "optimal_positive_purchase_count": 1
+      }
+    },
+    {
+      "id": "cheap_minimum20_disabled",
+      "overrides": {
+        "minimum_lift_t": [
+          0,
+          20,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 9600,
+        "witness_purchases_t": [
+          16,
+          0,
+          0,
+          0
+        ],
+        "optimal_positive_purchase_count": 1
+      }
+    },
+    {
+      "id": "cheap_variable_fee200_reverses_rank",
+      "overrides": {
+        "variable_fee_usd_per_t": [
+          0,
+          200,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 9600,
+        "witness_purchases_t": [
+          16,
+          0,
+          0,
+          0
+        ],
+        "optimal_positive_purchase_count": 1
+      }
+    },
+    {
+      "id": "first_two_unavailable",
+      "overrides": {
+        "available": [
+          false,
+          false,
+          true,
+          true
+        ]
+      },
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 10700,
+        "witness_purchases_t": [
+          0,
+          0,
+          6,
+          10
+        ],
+        "optimal_positive_purchase_count": 2
+      }
+    },
+    {
+      "id": "early_supply_shortfall",
+      "overrides": {
+        "supply_max_t": [
+          0,
+          0,
+          5,
+          60
+        ]
+      },
+      "expected": {
+        "status": "INFEASIBLE",
+        "optimal_cost_usd": null,
+        "witness_purchases_t": null,
+        "optimal_positive_purchase_count": null
+      }
+    },
+    {
+      "id": "all_minimum20_exact_terminal_impossible",
+      "overrides": {
+        "minimum_lift_t": [
+          20,
+          20,
+          20,
+          20
+        ]
+      },
+      "expected": {
+        "status": "INFEASIBLE",
+        "optimal_cost_usd": null,
+        "witness_purchases_t": null,
+        "optimal_positive_purchase_count": null
+      }
+    },
+    {
+      "id": "all_supply8_deadline4_31h",
+      "overrides": {
+        "supply_max_t": [
+          8,
+          8,
+          8,
+          8
+        ],
+        "deadline_hours": 28.31
+      },
+      "expected": {
+        "status": "INFEASIBLE",
+        "optimal_cost_usd": null,
+        "witness_purchases_t": null,
+        "optimal_positive_purchase_count": null
+      }
+    },
+    {
+      "id": "one_stop_deadline_boundary",
+      "overrides": {
+        "deadline_hours": 26.32
+      },
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 7200,
+        "witness_purchases_t": [
+          0,
+          16,
+          0,
+          0
+        ],
+        "optimal_positive_purchase_count": 1
+      }
+    },
+    {
+      "id": "one_stop_deadline_below_boundary",
+      "overrides": {
+        "deadline_hours": 26.31
+      },
+      "expected": {
+        "status": "INFEASIBLE",
+        "optimal_cost_usd": null,
+        "witness_purchases_t": null,
+        "optimal_positive_purchase_count": null
+      }
+    },
+    {
+      "id": "sailing_alone_late",
+      "overrides": {
+        "deadline_hours": 23
+      },
+      "expected": {
+        "status": "INFEASIBLE",
+        "optimal_cost_usd": null,
+        "witness_purchases_t": null,
+        "optimal_positive_purchase_count": null
+      }
+    },
+    {
+      "id": "existing_call_full_overlap",
+      "overrides": {
+        "baseline_existing_call_hours": 3.5,
+        "deadline_hours": 27.5,
+        "calls": [
+          {
+            "kind": "dedicated",
+            "detour_hours": 0,
+            "port_transit_hours": 0,
+            "waiting_hours": 0,
+            "preparation_hours": 1,
+            "cleanup_hours": 1,
+            "transfer_hours_per_t": 0.02
+          },
+          {
+            "kind": "existing",
+            "baseline_departure_hours": 3.5,
+            "cargo_end_with_bunkering_hours": 3,
+            "bunker_ready_hours": 0,
+            "preparation_hours": 1,
+            "cleanup_hours": 1,
+            "transfer_hours_per_t": 0.02,
+            "departure_readiness_hours": 0.5
+          },
+          {
+            "kind": "dedicated",
+            "detour_hours": 0,
+            "port_transit_hours": 0,
+            "waiting_hours": 0,
+            "preparation_hours": 1,
+            "cleanup_hours": 1,
+            "transfer_hours_per_t": 0.02
+          },
+          {
+            "kind": "dedicated",
+            "detour_hours": 0,
+            "port_transit_hours": 0,
+            "waiting_hours": 0,
+            "preparation_hours": 1,
+            "cleanup_hours": 1,
+            "transfer_hours_per_t": 0.02
+          }
+        ]
+      },
+      "expected": {
+        "status": "FEASIBLE_OPTIMAL",
+        "optimal_cost_usd": 7200,
+        "witness_purchases_t": [
+          0,
+          16,
+          0,
+          0
+        ],
+        "optimal_positive_purchase_count": 1
+      }
+    },
+    {
+      "id": "existing_overlap_supply8_no_slack",
+      "overrides": {
+        "supply_max_t": [
+          60,
+          8,
+          60,
+          60
+        ],
+        "baseline_existing_call_hours": 3.5,
+        "deadline_hours": 27.5,
+        "calls": [
+          {
+            "kind": "dedicated",
+            "detour_hours": 0,
+            "port_transit_hours": 0,
+            "waiting_hours": 0,
+            "preparation_hours": 1,
+            "cleanup_hours": 1,
+            "transfer_hours_per_t": 0.02
+          },
+          {
+            "kind": "existing",
+            "baseline_departure_hours": 3.5,
+            "cargo_end_with_bunkering_hours": 3,
+            "bunker_ready_hours": 0,
+            "preparation_hours": 1,
+            "cleanup_hours": 1,
+            "transfer_hours_per_t": 0.02,
+            "departure_readiness_hours": 0.5
+          },
+          {
+            "kind": "dedicated",
+            "detour_hours": 0,
+            "port_transit_hours": 0,
+            "waiting_hours": 0,
+            "preparation_hours": 1,
+            "cleanup_hours": 1,
+            "transfer_hours_per_t": 0.02
+          },
+          {
+            "kind": "dedicated",
+            "detour_hours": 0,
+            "port_transit_hours": 0,
+            "waiting_hours": 0,
+            "preparation_hours": 1,
+            "cleanup_hours": 1,
+            "transfer_hours_per_t": 0.02
+          }
+        ]
+      },
+      "expected": {
+        "status": "INFEASIBLE",
+        "optimal_cost_usd": null,
+        "witness_purchases_t": null,
+        "optimal_positive_purchase_count": null
+      }
+    }
+  ]
+}

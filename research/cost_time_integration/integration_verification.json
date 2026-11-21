@@ -1,0 +1,73 @@
+{
+  "date_utc": "2026-10-17",
+  "base_commit": "984411c436f16c555cfb8d789d43de8025e2df66",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "numpy": "2.5.3",
+    "scipy": "1.17.0"
+  },
+  "scope": "Fresh local integration verification, not deployment or operational validation. Historical results are preserved unchanged and not added to these counts.",
+  "source_hashes": {
+    "research/cost_time_integration/solver.py": "3f43d3b0f418c4e747340246492686d210ef565ef00c4ee27e553be5489ff2ce",
+    "research/cost_time_integration/ledger.py": "e07e38fc6cf21694bdd217ae8c9a515cae37baabc40978df4bf753e527a3e8b5",
+    "research/port_call_time/model.py": "33bd65c216fe3da2d4576ed129a5513605c82c8531930166cdb03b999b85e9d8"
+  },
+  "focused_strict_pytest": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "481",
+    "time": "10.787",
+    "timestamp": "2026-10-17T21:59:52.912060+09:00",
+    "hostname": "80a926150446"
+  },
+  "full_strict_pytest": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "1186",
+    "time": "334.560",
+    "timestamp": "2026-10-17T22:00:03.232956+09:00",
+    "hostname": "80a926150446"
+  },
+  "full_pytest_console_summary": "1154 passed, 32 subtests passed in 335.63s (0:05:35)",
+  "guard_direct_unittest": {
+    "tests": 187,
+    "passed": 187
+  },
+  "boundary_direct_unittest": {
+    "tests": 8,
+    "passed": 8
+  },
+  "frozen_replay": {
+    "cases": 28,
+    "passed": 28,
+    "statuses_costs_times_equal_guard_v2_evidence": true
+  },
+  "initial_focused_run": {
+    "passed": 481,
+    "setup_errors": 2,
+    "cause": "Generated unittest helper test(self) was accidentally collected by pytest in each guard script. Both module bindings removed after class method registration; no class tests removed."
+  },
+  "commands": [
+    "python -m pytest research/cost_time_integration research/port_call_time tests/test_procurement_baseline_core.py tests/test_procurement_baseline_policies.py -q --strict-config --strict-markers -W error",
+    "python -m research.cost_time_integration.replay_frozen_cases",
+    "PYTHONPATH=. python research/cost_time_integration/test_ledger_case_validation.py",
+    "PYTHONPATH=. python research/cost_time_integration/test_boundary_characterization.py",
+    "python -m pytest -q --strict-config --strict-markers -W error"
+  ],
+  "log_sha256": {
+    "focused.log": "e904fc1cf31ead260368f1b707c51009b646b468163329e37e52d652a3f2c4ea",
+    "focused_fixed.log": "00d254a42b74e839219334fbea8e3f898c2044a177594e359a98daed0af15cdd",
+    "focused_fixed.xml": "ed649fc7b89521bd5d7bfe629b042dbdec6091462522d74e658724ec522d7f4c",
+    "guard_unittest.log": "61a40ec112136b6e925865e9827db14231273494856b9984eae330ec97ac7e47",
+    "boundary_unittest.log": "121e02c2ea9acad932fe941e33109a6b73bdc4c5ac327749309764201feb8cfa",
+    "frozen_replay.json": "2348915a145273ea295763843d03291e03fa00050ae845ee27e2febf6eda5abd",
+    "full.log": "f82316fc2e93ea24ed6f7b8e5974d49bf8d90f8ea7ac484a0c99f47bf8518fe0",
+    "full.xml": "4e40c29f2fa1f4ec4e16202b30dd950a68225ad1a5818c5325f8968981c2e1e2"
+  },
+  "independent_review": "Source/guard hashes, no procurement/web changes, unittest195, frozen28, numerical/status boundaries reviewed independently; no actionable blocker found."
+}

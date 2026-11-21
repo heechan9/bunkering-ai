@@ -1,0 +1,145 @@
+{
+  "base_commit": "984411c436f16c555cfb8d789d43de8025e2df66",
+  "archives": {
+    "reviewed_bundle.zip": "6767e207a93378925959171056574e9ea0ae6d6726ecc9f0790abf584eba8e9f",
+    "ledger_guard_v2.zip": "6ac9d5516e13b96a74a06a73efb420c2df6fced9039ec935b469e73d21b78285"
+  },
+  "files": {
+    "research/cost_time_integration/FOLLOWUP.md": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/FOLLOWUP.md",
+      "sha256": "dfad487aaab441a9f539ea110eed510fd1c32f3d8bdbb0daddbed0fea254026a",
+      "integrated_sha256": "dfad487aaab441a9f539ea110eed510fd1c32f3d8bdbb0daddbed0fea254026a"
+    },
+    "research/cost_time_integration/README.md": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/README.md",
+      "sha256": "ecbab996dcb18946b06b60c8b70a513246e17c76b15eb9664223689245db9643",
+      "integrated_sha256": "ecbab996dcb18946b06b60c8b70a513246e17c76b15eb9664223689245db9643"
+    },
+    "research/cost_time_integration/STATIC_REVIEW.md": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/STATIC_REVIEW.md",
+      "sha256": "1d84d5dcd3779bb4cf0e6c2368531a790444af007d54a3f55f5b9671f71648d9",
+      "integrated_sha256": "1d84d5dcd3779bb4cf0e6c2368531a790444af007d54a3f55f5b9671f71648d9"
+    },
+    "research/cost_time_integration/__init__.py": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/__init__.py",
+      "sha256": "6b1e62a38fd0e11c23eeee8de1f06980cba8f83b3c61c0910fab55cc7c2c84df",
+      "integrated_sha256": "6b1e62a38fd0e11c23eeee8de1f06980cba8f83b3c61c0910fab55cc7c2c84df"
+    },
+    "research/cost_time_integration/analytical_proofs.json": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/analytical_proofs.json",
+      "sha256": "1b869a5a139024971faeee342673dfe69976133a05b72ff46adc10993b044a35",
+      "integrated_sha256": "1b869a5a139024971faeee342673dfe69976133a05b72ff46adc10993b044a35"
+    },
+    "research/cost_time_integration/contract.json": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/contract.json",
+      "sha256": "05644974d908b998d81a582ebdbb940877c1e8541df0f623a9ba58337ccafb7c",
+      "integrated_sha256": "05644974d908b998d81a582ebdbb940877c1e8541df0f623a9ba58337ccafb7c"
+    },
+    "research/cost_time_integration/fixtures_compact.json": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/fixtures_compact.json",
+      "sha256": "7ea9f3d9d6d5d2a36d00bf6b4ae40426fe34816b507245d9d92e1c1343c13e96",
+      "integrated_sha256": "7ea9f3d9d6d5d2a36d00bf6b4ae40426fe34816b507245d9d92e1c1343c13e96"
+    },
+    "research/cost_time_integration/followup_fixtures.json": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/followup_fixtures.json",
+      "sha256": "4125ab73323f8c3af24c535514c977d1de0d7ff8a82cdf7b6ecd6cdfef26811e",
+      "integrated_sha256": "4125ab73323f8c3af24c535514c977d1de0d7ff8a82cdf7b6ecd6cdfef26811e"
+    },
+    "research/cost_time_integration/followup_results.json": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/followup_results.json",
+      "sha256": "938d6cc68499ccb6fbfee76f50bb369a627c3b4aac62a0dae5195ab5003e15cb",
+      "integrated_sha256": "938d6cc68499ccb6fbfee76f50bb369a627c3b4aac62a0dae5195ab5003e15cb"
+    },
+    "research/cost_time_integration/ledger.py": {
+      "archive": "bunker_ledger_guard_review_20261016_v2.zip",
+      "member": "candidate/ledger.py",
+      "sha256": "e07e38fc6cf21694bdd217ae8c9a515cae37baabc40978df4bf753e527a3e8b5",
+      "integrated_sha256": "e07e38fc6cf21694bdd217ae8c9a515cae37baabc40978df4bf753e527a3e8b5"
+    },
+    "research/cost_time_integration/run_followup.py": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/run_followup.py",
+      "sha256": "5a6e408397dc28dd10d2395c15a19cf88d2ebd66f4d1af84203598ba040457c8",
+      "integrated_sha256": "5a6e408397dc28dd10d2395c15a19cf88d2ebd66f4d1af84203598ba040457c8"
+    },
+    "research/cost_time_integration/run_validation.py": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/run_validation.py",
+      "sha256": "6a2db6fcc1e537588b15998d71ec392480546f28400d91be9281e8356bf62f88",
+      "integrated_sha256": "6a2db6fcc1e537588b15998d71ec392480546f28400d91be9281e8356bf62f88"
+    },
+    "research/cost_time_integration/solver.py": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/solver.py",
+      "sha256": "3f43d3b0f418c4e747340246492686d210ef565ef00c4ee27e553be5489ff2ce",
+      "integrated_sha256": "3f43d3b0f418c4e747340246492686d210ef565ef00c4ee27e553be5489ff2ce"
+    },
+    "research/cost_time_integration/test_followup.py": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/test_followup.py",
+      "sha256": "a42088d0864a5bbe05b6239b7f648bf74a7323762e3b4afeee4a55441f947d3b",
+      "integrated_sha256": "a42088d0864a5bbe05b6239b7f648bf74a7323762e3b4afeee4a55441f947d3b"
+    },
+    "research/cost_time_integration/test_frozen_cases.py": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/test_frozen_cases.py",
+      "sha256": "e030959ecc867c9f127e8501556ac1c3a0aeb285962d65d1d865861028df64a0",
+      "integrated_sha256": "e030959ecc867c9f127e8501556ac1c3a0aeb285962d65d1d865861028df64a0"
+    },
+    "research/cost_time_integration/test_integration.py": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/test_integration.py",
+      "sha256": "56a7a6728488f9d92d704b3d4766e7b75a8d77363e63ef02210a5e07ff1f6573",
+      "integrated_sha256": "56a7a6728488f9d92d704b3d4766e7b75a8d77363e63ef02210a5e07ff1f6573"
+    },
+    "research/cost_time_integration/test_static_review.py": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/test_static_review.py",
+      "sha256": "db180a8866686515e516085fa1b645ce5bcba07f048d4616172f8845a6bac931",
+      "integrated_sha256": "db180a8866686515e516085fa1b645ce5bcba07f048d4616172f8845a6bac931"
+    },
+    "research/cost_time_integration/validation_results.json": {
+      "archive": "bunkering-cost-time-review-20261016-final.zip",
+      "member": "source/research/cost_time_integration/validation_results.json",
+      "sha256": "ad2972b67466997279136d33bf80768cabf3f66176aed1837cb334a405ed4e3b",
+      "integrated_sha256": "ad2972b67466997279136d33bf80768cabf3f66176aed1837cb334a405ed4e3b"
+    },
+    "research/cost_time_integration/test_ledger_case_validation.py": {
+      "archive": "bunker_ledger_guard_review_20261016_v2.zip",
+      "member": "tests/test_ledger_case_validation.py",
+      "sha256": "5604ec72f24e53639a4ceda669decfb578078ebad1de771d299c657ad4465c15",
+      "integrated_sha256": "34cdcd5cea94be3214184e138ecc3235a337ba6e89566727ab9e472aa3567445"
+    },
+    "research/cost_time_integration/test_boundary_characterization.py": {
+      "archive": "bunker_ledger_guard_review_20261016_v2.zip",
+      "member": "tests/test_boundary_characterization.py",
+      "sha256": "f434789646789a654d064e29732444b0087800441b1a24d0d313d094a8a4d1d8",
+      "integrated_sha256": "e3d13294bd631d1207890dba1aa47728b9f2e016db641eea6b38bbf1fd3fd40d"
+    },
+    "research/cost_time_integration/replay_frozen_cases.py": {
+      "archive": "bunker_ledger_guard_review_20261016_v2.zip",
+      "member": "tests/replay_frozen_cases.py",
+      "sha256": "637ab739a5e799008968cc166edb41c3eb46674ff176541cc994654cfd6df2f0",
+      "integrated_sha256": "637ab739a5e799008968cc166edb41c3eb46674ff176541cc994654cfd6df2f0"
+    }
+  },
+  "scope": "Only source cost_time_integration plus guard-v2 ledger/tests/replay imported. No bundled dependencies, Windows overlays, or current procurement/web changes. Historical evidence remains immutable inside archives and original module JSON/docs.",
+  "integration_fixes": [
+    {
+      "files": [
+        "research/cost_time_integration/test_ledger_case_validation.py",
+        "research/cost_time_integration/test_boundary_characterization.py"
+      ],
+      "change": "Delete the module-level generated test(self) binding after attaching all tests to unittest.TestCase, avoiding accidental pytest standalone collection. Class test coverage unchanged; archived originals preserved."
+    }
+  ]
+}
