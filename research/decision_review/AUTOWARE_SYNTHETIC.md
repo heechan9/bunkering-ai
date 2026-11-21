@@ -1,0 +1,21 @@
+# Five offline decision-review counterexamples
+
+Base for scope review: `heechan9/bunkering-ai@07405a02f990cf499cfb88b055efefc4ad8f18f1`. The existing per-feature [validation](https://github.com/heechan9/bunkering-ai/blob/07405a02f990cf499cfb88b055efefc4ad8f18f1/research/voyage_demand/validation.py) and [comparison contract](https://github.com/heechan9/bunkering-ai/blob/07405a02f990cf499cfb88b055efefc4ad8f18f1/research/voyage_demand/COMPARISON_CONTEXT.md) are unchanged. They guard when declared inputs are available and when context matches. This isolated exercise instead checks multi-input diagnostic completeness, shared source dependence, processing budget attribution, display recovery, and alert verification. It does not rerun wj's earlier capture/processing timestamp or queue-collapse regression.
+
+| Diagnostic | Official inspiration and narrow transfer | Paired constructed result |
+|---|---|---|
+| Required evidence completeness | [Autoware camera input diagnostics](https://autowarefoundation.github.io/autoware_universe/main/perception/autoware_camera_streampetr/#diagnostics) distinguish waiting, stale and rejected streams. Preserve per-input reason and flag absence/ambiguity rather than infer readiness from one usable input. | Partial usable input: COMPLETE → HOLD; separately verified duplicate, rejected, stale, missing labels. |
+| Independent corroboration | [wj #13408](https://github.com/autowarefoundation/autoware_universe/pull/13408) made source measurement identity explicit; [Autoware camera diagnostics](https://autowarefoundation.github.io/autoware_universe/main/perception/autoware_camera_streampetr/#diagnostics) distinguish resolved physical input topics. Inference for Bunkering: repeated copies of the same origin do not make corroboration, even when the numbers agree. | Two copies AGREE → INSUFFICIENT. The control is same-dimension t; dimension mismatch is only a boundary test, not a sixth proposed idea. Distinct origin tokens do not prove origin independence in the field. |
+| Stage watchdog | [Autoware Processing Time Checker](https://autowarefoundation.github.io/autoware_universe/latest/system/autoware_processing_time_checker/) monitors processing timing by module. Synthetic configured stage budget of 3s, observed 4s, total 9s vs budget 10s. | Total WITHIN → capture OVERRUN. Missing timing is UNMEASURED, not zero. |
+| Conservative warning recovery | [Autoware diagnostic hysteresis](https://autowarefoundation.github.io/autoware_universe/latest/system/autoware_diagnostic_graph_aggregator/doc/format/unit/diag/) separates severity transitions. Independently designed Bunkering display experiment allows immediate escalation and delays only clearing, unlike general-purpose symmetric filtering. | Isolated good reading after warning: OK → RECHECK; two consecutive good readings clear. No change to safety decisions or thresholds. |
+| Time-and-reason alert oracle | [Autoware localization diagnostics flag checks](https://autowarefoundation.github.io/autoware_tools/main/localization/autoware_localization_evaluation_scripts/) compare expected diagnostics in a window. Candidate requires the specific reason in the window and distinguishes no warning from wrong timing. | Only unrelated alert inside the window and reserve alert too early: ON_TIME → WRONG_TIME. |
+
+The five rows are intentionally constructed examples with known truth and a deliberately naive control, not existing production behavior, discovered defects, predictive improvements or real-vessel criteria. Python functions consume frozen internal shapes only; they are not an input parser or production recommendation. Unit fixture counts are not performance metrics. Use no actual vessel/customer data. No Autoware code copied.
+
+Run from repository root:
+```sh
+python -B -m unittest discover -s tests -p test_autoware_synthetic_review.py -v
+python -B -m research.decision_review.autoware_synthetic
+```
+
+PR direction: isolated research note/module/tests only, after reviewing overlap with any newer public work and approved author/committer attribution. Do not wire these prototypes into quote intake, U01, datasets, UI, real alarms or deployment. Real integration needs source provenance checks, contracted stage budgets and authorized independent evidence.
