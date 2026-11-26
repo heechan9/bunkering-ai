@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 from decimal import Decimal, InvalidOperation
 import hashlib
+from io import BytesIO
 import json
 from pathlib import Path, PurePosixPath
 import re
@@ -15,10 +16,20 @@ REL = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id'
 LIMIT = 20 * 1024 * 1024
 
 
-def read_cells(path: Path) -> dict:
-    if path.stat().st_size > LIMIT:
+def read_workbook(path: Path) -> bytes:
+    with path.open('rb') as stream:
+        workbook = stream.read(LIMIT + 1)
+    if len(workbook) > LIMIT:
         raise ValueError('Workbook exceeds 20 MB')
-    with ZipFile(path) as archive:
+    return workbook
+
+
+def read_cells(path: Path) -> dict:
+    return parse_workbook(read_workbook(path))
+
+
+def parse_workbook(workbook: bytes) -> dict:
+    with ZipFile(BytesIO(workbook)) as archive:
         infos = archive.infolist()
         names = [i.filename for i in infos]
         if len(names) != len(set(names)) or len(names) > 2000:
@@ -186,7 +197,8 @@ def apply_provider_confirmation(result: dict) -> dict:
 
 
 def review(path: Path) -> dict:
-    return review_cells(read_cells(path), hashlib.sha256(path.read_bytes()).hexdigest())
+    workbook = read_workbook(path)
+    return review_cells(parse_workbook(workbook), hashlib.sha256(workbook).hexdigest())
 
 
 def main():

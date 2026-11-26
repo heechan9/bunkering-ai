@@ -2,12 +2,40 @@ import copy
 import json
 import unittest
 from decimal import Decimal
-from scripts.compare_ab_log import INPUT, compare
+from io import BytesIO
+from unittest.mock import MagicMock, Mock, patch
+
+from scripts.compare_ab_log import INPUT, compare, extract
+from scripts.review_ab_log import CONFIRMED_SOURCE_SHA256
 
 
 class ComparisonTests(unittest.TestCase):
     def setUp(self):
         self.data = json.loads(INPUT.read_text())
+
+    def test_workbook_read_is_bounded(self):
+        source = MagicMock()
+        stream = Mock(wraps=BytesIO(b'abcd'))
+        source.open.return_value.__enter__.return_value = stream
+        with patch('scripts.review_ab_log.LIMIT', 3):
+            with self.assertRaisesRegex(ValueError, 'Workbook exceeds'):
+                extract(source)
+        stream.read.assert_called_once_with(4)
+        source.open.assert_called_once_with('rb')
+
+    def test_parser_receives_the_verified_workbook_snapshot(self):
+        workbook = b'workbook fixture'
+        source = MagicMock()
+        source.open.return_value = BytesIO(workbook)
+        with patch('scripts.compare_ab_log.hashlib.sha256') as sha256, \
+                patch('scripts.compare_ab_log.parse_workbook') as parse:
+            sha256.return_value.hexdigest.return_value = CONFIRMED_SOURCE_SHA256
+            parse.side_effect = ValueError('parser reached')
+            with self.assertRaisesRegex(ValueError, 'parser reached'):
+                extract(source)
+        sha256.assert_called_once_with(workbook)
+        parse.assert_called_once_with(workbook)
+        source.open.assert_called_once_with('rb')
 
     def test_same_unit_window_differences(self):
         r = compare(self.data)

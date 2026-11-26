@@ -8,7 +8,7 @@ from decimal import Decimal, InvalidOperation
 import hashlib
 import json
 from pathlib import Path
-from scripts.review_ab_log import read_cells, review_cells, CONFIRMED_SOURCE_SHA256
+from scripts.review_ab_log import parse_workbook, read_workbook, review_cells, CONFIRMED_SOURCE_SHA256
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / 'results/real_voyage/hanbada_comparison_inputs.json'
@@ -30,10 +30,11 @@ def quantity(value):
 
 
 def extract(path):
-    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    workbook = read_workbook(path)
+    digest = hashlib.sha256(workbook).hexdigest()
     if digest != CONFIRMED_SOURCE_SHA256:
         raise ValueError('Provider context applies only to the confirmed workbook hash')
-    sheets = read_cells(path)
+    sheets = parse_workbook(workbook)
     review = review_cells(sheets, digest)
 
     def selected(sheet, columns, first, last):
