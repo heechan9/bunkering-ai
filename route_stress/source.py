@@ -11,6 +11,9 @@ from urllib.request import Request, urlopen
 DEFAULT_METADATA = Path(__file__).parents[1] / "data/route_stress/ons_source.json"
 
 
+MAX_ONS_DOWNLOAD_BYTES = 16 * 1024 * 1024
+
+
 def _metadata(path: str | Path = DEFAULT_METADATA) -> dict:
     with Path(path).open(encoding="utf-8") as handle:
         return json.load(handle)
@@ -38,7 +41,9 @@ def download_verified_ons(
         headers={"User-Agent": "bunkering-ai-route-stress/1.0"},
     )
     with urlopen(request, timeout=timeout) as response:
-        content = response.read()
+        content = response.read(MAX_ONS_DOWNLOAD_BYTES + 1)
+    if len(content) > MAX_ONS_DOWNLOAD_BYTES:
+        raise ValueError("ONS download exceeds the 16 MiB size limit")
     verify_sha256(content, metadata["sha256"])
 
     destination = Path(destination)

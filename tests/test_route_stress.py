@@ -1,3 +1,7 @@
+import hashlib
+import io
+from unittest.mock import Mock
+
 import pandas as pd
 import pytest
 
@@ -8,6 +12,7 @@ from route_stress import (
     add_past_only_baseline,
     parse_ons_crossings,
 )
+from route_stress import source
 from route_stress.source import verify_sha256
 
 
@@ -144,3 +149,26 @@ def test_baseline_rejects_zero_history_window():
 def test_sha_verifier_fails_closed_on_changed_content():
     with pytest.raises(ValueError, match="SHA-256 mismatch"):
         verify_sha256(b"changed", "0" * 64)
+
+
+@pytest.mark.parametrize("payload, accepted", [(b"csv", True), (b"too large", False), (b"bad", False)])
+def test_ons_download_bounds_response_before_publishing(tmp_path, monkeypatch, payload, accepted):
+    class Response(io.BytesIO):
+        def read(self, size=-1):
+            assert size == 4
+            return super().read(size)
+
+    monkeypatch.setattr(source, "MAX_ONS_DOWNLOAD_BYTES", 3)
+    monkeypatch.setattr(source, "urlopen", Mock(return_value=Response(payload)))
+    monkeypatch.setattr(source, "_metadata", lambda _: {
+        "source_url": "https://example.test/ons",
+        "sha256": hashlib.sha256(b"csv").hexdigest(),
+    })
+    destination = tmp_path / "ons.csv"
+    if accepted:
+        assert source.download_verified_ons(destination) == destination
+        assert destination.read_bytes() == payload
+    else:
+        with pytest.raises(ValueError, match="size limit|SHA-256 mismatch"):
+            source.download_verified_ons(destination)
+        assert not destination.exists()
