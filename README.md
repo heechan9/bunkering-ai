@@ -4,7 +4,7 @@
 
 **코드 라이선스:** [목록에 명시된 자체 코드](LICENSED_CODE.txt)에만 Apache 2.0을 적용합니다. [적용 범위·제3자 조건](LICENSE_SCOPE.md)을 확인하세요. 데이터·이미지·모델 등 목록 밖 자료는 포함하지 않습니다.
 
-> [프로젝트 상태 페이지 바로 보기](https://heechan9.github.io/deadhd-status/bunkering-ai.html) · 2026-10-30 검토: main `df0621c`에 #150 통합이 반영됐으며, 조달 비교 문서 Draft #151은 별도 미병합입니다. 자동 main·PR·CI 조회와 수동 마감·제출·팀원 진행의 확인 시각은 상태 페이지에 따로 표시됩니다. 15초 새로고침은 배포본 재조회이며 전체 상태의 실시간 검증이 아닙니다.
+> [프로젝트 상태 페이지 바로 보기](https://heechan9.github.io/deadhd-status/bunkering-ai.html) · 2026-11-27 확인: GitHub main 변경, 공개 데모 배포, 미병합 작업은 아래에서 구분합니다. 자동 main·PR·CI 조회와 수동 마감·제출·팀원 진행의 확인 시각은 상태 페이지에 따로 표시됩니다. 15초 새로고침은 배포본 재조회이며 전체 상태의 실시간 검증이 아닙니다.
 
 선박의 가격·환율·연료잔량·잔여항로를 바탕으로 급유 의사결정을 실험하는 프로젝트입니다.
 합성 항해 환경에서 규칙 기반 정책 3종과 Double DQN을 같은 조건으로 비교하고,
@@ -36,7 +36,11 @@ DAYTONA·VISBY 국내 LNG 사례와 현재 구간 24h·급유 기항 8h 합성 �
 
 ## 지금 어디까지 완료됐나
 
-2026-10-30 확인 기준 main은 [`df0621c61e28df0e480f4e41a9ffc150454a1cdd`](https://github.com/heechan9/bunkering-ai/commit/df0621c61e28df0e480f4e41a9ffc150454a1cdd)입니다. [#150](https://github.com/heechan9/bunkering-ai/pull/150)에서 native-v4 누적 구현·검토 절차·기여 기록(#146·#147·#148), EOL 및 웹 시작 인수 처리가 통합됐습니다. 아래 10월 27일 기록의 ‘Draft·미병합’은 당시 상태이며 현재 main에 구현이 없다는 뜻이 아닙니다. **논문 제출·코드 병합과 실선 검증·운영 채택은 별개이며 실제 비용·연료 절감은 아직 입증하지 않았습니다.**
+2026-11-27 확인 시점의 GitHub main은 [`07405a0`](https://github.com/heechan9/bunkering-ai/commit/07405a02f990cf499cfb88b055efefc4ad8f18f1)입니다. 10월 [#150](https://github.com/heechan9/bunkering-ai/pull/150)에서 native-v4 구현·검토 절차·기여 기록이 통합됐습니다. 아래 10월 27일의 ‘Draft·미병합’ 표기는 당시 이력입니다. **저장소 병합이나 데모 배포는 실선 검증·운영 채택을 뜻하지 않으며, 실제 비용·연료 절감은 아직 입증하지 않았습니다.**
+
+- **GitHub main에 반영:** Ocean Lab 학습·미션·지도 조작 및 데스크톱 재생 수정([#155](https://github.com/heechan9/bunkering-ai/pull/155)–[#157](https://github.com/heechan9/bunkering-ai/pull/157)). 항차 입력의 출처·수신 시점 검증([#158](https://github.com/heechan9/bunkering-ai/pull/158))과 합성 항차의 선언된 비교 조건 검사 및 설명([#159](https://github.com/heechan9/bunkering-ai/pull/159), [#160](https://github.com/heechan9/bunkering-ai/pull/160)). 이 검사는 참조 원자료를 인증하거나 운항을 승인하지 않습니다.
+- **공개 웹데모:** [Ocean Lab](https://bunkering-ocean-lab.hc24734503.chatgpt.site/) Sites v57(`4740e38`) 배포 성공을 확인했습니다. 이번 배포는 링크 공유 카드 변경이며 GitHub main과는 별도입니다. 새 조달 비교 화면 후보는 미배포입니다.
+- **아직 미병합:** [Draft #161](https://github.com/heechan9/bunkering-ai/pull/161)은 합성 입력으로 판단 과정의 예외를 점검하는 오프라인 테스트입니다. U01의 별도 C++ 최소 잔량 검산은 준비 단계이며 main·웹데모에 적용되지 않았습니다.
 
 - **지금 사용할 수 있는 기록 검증:** [native-v4 CLI](research/native_v4_integration/README.md)의 `ledger --steps ... --regenerate-market`는 기록 회계와 seed 기반 합성 가격·환율 재생성 검사가 맞으면 **PASS/0**입니다. `--legacy-summary`는 제공한 경우에만 비교합니다. 실제 시장가격 검증·모델 추론 재실행·새 평가가 아니며, **C01–C06 채택은 pending**입니다. 전체 정책 strict-safe **0/1000·비용 null**과 DDQN–Price Reactive 쌍 **33/1000**을 섞거나 비용 우위로 해석하지 않습니다.
 - **아직 main에 없는 문서:** [Draft #151](https://github.com/heechan9/bunkering-ai/pull/151), head `d43aa3dc16991b95ae619fa10443eca5639589b3`는 향후 고정항로 비교의 입력·정보·행동·안전시점·종료재고·실패 처리 조건을 정리하는 조달 연구 문서입니다. 새 실험·RL 구현·비용 절감 결과나 계약 채택이 아닙니다.
@@ -67,7 +71,7 @@ python research/native_v4_integration/cli.py validate-config --config research/n
 | 4시드 재현·연료수지 진단 | ✅ 기록 대조 완료 | 구매·소비·최종잔량·보상 대조. DQN의 높은 보상을 비용 절감으로 해석하지 않음. [독립 대조](docs/technical/reward_diagnostics_results_4seed.md) |
 | 급유 전 부족·예비연료·잔량가치 | ✅ 기존 항차 감사 완료 | 공식 기록의 추가 회계·안전 검사. 새 환경 재학습과 구분. [안전·비용 기준](docs/technical/safety_accounting.md) |
 | 웹 결과·원문 일치 검사 | ✅ 근거 검사 구현 | 요약 70개 값·19,030개 전이 검사와 변조 검사. [검사 범위](docs/technical/web_evidence_guard.md) |
-| Ocean Lab 지도·항차 재생 | ✅ 운영 확인 / 🛠 개선 중 | 기존 Sites 36판에서 PR #99 CSV 숫자 수정, 입력 오류 후 복구, 공유 상태 복원, CSV·GLB 다운로드 확인. 360/390/412px는 로딩 후 정상이며 초기 2~4px 넘침 기록. 실제 휴대폰·iOS Safari·다른 브라우저는 미검증. [운영 검사](docs/audits/ocean_lab_live_verification_20261007.md) |
+| Ocean Lab 지도·항차 재생 | ✅ v57 배포 확인 / 🛠 개선 중 | 상세 동작은 과거 Sites 36판에서 PR #99 CSV 숫자 수정, 입력 오류 후 복구, 공유 상태 복원, CSV·GLB 다운로드 확인. 360/390/412px는 로딩 후 정상이며 초기 2~4px 넘침 기록. 실제 휴대폰·iOS Safari·다른 브라우저는 미검증. [운영 검사](docs/audits/ocean_lab_live_verification_20261007.md) |
 | ONS·FuelCast 외부 평가 | ✅ 연구용 연결 | ONS는 통항·우회 맥락, FuelCast는 정규화한 소비 변동. 실제 선박 단위 보정은 미완료. [결정 기록](research/external_validation/DECISIONS.md) |
 | FuelCast 재학습 모델 교체 | ⏸ 보류 | 비교에서 보정 비용 개선 근거 부족. 기존 공식 DQN 유지. [결정 기록](research/external_validation/DECISIONS.md) |
 | 추가 안전재고 정책 | ✅ 연구용 비교 완료 | AdaptiveStock·최소 예비연료 기준선 비교. 공식 모델 교체와 구분. [결정 기록](research/external_validation/DECISIONS.md) |
